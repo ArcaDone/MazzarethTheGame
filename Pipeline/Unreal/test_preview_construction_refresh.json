@@ -1,0 +1,44 @@
+{
+  "lot": "1249069204",
+  "before": {
+    "instances": 83,
+    "instanced_components": 8,
+    "generated": true,
+    "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069204.PCG_Building_1249069204",
+    "mesh_summary": [
+      {
+        "name": "ISM_Cube_0",
+        "instances": 1
+      },
+      {
+        "name": "ISM_Cube_1",
+        "instances": 2
+      },
+      {
+        "name": "ISM_Cube_2",
+        "instances": 7
+      },
+      {
+        "name": "ISM_Cube_3",
+        "instances": 15
+      },
+      {
+        "name": "ISM_Cube_4",
+        "instances": 3
+      },
+      {
+        "name": "ISM_Cube_5",
+        "instances": 9
+      },
+      {
+        "name": "ISM_Cube_6",
+        "instances": 45
+      },
+      {
+        "name": "ISM_SM_PCG_Roof_7",
+        "instances": 1
+      }
+    ]
+  },
+  "error": "'MazzarinoProceduralBuilding' object has no attribute 'rerun_construction_scripts'"
+}

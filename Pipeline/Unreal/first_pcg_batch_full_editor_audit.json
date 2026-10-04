@@ -1,0 +1,1348 @@
+{
+  "world": "Mazzarino80_PCG_Quartieri_Batch01_FullPCG",
+  "pcg_count": 67,
+  "source_count": 3216,
+  "houses": {
+    "1249054419": {
+      "expected": 103,
+      "actual": 103,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249054419.SM_PCG_Walls_1249054419",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_5.MI_M80_PCG_Plaster_5"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249054419.SM_PCG_Roof_1249054419",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249054423": {
+      "expected": 211,
+      "actual": 211,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249054423.SM_PCG_Walls_1249054423",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_4.MI_M80_PCG_Plaster_4"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249054423.SM_PCG_Roof_1249054423",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249067196": {
+      "expected": 9770,
+      "actual": 9770,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067196.SM_PCG_Walls_1249067196",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_1.MI_M80_PCG_Plaster_1"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067196.SM_PCG_Roof_1249067196",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249067205": {
+      "expected": 145,
+      "actual": 145,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067205.SM_PCG_Walls_1249067205",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_0.MI_M80_PCG_Plaster_0"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067205.SM_PCG_Roof_1249067205",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249067206": {
+      "expected": 106,
+      "actual": 106,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067206.SM_PCG_Walls_1249067206",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_1.MI_M80_PCG_Plaster_1"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067206.SM_PCG_Roof_1249067206",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249067208": {
+      "expected": 294,
+      "actual": 294,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067208.SM_PCG_Walls_1249067208",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_4.MI_M80_PCG_Plaster_4"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067208.SM_PCG_Roof_1249067208",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249067209": {
+      "expected": 117,
+      "actual": 117,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067209.SM_PCG_Walls_1249067209",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_5.MI_M80_PCG_Plaster_5"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067209.SM_PCG_Roof_1249067209",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249067216": {
+      "expected": 76,
+      "actual": 76,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067216.SM_PCG_Walls_1249067216",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Stone_0.MI_M80_PCG_Stone_0"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067216.SM_PCG_Roof_1249067216",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249067217": {
+      "expected": 112,
+      "actual": 112,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067217.SM_PCG_Walls_1249067217",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_2.MI_M80_PCG_Plaster_2"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067217.SM_PCG_Roof_1249067217",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249067223": {
+      "expected": 172,
+      "actual": 172,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067223.SM_PCG_Walls_1249067223",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_4.MI_M80_PCG_Plaster_4"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067223.SM_PCG_Roof_1249067223",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249067225": {
+      "expected": 52,
+      "actual": 52,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067225.SM_PCG_Walls_1249067225",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Stone_1.MI_M80_PCG_Stone_1"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067225.SM_PCG_Roof_1249067225",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249067229": {
+      "expected": 106,
+      "actual": 106,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067229.SM_PCG_Walls_1249067229",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_5.MI_M80_PCG_Plaster_5"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067229.SM_PCG_Roof_1249067229",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249067232": {
+      "expected": 75,
+      "actual": 75,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067232.SM_PCG_Walls_1249067232",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_2.MI_M80_PCG_Plaster_2"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067232.SM_PCG_Roof_1249067232",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249067242": {
+      "expected": 172,
+      "actual": 172,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067242.SM_PCG_Walls_1249067242",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_2.MI_M80_PCG_Plaster_2"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067242.SM_PCG_Roof_1249067242",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249067262": {
+      "expected": 102,
+      "actual": 102,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067262.SM_PCG_Walls_1249067262",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_2.MI_M80_PCG_Plaster_2"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067262.SM_PCG_Roof_1249067262",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249067265": {
+      "expected": 172,
+      "actual": 172,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067265.SM_PCG_Walls_1249067265",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_0.MI_M80_PCG_Plaster_0"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067265.SM_PCG_Roof_1249067265",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249067267": {
+      "expected": 377,
+      "actual": 377,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067267.SM_PCG_Walls_1249067267",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_2.MI_M80_PCG_Plaster_2"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067267.SM_PCG_Roof_1249067267",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249067277": {
+      "expected": 106,
+      "actual": 106,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067277.SM_PCG_Walls_1249067277",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_2.MI_M80_PCG_Plaster_2"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067277.SM_PCG_Roof_1249067277",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249068301": {
+      "expected": 114,
+      "actual": 114,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249068301.SM_PCG_Walls_1249068301",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_1.MI_M80_PCG_Plaster_1"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249068301.SM_PCG_Roof_1249068301",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249068302": {
+      "expected": 63,
+      "actual": 63,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249068302.SM_PCG_Walls_1249068302",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_2.MI_M80_PCG_Plaster_2"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249068302.SM_PCG_Roof_1249068302",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249068303": {
+      "expected": 487,
+      "actual": 487,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249068303.SM_PCG_Walls_1249068303",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_4.MI_M80_PCG_Plaster_4"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249068303.SM_PCG_Roof_1249068303",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249068304": {
+      "expected": 149,
+      "actual": 149,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249068304.SM_PCG_Walls_1249068304",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_5.MI_M80_PCG_Plaster_5"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249068304.SM_PCG_Roof_1249068304",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249068305": {
+      "expected": 110,
+      "actual": 110,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249068305.SM_PCG_Walls_1249068305",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_0.MI_M80_PCG_Plaster_0"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249068305.SM_PCG_Roof_1249068305",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249068306": {
+      "expected": 1288,
+      "actual": 1288,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249068306.SM_PCG_Walls_1249068306",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Stone_0.MI_M80_PCG_Stone_0"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249068306.SM_PCG_Roof_1249068306",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249068312": {
+      "expected": 76,
+      "actual": 76,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249068312.SM_PCG_Walls_1249068312",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_2.MI_M80_PCG_Plaster_2"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249068312.SM_PCG_Roof_1249068312",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249068315": {
+      "expected": 144,
+      "actual": 144,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249068315.SM_PCG_Walls_1249068315",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Stone_1.MI_M80_PCG_Stone_1"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249068315.SM_PCG_Roof_1249068315",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249068327": {
+      "expected": 283,
+      "actual": 283,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249068327.SM_PCG_Walls_1249068327",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_2.MI_M80_PCG_Plaster_2"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249068327.SM_PCG_Roof_1249068327",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249068337": {
+      "expected": 115,
+      "actual": 115,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249068337.SM_PCG_Walls_1249068337",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_2.MI_M80_PCG_Plaster_2"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249068337.SM_PCG_Roof_1249068337",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249068343": {
+      "expected": 622,
+      "actual": 622,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249068343.SM_PCG_Walls_1249068343",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Stone_1.MI_M80_PCG_Stone_1"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249068343.SM_PCG_Roof_1249068343",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249069191": {
+      "expected": 59,
+      "actual": 59,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249069191.SM_PCG_Walls_1249069191",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_1.MI_M80_PCG_Plaster_1"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249069191.SM_PCG_Roof_1249069191",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249069211": {
+      "expected": 204,
+      "actual": 204,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249069211.SM_PCG_Walls_1249069211",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_1.MI_M80_PCG_Plaster_1"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249069211.SM_PCG_Roof_1249069211",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249069239": {
+      "expected": 58,
+      "actual": 58,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249069239.SM_PCG_Walls_1249069239",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_5.MI_M80_PCG_Plaster_5"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249069239.SM_PCG_Roof_1249069239",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249069241": {
+      "expected": 155,
+      "actual": 155,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249069241.SM_PCG_Walls_1249069241",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_1.MI_M80_PCG_Plaster_1"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249069241.SM_PCG_Roof_1249069241",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249069252": {
+      "expected": 191,
+      "actual": 191,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249069252.SM_PCG_Walls_1249069252",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Stone_0.MI_M80_PCG_Stone_0"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249069252.SM_PCG_Roof_1249069252",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249069253": {
+      "expected": 151,
+      "actual": 151,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249069253.SM_PCG_Walls_1249069253",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_4.MI_M80_PCG_Plaster_4"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249069253.SM_PCG_Roof_1249069253",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249069267": {
+      "expected": 93,
+      "actual": 93,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249069267.SM_PCG_Walls_1249069267",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_2.MI_M80_PCG_Plaster_2"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249069267.SM_PCG_Roof_1249069267",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249071118": {
+      "expected": 378,
+      "actual": 378,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249071118.SM_PCG_Walls_1249071118",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_4.MI_M80_PCG_Plaster_4"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249071118.SM_PCG_Roof_1249071118",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249071121": {
+      "expected": 53,
+      "actual": 53,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249071121.SM_PCG_Walls_1249071121",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_1.MI_M80_PCG_Plaster_1"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249071121.SM_PCG_Roof_1249071121",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249071125": {
+      "expected": 17,
+      "actual": 17,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249071125.SM_PCG_Walls_1249071125",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_0.MI_M80_PCG_Plaster_0"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249071125.SM_PCG_Roof_1249071125",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249071132": {
+      "expected": 184,
+      "actual": 184,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249071132.SM_PCG_Walls_1249071132",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_2.MI_M80_PCG_Plaster_2"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249071132.SM_PCG_Roof_1249071132",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249071138": {
+      "expected": 140,
+      "actual": 140,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249071138.SM_PCG_Walls_1249071138",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_4.MI_M80_PCG_Plaster_4"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249071138.SM_PCG_Roof_1249071138",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249071140": {
+      "expected": 150,
+      "actual": 150,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249071140.SM_PCG_Walls_1249071140",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_0.MI_M80_PCG_Plaster_0"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249071140.SM_PCG_Roof_1249071140",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249071149": {
+      "expected": 77,
+      "actual": 77,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249071149.SM_PCG_Walls_1249071149",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_5.MI_M80_PCG_Plaster_5"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249071149.SM_PCG_Roof_1249071149",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249071153": {
+      "expected": 100,
+      "actual": 100,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249071153.SM_PCG_Walls_1249071153",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Stone_1.MI_M80_PCG_Stone_1"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249071153.SM_PCG_Roof_1249071153",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249082254": {
+      "expected": 107,
+      "actual": 107,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082254.SM_PCG_Walls_1249082254",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_5.MI_M80_PCG_Plaster_5"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082254.SM_PCG_Roof_1249082254",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249082257": {
+      "expected": 225,
+      "actual": 225,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082257.SM_PCG_Walls_1249082257",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_2.MI_M80_PCG_Plaster_2"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082257.SM_PCG_Roof_1249082257",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249082258": {
+      "expected": 551,
+      "actual": 551,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082258.SM_PCG_Walls_1249082258",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_4.MI_M80_PCG_Plaster_4"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082258.SM_PCG_Roof_1249082258",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249082259": {
+      "expected": 181,
+      "actual": 181,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082259.SM_PCG_Walls_1249082259",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_5.MI_M80_PCG_Plaster_5"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082259.SM_PCG_Roof_1249082259",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249082261": {
+      "expected": 282,
+      "actual": 282,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082261.SM_PCG_Walls_1249082261",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Stone_1.MI_M80_PCG_Stone_1"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082261.SM_PCG_Roof_1249082261",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249082264": {
+      "expected": 205,
+      "actual": 205,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082264.SM_PCG_Walls_1249082264",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_5.MI_M80_PCG_Plaster_5"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082264.SM_PCG_Roof_1249082264",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249082269": {
+      "expected": 225,
+      "actual": 225,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082269.SM_PCG_Walls_1249082269",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_5.MI_M80_PCG_Plaster_5"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082269.SM_PCG_Roof_1249082269",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249082271": {
+      "expected": 545,
+      "actual": 545,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082271.SM_PCG_Walls_1249082271",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_1.MI_M80_PCG_Plaster_1"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082271.SM_PCG_Roof_1249082271",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249082273": {
+      "expected": 189,
+      "actual": 189,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082273.SM_PCG_Walls_1249082273",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_4.MI_M80_PCG_Plaster_4"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082273.SM_PCG_Roof_1249082273",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249082275": {
+      "expected": 337,
+      "actual": 337,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082275.SM_PCG_Walls_1249082275",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_0.MI_M80_PCG_Plaster_0"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082275.SM_PCG_Roof_1249082275",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249082283": {
+      "expected": 454,
+      "actual": 454,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082283.SM_PCG_Walls_1249082283",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_4.MI_M80_PCG_Plaster_4"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082283.SM_PCG_Roof_1249082283",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249082286": {
+      "expected": 726,
+      "actual": 726,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082286.SM_PCG_Walls_1249082286",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_1.MI_M80_PCG_Plaster_1"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082286.SM_PCG_Roof_1249082286",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249082289": {
+      "expected": 151,
+      "actual": 151,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082289.SM_PCG_Walls_1249082289",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_5.MI_M80_PCG_Plaster_5"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082289.SM_PCG_Roof_1249082289",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249082294": {
+      "expected": 306,
+      "actual": 306,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082294.SM_PCG_Walls_1249082294",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_5.MI_M80_PCG_Plaster_5"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082294.SM_PCG_Roof_1249082294",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249082983": {
+      "expected": 107,
+      "actual": 107,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082983.SM_PCG_Walls_1249082983",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_4.MI_M80_PCG_Plaster_4"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082983.SM_PCG_Roof_1249082983",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "1249083019": {
+      "expected": 104,
+      "actual": 104,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249083019.SM_PCG_Walls_1249083019",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_5.MI_M80_PCG_Plaster_5"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249083019.SM_PCG_Roof_1249083019",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249083051": {
+      "expected": 141,
+      "actual": 141,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249083051.SM_PCG_Walls_1249083051",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_1.MI_M80_PCG_Plaster_1"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249083051.SM_PCG_Roof_1249083051",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249083059": {
+      "expected": 328,
+      "actual": 328,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249083059.SM_PCG_Walls_1249083059",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_5.MI_M80_PCG_Plaster_5"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249083059.SM_PCG_Roof_1249083059",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249083070": {
+      "expected": 542,
+      "actual": 542,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249083070.SM_PCG_Walls_1249083070",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_0.MI_M80_PCG_Plaster_0"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249083070.SM_PCG_Roof_1249083070",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249083089": {
+      "expected": 74,
+      "actual": 74,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249083089.SM_PCG_Walls_1249083089",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_5.MI_M80_PCG_Plaster_5"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249083089.SM_PCG_Roof_1249083089",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface"
+        }
+      ]
+    },
+    "1249832594": {
+      "expected": 142,
+      "actual": 142,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249832594.SM_PCG_Walls_1249832594",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_5.MI_M80_PCG_Plaster_5"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249832594.SM_PCG_Roof_1249832594",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "372573548": {
+      "expected": 92,
+      "actual": 92,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_372573548.SM_PCG_Walls_372573548",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_4.MI_M80_PCG_Plaster_4"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_372573548.SM_PCG_Roof_372573548",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    },
+    "372573577": {
+      "expected": 5637,
+      "actual": 5637,
+      "source_visible_components": 0,
+      "source_hidden_in_game": true,
+      "wall": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_372573577.SM_PCG_Walls_372573577",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_2.MI_M80_PCG_Plaster_2"
+        }
+      ],
+      "roof": [
+        {
+          "mesh": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_372573577.SM_PCG_Roof_372573577",
+          "instances": 1,
+          "material": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace"
+        }
+      ]
+    }
+  },
+  "errors": []
+}

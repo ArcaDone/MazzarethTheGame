@@ -1,0 +1,1393 @@
+{
+  "1249068307": [
+    {
+      "name": "ISM_Cube_10",
+      "count": 105,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_11",
+      "count": 495,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_12",
+      "count": 28,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_4",
+      "count": 90,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_5",
+      "count": 153,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_S_Flower_Pot_tmekfduiw_lod3_6",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+    },
+    {
+      "name": "ISM_S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1_7",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1.S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1"
+    },
+    {
+      "name": "ISM_SM_Door_06c_13",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249068307_S0_15",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249068307_S0.SM_PCG_Source_1249068307_S0"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249068307_S11_9",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249068307_S11.SM_PCG_Source_1249068307_S11"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249068307_S1_14",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249068307_S1.SM_PCG_Source_1249068307_S1"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249068307_S3_8",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249068307_S3.SM_PCG_Source_1249068307_S3"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249068307_S4_1",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249068307_S4.SM_PCG_Source_1249068307_S4"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249068307_S9_2",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249068307_S9.SM_PCG_Source_1249068307_S9"
+    }
+  ],
+  "1249069200": [
+    {
+      "name": "ISM_Cube_12",
+      "count": 73,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_13",
+      "count": 288,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_15",
+      "count": 17,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_4",
+      "count": 31,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_5",
+      "count": 147,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cylinder_7",
+      "count": 1,
+      "mesh": "/Engine/BasicShapes/Cylinder.Cylinder"
+    },
+    {
+      "name": "ISM_S_Flower_Pot_tmekfduiw_lod3_6",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+    },
+    {
+      "name": "ISM_SM_Coppo_siciliano_10",
+      "count": 1902,
+      "mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano"
+    },
+    {
+      "name": "ISM_SM_Door_06c_16",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069200_S0_19",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069200_S0.SM_PCG_Source_1249069200_S0"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069200_S10_18",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069200_S10.SM_PCG_Source_1249069200_S10"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069200_S11_11",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069200_S11.SM_PCG_Source_1249069200_S11"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069200_S1_17",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069200_S1.SM_PCG_Source_1249069200_S1"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069200_S2_8",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069200_S2.SM_PCG_Source_1249069200_S2"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069200_S3_9",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069200_S3.SM_PCG_Source_1249069200_S3"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069200_S4_1",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069200_S4.SM_PCG_Source_1249069200_S4"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069200_S9_2",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069200_S9.SM_PCG_Source_1249069200_S9"
+    }
+  ],
+  "1249069202": [
+    {
+      "name": "ISM_Cube_10",
+      "count": 98,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_11",
+      "count": 280,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_12",
+      "count": 23,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_3",
+      "count": 75,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_4",
+      "count": 255,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_S_Flower_Pot_tmekfduiw_lod3_5",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+    },
+    {
+      "name": "ISM_SM_Coppo_siciliano_8",
+      "count": 4119,
+      "mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano"
+    },
+    {
+      "name": "ISM_SM_Door_06c_13",
+      "count": 3,
+      "mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069202_S0_16",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069202_S0.SM_PCG_Source_1249069202_S0"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069202_S10_15",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069202_S10.SM_PCG_Source_1249069202_S10"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069202_S11_9",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069202_S11.SM_PCG_Source_1249069202_S11"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069202_S1_14",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069202_S1.SM_PCG_Source_1249069202_S1"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069202_S2_6",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069202_S2.SM_PCG_Source_1249069202_S2"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069202_S3_7",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069202_S3.SM_PCG_Source_1249069202_S3"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069202_S4_1",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069202_S4.SM_PCG_Source_1249069202_S4"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069202_S8_17",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069202_S8.SM_PCG_Source_1249069202_S8"
+    }
+  ],
+  "1249069204": [
+    {
+      "name": "ISM_Cube_11",
+      "count": 28,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_12",
+      "count": 98,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_14",
+      "count": 4,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_3",
+      "count": 50,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_4",
+      "count": 114,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cylinder_7",
+      "count": 1,
+      "mesh": "/Engine/BasicShapes/Cylinder.Cylinder"
+    },
+    {
+      "name": "ISM_S_Flower_Pot_tmekfduiw_lod3_5",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+    },
+    {
+      "name": "ISM_S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1_6",
+      "count": 2,
+      "mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1.S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1"
+    },
+    {
+      "name": "ISM_SM_Coppo_siciliano_9",
+      "count": 3162,
+      "mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano"
+    },
+    {
+      "name": "ISM_SM_Door_06c_15",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069204_S0_17",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069204_S0.SM_PCG_Source_1249069204_S0"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069204_S11_10",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069204_S11.SM_PCG_Source_1249069204_S11"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069204_S1_16",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069204_S1.SM_PCG_Source_1249069204_S1"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069204_S2_8",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069204_S2.SM_PCG_Source_1249069204_S2"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069204_S4_1",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069204_S4.SM_PCG_Source_1249069204_S4"
+    }
+  ],
+  "1249069205": [
+    {
+      "name": "ISM_Cube_11",
+      "count": 113,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_12",
+      "count": 397,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_17",
+      "count": 32,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_18",
+      "count": 18,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_2",
+      "count": 147,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_23",
+      "count": 16,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_3",
+      "count": 456,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_S_Cactus_udugdfvfa_lod3_Var1_6",
+      "count": 1,
+      "mesh": "/Game/Megascans/3D_Assets/Cactus_udugdfvfa/S_Cactus_udugdfvfa_lod3_Var1.S_Cactus_udugdfvfa_lod3_Var1"
+    },
+    {
+      "name": "ISM_S_English_Ivy_rkEit_Var3_lod1_7",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Plants/English_Ivy_rkEit/S_English_Ivy_rkEit_Var3_lod1.S_English_Ivy_rkEit_Var3_lod1"
+    },
+    {
+      "name": "ISM_S_Flower_Pot_tmekfduiw_lod3_4",
+      "count": 2,
+      "mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+    },
+    {
+      "name": "ISM_SM_clothes_A_01_5",
+      "count": 6,
+      "mesh": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_A_01.SM_clothes_A_01"
+    },
+    {
+      "name": "ISM_SM_Coppo_siciliano_10",
+      "count": 5015,
+      "mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano"
+    },
+    {
+      "name": "ISM_SM_Door_06c_19",
+      "count": 2,
+      "mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069205_S0_21",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069205_S0.SM_PCG_Source_1249069205_S0"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069205_S1_20",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069205_S1.SM_PCG_Source_1249069205_S1"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069205_S2_8",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069205_S2.SM_PCG_Source_1249069205_S2"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069205_S3_9",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069205_S3.SM_PCG_Source_1249069205_S3"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069205_S4_0",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069205_S4.SM_PCG_Source_1249069205_S4"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069205_S8_22",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069205_S8.SM_PCG_Source_1249069205_S8"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069205_S9_1",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069205_S9.SM_PCG_Source_1249069205_S9"
+    }
+  ],
+  "1249069213": [
+    {
+      "name": "ISM_Cube_10",
+      "count": 7,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_2",
+      "count": 16,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_3",
+      "count": 69,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_8",
+      "count": 30,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_9",
+      "count": 122,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cylinder_6",
+      "count": 1,
+      "mesh": "/Engine/BasicShapes/Cylinder.Cylinder"
+    },
+    {
+      "name": "ISM_S_Flower_Pot_tmekfduiw_lod3_4",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+    },
+    {
+      "name": "ISM_SM_Door_06c_11",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069213_S0_13",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069213_S0.SM_PCG_Source_1249069213_S0"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069213_S1_12",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069213_S1.SM_PCG_Source_1249069213_S1"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069213_S3_7",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069213_S3.SM_PCG_Source_1249069213_S3"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069213_S4_0",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069213_S4.SM_PCG_Source_1249069213_S4"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069213_S9_1",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069213_S9.SM_PCG_Source_1249069213_S9"
+    },
+    {
+      "name": "ISM_SM_Platform_Water_Tank_01_5",
+      "count": 1,
+      "mesh": "/Game/Megapack/Meshes/MiddleEast/SM_Platform_Water_Tank_01.SM_Platform_Water_Tank_01"
+    }
+  ],
+  "1249069219": [
+    {
+      "name": "ISM_Cube_10",
+      "count": 4,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_3",
+      "count": 22,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_4",
+      "count": 81,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_8",
+      "count": 17,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_9",
+      "count": 38,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_SM_Coppo_siciliano_6",
+      "count": 2011,
+      "mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano"
+    },
+    {
+      "name": "ISM_SM_Door_06c_11",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069219_S0_14",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069219_S0.SM_PCG_Source_1249069219_S0"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069219_S10_13",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069219_S10.SM_PCG_Source_1249069219_S10"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069219_S1_12",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069219_S1.SM_PCG_Source_1249069219_S1"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069219_S2_5",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069219_S2.SM_PCG_Source_1249069219_S2"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069219_S4_1",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069219_S4.SM_PCG_Source_1249069219_S4"
+    }
+  ],
+  "1249069228": [
+    {
+      "name": "ISM_Corridor_A_Box02_Ex_9",
+      "count": 1,
+      "mesh": "/Game/City_of_Brass_Enviroment/Meshes/Corridor_A/Corridor_A_Box02_Ex.Corridor_A_Box02_Ex"
+    },
+    {
+      "name": "ISM_Cube_17",
+      "count": 54,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_18",
+      "count": 138,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_19",
+      "count": 12,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_2",
+      "count": 74,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_20",
+      "count": 18,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_26",
+      "count": 8,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_3",
+      "count": 234,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_6",
+      "count": 2,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_S_English_Ivy_rkEit_Var3_lod1_10",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Plants/English_Ivy_rkEit/S_English_Ivy_rkEit_Var3_lod1.S_English_Ivy_rkEit_Var3_lod1"
+    },
+    {
+      "name": "ISM_S_Flower_Pot_tmekfduiw_lod3_7",
+      "count": 2,
+      "mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+    },
+    {
+      "name": "ISM_SM_clothes_A_01_8",
+      "count": 3,
+      "mesh": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_A_01.SM_clothes_A_01"
+    },
+    {
+      "name": "ISM_SM_Coppo_siciliano_13",
+      "count": 2180,
+      "mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano"
+    },
+    {
+      "name": "ISM_SM_Door_06c_21",
+      "count": 2,
+      "mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069228_S0_24",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069228_S0.SM_PCG_Source_1249069228_S0"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069228_S10_23",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069228_S10.SM_PCG_Source_1249069228_S10"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069228_S11_14",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069228_S11.SM_PCG_Source_1249069228_S11"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069228_S1_22",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069228_S1.SM_PCG_Source_1249069228_S1"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069228_S2_11",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069228_S2.SM_PCG_Source_1249069228_S2"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069228_S3_12",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069228_S3.SM_PCG_Source_1249069228_S3"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069228_S4_0",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069228_S4.SM_PCG_Source_1249069228_S4"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069228_S8_25",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069228_S8.SM_PCG_Source_1249069228_S8"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069228_S9_1",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069228_S9.SM_PCG_Source_1249069228_S9"
+    }
+  ],
+  "1249069229": [
+    {
+      "name": "ISM_Cube_10",
+      "count": 108,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_11",
+      "count": 9,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_4",
+      "count": 21,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_5",
+      "count": 90,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_8",
+      "count": 39,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_SM_clothes_A_01_6",
+      "count": 3,
+      "mesh": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_A_01.SM_clothes_A_01"
+    },
+    {
+      "name": "ISM_SM_Door_06c_12",
+      "count": 2,
+      "mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069229_S0_14",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069229_S0.SM_PCG_Source_1249069229_S0"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069229_S1_13",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069229_S1.SM_PCG_Source_1249069229_S1"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069229_S3_7",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069229_S3.SM_PCG_Source_1249069229_S3"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069229_S4_1",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069229_S4.SM_PCG_Source_1249069229_S4"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069229_S9_2",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069229_S9.SM_PCG_Source_1249069229_S9"
+    }
+  ],
+  "1249069235": [
+    {
+      "name": "ISM_Cube_13",
+      "count": 72,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_14",
+      "count": 289,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_16",
+      "count": 18,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_4",
+      "count": 75,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_5",
+      "count": 333,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cylinder_8",
+      "count": 1,
+      "mesh": "/Engine/BasicShapes/Cylinder.Cylinder"
+    },
+    {
+      "name": "ISM_S_Flower_Pot_tmekfduiw_lod3_6",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+    },
+    {
+      "name": "ISM_SM_clothes_A_01_7",
+      "count": 3,
+      "mesh": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_A_01.SM_clothes_A_01"
+    },
+    {
+      "name": "ISM_SM_Coppo_siciliano_11",
+      "count": 1675,
+      "mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano"
+    },
+    {
+      "name": "ISM_SM_Door_06c_17",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069235_S0_20",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069235_S0.SM_PCG_Source_1249069235_S0"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069235_S10_19",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069235_S10.SM_PCG_Source_1249069235_S10"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069235_S11_12",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069235_S11.SM_PCG_Source_1249069235_S11"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069235_S1_18",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069235_S1.SM_PCG_Source_1249069235_S1"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069235_S2_9",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069235_S2.SM_PCG_Source_1249069235_S2"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069235_S3_10",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069235_S3.SM_PCG_Source_1249069235_S3"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069235_S4_1",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069235_S4.SM_PCG_Source_1249069235_S4"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069235_S9_2",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069235_S9.SM_PCG_Source_1249069235_S9"
+    }
+  ],
+  "1249069237": [
+    {
+      "name": "ISM_Cube_11",
+      "count": 63,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_12",
+      "count": 202,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_14",
+      "count": 15,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_4",
+      "count": 79,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_5",
+      "count": 279,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_S_Flower_Pot_tmekfduiw_lod3_6",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+    },
+    {
+      "name": "ISM_S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1_8",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1.S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1"
+    },
+    {
+      "name": "ISM_SM_clothes_A_01_7",
+      "count": 3,
+      "mesh": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_A_01.SM_clothes_A_01"
+    },
+    {
+      "name": "ISM_SM_Coppo_siciliano_10",
+      "count": 2611,
+      "mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano"
+    },
+    {
+      "name": "ISM_SM_Door_06c_15",
+      "count": 2,
+      "mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069237_S0_17",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069237_S0.SM_PCG_Source_1249069237_S0"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069237_S1_16",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069237_S1.SM_PCG_Source_1249069237_S1"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069237_S2_9",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069237_S2.SM_PCG_Source_1249069237_S2"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069237_S4_1",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069237_S4.SM_PCG_Source_1249069237_S4"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069237_S9_2",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069237_S9.SM_PCG_Source_1249069237_S9"
+    }
+  ],
+  "1249069246": [
+    {
+      "name": "ISM_Cube_10",
+      "count": 398,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_11",
+      "count": 27,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_3",
+      "count": 26,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_4",
+      "count": 165,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_9",
+      "count": 93,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_S_Flower_Pot_tmekfduiw_lod3_5",
+      "count": 2,
+      "mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+    },
+    {
+      "name": "ISM_S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1_6",
+      "count": 4,
+      "mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1.S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1"
+    },
+    {
+      "name": "ISM_SM_Door_06c_12",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069246_S0_14",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069246_S0.SM_PCG_Source_1249069246_S0"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069246_S11_8",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069246_S11.SM_PCG_Source_1249069246_S11"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069246_S1_13",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069246_S1.SM_PCG_Source_1249069246_S1"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069246_S3_7",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069246_S3.SM_PCG_Source_1249069246_S3"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069246_S4_1",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069246_S4.SM_PCG_Source_1249069246_S4"
+    }
+  ],
+  "1249069247": [
+    {
+      "name": "ISM_Cube_10",
+      "count": 2,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_11",
+      "count": 1,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_3",
+      "count": 23,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_4",
+      "count": 84,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_9",
+      "count": 19,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_S_Flower_Pot_tmekfduiw_lod3_5",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+    },
+    {
+      "name": "ISM_SM_Coppo_siciliano_7",
+      "count": 892,
+      "mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano"
+    },
+    {
+      "name": "ISM_SM_Door_06c_12",
+      "count": 2,
+      "mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069247_S0_14",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069247_S0.SM_PCG_Source_1249069247_S0"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069247_S1_13",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069247_S1.SM_PCG_Source_1249069247_S1"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069247_S2_6",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069247_S2.SM_PCG_Source_1249069247_S2"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069247_S4_1",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069247_S4.SM_PCG_Source_1249069247_S4"
+    }
+  ],
+  "1249069271": [
+    {
+      "name": "ISM_Cube_10",
+      "count": 7,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_2",
+      "count": 27,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_3",
+      "count": 81,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_8",
+      "count": 40,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_9",
+      "count": 133,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cylinder_5",
+      "count": 1,
+      "mesh": "/Engine/BasicShapes/Cylinder.Cylinder"
+    },
+    {
+      "name": "ISM_SM_Door_06c_11",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069271_S0_13",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069271_S0.SM_PCG_Source_1249069271_S0"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069271_S11_7",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069271_S11.SM_PCG_Source_1249069271_S11"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069271_S1_12",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069271_S1.SM_PCG_Source_1249069271_S1"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069271_S3_6",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069271_S3.SM_PCG_Source_1249069271_S3"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069271_S4_0",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069271_S4.SM_PCG_Source_1249069271_S4"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069271_S9_1",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069271_S9.SM_PCG_Source_1249069271_S9"
+    },
+    {
+      "name": "ISM_SM_Platform_Water_Tank_01_4",
+      "count": 1,
+      "mesh": "/Game/Megapack/Meshes/MiddleEast/SM_Platform_Water_Tank_01.SM_Platform_Water_Tank_01"
+    }
+  ],
+  "1249069275": [
+    {
+      "name": "ISM_Cube_1",
+      "count": 16,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_2",
+      "count": 84,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_6",
+      "count": 18,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_7",
+      "count": 12,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_8",
+      "count": 1,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_S_Cactus_udugdfvfa_lod3_Var1_3",
+      "count": 1,
+      "mesh": "/Game/Megascans/3D_Assets/Cactus_udugdfvfa/S_Cactus_udugdfvfa_lod3_Var1.S_Cactus_udugdfvfa_lod3_Var1"
+    },
+    {
+      "name": "ISM_SM_Coppo_siciliano_5",
+      "count": 749,
+      "mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano"
+    },
+    {
+      "name": "ISM_SM_Door_06c_9",
+      "count": 2,
+      "mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069275_S0_11",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069275_S0.SM_PCG_Source_1249069275_S0"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069275_S1_10",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069275_S1.SM_PCG_Source_1249069275_S1"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069275_S2_4",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069275_S2.SM_PCG_Source_1249069275_S2"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069275_S4_0",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069275_S4.SM_PCG_Source_1249069275_S4"
+    }
+  ],
+  "1249069276": [
+    {
+      "name": "ISM_Cube_10",
+      "count": 33,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_11",
+      "count": 116,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_13",
+      "count": 6,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_4",
+      "count": 20,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_5",
+      "count": 60,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cylinder_7",
+      "count": 1,
+      "mesh": "/Engine/BasicShapes/Cylinder.Cylinder"
+    },
+    {
+      "name": "ISM_S_Flower_Pot_tmekfduiw_lod3_6",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+    },
+    {
+      "name": "ISM_SM_Door_06c_14",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069276_S0_17",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069276_S0.SM_PCG_Source_1249069276_S0"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069276_S10_16",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069276_S10.SM_PCG_Source_1249069276_S10"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069276_S11_9",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069276_S11.SM_PCG_Source_1249069276_S11"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069276_S1_15",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069276_S1.SM_PCG_Source_1249069276_S1"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069276_S3_8",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069276_S3.SM_PCG_Source_1249069276_S3"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069276_S4_1",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069276_S4.SM_PCG_Source_1249069276_S4"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069276_S9_2",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069276_S9.SM_PCG_Source_1249069276_S9"
+    }
+  ],
+  "1249069286": [
+    {
+      "name": "ISM_Cube_10",
+      "count": 2,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_3",
+      "count": 19,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_4",
+      "count": 54,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_8",
+      "count": 11,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_9",
+      "count": 20,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_S_Cactus_udugdfvfa_lod3_Var1_5",
+      "count": 1,
+      "mesh": "/Game/Megascans/3D_Assets/Cactus_udugdfvfa/S_Cactus_udugdfvfa_lod3_Var1.S_Cactus_udugdfvfa_lod3_Var1"
+    },
+    {
+      "name": "ISM_SM_Coppo_siciliano_7",
+      "count": 637,
+      "mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano"
+    },
+    {
+      "name": "ISM_SM_Door_06c_11",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069286_S0_13",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069286_S0.SM_PCG_Source_1249069286_S0"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069286_S1_12",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069286_S1.SM_PCG_Source_1249069286_S1"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069286_S2_6",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069286_S2.SM_PCG_Source_1249069286_S2"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069286_S4_1",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069286_S4.SM_PCG_Source_1249069286_S4"
+    }
+  ],
+  "1249069287": [
+    {
+      "name": "ISM_Cube_12",
+      "count": 77,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_13",
+      "count": 256,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_15",
+      "count": 13,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_4",
+      "count": 78,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cube_5",
+      "count": 291,
+      "mesh": "/Engine/BasicShapes/Cube.Cube"
+    },
+    {
+      "name": "ISM_Cylinder_7",
+      "count": 1,
+      "mesh": "/Engine/BasicShapes/Cylinder.Cylinder"
+    },
+    {
+      "name": "ISM_S_Flower_Pot_tmekfduiw_lod3_6",
+      "count": 3,
+      "mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+    },
+    {
+      "name": "ISM_SM_Coppo_siciliano_10",
+      "count": 3306,
+      "mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano"
+    },
+    {
+      "name": "ISM_SM_Door_06c_16",
+      "count": 3,
+      "mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069287_S0_19",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069287_S0.SM_PCG_Source_1249069287_S0"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069287_S10_18",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069287_S10.SM_PCG_Source_1249069287_S10"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069287_S11_11",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069287_S11.SM_PCG_Source_1249069287_S11"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069287_S1_17",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069287_S1.SM_PCG_Source_1249069287_S1"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069287_S2_8",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069287_S2.SM_PCG_Source_1249069287_S2"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069287_S3_9",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069287_S3.SM_PCG_Source_1249069287_S3"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069287_S4_1",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069287_S4.SM_PCG_Source_1249069287_S4"
+    },
+    {
+      "name": "ISM_SM_PCG_Source_1249069287_S9_2",
+      "count": 1,
+      "mesh": "/Game/Mazzarino80/PCG/ApprovedModules/SM_PCG_Source_1249069287_S9.SM_PCG_Source_1249069287_S9"
+    }
+  ]
+}

@@ -1,0 +1,6108 @@
+{
+  "map": "/Game/Levels/Mazzarino80_PCG_Quartieri_Preview",
+  "lots": {
+    "1249069253": {
+      "district": "Q001",
+      "source_folder": "Mazzarino80/Edifici/Isolato_campione",
+      "location_cm": [
+        71233.06833333334,
+        11456.535000000002,
+        16394.19
+      ],
+      "footprint_world_cm": [
+        [
+          71456.81,
+          10153.63,
+          16394.19
+        ],
+        [
+          72427.32,
+          11852.98,
+          16394.19
+        ],
+        [
+          71281.16,
+          12378.68,
+          16394.19
+        ],
+        [
+          70546.37000000001,
+          12110.98,
+          16394.19
+        ],
+        [
+          70695.48000000001,
+          11495.44,
+          16394.19
+        ],
+        [
+          70991.27,
+          10747.5,
+          16394.19
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 1.399999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 5,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 9.5,
+        "height_variation_meters": 0.8899999856948853,
+        "composition_seed": 910,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 1.0,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 4,
+        "doors": 1,
+        "window_backings": 4,
+        "masonry_details": 20,
+        "metal_details": 34,
+        "shutters": 80
+      }
+    },
+    "1249082264": {
+      "district": "Q001",
+      "source_folder": "Mazzarino80/Edifici/Isolato_campione",
+      "location_cm": [
+        69617.6385,
+        10276.109999999999,
+        16487.88
+      ],
+      "footprint_world_cm": [
+        [
+          68845.56,
+          8708.44,
+          16487.88
+        ],
+        [
+          70569.82,
+          8384.1,
+          16487.88
+        ],
+        [
+          70924.03,
+          9914.8,
+          16487.88
+        ],
+        [
+          71006.46,
+          10251.4,
+          16487.88
+        ],
+        [
+          70355.21,
+          11524.0,
+          16487.88
+        ],
+        [
+          70044.84,
+          11451.06,
+          16487.88
+        ],
+        [
+          69927.62000000001,
+          11170.01,
+          16487.88
+        ],
+        [
+          69864.17000000001,
+          10960.8,
+          16487.88
+        ],
+        [
+          70143.44,
+          10838.13,
+          16487.88
+        ],
+        [
+          70188.13,
+          10487.51,
+          16487.88
+        ],
+        [
+          70250.97,
+          10475.7,
+          16487.88
+        ],
+        [
+          70237.79000000001,
+          10117.73,
+          16487.88
+        ],
+        [
+          69127.02,
+          10342.11,
+          16487.88
+        ],
+        [
+          69086.65000000001,
+          10287.93,
+          16487.88
+        ],
+        [
+          69079.95000000001,
+          10288.92,
+          16487.88
+        ],
+        [
+          68794.33,
+          10414.99,
+          16487.88
+        ],
+        [
+          68469.38,
+          10553.06,
+          16487.88
+        ],
+        [
+          68387.69,
+          10313.4,
+          16487.88
+        ],
+        [
+          68671.65000000001,
+          10163.01,
+          16487.88
+        ],
+        [
+          68378.06,
+          8875.1,
+          16487.88
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.25,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": true,
+        "front_edge_index": 0,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.75,
+        "facade_section_width_meters": 7.5,
+        "height_variation_meters": 0.44999998807907104,
+        "composition_seed": 804,
+        "window_spacing_meters": 2.799999952316284,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 10,
+        "doors": 2,
+        "window_backings": 10,
+        "masonry_details": 53,
+        "metal_details": 124,
+        "shutters": 0
+      }
+    },
+    "1249082269": {
+      "district": "Q001",
+      "source_folder": "Mazzarino80/Edifici/Isolato_campione",
+      "location_cm": [
+        69899.4325,
+        10722.756249999999,
+        16499.26
+      ],
+      "footprint_world_cm": [
+        [
+          69127.02,
+          10342.11,
+          16499.26
+        ],
+        [
+          70237.79000000001,
+          10117.73,
+          16499.26
+        ],
+        [
+          70250.97,
+          10475.7,
+          16499.26
+        ],
+        [
+          70188.13,
+          10487.51,
+          16499.26
+        ],
+        [
+          70143.44,
+          10838.13,
+          16499.26
+        ],
+        [
+          69864.17000000001,
+          10960.8,
+          16499.26
+        ],
+        [
+          69927.62000000001,
+          11170.01,
+          16499.26
+        ],
+        [
+          69456.32,
+          11390.06,
+          16499.26
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.949999988079071,
+        "facade_section_width_meters": 8.5,
+        "height_variation_meters": 0.6700000166893005,
+        "composition_seed": 809,
+        "window_spacing_meters": 3.200000047683716,
+        "window_width_meters": 1.100000023841858,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 5,
+        "doors": 1,
+        "window_backings": 5,
+        "masonry_details": 26,
+        "metal_details": 74,
+        "shutters": 106
+      }
+    },
+    "1249082294": {
+      "district": "Q001",
+      "source_folder": "Mazzarino80/Edifici/Isolato_campione",
+      "location_cm": [
+        69310.35214285715,
+        11353.010714285714,
+        16356.67
+      ],
+      "footprint_world_cm": [
+        [
+          69375.48000000001,
+          12286.58,
+          16356.67
+        ],
+        [
+          69090.41,
+          12508.38,
+          16356.67
+        ],
+        [
+          68858.58,
+          11990.11,
+          16356.67
+        ],
+        [
+          69068.39,
+          11854.44,
+          16356.67
+        ],
+        [
+          69002.98000000001,
+          11743.8,
+          16356.67
+        ],
+        [
+          69077.15000000001,
+          11689.76,
+          16356.67
+        ],
+        [
+          68794.33,
+          10414.99,
+          16356.67
+        ],
+        [
+          69079.95000000001,
+          10288.92,
+          16356.67
+        ],
+        [
+          69086.65000000001,
+          10287.93,
+          16356.67
+        ],
+        [
+          69127.02,
+          10342.11,
+          16356.67
+        ],
+        [
+          69456.32,
+          11390.06,
+          16356.67
+        ],
+        [
+          69927.62000000001,
+          11170.01,
+          16356.67
+        ],
+        [
+          70044.84,
+          11451.06,
+          16356.67
+        ],
+        [
+          70355.21,
+          11524.0,
+          16356.67
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 2.9666666984558105,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": true,
+        "front_edge_index": 9,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.75,
+        "facade_section_width_meters": 9.5,
+        "height_variation_meters": 0.8899999856948853,
+        "composition_seed": 834,
+        "window_spacing_meters": 2.799999952316284,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 8,
+        "doors": 1,
+        "window_backings": 8,
+        "masonry_details": 43,
+        "metal_details": 124,
+        "shutters": 114
+      }
+    },
+    "1249067196": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        73249.29074999999,
+        4252.713999919945,
+        17013.636961020347
+      ],
+      "footprint_world_cm": [
+        [
+          71852.51000000001,
+          4555.679999919945,
+          17013.636961020347
+        ],
+        [
+          72275.0,
+          4415.369999919944,
+          17013.636961020347
+        ],
+        [
+          72488.72,
+          4345.4599999199445,
+          17013.636961020347
+        ],
+        [
+          72987.54000000001,
+          5683.879999919945,
+          17013.636961020347
+        ],
+        [
+          74395.32,
+          5041.819999919944,
+          17013.636961020347
+        ],
+        [
+          74232.03,
+          4740.609999919945,
+          17013.636961020347
+        ],
+        [
+          73475.56,
+          3354.5699999199446,
+          17013.636961020347
+        ],
+        [
+          73375.90000000001,
+          3395.2099999199445,
+          17013.636961020347
+        ],
+        [
+          72800.07,
+          2183.7299999199445,
+          17013.636961020347
+        ],
+        [
+          71712.34,
+          2792.8599999199446,
+          17013.636961020347
+        ],
+        [
+          71519.26000000001,
+          1943.2899999199444,
+          17013.636961020347
+        ],
+        [
+          71132.27,
+          2052.5099999199447,
+          17013.636961020347
+        ],
+        [
+          70045.94,
+          2355.559999919945,
+          17013.636961020347
+        ],
+        [
+          69667.35,
+          2429.1299999199446,
+          17013.636961020347
+        ],
+        [
+          69416.59,
+          1573.3999999199445,
+          17013.636961020347
+        ],
+        [
+          74349.74,
+          95.55999991994486,
+          17013.636961020347
+        ],
+        [
+          74798.56,
+          -38.84000008005478,
+          17013.636961020347
+        ],
+        [
+          75108.22,
+          910.0799999199444,
+          17013.636961020347
+        ],
+        [
+          74627.88,
+          1003.7199999199447,
+          17013.636961020347
+        ],
+        [
+          74071.76000000001,
+          1160.2399999199447,
+          17013.636961020347
+        ],
+        [
+          75377.36,
+          3808.4099999199443,
+          17013.636961020347
+        ],
+        [
+          75767.04000000001,
+          4597.9999999199445,
+          17013.636961020347
+        ],
+        [
+          76718.22,
+          4235.239999919944,
+          17013.636961020347
+        ],
+        [
+          76644.55,
+          3977.1799999199447,
+          17013.636961020347
+        ],
+        [
+          76948.90000000001,
+          3871.6599999199443,
+          17013.636961020347
+        ],
+        [
+          78061.91470850099,
+          6668.055324884268,
+          17337.332653863872
+        ],
+        [
+          77782.8434254449,
+          6683.970531156511,
+          17257.21735677784
+        ],
+        [
+          76055.35562042386,
+          6958.474021181808,
+          17104.248628644713
+        ],
+        [
+          75287.16,
+          6429.819999919944,
+          17013.636961020347
+        ],
+        [
+          75201.51000000001,
+          6465.909999919944,
+          17013.636961020347
+        ],
+        [
+          74624.24,
+          6671.039999919944,
+          17013.636961020347
+        ],
+        [
+          74070.19,
+          6867.789999919944,
+          17013.636961020347
+        ],
+        [
+          72202.45000000001,
+          7424.789999919944,
+          17013.636961020347
+        ],
+        [
+          71994.77,
+          7482.739999919944,
+          17013.636961020347
+        ],
+        [
+          70463.12000000001,
+          7858.239999919944,
+          17013.636961020347
+        ],
+        [
+          70147.78,
+          7935.9199999199445,
+          17013.636961020347
+        ],
+        [
+          69592.59,
+          6218.939999919945,
+          17013.636961020347
+        ],
+        [
+          69240.25,
+          5160.899999919944,
+          17013.636961020347
+        ],
+        [
+          70293.09,
+          4803.879999919945,
+          17013.636961020347
+        ],
+        [
+          70410.05,
+          5129.189999919945,
+          17013.636961020347
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.25,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 33,
+        "detailed_facade": true,
+        "detail_side_facades": true,
+        "balcony_style": 2,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 10.5,
+        "height_variation_meters": 1.1100000143051147,
+        "composition_seed": 871,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 1.0,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 250,
+        "doors": 2,
+        "window_backings": 250,
+        "masonry_details": 1237,
+        "metal_details": 3864,
+        "shutters": 4162
+      }
+    },
+    "1249067205": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        65821.44083333334,
+        4185.153333333333,
+        16958.69
+      ],
+      "footprint_world_cm": [
+        [
+          67013.26000000001,
+          2523.41,
+          16958.69
+        ],
+        [
+          67099.25,
+          2529.03,
+          16958.69
+        ],
+        [
+          68003.3,
+          5326.68,
+          16958.69
+        ],
+        [
+          67994.82,
+          5407.79,
+          16958.69
+        ],
+        [
+          67909.17000000001,
+          5463.54,
+          16958.69
+        ],
+        [
+          66807.18000000001,
+          5332.82,
+          16958.69
+        ],
+        [
+          63667.920000000006,
+          4962.53,
+          16958.69
+        ],
+        [
+          63255.450000000004,
+          4926.9,
+          16958.69
+        ],
+        [
+          63555.86,
+          2599.73,
+          16958.69
+        ],
+        [
+          63968.380000000005,
+          2668.52,
+          16958.69
+        ],
+        [
+          63745.0,
+          4060.4300000000003,
+          16958.69
+        ],
+        [
+          66837.70000000001,
+          4420.46,
+          16958.69
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 0.8999999761581421,
+        "roof_terrace": false,
+        "front_edge_index": 4,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 2,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 7.5,
+        "height_variation_meters": 0.44999998807907104,
+        "composition_seed": 880,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 1.0,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 5,
+        "doors": 1,
+        "window_backings": 5,
+        "masonry_details": 25,
+        "metal_details": 102,
+        "shutters": 0
+      }
+    },
+    "1249067206": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        69665.376,
+        2568.362,
+        17566.34
+      ],
+      "footprint_world_cm": [
+        [
+          69405.74,
+          2262.94,
+          17566.34
+        ],
+        [
+          69154.47,
+          2376.53,
+          17566.34
+        ],
+        [
+          68945.20000000001,
+          1727.13,
+          17566.34
+        ],
+        [
+          69416.59,
+          1573.4,
+          17566.34
+        ],
+        [
+          69667.35,
+          2429.13,
+          17566.34
+        ],
+        [
+          70045.94,
+          2355.5600000000004,
+          17566.34
+        ],
+        [
+          70238.62000000001,
+          2906.6800000000003,
+          17566.34
+        ],
+        [
+          69927.02,
+          3029.25,
+          17566.34
+        ],
+        [
+          70079.3,
+          3473.38,
+          17566.34
+        ],
+        [
+          69773.53,
+          3549.62,
+          17566.34
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 2.9666666984558105,
+        "roof_rise_meters": 1.149999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 7,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.949999988079071,
+        "facade_section_width_meters": 8.5,
+        "height_variation_meters": 0.6700000166893005,
+        "composition_seed": 881,
+        "window_spacing_meters": 3.200000047683716,
+        "window_width_meters": 1.100000023841858,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 2,
+        "doors": 1,
+        "window_backings": 2,
+        "masonry_details": 13,
+        "metal_details": 37,
+        "shutters": 44
+      }
+    },
+    "1249067208": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        60233.36909090909,
+        3542.5581818181818,
+        17062.96
+      ],
+      "footprint_world_cm": [
+        [
+          59625.270000000004,
+          4657.97,
+          17062.96
+        ],
+        [
+          59281.46000000001,
+          3269.44,
+          17062.96
+        ],
+        [
+          59739.530000000006,
+          3315.4700000000003,
+          17062.96
+        ],
+        [
+          59734.41,
+          2860.48,
+          17062.96
+        ],
+        [
+          60080.08,
+          2809.0,
+          17062.96
+        ],
+        [
+          60486.240000000005,
+          2789.0600000000004,
+          17062.96
+        ],
+        [
+          60509.560000000005,
+          3353.12,
+          17062.96
+        ],
+        [
+          60629.54000000001,
+          3363.51,
+          17062.96
+        ],
+        [
+          60595.36,
+          3883.31,
+          17062.96
+        ],
+        [
+          60979.47,
+          3925.62,
+          17062.96
+        ],
+        [
+          60906.14,
+          4741.16,
+          17062.96
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.25,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 10.5,
+        "height_variation_meters": 1.1100000143051147,
+        "composition_seed": 883,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249067209": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        68350.44000000002,
+        308.19136363636375,
+        17606.68
+      ],
+      "footprint_world_cm": [
+        [
+          67632.71,
+          524.6300000000001,
+          17606.68
+        ],
+        [
+          68195.86,
+          579.5799999999999,
+          17606.68
+        ],
+        [
+          68268.77,
+          11.010000000000218,
+          17606.68
+        ],
+        [
+          67547.88,
+          -45.01999999999998,
+          17606.68
+        ],
+        [
+          67417.01000000001,
+          -56.23999999999978,
+          17606.68
+        ],
+        [
+          66834.48000000001,
+          -123.03999999999951,
+          17606.68
+        ],
+        [
+          66974.04000000001,
+          -1039.3600000000001,
+          17606.68
+        ],
+        [
+          67409.96,
+          -977.7400000000002,
+          17606.68
+        ],
+        [
+          68519.71,
+          -821.1600000000003,
+          17606.68
+        ],
+        [
+          68515.58,
+          -566.2599999999998,
+          17606.68
+        ],
+        [
+          69935.92000000001,
+          -545.5999999999999,
+          17606.68
+        ],
+        [
+          70128.15000000001,
+          199.69000000000005,
+          17606.68
+        ],
+        [
+          69908.16,
+          227.53999999999996,
+          17606.68
+        ],
+        [
+          69949.93000000001,
+          744.6300000000001,
+          17606.68
+        ],
+        [
+          69627.48000000001,
+          787.7400000000002,
+          17606.68
+        ],
+        [
+          69234.54000000001,
+          824.1399999999999,
+          17606.68
+        ],
+        [
+          69260.45000000001,
+          1339.9100000000003,
+          17606.68
+        ],
+        [
+          68569.06,
+          1541.15,
+          17606.68
+        ],
+        [
+          67789.13,
+          1574.9900000000002,
+          17606.68
+        ],
+        [
+          67259.75,
+          1602.23,
+          17606.68
+        ],
+        [
+          67363.55,
+          498.3800000000001,
+          17606.68
+        ],
+        [
+          67367.56,
+          499.0100000000002,
+          17606.68
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 7.5,
+        "height_variation_meters": 0.44999998807907104,
+        "composition_seed": 884,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249067216": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        67684.76285714286,
+        287.3357142857144,
+        17716.78
+      ],
+      "footprint_world_cm": [
+        [
+          67632.71,
+          524.6300000000001,
+          17716.78
+        ],
+        [
+          67367.56,
+          499.0100000000002,
+          17716.78
+        ],
+        [
+          67363.55,
+          498.3800000000001,
+          17716.78
+        ],
+        [
+          67417.01000000001,
+          -56.23999999999978,
+          17716.78
+        ],
+        [
+          67547.88,
+          -45.01999999999998,
+          17716.78
+        ],
+        [
+          68268.77,
+          11.010000000000218,
+          17716.78
+        ],
+        [
+          68195.86,
+          579.5799999999999,
+          17716.78
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.25,
+        "roof_rise_meters": 1.649999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 10.5,
+        "height_variation_meters": 0.0,
+        "composition_seed": 891,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249067217": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        67960.86818181821,
+        3058.0454545454545,
+        17388.68
+      ],
+      "footprint_world_cm": [
+        [
+          68150.82,
+          4023.4500000000003,
+          17388.68
+        ],
+        [
+          67924.1,
+          4091.61,
+          17388.68
+        ],
+        [
+          67883.06,
+          3934.34,
+          17388.68
+        ],
+        [
+          67433.19,
+          2221.33,
+          17388.68
+        ],
+        [
+          67862.38,
+          2080.02,
+          17388.68
+        ],
+        [
+          67977.29000000001,
+          2043.26,
+          17388.68
+        ],
+        [
+          68167.78,
+          2678.25,
+          17388.68
+        ],
+        [
+          67963.56,
+          2752.88,
+          17388.68
+        ],
+        [
+          67924.42000000001,
+          2766.08,
+          17388.68
+        ],
+        [
+          68008.42000000001,
+          3060.6800000000003,
+          17388.68
+        ],
+        [
+          68274.53,
+          3986.6,
+          17388.68
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 0.8999999761581421,
+        "roof_terrace": false,
+        "front_edge_index": 9,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 7.5,
+        "height_variation_meters": 0.44999998807907104,
+        "composition_seed": 892,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 1.0,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 5,
+        "doors": 1,
+        "window_backings": 5,
+        "masonry_details": 26,
+        "metal_details": 68,
+        "shutters": 0
+      }
+    },
+    "1249067223": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        61915.94500000001,
+        3670.0733333333337,
+        17036.36
+      ],
+      "footprint_world_cm": [
+        [
+          61853.79000000001,
+          2435.54,
+          17036.36
+        ],
+        [
+          62375.11,
+          2485.66,
+          17036.36
+        ],
+        [
+          62134.18000000001,
+          4831.0,
+          17036.36
+        ],
+        [
+          61650.44,
+          4790.02,
+          17036.36
+        ],
+        [
+          61720.530000000006,
+          3972.5,
+          17036.36
+        ],
+        [
+          61761.62000000001,
+          3505.7200000000003,
+          17036.36
+        ]
+      ],
+      "properties": {
+        "floor_count": 4,
+        "floor_height_meters": 3.25,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 9.5,
+        "height_variation_meters": 0.0,
+        "composition_seed": 898,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249067225": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        61350.12714285714,
+        647.7042857142858,
+        17447.37
+      ],
+      "footprint_world_cm": [
+        [
+          61687.21000000001,
+          -56.7199999999998,
+          17447.37
+        ],
+        [
+          61711.41,
+          533.0100000000002,
+          17447.37
+        ],
+        [
+          61610.11,
+          1410.4500000000003,
+          17447.37
+        ],
+        [
+          61149.0,
+          1343.9900000000002,
+          17447.37
+        ],
+        [
+          61298.36,
+          703.8499999999999,
+          17447.37
+        ],
+        [
+          61001.19,
+          706.3400000000001,
+          17447.37
+        ],
+        [
+          60993.61,
+          -106.99000000000024,
+          17447.37
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 0.8999999761581421,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 7.5,
+        "height_variation_meters": 0.44999998807907104,
+        "composition_seed": 900,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249067229": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        60013.041666666664,
+        700.3466666666667,
+        17429.47
+      ],
+      "footprint_world_cm": [
+        [
+          60340.26000000001,
+          1427.58,
+          17429.47
+        ],
+        [
+          59716.530000000006,
+          1425.88,
+          17429.47
+        ],
+        [
+          59716.850000000006,
+          981.1300000000001,
+          17429.47
+        ],
+        [
+          59636.560000000005,
+          -202.17999999999984,
+          17429.47
+        ],
+        [
+          60319.18000000001,
+          -87.63000000000011,
+          17429.47
+        ],
+        [
+          60348.87000000001,
+          657.3000000000002,
+          17429.47
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 7.5,
+        "height_variation_meters": 0.44999998807907104,
+        "composition_seed": 904,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249067232": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        61491.5725,
+        3716.6850000000004,
+        17142.54
+      ],
+      "footprint_world_cm": [
+        [
+          61214.94,
+          3936.0,
+          17142.54
+        ],
+        [
+          61269.200000000004,
+          3452.52,
+          17142.54
+        ],
+        [
+          61761.62000000001,
+          3505.7200000000003,
+          17142.54
+        ],
+        [
+          61720.530000000006,
+          3972.5,
+          17142.54
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.25,
+        "roof_rise_meters": 1.649999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 10.5,
+        "height_variation_meters": 0.0,
+        "composition_seed": 907,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249067242": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        63990.11391304348,
+        1393.686086956522,
+        16976.29
+      ],
+      "footprint_world_cm": [
+        [
+          64122.91,
+          1708.2000000000003,
+          16976.29
+        ],
+        [
+          63968.380000000005,
+          2668.52,
+          16976.29
+        ],
+        [
+          63555.86,
+          2599.73,
+          16976.29
+        ],
+        [
+          63255.450000000004,
+          4926.9,
+          16976.29
+        ],
+        [
+          62685.36,
+          4877.9,
+          16976.29
+        ],
+        [
+          62134.18000000001,
+          4831.0,
+          16976.29
+        ],
+        [
+          62375.11,
+          2485.66,
+          16976.29
+        ],
+        [
+          61853.79000000001,
+          2435.54,
+          16976.29
+        ],
+        [
+          61929.40000000001,
+          1733.8899999999999,
+          16976.29
+        ],
+        [
+          62013.130000000005,
+          929.0799999999999,
+          16976.29
+        ],
+        [
+          62680.87000000001,
+          1002.8499999999999,
+          16976.29
+        ],
+        [
+          62734.990000000005,
+          439.53999999999996,
+          16976.29
+        ],
+        [
+          62076.90000000001,
+          338.53999999999996,
+          16976.29
+        ],
+        [
+          62288.22,
+          -1653.52,
+          16976.29
+        ],
+        [
+          64393.990000000005,
+          -1381.1399999999999,
+          16976.29
+        ],
+        [
+          64174.65000000001,
+          83.88000000000011,
+          16976.29
+        ],
+        [
+          65032.87000000001,
+          155.07999999999993,
+          16976.29
+        ],
+        [
+          64979.21000000001,
+          636.02,
+          16976.29
+        ],
+        [
+          66693.12000000001,
+          800.9100000000003,
+          16976.29
+        ],
+        [
+          66834.48000000001,
+          -123.03999999999951,
+          16976.29
+        ],
+        [
+          67417.01000000001,
+          -56.23999999999978,
+          16976.29
+        ],
+        [
+          67363.55,
+          498.3800000000001,
+          16976.29
+        ],
+        [
+          67209.19,
+          2117.1000000000004,
+          16976.29
+        ]
+      ],
+      "properties": {
+        "floor_count": 4,
+        "floor_height_meters": 3.25,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 8.5,
+        "height_variation_meters": 0.0,
+        "composition_seed": 917,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249067262": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        67965.46666666667,
+        2859.8799999999997,
+        17518.87
+      ],
+      "footprint_world_cm": [
+        [
+          67963.56,
+          2752.88,
+          17518.87
+        ],
+        [
+          68008.42000000001,
+          3060.6800000000003,
+          17518.87
+        ],
+        [
+          67924.42000000001,
+          2766.08,
+          17518.87
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 2.9666666984558105,
+        "roof_rise_meters": 1.149999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 8.5,
+        "height_variation_meters": 0.0,
+        "composition_seed": 937,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249067265": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        69779.09857142858,
+        738.3071428571428,
+        17724.67
+      ],
+      "footprint_world_cm": [
+        [
+          70344.98000000001,
+          1044.5,
+          17724.67
+        ],
+        [
+          69260.45000000001,
+          1339.9100000000003,
+          17724.67
+        ],
+        [
+          69234.54000000001,
+          824.1399999999999,
+          17724.67
+        ],
+        [
+          69627.48000000001,
+          787.7400000000002,
+          17724.67
+        ],
+        [
+          69949.93000000001,
+          744.6300000000001,
+          17724.67
+        ],
+        [
+          69908.16,
+          227.53999999999996,
+          17724.67
+        ],
+        [
+          70128.15000000001,
+          199.69000000000005,
+          17724.67
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 0.8999999761581421,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 7.5,
+        "height_variation_meters": 0.44999998807907104,
+        "composition_seed": 940,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249067267": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        62376.4725,
+        677.5024999999999,
+        17509.08
+      ],
+      "footprint_world_cm": [
+        [
+          62076.90000000001,
+          338.53999999999996,
+          17509.08
+        ],
+        [
+          62734.990000000005,
+          439.53999999999996,
+          17509.08
+        ],
+        [
+          62680.87000000001,
+          1002.8499999999999,
+          17509.08
+        ],
+        [
+          62013.130000000005,
+          929.0799999999999,
+          17509.08
+        ]
+      ],
+      "properties": {
+        "floor_count": 4,
+        "floor_height_meters": 3.25,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 9.5,
+        "height_variation_meters": 0.0,
+        "composition_seed": 942,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249067277": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        61325.551538461536,
+        3452.7253846153853,
+        17041.3
+      ],
+      "footprint_world_cm": [
+        [
+          60906.14,
+          4741.16,
+          17041.3
+        ],
+        [
+          60979.47,
+          3925.62,
+          17041.3
+        ],
+        [
+          60595.36,
+          3883.31,
+          17041.3
+        ],
+        [
+          60629.54000000001,
+          3363.51,
+          17041.3
+        ],
+        [
+          61247.62000000001,
+          3412.7400000000002,
+          17041.3
+        ],
+        [
+          61474.12000000001,
+          1732.9,
+          17041.3
+        ],
+        [
+          61929.40000000001,
+          1733.8899999999999,
+          17041.3
+        ],
+        [
+          61853.79000000001,
+          2435.54,
+          17041.3
+        ],
+        [
+          61761.62000000001,
+          3505.7200000000003,
+          17041.3
+        ],
+        [
+          61269.200000000004,
+          3452.52,
+          17041.3
+        ],
+        [
+          61214.94,
+          3936.0,
+          17041.3
+        ],
+        [
+          61720.530000000006,
+          3972.5,
+          17041.3
+        ],
+        [
+          61650.44,
+          4790.02,
+          17041.3
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 0.8999999761581421,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 7.5,
+        "height_variation_meters": 0.44999998807907104,
+        "composition_seed": 952,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249068337": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        71581.36222222223,
+        125.64444444444462,
+        17810.01
+      ],
+      "footprint_world_cm": [
+        [
+          70324.27,
+          -356.50999999999976,
+          17810.01
+        ],
+        [
+          72246.0,
+          -1201.6299999999997,
+          17810.01
+        ],
+        [
+          72926.25,
+          -84.32999999999993,
+          17810.01
+        ],
+        [
+          72468.79000000001,
+          90.67000000000007,
+          17810.01
+        ],
+        [
+          72399.79000000001,
+          -24.34999999999991,
+          17810.01
+        ],
+        [
+          71208.45000000001,
+          375.4100000000003,
+          17810.01
+        ],
+        [
+          71298.87000000001,
+          772.2400000000002,
+          17810.01
+        ],
+        [
+          70711.56,
+          949.3800000000001,
+          17810.01
+        ],
+        [
+          70648.28,
+          609.9200000000001,
+          17810.01
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 10.5,
+        "height_variation_meters": 1.1100000143051147,
+        "composition_seed": 1003,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249068343": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        72229.75166666666,
+        227.20500000000015,
+        17835.85
+      ],
+      "footprint_world_cm": [
+        [
+          73076.36,
+          233.59000000000015,
+          17835.85
+        ],
+        [
+          71298.87000000001,
+          772.2400000000002,
+          17835.85
+        ],
+        [
+          71208.45000000001,
+          375.4100000000003,
+          17835.85
+        ],
+        [
+          72399.79000000001,
+          -24.34999999999991,
+          17835.85
+        ],
+        [
+          72468.79000000001,
+          90.67000000000007,
+          17835.85
+        ],
+        [
+          72926.25,
+          -84.32999999999993,
+          17835.85
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 3.366666555404663,
+        "roof_rise_meters": 0.8999999761581421,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 7.5,
+        "height_variation_meters": 0.44999998807907104,
+        "composition_seed": 0,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249069191": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        70935.02894736842,
+        14590.791052631577,
+        15939.16
+      ],
+      "footprint_world_cm": [
+        [
+          69982.0,
+          15458.98,
+          15939.16
+        ],
+        [
+          69644.90000000001,
+          13675.119999999999,
+          15939.16
+        ],
+        [
+          70138.02,
+          13641.0,
+          15939.16
+        ],
+        [
+          70173.12000000001,
+          13817.58,
+          15939.16
+        ],
+        [
+          70441.65000000001,
+          13773.91,
+          15939.16
+        ],
+        [
+          70493.22,
+          13929.609999999999,
+          15939.16
+        ],
+        [
+          71093.49,
+          13813.19,
+          15939.16
+        ],
+        [
+          71176.75,
+          14030.51,
+          15939.16
+        ],
+        [
+          71446.12000000001,
+          13979.34,
+          15939.16
+        ],
+        [
+          71518.79000000001,
+          14204.38,
+          15939.16
+        ],
+        [
+          71676.13,
+          14169.89,
+          15939.16
+        ],
+        [
+          71702.05,
+          14271.68,
+          15939.16
+        ],
+        [
+          71765.37000000001,
+          14512.85,
+          15939.16
+        ],
+        [
+          71255.21,
+          14662.529999999999,
+          15939.16
+        ],
+        [
+          71388.06,
+          15436.31,
+          15939.16
+        ],
+        [
+          71427.17000000001,
+          15613.52,
+          15939.16
+        ],
+        [
+          71105.41,
+          15740.06,
+          15939.16
+        ],
+        [
+          71098.57,
+          16167.35,
+          15939.16
+        ],
+        [
+          70239.52,
+          16327.22,
+          15939.16
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 3.366666555404663,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 7.5,
+        "height_variation_meters": 0.44999998807907104,
+        "composition_seed": 848,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249069211": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        70265.87125000001,
+        12843.282500000001,
+        16270.02
+      ],
+      "footprint_world_cm": [
+        [
+          69802.25,
+          12589.09,
+          16270.02
+        ],
+        [
+          70826.83,
+          12397.199999999999,
+          16270.02
+        ],
+        [
+          71162.43000000001,
+          12659.25,
+          16270.02
+        ],
+        [
+          71357.57,
+          12911.5,
+          16270.02
+        ],
+        [
+          69979.96,
+          13144.91,
+          16270.02
+        ],
+        [
+          69955.6,
+          13040.43,
+          16270.02
+        ],
+        [
+          69547.42000000001,
+          13165.1,
+          16270.02
+        ],
+        [
+          69494.91,
+          12838.779999999999,
+          16270.02
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 3.366666555404663,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 7.5,
+        "height_variation_meters": 0.44999998807907104,
+        "composition_seed": 868,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 1.0,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 8,
+        "doors": 1,
+        "window_backings": 8,
+        "masonry_details": 43,
+        "metal_details": 136,
+        "shutters": 0
+      }
+    },
+    "1249069239": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        71910.02769230769,
+        14988.256153846152,
+        16047.72
+      ],
+      "footprint_world_cm": [
+        [
+          71928.09,
+          14231.869999999999,
+          16047.72
+        ],
+        [
+          72404.31,
+          14767.8,
+          16047.72
+        ],
+        [
+          72668.28,
+          14870.99,
+          16047.72
+        ],
+        [
+          72403.93000000001,
+          15442.27,
+          16047.72
+        ],
+        [
+          72294.45000000001,
+          15377.5,
+          16047.72
+        ],
+        [
+          71953.09,
+          15549.949999999999,
+          16047.72
+        ],
+        [
+          71853.54000000001,
+          15111.48,
+          16047.72
+        ],
+        [
+          71588.22,
+          15196.44,
+          16047.72
+        ],
+        [
+          71625.76000000001,
+          15415.66,
+          16047.72
+        ],
+        [
+          71388.06,
+          15436.31,
+          16047.72
+        ],
+        [
+          71255.21,
+          14662.529999999999,
+          16047.72
+        ],
+        [
+          71765.37000000001,
+          14512.85,
+          16047.72
+        ],
+        [
+          71702.05,
+          14271.68,
+          16047.72
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 3.366666555404663,
+        "roof_rise_meters": 0.8999999761581421,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 7.5,
+        "height_variation_meters": 0.44999998807907104,
+        "composition_seed": 896,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249069241": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        72510.04000000001,
+        13750.8825,
+        16183.23
+      ],
+      "footprint_world_cm": [
+        [
+          72501.99,
+          14470.72,
+          16183.23
+        ],
+        [
+          71969.11,
+          13922.34,
+          16183.23
+        ],
+        [
+          71771.72,
+          13346.119999999999,
+          16183.23
+        ],
+        [
+          72397.63,
+          13040.39,
+          16183.23
+        ],
+        [
+          72658.98000000001,
+          13250.84,
+          16183.23
+        ],
+        [
+          73165.46,
+          13668.02,
+          16183.23
+        ],
+        [
+          72867.62000000001,
+          14073.529999999999,
+          16183.23
+        ],
+        [
+          72747.81,
+          14235.1,
+          16183.23
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": true,
+        "front_edge_index": 2,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 9.5,
+        "height_variation_meters": 0.8899999856948853,
+        "composition_seed": 898,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 1.0,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 5,
+        "doors": 1,
+        "window_backings": 4,
+        "masonry_details": 23,
+        "metal_details": 34,
+        "shutters": 80
+      }
+    },
+    "1249069267": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        70617.33857142857,
+        13664.03357142857,
+        16190.33
+      ],
+      "footprint_world_cm": [
+        [
+          69644.90000000001,
+          13675.119999999999,
+          16190.33
+        ],
+        [
+          69547.42000000001,
+          13165.1,
+          16190.33
+        ],
+        [
+          69955.6,
+          13040.43,
+          16190.33
+        ],
+        [
+          69979.96,
+          13144.91,
+          16190.33
+        ],
+        [
+          71357.57,
+          12911.5,
+          16190.33
+        ],
+        [
+          71676.13,
+          14169.89,
+          16190.33
+        ],
+        [
+          71518.79000000001,
+          14204.38,
+          16190.33
+        ],
+        [
+          71446.12000000001,
+          13979.34,
+          16190.33
+        ],
+        [
+          71176.75,
+          14030.51,
+          16190.33
+        ],
+        [
+          71093.49,
+          13813.19,
+          16190.33
+        ],
+        [
+          70493.22,
+          13929.609999999999,
+          16190.33
+        ],
+        [
+          70441.65000000001,
+          13773.91,
+          16190.33
+        ],
+        [
+          70173.12000000001,
+          13817.58,
+          16190.33
+        ],
+        [
+          70138.02,
+          13641.0,
+          16190.33
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 3.366666555404663,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": true,
+        "front_edge_index": 1,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.75,
+        "facade_section_width_meters": 7.5,
+        "height_variation_meters": 0.44999998807907104,
+        "composition_seed": 924,
+        "window_spacing_meters": 2.799999952316284,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 3,
+        "doors": 1,
+        "window_backings": 2,
+        "masonry_details": 17,
+        "metal_details": 62,
+        "shutters": 0
+      }
+    },
+    "1249071118": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        67231.71285714288,
+        8079.387142857143,
+        16845.38
+      ],
+      "footprint_world_cm": [
+        [
+          68159.36,
+          8438.41,
+          16845.38
+        ],
+        [
+          67194.69,
+          8605.41,
+          16845.38
+        ],
+        [
+          67011.42000000001,
+          8031.99,
+          16845.38
+        ],
+        [
+          66539.45000000001,
+          8168.610000000001,
+          16845.38
+        ],
+        [
+          66491.02,
+          7948.57,
+          16845.38
+        ],
+        [
+          67280.83,
+          7770.75,
+          16845.38
+        ],
+        [
+          67945.22,
+          7591.97,
+          16845.38
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 2.9666666984558105,
+        "roof_rise_meters": 1.149999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 8.5,
+        "height_variation_meters": 0.6700000166893005,
+        "composition_seed": 757,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 1.0,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 8,
+        "doors": 1,
+        "window_backings": 8,
+        "masonry_details": 41,
+        "metal_details": 136,
+        "shutters": 176
+      }
+    },
+    "1249071121": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        64577.50833333334,
+        7179.526666666666,
+        16800.32
+      ],
+      "footprint_world_cm": [
+        [
+          64335.990000000005,
+          7687.21,
+          16800.32
+        ],
+        [
+          64298.16,
+          7196.5599999999995,
+          16800.32
+        ],
+        [
+          64242.840000000004,
+          6470.1900000000005,
+          16800.32
+        ],
+        [
+          64896.380000000005,
+          6455.17,
+          16800.32
+        ],
+        [
+          65081.12000000001,
+          7616.79,
+          16800.32
+        ],
+        [
+          64610.560000000005,
+          7651.24,
+          16800.32
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 0.8999999761581421,
+        "roof_terrace": false,
+        "front_edge_index": 4,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 7.5,
+        "height_variation_meters": 0.44999998807907104,
+        "composition_seed": 760,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 1.0,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 1,
+        "doors": 1,
+        "window_backings": 1,
+        "masonry_details": 8,
+        "metal_details": 34,
+        "shutters": 0
+      }
+    },
+    "1249071125": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        61456.335263157904,
+        6151.260000000001,
+        16774.93
+      ],
+      "footprint_world_cm": [
+        [
+          60443.14,
+          5273.23,
+          16774.93
+        ],
+        [
+          61074.170000000006,
+          5271.39,
+          16774.93
+        ],
+        [
+          61632.020000000004,
+          5395.92,
+          16774.93
+        ],
+        [
+          61671.62000000001,
+          5957.57,
+          16774.93
+        ],
+        [
+          61767.0,
+          5960.56,
+          16774.93
+        ],
+        [
+          61783.8,
+          5494.9400000000005,
+          16774.93
+        ],
+        [
+          62759.46000000001,
+          5618.67,
+          16774.93
+        ],
+        [
+          62696.58,
+          7135.32,
+          16774.93
+        ],
+        [
+          62563.490000000005,
+          7135.49,
+          16774.93
+        ],
+        [
+          62140.170000000006,
+          7132.1900000000005,
+          16774.93
+        ],
+        [
+          62141.340000000004,
+          6942.84,
+          16774.93
+        ],
+        [
+          61596.91,
+          6908.4400000000005,
+          16774.93
+        ],
+        [
+          61543.39,
+          6437.32,
+          16774.93
+        ],
+        [
+          61443.51000000001,
+          6443.6,
+          16774.93
+        ],
+        [
+          61327.670000000006,
+          6027.21,
+          16774.93
+        ],
+        [
+          60712.25,
+          6186.42,
+          16774.93
+        ],
+        [
+          60674.01000000001,
+          6054.530000000001,
+          16774.93
+        ],
+        [
+          59930.39,
+          6108.77,
+          16774.93
+        ],
+        [
+          59769.450000000004,
+          5389.530000000001,
+          16774.93
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": true,
+        "front_edge_index": 8,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.949999988079071,
+        "facade_section_width_meters": 7.5,
+        "height_variation_meters": 0.44999998807907104,
+        "composition_seed": 764,
+        "window_spacing_meters": 3.200000047683716,
+        "window_width_meters": 1.100000023841858,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 1,
+        "doors": 1,
+        "window_backings": 1,
+        "masonry_details": 8,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249071132": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        64023.34892857144,
+        8203.647857142858,
+        16733.42
+      ],
+      "footprint_world_cm": [
+        [
+          65123.3,
+          9050.23,
+          16733.42
+        ],
+        [
+          64205.240000000005,
+          9109.56,
+          16733.42
+        ],
+        [
+          61747.16,
+          9258.18,
+          16733.42
+        ],
+        [
+          61116.770000000004,
+          9310.29,
+          16733.42
+        ],
+        [
+          60891.030000000006,
+          8813.22,
+          16733.42
+        ],
+        [
+          61513.780000000006,
+          8611.15,
+          16733.42
+        ],
+        [
+          61530.41,
+          8105.02,
+          16733.42
+        ],
+        [
+          61861.0,
+          8050.87,
+          16733.42
+        ],
+        [
+          61893.780000000006,
+          7705.71,
+          16733.42
+        ],
+        [
+          62547.23,
+          7755.82,
+          16733.42
+        ],
+        [
+          63162.86,
+          7801.72,
+          16733.42
+        ],
+        [
+          63173.41,
+          8398.4,
+          16733.42
+        ],
+        [
+          63505.350000000006,
+          8418.99,
+          16733.42
+        ],
+        [
+          63513.16,
+          7709.02,
+          16733.42
+        ],
+        [
+          63922.46000000001,
+          7736.51,
+          16733.42
+        ],
+        [
+          64117.740000000005,
+          7713.57,
+          16733.42
+        ],
+        [
+          64335.990000000005,
+          7687.21,
+          16733.42
+        ],
+        [
+          64610.560000000005,
+          7651.24,
+          16733.42
+        ],
+        [
+          65081.12000000001,
+          7616.79,
+          16733.42
+        ],
+        [
+          65238.69,
+          7597.01,
+          16733.42
+        ],
+        [
+          65343.47,
+          7597.37,
+          16733.42
+        ],
+        [
+          65445.100000000006,
+          8207.51,
+          16733.42
+        ],
+        [
+          66105.09,
+          8084.66,
+          16733.42
+        ],
+        [
+          66491.02,
+          7948.57,
+          16733.42
+        ],
+        [
+          66539.45000000001,
+          8168.610000000001,
+          16733.42
+        ],
+        [
+          67011.42000000001,
+          8031.99,
+          16733.42
+        ],
+        [
+          67194.69,
+          8605.41,
+          16733.42
+        ],
+        [
+          65432.490000000005,
+          8957.51,
+          16733.42
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.25,
+        "roof_rise_meters": 1.649999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.75,
+        "facade_section_width_meters": 10.5,
+        "height_variation_meters": 1.1100000143051147,
+        "composition_seed": 771,
+        "window_spacing_meters": 2.799999952316284,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 5,
+        "doors": 1,
+        "window_backings": 5,
+        "masonry_details": 26,
+        "metal_details": 62,
+        "shutters": 80
+      }
+    },
+    "1249071138": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        60792.36875,
+        6357.22125,
+        16832.6
+      ],
+      "footprint_world_cm": [
+        [
+          60599.420000000006,
+          6749.88,
+          16832.6
+        ],
+        [
+          60108.310000000005,
+          6850.04,
+          16832.6
+        ],
+        [
+          59930.39,
+          6108.77,
+          16832.6
+        ],
+        [
+          60674.01000000001,
+          6054.530000000001,
+          16832.6
+        ],
+        [
+          60712.25,
+          6186.42,
+          16832.6
+        ],
+        [
+          61327.670000000006,
+          6027.21,
+          16832.6
+        ],
+        [
+          61443.51000000001,
+          6443.6,
+          16832.6
+        ],
+        [
+          61543.39,
+          6437.32,
+          16832.6
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 2.9666666984558105,
+        "roof_rise_meters": 1.149999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.75,
+        "facade_section_width_meters": 8.5,
+        "height_variation_meters": 0.6700000166893005,
+        "composition_seed": 777,
+        "window_spacing_meters": 2.799999952316284,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 2,
+        "doors": 1,
+        "window_backings": 2,
+        "masonry_details": 14,
+        "metal_details": 62,
+        "shutters": 52
+      }
+    },
+    "1249071140": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        67639.36413793106,
+        7090.817931034483,
+        16824.92
+      ],
+      "footprint_world_cm": [
+        [
+          68410.62000000001,
+          5774.59,
+          16824.92
+        ],
+        [
+          68642.45000000001,
+          5767.1,
+          16824.92
+        ],
+        [
+          68771.76000000001,
+          6155.68,
+          16824.92
+        ],
+        [
+          69034.04000000001,
+          6687.84,
+          16824.92
+        ],
+        [
+          68576.02,
+          6806.42,
+          16824.92
+        ],
+        [
+          68546.21,
+          6691.700000000001,
+          16824.92
+        ],
+        [
+          68504.1,
+          6527.22,
+          16824.92
+        ],
+        [
+          68126.96,
+          6571.1,
+          16824.92
+        ],
+        [
+          68187.77,
+          6795.4400000000005,
+          16824.92
+        ],
+        [
+          67961.90000000001,
+          6856.110000000001,
+          16824.92
+        ],
+        [
+          68078.54000000001,
+          7231.84,
+          16824.92
+        ],
+        [
+          68591.13,
+          6993.35,
+          16824.92
+        ],
+        [
+          68601.13,
+          6988.17,
+          16824.92
+        ],
+        [
+          69048.38,
+          6876.12,
+          16824.92
+        ],
+        [
+          69450.97,
+          8087.59,
+          16824.92
+        ],
+        [
+          68780.24,
+          8269.78,
+          16824.92
+        ],
+        [
+          68159.36,
+          8438.41,
+          16824.92
+        ],
+        [
+          67945.22,
+          7591.97,
+          16824.92
+        ],
+        [
+          67280.83,
+          7770.75,
+          16824.92
+        ],
+        [
+          67210.87000000001,
+          7281.200000000001,
+          16824.92
+        ],
+        [
+          66366.1,
+          7372.610000000001,
+          16824.92
+        ],
+        [
+          66491.02,
+          7948.57,
+          16824.92
+        ],
+        [
+          66105.09,
+          8084.66,
+          16824.92
+        ],
+        [
+          65445.100000000006,
+          8207.51,
+          16824.92
+        ],
+        [
+          65343.47,
+          7597.37,
+          16824.92
+        ],
+        [
+          65305.8,
+          7278.68,
+          16824.92
+        ],
+        [
+          65460.93000000001,
+          7235.92,
+          16824.92
+        ],
+        [
+          65353.75,
+          5950.97,
+          16824.92
+        ],
+        [
+          67761.8,
+          5795.05,
+          16824.92
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.25,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 15,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 2,
+        "balcony_depth_meters": 0.949999988079071,
+        "facade_section_width_meters": 10.5,
+        "height_variation_meters": 1.1100000143051147,
+        "composition_seed": 779,
+        "window_spacing_meters": 3.200000047683716,
+        "window_width_meters": 1.100000023841858,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 4,
+        "doors": 1,
+        "window_backings": 4,
+        "masonry_details": 23,
+        "metal_details": 68,
+        "shutters": 44
+      }
+    },
+    "1249071149": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        63286.628000000004,
+        7639.072,
+        16760.99
+      ],
+      "footprint_world_cm": [
+        [
+          62563.490000000005,
+          7135.49,
+          16760.99
+        ],
+        [
+          62696.58,
+          7135.32,
+          16760.99
+        ],
+        [
+          63886.270000000004,
+          7066.26,
+          16760.99
+        ],
+        [
+          63895.47,
+          7233.1900000000005,
+          16760.99
+        ],
+        [
+          63922.46000000001,
+          7736.51,
+          16760.99
+        ],
+        [
+          63513.16,
+          7709.02,
+          16760.99
+        ],
+        [
+          63505.350000000006,
+          8418.99,
+          16760.99
+        ],
+        [
+          63173.41,
+          8398.4,
+          16760.99
+        ],
+        [
+          63162.86,
+          7801.72,
+          16760.99
+        ],
+        [
+          62547.23,
+          7755.82,
+          16760.99
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": true,
+        "front_edge_index": 5,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.949999988079071,
+        "facade_section_width_meters": 7.5,
+        "height_variation_meters": 0.44999998807907104,
+        "composition_seed": 788,
+        "window_spacing_meters": 3.200000047683716,
+        "window_width_meters": 1.100000023841858,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 4,
+        "doors": 1,
+        "window_backings": 4,
+        "masonry_details": 23,
+        "metal_details": 37,
+        "shutters": 0
+      }
+    },
+    "1249071153": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        61490.51866666668,
+        7522.535333333333,
+        16749.88
+      ],
+      "footprint_world_cm": [
+        [
+          60553.40000000001,
+          8037.99,
+          16749.88
+        ],
+        [
+          60298.170000000006,
+          7283.66,
+          16749.88
+        ],
+        [
+          60684.26000000001,
+          7168.43,
+          16749.88
+        ],
+        [
+          60599.420000000006,
+          6749.88,
+          16749.88
+        ],
+        [
+          61543.39,
+          6437.32,
+          16749.88
+        ],
+        [
+          61596.91,
+          6908.4400000000005,
+          16749.88
+        ],
+        [
+          62141.340000000004,
+          6942.84,
+          16749.88
+        ],
+        [
+          62140.170000000006,
+          7132.1900000000005,
+          16749.88
+        ],
+        [
+          62563.490000000005,
+          7135.49,
+          16749.88
+        ],
+        [
+          62547.23,
+          7755.82,
+          16749.88
+        ],
+        [
+          61893.780000000006,
+          7705.71,
+          16749.88
+        ],
+        [
+          61861.0,
+          8050.87,
+          16749.88
+        ],
+        [
+          61530.41,
+          8105.02,
+          16749.88
+        ],
+        [
+          61513.780000000006,
+          8611.15,
+          16749.88
+        ],
+        [
+          60891.030000000006,
+          8813.22,
+          16749.88
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 0.8999999761581421,
+        "roof_terrace": false,
+        "front_edge_index": 13,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.75,
+        "facade_section_width_meters": 7.5,
+        "height_variation_meters": 0.44999998807907104,
+        "composition_seed": 792,
+        "window_spacing_meters": 2.799999952316284,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 4,
+        "doors": 1,
+        "window_backings": 4,
+        "masonry_details": 22,
+        "metal_details": 62,
+        "shutters": 0
+      }
+    },
+    "1249082254": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        63787.96714285715,
+        10627.56857142857,
+        16612.61
+      ],
+      "footprint_world_cm": [
+        [
+          62852.25,
+          10060.39,
+          16612.61
+        ],
+        [
+          63309.0,
+          9972.72,
+          16612.61
+        ],
+        [
+          63465.93000000001,
+          10579.53,
+          16612.61
+        ],
+        [
+          64556.71000000001,
+          10365.5,
+          16612.61
+        ],
+        [
+          64753.41,
+          11009.39,
+          16612.61
+        ],
+        [
+          64362.19,
+          11083.62,
+          16612.61
+        ],
+        [
+          63216.280000000006,
+          11321.83,
+          16612.61
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 2.9666666984558105,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": true,
+        "front_edge_index": 0,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.949999988079071,
+        "facade_section_width_meters": 9.5,
+        "height_variation_meters": 0.8899999856948853,
+        "composition_seed": 794,
+        "window_spacing_meters": 3.200000047683716,
+        "window_width_meters": 1.100000023841858,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 2,
+        "doors": 1,
+        "window_backings": 2,
+        "masonry_details": 14,
+        "metal_details": 37,
+        "shutters": 44
+      }
+    },
+    "1249082257": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        64311.68666666667,
+        11823.496666666666,
+        16486.89
+      ],
+      "footprint_world_cm": [
+        [
+          63216.280000000006,
+          11321.83,
+          16486.89
+        ],
+        [
+          64362.19,
+          11083.62,
+          16486.89
+        ],
+        [
+          64538.94,
+          11771.02,
+          16486.89
+        ],
+        [
+          65025.100000000006,
+          11893.95,
+          16486.89
+        ],
+        [
+          65135.350000000006,
+          12239.92,
+          16486.89
+        ],
+        [
+          63592.26000000001,
+          12630.64,
+          16486.89
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 1.149999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.949999988079071,
+        "facade_section_width_meters": 8.5,
+        "height_variation_meters": 0.6700000166893005,
+        "composition_seed": 797,
+        "window_spacing_meters": 3.200000047683716,
+        "window_width_meters": 1.100000023841858,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 5,
+        "doors": 1,
+        "window_backings": 5,
+        "masonry_details": 26,
+        "metal_details": 74,
+        "shutters": 106
+      }
+    },
+    "1249082258": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        67982.95666666667,
+        9821.486666666666,
+        16634.51
+      ],
+      "footprint_world_cm": [
+        [
+          68378.06,
+          8875.1,
+          16634.51
+        ],
+        [
+          68671.65000000001,
+          10163.01,
+          16634.51
+        ],
+        [
+          68387.69,
+          10313.4,
+          16634.51
+        ],
+        [
+          68284.77,
+          10036.35,
+          16634.51
+        ],
+        [
+          67261.22,
+          10314.08,
+          16634.51
+        ],
+        [
+          66914.35,
+          9226.98,
+          16634.51
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 2.9666666984558105,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": true,
+        "front_edge_index": 5,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.75,
+        "facade_section_width_meters": 9.5,
+        "height_variation_meters": 0.8899999856948853,
+        "composition_seed": 798,
+        "window_spacing_meters": 2.799999952316284,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 14,
+        "doors": 2,
+        "window_backings": 13,
+        "masonry_details": 69,
+        "metal_details": 217,
+        "shutters": 228
+      }
+    },
+    "1249082259": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        67104.792,
+        11869.400666666666,
+        16268.34
+      ],
+      "footprint_world_cm": [
+        [
+          66846.01000000001,
+          13474.029999999999,
+          16268.34
+        ],
+        [
+          66592.68000000001,
+          12495.84,
+          16268.34
+        ],
+        [
+          67241.21,
+          12315.73,
+          16268.34
+        ],
+        [
+          67119.35,
+          11701.23,
+          16268.34
+        ],
+        [
+          66041.0,
+          11972.38,
+          16268.34
+        ],
+        [
+          65911.22,
+          11291.49,
+          16268.34
+        ],
+        [
+          66215.18000000001,
+          11242.54,
+          16268.34
+        ],
+        [
+          66193.28,
+          11102.08,
+          16268.34
+        ],
+        [
+          66936.82,
+          10961.87,
+          16268.34
+        ],
+        [
+          67029.65000000001,
+          11197.42,
+          16268.34
+        ],
+        [
+          67187.42000000001,
+          11645.64,
+          16268.34
+        ],
+        [
+          67797.89,
+          11466.28,
+          16268.34
+        ],
+        [
+          68064.12000000001,
+          12136.67,
+          16268.34
+        ],
+        [
+          68501.19,
+          12028.59,
+          16268.34
+        ],
+        [
+          68894.86,
+          13009.22,
+          16268.34
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 3.366666555404663,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 7,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 10.5,
+        "height_variation_meters": 1.1100000143051147,
+        "composition_seed": 799,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 1.0,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 6,
+        "doors": 1,
+        "window_backings": 6,
+        "masonry_details": 31,
+        "metal_details": 68,
+        "shutters": 62
+      }
+    },
+    "1249082261": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        66659.7262962963,
+        10670.044074074074,
+        16478.23
+      ],
+      "footprint_world_cm": [
+        [
+          66914.35,
+          9226.98,
+          16478.23
+        ],
+        [
+          67261.22,
+          10314.08,
+          16478.23
+        ],
+        [
+          68284.77,
+          10036.35,
+          16478.23
+        ],
+        [
+          68387.69,
+          10313.4,
+          16478.23
+        ],
+        [
+          68469.38,
+          10553.06,
+          16478.23
+        ],
+        [
+          68518.8,
+          10694.34,
+          16478.23
+        ],
+        [
+          68656.46,
+          10659.1,
+          16478.23
+        ],
+        [
+          68905.88,
+          11420.44,
+          16478.23
+        ],
+        [
+          68738.21,
+          11549.83,
+          16478.23
+        ],
+        [
+          68591.15000000001,
+          11344.460000000001,
+          16478.23
+        ],
+        [
+          68325.49,
+          11387.710000000001,
+          16478.23
+        ],
+        [
+          68089.47,
+          10887.26,
+          16478.23
+        ],
+        [
+          67029.65000000001,
+          11197.42,
+          16478.23
+        ],
+        [
+          66936.82,
+          10961.87,
+          16478.23
+        ],
+        [
+          66193.28,
+          11102.08,
+          16478.23
+        ],
+        [
+          66215.18000000001,
+          11242.54,
+          16478.23
+        ],
+        [
+          65911.22,
+          11291.49,
+          16478.23
+        ],
+        [
+          65505.75,
+          11375.22,
+          16478.23
+        ],
+        [
+          65388.86,
+          10892.65,
+          16478.23
+        ],
+        [
+          64753.41,
+          11009.39,
+          16478.23
+        ],
+        [
+          64556.71000000001,
+          10365.5,
+          16478.23
+        ],
+        [
+          63465.93000000001,
+          10579.53,
+          16478.23
+        ],
+        [
+          63309.0,
+          9972.72,
+          16478.23
+        ],
+        [
+          64773.530000000006,
+          9691.97,
+          16478.23
+        ],
+        [
+          64930.36,
+          10363.91,
+          16478.23
+        ],
+        [
+          65949.03,
+          10152.02,
+          16478.23
+        ],
+        [
+          65751.01000000001,
+          9505.87,
+          16478.23
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 1.149999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 26,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.75,
+        "facade_section_width_meters": 8.5,
+        "height_variation_meters": 0.6700000166893005,
+        "composition_seed": 801,
+        "window_spacing_meters": 2.799999952316284,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 8,
+        "doors": 1,
+        "window_backings": 8,
+        "masonry_details": 40,
+        "metal_details": 93,
+        "shutters": 124
+      }
+    },
+    "1249082271": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        67540.65285714286,
+        14525.577857142856,
+        15988.98
+      ],
+      "footprint_world_cm": [
+        [
+          69000.6,
+          13384.119999999999,
+          15988.98
+        ],
+        [
+          69568.01000000001,
+          15873.19,
+          15988.98
+        ],
+        [
+          68365.27,
+          16078.1,
+          15988.98
+        ],
+        [
+          68221.23000000001,
+          15051.69,
+          15988.98
+        ],
+        [
+          67839.65000000001,
+          15098.69,
+          15988.98
+        ],
+        [
+          67775.96,
+          14631.539999999999,
+          15988.98
+        ],
+        [
+          65886.0,
+          14947.39,
+          15988.98
+        ],
+        [
+          65820.20000000001,
+          14255.75,
+          15988.98
+        ],
+        [
+          66423.40000000001,
+          14132.76,
+          15988.98
+        ],
+        [
+          66426.16,
+          14256.42,
+          15988.98
+        ],
+        [
+          67485.13,
+          14104.859999999999,
+          15988.98
+        ],
+        [
+          67473.70000000001,
+          13968.98,
+          15988.98
+        ],
+        [
+          67665.03,
+          13939.25,
+          15988.98
+        ],
+        [
+          67618.8,
+          13635.35,
+          15988.98
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 3.366666555404663,
+        "roof_rise_meters": 1.649999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 13,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 2,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 10.5,
+        "height_variation_meters": 1.1100000143051147,
+        "composition_seed": 811,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 1.0,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 12,
+        "doors": 1,
+        "window_backings": 12,
+        "masonry_details": 55,
+        "metal_details": 248,
+        "shutters": 210
+      }
+    },
+    "1249082273": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        66415.03600000001,
+        12897.457999999999,
+        16268.34
+      ],
+      "footprint_world_cm": [
+        [
+          66555.67000000001,
+          12299.89,
+          16268.34
+        ],
+        [
+          66592.68000000001,
+          12495.84,
+          16268.34
+        ],
+        [
+          66846.01000000001,
+          13474.029999999999,
+          16268.34
+        ],
+        [
+          66217.33,
+          13695.41,
+          16268.34
+        ],
+        [
+          65863.49,
+          12522.119999999999,
+          16268.34
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 4,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.75,
+        "facade_section_width_meters": 8.5,
+        "height_variation_meters": 0.6700000166893005,
+        "composition_seed": 813,
+        "window_spacing_meters": 2.799999952316284,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 4,
+        "doors": 1,
+        "window_backings": 4,
+        "masonry_details": 22,
+        "metal_details": 62,
+        "shutters": 88
+      }
+    },
+    "1249082275": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        65350.982500000006,
+        9928.4425,
+        16665.78
+      ],
+      "footprint_world_cm": [
+        [
+          65751.01000000001,
+          9505.87,
+          16665.78
+        ],
+        [
+          65949.03,
+          10152.02,
+          16665.78
+        ],
+        [
+          64930.36,
+          10363.91,
+          16665.78
+        ],
+        [
+          64773.530000000006,
+          9691.97,
+          16665.78
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 3.366666555404663,
+        "roof_rise_meters": 1.649999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 3,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.949999988079071,
+        "facade_section_width_meters": 10.5,
+        "height_variation_meters": 1.1100000143051147,
+        "composition_seed": 815,
+        "window_spacing_meters": 3.200000047683716,
+        "window_width_meters": 1.100000023841858,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 8,
+        "doors": 1,
+        "window_backings": 8,
+        "masonry_details": 40,
+        "metal_details": 148,
+        "shutters": 124
+      }
+    },
+    "1249082283": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        67073.13285714286,
+        14001.077142857142,
+        16162.22
+      ],
+      "footprint_world_cm": [
+        [
+          67485.13,
+          14104.859999999999,
+          16162.22
+        ],
+        [
+          66426.16,
+          14256.42,
+          16162.22
+        ],
+        [
+          66423.40000000001,
+          14132.76,
+          16162.22
+        ],
+        [
+          66419.71,
+          13969.92,
+          16162.22
+        ],
+        [
+          67618.8,
+          13635.35,
+          16162.22
+        ],
+        [
+          67665.03,
+          13939.25,
+          16162.22
+        ],
+        [
+          67473.70000000001,
+          13968.98,
+          16162.22
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 3.366666555404663,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 3,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 10.5,
+        "height_variation_meters": 0.0,
+        "composition_seed": 823,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 1.0,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 12,
+        "doors": 1,
+        "window_backings": 12,
+        "masonry_details": 58,
+        "metal_details": 170,
+        "shutters": 194
+      }
+    },
+    "1249082286": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        64954.0925,
+        13448.0475,
+        16297.31
+      ],
+      "footprint_world_cm": [
+        [
+          65863.49,
+          12522.119999999999,
+          16297.31
+        ],
+        [
+          66217.33,
+          13695.41,
+          16297.31
+        ],
+        [
+          64030.36,
+          14317.14,
+          16297.31
+        ],
+        [
+          63705.19,
+          13257.52,
+          16297.31
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 2.9666666984558105,
+        "roof_rise_meters": 1.399999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 3,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 9.5,
+        "height_variation_meters": 0.8899999856948853,
+        "composition_seed": 826,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 1.0,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 19,
+        "doors": 2,
+        "window_backings": 19,
+        "masonry_details": 91,
+        "metal_details": 306,
+        "shutters": 282
+      }
+    },
+    "1249082289": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        71984.965,
+        8627.875,
+        16820.77
+      ],
+      "footprint_world_cm": [
+        [
+          72287.84,
+          8333.4,
+          16820.77
+        ],
+        [
+          72333.07,
+          8867.17,
+          16820.77
+        ],
+        [
+          71682.57,
+          8922.28,
+          16820.77
+        ],
+        [
+          71636.38,
+          8388.65,
+          16820.77
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 3,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 8.5,
+        "height_variation_meters": 0.0,
+        "composition_seed": 829,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 1.0,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 4,
+        "doors": 1,
+        "window_backings": 4,
+        "masonry_details": 21,
+        "metal_details": 34,
+        "shutters": 80
+      }
+    },
+    "1249082983": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        60809.813636363644,
+        11237.408181818184,
+        16580.34
+      ],
+      "footprint_world_cm": [
+        [
+          59817.65000000001,
+          10885.75,
+          16580.34
+        ],
+        [
+          60350.68000000001,
+          10574.19,
+          16580.34
+        ],
+        [
+          60836.23,
+          10456.43,
+          16580.34
+        ],
+        [
+          60914.12000000001,
+          10637.7,
+          16580.34
+        ],
+        [
+          60455.030000000006,
+          10749.06,
+          16580.34
+        ],
+        [
+          60725.170000000006,
+          11353.76,
+          16580.34
+        ],
+        [
+          62342.020000000004,
+          11004.88,
+          16580.34
+        ],
+        [
+          62586.700000000004,
+          11556.86,
+          16580.34
+        ],
+        [
+          60477.69,
+          12596.94,
+          16580.34
+        ],
+        [
+          60171.79000000001,
+          11916.49,
+          16580.34
+        ],
+        [
+          60230.87000000001,
+          11879.43,
+          16580.34
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 3.366666555404663,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": true,
+        "front_edge_index": 1,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 9.5,
+        "height_variation_meters": 0.8899999856948853,
+        "composition_seed": 514,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 1.0,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 2,
+        "doors": 1,
+        "window_backings": 2,
+        "masonry_details": 16,
+        "metal_details": 34,
+        "shutters": 44
+      }
+    },
+    "1249083019": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        60848.84300000001,
+        13515.817000000001,
+        16545.07
+      ],
+      "footprint_world_cm": [
+        [
+          62699.880000000005,
+          12027.7,
+          16545.07
+        ],
+        [
+          62871.8,
+          12551.199999999999,
+          16545.07
+        ],
+        [
+          61363.16,
+          13258.65,
+          16545.07
+        ],
+        [
+          61610.740000000005,
+          13882.67,
+          16545.07
+        ],
+        [
+          61014.41,
+          14137.32,
+          16545.07
+        ],
+        [
+          60742.090000000004,
+          13577.17,
+          16545.07
+        ],
+        [
+          60064.3,
+          13889.39,
+          16545.07
+        ],
+        [
+          59489.01000000001,
+          14088.08,
+          16545.07
+        ],
+        [
+          59422.280000000006,
+          14086.96,
+          16545.07
+        ],
+        [
+          59210.76000000001,
+          13659.029999999999,
+          16545.07
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 3.366666555404663,
+        "roof_rise_meters": 1.399999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 9.5,
+        "height_variation_meters": 0.8899999856948853,
+        "composition_seed": 550,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 1.0,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 2,
+        "doors": 1,
+        "window_backings": 2,
+        "masonry_details": 13,
+        "metal_details": 34,
+        "shutters": 44
+      }
+    },
+    "1249083051": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        61261.80666666667,
+        14622.833333333334,
+        16482.52
+      ],
+      "footprint_world_cm": [
+        [
+          60809.79000000001,
+          15602.6,
+          16482.52
+        ],
+        [
+          60379.72,
+          14423.47,
+          16482.52
+        ],
+        [
+          60830.69,
+          14152.39,
+          16482.52
+        ],
+        [
+          60868.560000000005,
+          14301.539999999999,
+          16482.52
+        ],
+        [
+          61085.89,
+          14216.35,
+          16482.52
+        ],
+        [
+          61352.23,
+          14762.65,
+          16482.52
+        ],
+        [
+          61904.87000000001,
+          14497.31,
+          16482.52
+        ],
+        [
+          61927.94,
+          14560.21,
+          16482.52
+        ],
+        [
+          62196.57000000001,
+          15088.98,
+          16482.52
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 3.366666555404663,
+        "roof_rise_meters": 1.399999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 1,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.75,
+        "facade_section_width_meters": 9.5,
+        "height_variation_meters": 0.8899999856948853,
+        "composition_seed": 582,
+        "window_spacing_meters": 2.799999952316284,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 2,
+        "doors": 1,
+        "window_backings": 2,
+        "masonry_details": 15,
+        "metal_details": 62,
+        "shutters": 52
+      }
+    },
+    "1249083059": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        61204.551666666666,
+        10731.213333333333,
+        16635.76
+      ],
+      "footprint_world_cm": [
+        [
+          60836.23,
+          10456.43,
+          16635.76
+        ],
+        [
+          61954.740000000005,
+          10185.45,
+          16635.76
+        ],
+        [
+          62342.020000000004,
+          11004.88,
+          16635.76
+        ],
+        [
+          60725.170000000006,
+          11353.76,
+          16635.76
+        ],
+        [
+          60455.030000000006,
+          10749.06,
+          16635.76
+        ],
+        [
+          60914.12000000001,
+          10637.7,
+          16635.76
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 3.366666555404663,
+        "roof_rise_meters": 1.399999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.949999988079071,
+        "facade_section_width_meters": 9.5,
+        "height_variation_meters": 0.8899999856948853,
+        "composition_seed": 590,
+        "window_spacing_meters": 3.200000047683716,
+        "window_width_meters": 1.100000023841858,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 8,
+        "doors": 1,
+        "window_backings": 8,
+        "masonry_details": 41,
+        "metal_details": 148,
+        "shutters": 114
+      }
+    },
+    "1249083070": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        62485.29666666667,
+        13965.569166666666,
+        16435.05
+      ],
+      "footprint_world_cm": [
+        [
+          61363.16,
+          13258.65,
+          16435.05
+        ],
+        [
+          62871.8,
+          12551.199999999999,
+          16435.05
+        ],
+        [
+          63080.240000000005,
+          13188.43,
+          16435.05
+        ],
+        [
+          63532.950000000004,
+          14453.869999999999,
+          16435.05
+        ],
+        [
+          62896.19,
+          14680.14,
+          16435.05
+        ],
+        [
+          62865.23,
+          14603.67,
+          16435.05
+        ],
+        [
+          62710.44,
+          14668.49,
+          16435.05
+        ],
+        [
+          62495.62000000001,
+          14264.39,
+          16435.05
+        ],
+        [
+          62418.39,
+          14074.42,
+          16435.05
+        ],
+        [
+          62089.380000000005,
+          14198.35,
+          16435.05
+        ],
+        [
+          61889.420000000006,
+          13762.55,
+          16435.05
+        ],
+        [
+          61610.740000000005,
+          13882.67,
+          16435.05
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 2.9666666984558105,
+        "roof_rise_meters": 1.149999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 8.5,
+        "height_variation_meters": 0.6700000166893005,
+        "composition_seed": 601,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 1.0,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 13,
+        "doors": 2,
+        "window_backings": 13,
+        "masonry_details": 64,
+        "metal_details": 204,
+        "shutters": 238
+      }
+    },
+    "1249083089": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        62423.742000000006,
+        14693.985999999999,
+        16464.58
+      ],
+      "footprint_world_cm": [
+        [
+          62196.57000000001,
+          15088.98,
+          16464.58
+        ],
+        [
+          61927.94,
+          14560.21,
+          16464.58
+        ],
+        [
+          62495.62000000001,
+          14264.39,
+          16464.58
+        ],
+        [
+          62710.44,
+          14668.49,
+          16464.58
+        ],
+        [
+          62788.14,
+          14887.859999999999,
+          16464.58
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 0.8999999761581421,
+        "roof_terrace": false,
+        "front_edge_index": 1,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.949999988079071,
+        "facade_section_width_meters": 7.5,
+        "height_variation_meters": 0.0,
+        "composition_seed": 620,
+        "window_spacing_meters": 3.200000047683716,
+        "window_width_meters": 1.100000023841858,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 4,
+        "doors": 1,
+        "window_backings": 4,
+        "masonry_details": 20,
+        "metal_details": 37,
+        "shutters": 0
+      }
+    },
+    "1249832594": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        64113.964,
+        7513.408,
+        16786.23
+      ],
+      "footprint_world_cm": [
+        [
+          63895.47,
+          7233.1900000000005,
+          16786.23
+        ],
+        [
+          64298.16,
+          7196.5599999999995,
+          16786.23
+        ],
+        [
+          64335.990000000005,
+          7687.21,
+          16786.23
+        ],
+        [
+          64117.740000000005,
+          7713.57,
+          16786.23
+        ],
+        [
+          63922.46000000001,
+          7736.51,
+          16786.23
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 2.9666666984558105,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 1,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.75,
+        "facade_section_width_meters": 9.5,
+        "height_variation_meters": 0.0,
+        "composition_seed": 438,
+        "window_spacing_meters": 2.799999952316284,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 2,
+        "doors": 1,
+        "window_backings": 2,
+        "masonry_details": 15,
+        "metal_details": 62,
+        "shutters": 52
+      }
+    },
+    "372573548": {
+      "district": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "location_cm": [
+        68936.17181818186,
+        3827.0404545454544,
+        17327.83
+      ],
+      "footprint_world_cm": [
+        [
+          68008.42000000001,
+          3060.6800000000003,
+          17327.83
+        ],
+        [
+          67963.56,
+          2752.88,
+          17327.83
+        ],
+        [
+          68167.78,
+          2678.25,
+          17327.83
+        ],
+        [
+          67977.29000000001,
+          2043.26,
+          17327.83
+        ],
+        [
+          68945.20000000001,
+          1727.13,
+          17327.83
+        ],
+        [
+          69154.47,
+          2376.53,
+          17327.83
+        ],
+        [
+          69405.74,
+          2262.94,
+          17327.83
+        ],
+        [
+          69773.53,
+          3549.62,
+          17327.83
+        ],
+        [
+          70079.3,
+          3473.38,
+          17327.83
+        ],
+        [
+          70146.39,
+          3457.25,
+          17327.83
+        ],
+        [
+          70486.31,
+          4438.51,
+          17327.83
+        ],
+        [
+          70187.25,
+          4513.76,
+          17327.83
+        ],
+        [
+          70293.09,
+          4803.88,
+          17327.83
+        ],
+        [
+          69240.25,
+          5160.9,
+          17327.83
+        ],
+        [
+          68901.69,
+          5227.29,
+          17327.83
+        ],
+        [
+          68534.77,
+          5300.360000000001,
+          17327.83
+        ],
+        [
+          68508.8,
+          5165.41,
+          17327.83
+        ],
+        [
+          68311.11,
+          5106.4,
+          17327.83
+        ],
+        [
+          68161.38,
+          4994.8,
+          17327.83
+        ],
+        [
+          67924.1,
+          4091.61,
+          17327.83
+        ],
+        [
+          68150.82,
+          4023.4500000000003,
+          17327.83
+        ],
+        [
+          68274.53,
+          3986.6,
+          17327.83
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.25,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": true,
+        "front_edge_index": 14,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 2,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 9.5,
+        "height_variation_meters": 0.8899999856948853,
+        "composition_seed": 298,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 1.0,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 2,
+        "doors": 1,
+        "window_backings": 1,
+        "masonry_details": 11,
+        "metal_details": 45,
+        "shutters": 26
+      }
+    },
+    "1249054419": {
+      "district": "Q003",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_05_00",
+      "location_cm": [
+        87764.91,
+        665.6853846153847,
+        16870.01
+      ],
+      "footprint_world_cm": [
+        [
+          87195.38,
+          274.6199999999999,
+          16870.01
+        ],
+        [
+          87351.39,
+          -511.4699999999998,
+          16870.01
+        ],
+        [
+          88100.3,
+          153.3699999999999,
+          16870.01
+        ],
+        [
+          88267.75,
+          9.2800000000002,
+          16870.01
+        ],
+        [
+          88578.13,
+          305.78999999999996,
+          16870.01
+        ],
+        [
+          88363.41,
+          585.9100000000003,
+          16870.01
+        ],
+        [
+          88033.35,
+          1037.9900000000002,
+          16870.01
+        ],
+        [
+          88099.11,
+          1170.7000000000003,
+          16870.01
+        ],
+        [
+          87814.17,
+          1380.2000000000003,
+          16870.01
+        ],
+        [
+          87612.92,
+          1126.4,
+          16870.01
+        ],
+        [
+          87443.83,
+          1206.8600000000001,
+          16870.01
+        ],
+        [
+          87342.35,
+          1294.4500000000003,
+          16870.01
+        ],
+        [
+          86741.74,
+          619.81,
+          16870.01
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 3.366666555404663,
+        "roof_rise_meters": 1.399999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 7,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 9.5,
+        "height_variation_meters": 0.8899999856948853,
+        "composition_seed": 202,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 1.0,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 2,
+        "doors": 1,
+        "window_backings": 2,
+        "masonry_details": 13,
+        "metal_details": 34,
+        "shutters": 44
+      }
+    },
+    "1249054423": {
+      "district": "Q003",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_05_00",
+      "location_cm": [
+        88183.67,
+        1724.95125,
+        16879.02
+      ],
+      "footprint_world_cm": [
+        [
+          90079.43000000001,
+          2270.07,
+          16879.02
+        ],
+        [
+          87225.68000000001,
+          3961.56,
+          16879.02
+        ],
+        [
+          85864.40000000001,
+          1504.7200000000003,
+          16879.02
+        ],
+        [
+          86741.74,
+          619.81,
+          16879.02
+        ],
+        [
+          87342.35,
+          1294.4500000000003,
+          16879.02
+        ],
+        [
+          87443.83,
+          1206.8600000000001,
+          16879.02
+        ],
+        [
+          87589.5,
+          1547.5500000000002,
+          16879.02
+        ],
+        [
+          87532.06,
+          1667.9,
+          16879.02
+        ],
+        [
+          87761.12000000001,
+          1950.7200000000003,
+          16879.02
+        ],
+        [
+          88422.79000000001,
+          1438.2000000000003,
+          16879.02
+        ],
+        [
+          88560.96,
+          1577.3200000000002,
+          16879.02
+        ],
+        [
+          88915.93000000001,
+          1233.3200000000002,
+          16879.02
+        ],
+        [
+          89436.67,
+          1489.9100000000003,
+          16879.02
+        ],
+        [
+          89129.28,
+          1837.88,
+          16879.02
+        ],
+        [
+          89296.17,
+          2123.82,
+          16879.02
+        ],
+        [
+          89596.81,
+          1875.13,
+          16879.02
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 3.366666555404663,
+        "roof_rise_meters": 1.399999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 15,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 2,
+        "balcony_depth_meters": 0.949999988079071,
+        "facade_section_width_meters": 9.5,
+        "height_variation_meters": 0.8899999856948853,
+        "composition_seed": 206,
+        "window_spacing_meters": 3.200000047683716,
+        "window_width_meters": 1.100000023841858,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 2,
+        "doors": 1,
+        "window_backings": 2,
+        "masonry_details": 14,
+        "metal_details": 132,
+        "shutters": 52
+      }
+    },
+    "1249068301": {
+      "district": "Q003",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_05_00",
+      "location_cm": [
+        85433.40333333334,
+        14306.761666666665,
+        16534.16
+      ],
+      "footprint_world_cm": [
+        [
+          85087.23000000001,
+          15602.51,
+          16534.16
+        ],
+        [
+          84496.75,
+          13819.539999999999,
+          16534.16
+        ],
+        [
+          85199.22,
+          13600.68,
+          16534.16
+        ],
+        [
+          85304.09000000001,
+          13930.26,
+          16534.16
+        ],
+        [
+          86023.97,
+          13710.039999999999,
+          16534.16
+        ],
+        [
+          86489.16,
+          15177.539999999999,
+          16534.16
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 1.649999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 10.5,
+        "height_variation_meters": 1.1100000143051147,
+        "composition_seed": 967,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249068302": {
+      "district": "Q003",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_05_00",
+      "location_cm": [
+        89507.595,
+        8241.2725,
+        16551.53
+      ],
+      "footprint_world_cm": [
+        [
+          89672.56,
+          7838.96,
+          16551.53
+        ],
+        [
+          89892.33,
+          8414.31,
+          16551.53
+        ],
+        [
+          89137.23000000001,
+          8693.83,
+          16551.53
+        ],
+        [
+          89328.26000000001,
+          8017.99,
+          16551.53
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 2.9666666984558105,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 3,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.949999988079071,
+        "facade_section_width_meters": 7.5,
+        "height_variation_meters": 0.0,
+        "composition_seed": 968,
+        "window_spacing_meters": 3.200000047683716,
+        "window_width_meters": 1.100000023841858,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 2,
+        "doors": 1,
+        "window_backings": 2,
+        "masonry_details": 14,
+        "metal_details": 37,
+        "shutters": 0
+      }
+    },
+    "1249068303": {
+      "district": "Q003",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_05_00",
+      "location_cm": [
+        89857.8675,
+        10177.645,
+        16503.55
+      ],
+      "footprint_world_cm": [
+        [
+          89120.24,
+          10117.66,
+          16503.55
+        ],
+        [
+          90371.20000000001,
+          9664.8,
+          16503.55
+        ],
+        [
+          90598.03,
+          10261.210000000001,
+          16503.55
+        ],
+        [
+          89342.0,
+          10666.91,
+          16503.55
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 3.366666555404663,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 8.5,
+        "height_variation_meters": 0.6700000166893005,
+        "composition_seed": 969,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249068304": {
+      "district": "Q003",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_05_00",
+      "location_cm": [
+        89482.928,
+        9289.242000000002,
+        16517.13
+      ],
+      "footprint_world_cm": [
+        [
+          89892.33,
+          8414.31,
+          16517.13
+        ],
+        [
+          90371.20000000001,
+          9664.8,
+          16517.13
+        ],
+        [
+          89120.24,
+          10117.66,
+          16517.13
+        ],
+        [
+          88893.64,
+          9555.61,
+          16517.13
+        ],
+        [
+          89137.23000000001,
+          8693.83,
+          16517.13
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.25,
+        "roof_rise_meters": 1.399999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 4,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 9.5,
+        "height_variation_meters": 0.8899999856948853,
+        "composition_seed": 970,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 1.0,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 4,
+        "doors": 1,
+        "window_backings": 4,
+        "masonry_details": 20,
+        "metal_details": 34,
+        "shutters": 80
+      }
+    },
+    "1249068305": {
+      "district": "Q003",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_05_00",
+      "location_cm": [
+        87922.0225,
+        10732.5,
+        16549.55
+      ],
+      "footprint_world_cm": [
+        [
+          87770.75,
+          11532.32,
+          16549.55
+        ],
+        [
+          87379.24,
+          10152.12,
+          16549.55
+        ],
+        [
+          88054.84000000001,
+          9923.76,
+          16549.55
+        ],
+        [
+          88483.26000000001,
+          11321.8,
+          16549.55
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 1.649999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 1,
+        "detailed_facade": true,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.949999988079071,
+        "facade_section_width_meters": 10.5,
+        "height_variation_meters": 1.1100000143051147,
+        "composition_seed": 971,
+        "window_spacing_meters": 3.200000047683716,
+        "window_width_meters": 1.100000023841858,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 4,
+        "doors": 1,
+        "window_backings": 4,
+        "masonry_details": 20,
+        "metal_details": 37,
+        "shutters": 36
+      }
+    },
+    "1249068306": {
+      "district": "Q003",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_05_00",
+      "location_cm": [
+        86500.41833333335,
+        13072.161666666665,
+        16452.61
+      ],
+      "footprint_world_cm": [
+        [
+          88579.88,
+          11635.4,
+          16452.61
+        ],
+        [
+          88944.57,
+          12776.359999999999,
+          16452.61
+        ],
+        [
+          86023.97,
+          13710.039999999999,
+          16452.61
+        ],
+        [
+          85304.09000000001,
+          13930.26,
+          16452.61
+        ],
+        [
+          85199.22,
+          13600.68,
+          16452.61
+        ],
+        [
+          84950.78,
+          12780.23,
+          16452.61
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 2.9666666984558105,
+        "roof_rise_meters": 0.8999999761581421,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 7.5,
+        "height_variation_meters": 0.44999998807907104,
+        "composition_seed": 972,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249068312": {
+      "district": "Q003",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_05_00",
+      "location_cm": [
+        80217.77714285713,
+        630.887142857143,
+        17015.6
+      ],
+      "footprint_world_cm": [
+        [
+          80101.36,
+          544.8600000000001,
+          17015.6
+        ],
+        [
+          80186.31,
+          1496.5300000000002,
+          17015.6
+        ],
+        [
+          79724.11,
+          1593.62,
+          17015.6
+        ],
+        [
+          79805.42,
+          575.4200000000001,
+          17015.6
+        ],
+        [
+          79790.34000000001,
+          -64.80999999999995,
+          17015.6
+        ],
+        [
+          80949.59000000001,
+          -187.07999999999947,
+          17015.6
+        ],
+        [
+          80967.31,
+          457.6700000000001,
+          17015.6
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.25,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 9.5,
+        "height_variation_meters": 0.8899999856948853,
+        "composition_seed": 978,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249068315": {
+      "district": "Q003",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_05_00",
+      "location_cm": [
+        78926.807,
+        34.67400000000016,
+        17144.43
+      ],
+      "footprint_world_cm": [
+        [
+          79162.89,
+          -170.37999999999965,
+          17144.43
+        ],
+        [
+          79354.89,
+          1703.88,
+          17144.43
+        ],
+        [
+          78953.69,
+          1743.9700000000003,
+          17144.43
+        ],
+        [
+          78377.8,
+          1813.7600000000002,
+          17144.43
+        ],
+        [
+          78217.22,
+          196.49000000000024,
+          17144.43
+        ],
+        [
+          78082.3,
+          -1162.9599999999996,
+          17144.43
+        ],
+        [
+          78611.08,
+          -1187.65,
+          17144.43
+        ],
+        [
+          79266.12000000001,
+          -1218.8600000000001,
+          17144.43
+        ],
+        [
+          79668.45000000001,
+          -1238.2400000000002,
+          17144.43
+        ],
+        [
+          79573.63,
+          -133.26999999999998,
+          17144.43
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 3.366666555404663,
+        "roof_rise_meters": 1.149999976158142,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 8.5,
+        "height_variation_meters": 0.6700000166893005,
+        "composition_seed": 981,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249068327": {
+      "district": "Q003",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_05_00",
+      "location_cm": [
+        80561.815,
+        956.9150000000001,
+        17032.46
+      ],
+      "footprint_world_cm": [
+        [
+          80186.31,
+          1496.5300000000002,
+          17032.46
+        ],
+        [
+          80101.36,
+          544.8600000000001,
+          17032.46
+        ],
+        [
+          80967.31,
+          457.6700000000001,
+          17032.46
+        ],
+        [
+          80992.28,
+          1328.6,
+          17032.46
+        ]
+      ],
+      "properties": {
+        "floor_count": 3,
+        "floor_height_meters": 3.366666555404663,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 8.5,
+        "height_variation_meters": 0.6700000166893005,
+        "composition_seed": 993,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "1249069252": {
+      "district": "Q003",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_05_00",
+      "location_cm": [
+        81527.01333333334,
+        14997.213333333333,
+        16876.68
+      ],
+      "footprint_world_cm": [
+        [
+          80881.68000000001,
+          15295.19,
+          16876.68
+        ],
+        [
+          80906.0,
+          14728.94,
+          16876.68
+        ],
+        [
+          81534.93000000001,
+          14745.84,
+          16876.68
+        ],
+        [
+          81557.18000000001,
+          15020.16,
+          16876.68
+        ],
+        [
+          82135.58,
+          14967.19,
+          16876.68
+        ],
+        [
+          82146.71,
+          15225.96,
+          16876.68
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.25,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 0,
+        "detailed_facade": false,
+        "detail_side_facades": false,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.8500000238418579,
+        "facade_section_width_meters": 8.5,
+        "height_variation_meters": 0.0,
+        "composition_seed": 909,
+        "window_spacing_meters": 3.0,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Volume provvisorio",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 0,
+        "doors": 0,
+        "window_backings": 0,
+        "masonry_details": 0,
+        "metal_details": 0,
+        "shutters": 0
+      }
+    },
+    "372573577": {
+      "district": "Q003",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_05_00",
+      "location_cm": [
+        86046.10285714285,
+        8655.587142857143,
+        16609.31
+      ],
+      "footprint_world_cm": [
+        [
+          85863.55,
+          6316.63,
+          16609.31
+        ],
+        [
+          87142.96,
+          5943.06,
+          16609.31
+        ],
+        [
+          88096.24,
+          8788.66,
+          16609.31
+        ],
+        [
+          88405.78,
+          9749.88,
+          16609.31
+        ],
+        [
+          88037.1,
+          9863.75,
+          16609.31
+        ],
+        [
+          88054.84000000001,
+          9923.76,
+          16609.31
+        ],
+        [
+          87379.24,
+          10152.12,
+          16609.31
+        ],
+        [
+          83749.23000000001,
+          11330.26,
+          16609.31
+        ],
+        [
+          83366.96,
+          10150.15,
+          16609.31
+        ],
+        [
+          86910.32,
+          8994.75,
+          16609.31
+        ],
+        [
+          86399.8,
+          7472.58,
+          16609.31
+        ],
+        [
+          82852.91,
+          8617.45,
+          16609.31
+        ],
+        [
+          82519.11,
+          7466.98,
+          16609.31
+        ],
+        [
+          85867.40000000001,
+          6408.1900000000005,
+          16609.31
+        ]
+      ],
+      "properties": {
+        "floor_count": 2,
+        "floor_height_meters": 3.8499999046325684,
+        "roof_rise_meters": 0.0,
+        "roof_terrace": false,
+        "front_edge_index": 12,
+        "detailed_facade": true,
+        "detail_side_facades": true,
+        "balcony_style": 1,
+        "balcony_depth_meters": 0.75,
+        "facade_section_width_meters": 10.5,
+        "height_variation_meters": 1.1100000143051147,
+        "composition_seed": 327,
+        "window_spacing_meters": 2.799999952316284,
+        "window_width_meters": 0.8999999761581421,
+        "window_height_meters": 1.399999976158142,
+        "reconstruction_status": "Prospetto articolato: balconi e coperture indicativi, epoca da verificare",
+        "geometry_error": ""
+      },
+      "existing_instance_counts": {
+        "windows": 168,
+        "doors": 3,
+        "window_backings": 168,
+        "masonry_details": 810,
+        "metal_details": 1860,
+        "shutters": 2620
+      }
+    }
+  },
+  "errors": [],
+  "count": 67
+}

@@ -1,0 +1,257 @@
+{
+  "world": "Mazzarino80_PCG_Quartieri_Preview",
+  "houses": {
+    "1249068307": {
+      "expected": 880,
+      "actual": 381,
+      "instanced_components": 9,
+      "generated": true,
+      "generating": null,
+      "partitioned": false,
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249068307.PCG_Building_1249068307",
+      "location": [
+        81754.82,
+        10385.45,
+        17669.925017550955
+      ]
+    },
+    "1249069200": {
+      "expected": 2469,
+      "actual": 204,
+      "instanced_components": 8,
+      "generated": true,
+      "generating": null,
+      "partitioned": false,
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069200.PCG_Building_1249069200",
+      "location": [
+        73390.86,
+        10233.455,
+        17165.043849912112
+      ]
+    },
+    "1249069202": {
+      "expected": 4862,
+      "actual": 0,
+      "instanced_components": 0,
+      "generated": false,
+      "generating": null,
+      "partitioned": false,
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069202.PCG_Building_1249069202",
+      "location": [
+        82812.90000000001,
+        13039.49,
+        17401.512132058313
+      ]
+    },
+    "1249069204": {
+      "expected": 3466,
+      "actual": 83,
+      "instanced_components": 8,
+      "generated": true,
+      "generating": null,
+      "partitioned": false,
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069204.PCG_Building_1249069204",
+      "location": [
+        75002.59999658588,
+        9789.715,
+        17254.402704975397
+      ]
+    },
+    "1249069205": {
+      "expected": 6213,
+      "actual": 450,
+      "instanced_components": 7,
+      "generated": true,
+      "generating": null,
+      "partitioned": false,
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069205.PCG_Building_1249069205",
+      "location": [
+        77202.75003720153,
+        11751.46,
+        17303.934167809002
+      ]
+    },
+    "1249069213": {
+      "expected": 253,
+      "actual": 188,
+      "instanced_components": 8,
+      "generated": true,
+      "generating": null,
+      "partitioned": false,
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069213.PCG_Building_1249069213",
+      "location": [
+        78074.495,
+        11511.009999999998,
+        17459.107783520893
+      ]
+    },
+    "1249069219": {
+      "expected": 2179,
+      "actual": 0,
+      "instanced_components": 0,
+      "generated": false,
+      "generating": null,
+      "partitioned": false,
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069219.PCG_Building_1249069219",
+      "location": [
+        72187.845,
+        12599.55,
+        16776.69945115234
+      ]
+    },
+    "1249069228": {
+      "expected": 2738,
+      "actual": 0,
+      "instanced_components": 0,
+      "generated": false,
+      "generating": null,
+      "partitioned": false,
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069228.PCG_Building_1249069228",
+      "location": [
+        78839.72,
+        12099.105,
+        17221.30957588186
+      ]
+    },
+    "1249069229": {
+      "expected": 277,
+      "actual": 0,
+      "instanced_components": 0,
+      "generated": false,
+      "generating": null,
+      "partitioned": false,
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069229.PCG_Building_1249069229",
+      "location": [
+        73640.08,
+        14125.22,
+        16743.393977859698
+      ]
+    },
+    "1249069235": {
+      "expected": 2476,
+      "actual": 223,
+      "instanced_components": 8,
+      "generated": true,
+      "generating": null,
+      "partitioned": false,
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069235.PCG_Building_1249069235",
+      "location": [
+        73385.220001424,
+        11567.310000000001,
+        16757.223093049826
+      ]
+    },
+    "1249069237": {
+      "expected": 3261,
+      "actual": 0,
+      "instanced_components": 0,
+      "generated": false,
+      "generating": null,
+      "partitioned": false,
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069237.PCG_Building_1249069237",
+      "location": [
+        80784.735,
+        13455.835,
+        17385.62085394225
+      ]
+    },
+    "1249069246": {
+      "expected": 721,
+      "actual": 240,
+      "instanced_components": 9,
+      "generated": true,
+      "generating": null,
+      "partitioned": false,
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069246.PCG_Building_1249069246",
+      "location": [
+        78771.4300005902,
+        9547.955,
+        17546.761022404327
+      ]
+    },
+    "1249069247": {
+      "expected": 1028,
+      "actual": 0,
+      "instanced_components": 0,
+      "generated": false,
+      "generating": null,
+      "partitioned": false,
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069247.PCG_Building_1249069247",
+      "location": [
+        79559.705,
+        13052.185,
+        17297.204545424633
+      ]
+    },
+    "1249069271": {
+      "expected": 297,
+      "actual": 134,
+      "instanced_components": 8,
+      "generated": true,
+      "generating": null,
+      "partitioned": false,
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069271.PCG_Building_1249069271",
+      "location": [
+        74736.625,
+        9514.615,
+        17324.473483273658
+      ]
+    },
+    "1249069275": {
+      "expected": 887,
+      "actual": 29,
+      "instanced_components": 7,
+      "generated": true,
+      "generating": null,
+      "partitioned": false,
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069275.PCG_Building_1249069275",
+      "location": [
+        75772.305,
+        11105.869999999999,
+        16855.535606741905
+      ]
+    },
+    "1249069276": {
+      "expected": 245,
+      "actual": 124,
+      "instanced_components": 8,
+      "generated": true,
+      "generating": null,
+      "partitioned": false,
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069276.PCG_Building_1249069276",
+      "location": [
+        77435.73000000001,
+        9150.745,
+        17536.50099722906
+      ]
+    },
+    "1249069286": {
+      "expected": 749,
+      "actual": 0,
+      "instanced_components": 0,
+      "generated": false,
+      "generating": null,
+      "partitioned": false,
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069286.PCG_Building_1249069286",
+      "location": [
+        73135.125,
+        13180.085,
+        16618.355681371442
+      ]
+    },
+    "1249069287": {
+      "expected": 4036,
+      "actual": 0,
+      "instanced_components": 0,
+      "generated": false,
+      "generating": null,
+      "partitioned": false,
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069287.PCG_Building_1249069287",
+      "location": [
+        76395.64500000002,
+        14304.985,
+        16860.625551038473
+      ]
+    }
+  }
+}

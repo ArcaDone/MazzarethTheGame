@@ -1,0 +1,114 @@
+{
+  "map": "/Game/Mazzarino80/ReuseKit/Maps/L_ReuseKit_PCG_QA",
+  "pcg_volumes": [
+    {
+      "label": "PCG QA STYLE_01 1249069204",
+      "graph": "<Object '/Game/Mazzarino80/ReuseKit/Maps/L_ReuseKit_PCG_QA.L_ReuseKit_PCG_QA:PersistentLevel.PCGVolume_0.PCG Component.PCGGraphInstance' (0x00000AED59044F80) Class 'PCGGraphInstance'>"
+    },
+    {
+      "label": "PCG QA STYLE_02 1249068307",
+      "graph": "<Object '/Game/Mazzarino80/ReuseKit/Maps/L_ReuseKit_PCG_QA.L_ReuseKit_PCG_QA:PersistentLevel.PCGVolume_1.PCG Component.PCGGraphInstance' (0x00000AED5906D500) Class 'PCGGraphInstance'>"
+    },
+    {
+      "label": "PCG QA STYLE_03 1249069200",
+      "graph": "<Object '/Game/Mazzarino80/ReuseKit/Maps/L_ReuseKit_PCG_QA.L_ReuseKit_PCG_QA:PersistentLevel.PCGVolume_2.PCG Component.PCGGraphInstance' (0x00000AED5906D080) Class 'PCGGraphInstance'>"
+    },
+    {
+      "label": "PCG QA STYLE_04 1249069228",
+      "graph": "<Object '/Game/Mazzarino80/ReuseKit/Maps/L_ReuseKit_PCG_QA.L_ReuseKit_PCG_QA:PersistentLevel.PCGVolume_3.PCG Component.PCGGraphInstance' (0x00000AED5906CD80) Class 'PCGGraphInstance'>"
+    }
+  ],
+  "instanced_mesh_components": [],
+  "total_instances": 0,
+  "actor_count": 12,
+  "data_assets": [
+    {
+      "lot": "1249069204",
+      "stages": [
+        {
+          "stage": "Facades",
+          "mesh": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_01_1249069204_Facades.SM_M80_QA_STYLE_01_1249069204_Facades"
+        },
+        {
+          "stage": "Openings",
+          "mesh": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_01_1249069204_Openings.SM_M80_QA_STYLE_01_1249069204_Openings"
+        },
+        {
+          "stage": "Roofs",
+          "mesh": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_01_1249069204_Roofs.SM_M80_QA_STYLE_01_1249069204_Roofs"
+        },
+        {
+          "stage": "Details",
+          "mesh": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_01_1249069204_Details.SM_M80_QA_STYLE_01_1249069204_Details"
+        }
+      ]
+    },
+    {
+      "lot": "1249068307",
+      "stages": [
+        {
+          "stage": "Facades",
+          "mesh": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_02_1249068307_Facades.SM_M80_QA_STYLE_02_1249068307_Facades"
+        },
+        {
+          "stage": "Openings",
+          "mesh": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_02_1249068307_Openings.SM_M80_QA_STYLE_02_1249068307_Openings"
+        },
+        {
+          "stage": "Roofs",
+          "mesh": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_02_1249068307_Roofs.SM_M80_QA_STYLE_02_1249068307_Roofs"
+        },
+        {
+          "stage": "Details",
+          "mesh": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_02_1249068307_Details.SM_M80_QA_STYLE_02_1249068307_Details"
+        }
+      ]
+    },
+    {
+      "lot": "1249069200",
+      "stages": [
+        {
+          "stage": "Facades",
+          "mesh": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_03_1249069200_Facades.SM_M80_QA_STYLE_03_1249069200_Facades"
+        },
+        {
+          "stage": "Openings",
+          "mesh": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_03_1249069200_Openings.SM_M80_QA_STYLE_03_1249069200_Openings"
+        },
+        {
+          "stage": "Roofs",
+          "mesh": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_03_1249069200_Roofs.SM_M80_QA_STYLE_03_1249069200_Roofs"
+        },
+        {
+          "stage": "Details",
+          "mesh": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_03_1249069200_Details.SM_M80_QA_STYLE_03_1249069200_Details"
+        }
+      ]
+    },
+    {
+      "lot": "1249069228",
+      "stages": [
+        {
+          "stage": "Structure",
+          "mesh": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_04_1249069228_Structure.SM_M80_QA_STYLE_04_1249069228_Structure"
+        },
+        {
+          "stage": "Facades",
+          "mesh": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_04_1249069228_Facades.SM_M80_QA_STYLE_04_1249069228_Facades"
+        },
+        {
+          "stage": "Openings",
+          "mesh": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_04_1249069228_Openings.SM_M80_QA_STYLE_04_1249069228_Openings"
+        },
+        {
+          "stage": "Roofs",
+          "mesh": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_04_1249069228_Roofs.SM_M80_QA_STYLE_04_1249069228_Roofs"
+        },
+        {
+          "stage": "Details",
+          "mesh": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_04_1249069228_Details.SM_M80_QA_STYLE_04_1249069228_Details"
+        }
+      ]
+    }
+  ]
+}

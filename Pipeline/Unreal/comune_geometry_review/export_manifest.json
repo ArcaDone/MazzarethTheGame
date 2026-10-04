@@ -1,0 +1,97 @@
+[
+  {
+    "path": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_A_02",
+    "fbx": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Unreal\\comune_geometry_review\\clothes_middleeast__SM_clothes_A_02.fbx",
+    "exported": true
+  },
+  {
+    "path": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_A_03",
+    "fbx": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Unreal\\comune_geometry_review\\clothes_middleeast__SM_clothes_A_03.fbx",
+    "exported": true
+  },
+  {
+    "path": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_A_04",
+    "fbx": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Unreal\\comune_geometry_review\\clothes_middleeast__SM_clothes_A_04.fbx",
+    "exported": true
+  },
+  {
+    "path": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_A_05",
+    "fbx": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Unreal\\comune_geometry_review\\clothes_middleeast__SM_clothes_A_05.fbx",
+    "exported": true
+  },
+  {
+    "path": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_B_01",
+    "fbx": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Unreal\\comune_geometry_review\\clothes_middleeast__SM_clothes_B_01.fbx",
+    "exported": true
+  },
+  {
+    "path": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_B_02",
+    "fbx": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Unreal\\comune_geometry_review\\clothes_middleeast__SM_clothes_B_02.fbx",
+    "exported": true
+  },
+  {
+    "path": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_B_03",
+    "fbx": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Unreal\\comune_geometry_review\\clothes_middleeast__SM_clothes_B_03.fbx",
+    "exported": true
+  },
+  {
+    "path": "/Game/Megapack/Meshes/Favela/Mannequin/SM_Clothes_01",
+    "fbx": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Unreal\\comune_geometry_review\\clothes_favela__SM_Clothes_01.fbx",
+    "exported": true
+  },
+  {
+    "path": "/Game/Megapack/Meshes/Favela/Mannequin/SM_Clothes_02",
+    "fbx": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Unreal\\comune_geometry_review\\clothes_favela__SM_Clothes_02.fbx",
+    "exported": true
+  },
+  {
+    "path": "/Game/Megapack/Meshes/Favela/Mannequin/SM_Clothes_03",
+    "fbx": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Unreal\\comune_geometry_review\\clothes_favela__SM_Clothes_03.fbx",
+    "exported": true
+  },
+  {
+    "path": "/Game/Megapack/Meshes/MiddleEast/SM_stairs_01",
+    "fbx": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Unreal\\comune_geometry_review\\stairs__SM_stairs_01.fbx",
+    "exported": true
+  },
+  {
+    "path": "/Game/Megapack/Meshes/Favela/SM_Old_Stair_01",
+    "fbx": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Unreal\\comune_geometry_review\\old_stairs__SM_Old_Stair_01.fbx",
+    "exported": true
+  },
+  {
+    "path": "/Game/Megapack/Meshes/Favela/SM_Old_Stair_02",
+    "fbx": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Unreal\\comune_geometry_review\\old_stairs__SM_Old_Stair_02.fbx",
+    "exported": true
+  },
+  {
+    "path": "/Game/Megapack/Meshes/Favela/SM_Rain_Pipe_01",
+    "fbx": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Unreal\\comune_geometry_review\\pipes_favela__SM_Rain_Pipe_01.fbx",
+    "exported": true
+  },
+  {
+    "path": "/Game/Megapack/Meshes/MiddleEast/SM_awning_01",
+    "fbx": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Unreal\\comune_geometry_review\\awnings__SM_awning_01.fbx",
+    "exported": true
+  },
+  {
+    "path": "/Game/Megapack/Meshes/MiddleEast/SM_metal_fence_01",
+    "fbx": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Unreal\\comune_geometry_review\\railings_middleeast__SM_metal_fence_01.fbx",
+    "exported": true
+  },
+  {
+    "path": "/Game/Megapack/Meshes/MiddleEast/SM_Windows_grill_01",
+    "fbx": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Unreal\\comune_geometry_review\\railings_middleeast__SM_Windows_grill_01.fbx",
+    "exported": true
+  },
+  {
+    "path": "/Game/Megapack/Meshes/Favela/SM_Metal_Fence_02",
+    "fbx": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Unreal\\comune_geometry_review\\railings_favela__SM_Metal_Fence_02.fbx",
+    "exported": true
+  },
+  {
+    "path": "/Game/Megapack/Meshes/MiddleEast/SM_wooden_beams_01",
+    "fbx": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Unreal\\comune_geometry_review\\wood__SM_wooden_beams_01.fbx",
+    "exported": true
+  }
+]

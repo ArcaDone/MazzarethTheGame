@@ -1,0 +1,13 @@
+{
+  "world": "<Object '/Game/Mazzarino80/ReuseKit/Maps/L_ReuseKit_QA.L_ReuseKit_QA' (0x000006D0B6942400) Class 'World'>",
+  "world_name": "L_ReuseKit_QA",
+  "save_methods": [
+    "save_current_level",
+    "save_dirty_packages",
+    "save_dirty_packages_with_dialog",
+    "save_map",
+    "save_packages",
+    "save_packages_with_dialog"
+  ],
+  "actor_subsystem": true
+}

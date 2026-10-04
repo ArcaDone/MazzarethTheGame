@@ -1,0 +1,137 @@
+{
+  "roots": [
+    "/Game/Megapack/Meshes/Favela/Mannequin/SM_Clothes_01",
+    "/Game/Megapack/Meshes/Favela/Mannequin/SM_Clothes_03",
+    "/Game/Megapack/Meshes/Favela/SM_Old_Stair_01",
+    "/Game/Megapack/Meshes/Favela/SM_Rain_Pipe_01",
+    "/Game/Megapack/Meshes/MiddleEast/SM_awning_01"
+  ],
+  "packages": [
+    "/Game/Megapack/Material/Favela/MI_Clothes_0",
+    "/Game/Megapack/Material/Favela/MI_Clothes_01",
+    "/Game/Megapack/Material/Favela/MI_Old_Stair_01",
+    "/Game/Megapack/Material/Favela/MI_Pipe_01",
+    "/Game/Megapack/Material/Favela/M_Bricks_01",
+    "/Game/Megapack/Material/MiddleEast/MI_awning_cloth_02",
+    "/Game/Megapack/Material/MiddleEast/M_wall_01",
+    "/Game/Megapack/Meshes/Favela/Mannequin/SM_Clothes_01",
+    "/Game/Megapack/Meshes/Favela/Mannequin/SM_Clothes_03",
+    "/Game/Megapack/Meshes/Favela/SM_Old_Stair_01",
+    "/Game/Megapack/Meshes/Favela/SM_Rain_Pipe_01",
+    "/Game/Megapack/Meshes/MiddleEast/SM_awning_01",
+    "/Game/Megapack/Textures/Favela/T_Bricks_01_BC",
+    "/Game/Megapack/Textures/Favela/T_Bricks_01_N",
+    "/Game/Megapack/Textures/Favela/T_Bricks_01_ORM",
+    "/Game/Megapack/Textures/Favela/T_ClothesA_01_BC",
+    "/Game/Megapack/Textures/Favela/T_ClothesA_01_N",
+    "/Game/Megapack/Textures/Favela/T_ClothesA_01_ORM",
+    "/Game/Megapack/Textures/Favela/T_Clothes_01_BC",
+    "/Game/Megapack/Textures/Favela/T_Clothes_01_N",
+    "/Game/Megapack/Textures/Favela/T_Clothes_01_ORM",
+    "/Game/Megapack/Textures/Favela/T_Old_Stair_01_BC",
+    "/Game/Megapack/Textures/Favela/T_Old_Stair_01_N",
+    "/Game/Megapack/Textures/Favela/T_Old_Stair_01_ORM",
+    "/Game/Megapack/Textures/Favela/T_Pipe_BC",
+    "/Game/Megapack/Textures/Favela/T_Pipe_N",
+    "/Game/Megapack/Textures/Favela/T_Pipe_ORM",
+    "/Game/Megapack/Textures/MiddleEast/T_awning_cloth_02_BC",
+    "/Game/Megapack/Textures/MiddleEast/T_awning_cloth_02_N",
+    "/Game/Megapack/Textures/MiddleEast/T_awning_cloth_02_ORM",
+    "/Game/Megapack/Textures/MiddleEast/T_wall_01_BC",
+    "/Game/Megapack/Textures/MiddleEast/T_wall_01_N",
+    "/Game/Megapack/Textures/MiddleEast/T_wall_01_ORM"
+  ],
+  "dependencies": {
+    "/Game/Megapack/Meshes/MiddleEast/SM_awning_01": [
+      "/Game/Megapack/Material/MiddleEast/MI_awning_cloth_02"
+    ],
+    "/Game/Megapack/Material/MiddleEast/MI_awning_cloth_02": [
+      "/Game/Megapack/Material/MiddleEast/M_wall_01",
+      "/Game/Megapack/Textures/MiddleEast/T_awning_cloth_02_BC",
+      "/Game/Megapack/Textures/MiddleEast/T_awning_cloth_02_N",
+      "/Game/Megapack/Textures/MiddleEast/T_awning_cloth_02_ORM",
+      "/Game/Megapack/Textures/MiddleEast/T_wall_01_BC",
+      "/Game/Megapack/Textures/MiddleEast/T_wall_01_N",
+      "/Game/Megapack/Textures/MiddleEast/T_wall_01_ORM"
+    ],
+    "/Game/Megapack/Textures/MiddleEast/T_wall_01_ORM": [],
+    "/Game/Megapack/Textures/MiddleEast/T_wall_01_N": [],
+    "/Game/Megapack/Textures/MiddleEast/T_wall_01_BC": [],
+    "/Game/Megapack/Textures/MiddleEast/T_awning_cloth_02_ORM": [],
+    "/Game/Megapack/Textures/MiddleEast/T_awning_cloth_02_N": [],
+    "/Game/Megapack/Textures/MiddleEast/T_awning_cloth_02_BC": [],
+    "/Game/Megapack/Material/MiddleEast/M_wall_01": [
+      "/Game/Megapack/Textures/MiddleEast/T_wall_01_BC",
+      "/Game/Megapack/Textures/MiddleEast/T_wall_01_N",
+      "/Game/Megapack/Textures/MiddleEast/T_wall_01_ORM"
+    ],
+    "/Game/Megapack/Meshes/Favela/SM_Rain_Pipe_01": [
+      "/Game/Megapack/Material/Favela/MI_Pipe_01"
+    ],
+    "/Game/Megapack/Material/Favela/MI_Pipe_01": [
+      "/Game/Megapack/Material/Favela/M_Bricks_01",
+      "/Game/Megapack/Textures/Favela/T_Bricks_01_BC",
+      "/Game/Megapack/Textures/Favela/T_Bricks_01_N",
+      "/Game/Megapack/Textures/Favela/T_Bricks_01_ORM",
+      "/Game/Megapack/Textures/Favela/T_Pipe_BC",
+      "/Game/Megapack/Textures/Favela/T_Pipe_N",
+      "/Game/Megapack/Textures/Favela/T_Pipe_ORM"
+    ],
+    "/Game/Megapack/Textures/Favela/T_Pipe_ORM": [],
+    "/Game/Megapack/Textures/Favela/T_Pipe_N": [],
+    "/Game/Megapack/Textures/Favela/T_Pipe_BC": [],
+    "/Game/Megapack/Textures/Favela/T_Bricks_01_ORM": [],
+    "/Game/Megapack/Textures/Favela/T_Bricks_01_N": [],
+    "/Game/Megapack/Textures/Favela/T_Bricks_01_BC": [],
+    "/Game/Megapack/Material/Favela/M_Bricks_01": [
+      "/Game/Megapack/Textures/Favela/T_Bricks_01_BC",
+      "/Game/Megapack/Textures/Favela/T_Bricks_01_N",
+      "/Game/Megapack/Textures/Favela/T_Bricks_01_ORM"
+    ],
+    "/Game/Megapack/Meshes/Favela/SM_Old_Stair_01": [
+      "/Game/Megapack/Material/Favela/MI_Old_Stair_01"
+    ],
+    "/Game/Megapack/Material/Favela/MI_Old_Stair_01": [
+      "/Game/Megapack/Material/Favela/M_Bricks_01",
+      "/Game/Megapack/Textures/Favela/T_Bricks_01_BC",
+      "/Game/Megapack/Textures/Favela/T_Bricks_01_N",
+      "/Game/Megapack/Textures/Favela/T_Bricks_01_ORM",
+      "/Game/Megapack/Textures/Favela/T_Old_Stair_01_BC",
+      "/Game/Megapack/Textures/Favela/T_Old_Stair_01_N",
+      "/Game/Megapack/Textures/Favela/T_Old_Stair_01_ORM"
+    ],
+    "/Game/Megapack/Textures/Favela/T_Old_Stair_01_ORM": [],
+    "/Game/Megapack/Textures/Favela/T_Old_Stair_01_N": [],
+    "/Game/Megapack/Textures/Favela/T_Old_Stair_01_BC": [],
+    "/Game/Megapack/Meshes/Favela/Mannequin/SM_Clothes_03": [
+      "/Game/Megapack/Material/Favela/MI_Clothes_0"
+    ],
+    "/Game/Megapack/Material/Favela/MI_Clothes_0": [
+      "/Game/Megapack/Material/Favela/M_Bricks_01",
+      "/Game/Megapack/Textures/Favela/T_Bricks_01_BC",
+      "/Game/Megapack/Textures/Favela/T_Bricks_01_N",
+      "/Game/Megapack/Textures/Favela/T_Bricks_01_ORM",
+      "/Game/Megapack/Textures/Favela/T_Clothes_01_BC",
+      "/Game/Megapack/Textures/Favela/T_Clothes_01_N",
+      "/Game/Megapack/Textures/Favela/T_Clothes_01_ORM"
+    ],
+    "/Game/Megapack/Textures/Favela/T_Clothes_01_ORM": [],
+    "/Game/Megapack/Textures/Favela/T_Clothes_01_N": [],
+    "/Game/Megapack/Textures/Favela/T_Clothes_01_BC": [],
+    "/Game/Megapack/Meshes/Favela/Mannequin/SM_Clothes_01": [
+      "/Game/Megapack/Material/Favela/MI_Clothes_01"
+    ],
+    "/Game/Megapack/Material/Favela/MI_Clothes_01": [
+      "/Game/Megapack/Material/Favela/M_Bricks_01",
+      "/Game/Megapack/Textures/Favela/T_Bricks_01_BC",
+      "/Game/Megapack/Textures/Favela/T_Bricks_01_N",
+      "/Game/Megapack/Textures/Favela/T_Bricks_01_ORM",
+      "/Game/Megapack/Textures/Favela/T_ClothesA_01_BC",
+      "/Game/Megapack/Textures/Favela/T_ClothesA_01_N",
+      "/Game/Megapack/Textures/Favela/T_ClothesA_01_ORM"
+    ],
+    "/Game/Megapack/Textures/Favela/T_ClothesA_01_ORM": [],
+    "/Game/Megapack/Textures/Favela/T_ClothesA_01_N": [],
+    "/Game/Megapack/Textures/Favela/T_ClothesA_01_BC": []
+  }
+}

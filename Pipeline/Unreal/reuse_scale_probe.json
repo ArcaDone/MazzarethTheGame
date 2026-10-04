@@ -1,0 +1,52 @@
+{
+  "assets": [
+    {
+      "file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__Ground_002.fbx",
+      "asset": "/Game/Mazzarino80/ReuseKit/ScaleProbe/SM_M80_B80__Ground_002.SM_M80_B80__Ground_002",
+      "bounds_cm": [
+        302.26,
+        50.1,
+        300.65
+      ],
+      "lods": 1,
+      "materials": [
+        "house_wall_01",
+        "Marble",
+        "black",
+        "metal_wire"
+      ]
+    },
+    {
+      "file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\pilots\\SM_M80_QA_STYLE_01_1249069204.fbx",
+      "asset": "/Game/Mazzarino80/ReuseKit/ScaleProbe/SM_M80_QA_STYLE_01_1249069204.SM_M80_QA_STYLE_01_1249069204",
+      "bounds_cm": [
+        611.27,
+        573.73,
+        731.02
+      ],
+      "lods": 1,
+      "materials": [
+        "proxy_mat_grey",
+        "Wood_002",
+        "Metal",
+        "black",
+        "M80_Pipe_Rust_Dark_Shared",
+        "M80_terracotta",
+        "Plant_green",
+        "Soil",
+        "M80_stone_wall",
+        "Marble",
+        "metal_wire",
+        "M80_glass",
+        "M80_stone_formal",
+        "Wood_003",
+        "black_001",
+        "leaf",
+        "Bark",
+        "Metal_001",
+        "Wood_004",
+        "Plastic"
+      ]
+    }
+  ]
+}

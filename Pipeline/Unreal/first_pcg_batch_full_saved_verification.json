@@ -1,0 +1,12 @@
+{
+  "map": "/Game/Levels/Mazzarino80_PCG_Quartieri_Batch01_FullPCG",
+  "source_maps_unchanged": true,
+  "new_pcg_houses": 67,
+  "new_instances": 29380,
+  "approved_pcg_houses": 18,
+  "approved_instances": 37037,
+  "original_footprints": 3216,
+  "new_house_errors": [],
+  "approved_house_errors": {},
+  "all_replaced_placeholders_hidden": true
+}

@@ -1,0 +1,752 @@
+{
+  "selected": [
+    "/Game/Megapack/Material/Yakohama/MI_StuccoPainted_02",
+    "/Game/Megapack/Material/Yakohama/MI_Stucco_01",
+    "/Game/Megapack/Material/Yakohama/MI_Stucco_02",
+    "/Game/Megapack/Material/Yakohama/MI_Stucco_03",
+    "/Game/Megapack/Material/Yakohama/MI_Stucco_04",
+    "/Game/Megascans/Surfaces/Damaged_Brick_Wall_Plaster_vcvodh0/MI_Damaged_Brick_Wall_Plaster_vcvodh0_4K",
+    "/Game/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/MI_Mossy_Stone_Wall_ue4mcfelw_8K",
+    "/Game/Megascans/Surfaces/Painted_Cracked_Concrete_Wall_sionccva/MI_Painted_Cracked_Concrete_Wall_sionccva_2K",
+    "/Game/Esercitazioni/CasaFloresta/window_low",
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06a",
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c",
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_Double_01a",
+    "/Game/SoulCity/Environment/Meshes/Building_Slum/SM_Slums_Window_01a",
+    "/Game/SoulCity/Environment/Meshes/Building_Slum/SM_Slums_Window_01f",
+    "/Game/OldWestAssets/OldWestVol3/VOL3/Meshes/SM_Lamp_01a",
+    "/Game/OldWestAssets/OldWestVol5/VOL5/Meshes/SM_Bench_01a",
+    "/Game/SoulCity/Environment/Meshes/Building_Slum/SM_Slums_Sign02a",
+    "/Game/Megascans/Surfaces/Red_Roof_Tiles_tfqnfggs/MI_Red_Roof_Tiles_tfqnfggs_4K",
+    "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/MI_Roman_Stone_Wall_tf2kaa2n_4K",
+    "/Game/Megascans/Surfaces/Stucco_Facade_wfnjdgl/MI_Stucco_Facade_wfnjdgl_2K"
+  ],
+  "packages": [
+    "/Game/Esercitazioni/CasaFloresta/DefaultMaterial",
+    "/Game/Esercitazioni/CasaFloresta/DefaultMaterial_albedo",
+    "/Game/Esercitazioni/CasaFloresta/window_low",
+    "/Game/MSPresets/M_MS_Surface_Material/M_MS_Surface_Material",
+    "/Game/MSPresets/M_MS_Surface_Material_VT/M_MS_Surface_Material_VT",
+    "/Game/Megapack/Material/Yakohama/MI_StuccoPainted_02",
+    "/Game/Megapack/Material/Yakohama/MI_Stucco_01",
+    "/Game/Megapack/Material/Yakohama/MI_Stucco_02",
+    "/Game/Megapack/Material/Yakohama/MI_Stucco_03",
+    "/Game/Megapack/Material/Yakohama/MI_Stucco_04",
+    "/Game/Megapack/Material/Yakohama/M_Asphalt",
+    "/Game/Megapack/Textures/Yakohama/T_Asphalt_BC",
+    "/Game/Megapack/Textures/Yakohama/T_Asphalt_N",
+    "/Game/Megapack/Textures/Yakohama/T_Asphalt_ORM",
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_01_BC",
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_01_N",
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_01_ORM",
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_02_BC",
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_02_N",
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_02_ORM",
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_03_BC",
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_03_N",
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_03_ORM",
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_04_BC",
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_04_N",
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_04_ORM",
+    "/Game/Megascans/Surfaces/Damaged_Brick_Wall_Plaster_vcvodh0/MI_Damaged_Brick_Wall_Plaster_vcvodh0_4K",
+    "/Game/Megascans/Surfaces/Damaged_Brick_Wall_Plaster_vcvodh0/T_DamagedBrickWallPlaster_vcvodh0_4K_ORDp",
+    "/Game/Megascans/Surfaces/Damaged_Brick_Wall_Plaster_vcvodh0/T_Damaged_Brick_Wall_Plaster_vcvodh0_4K_D",
+    "/Game/Megascans/Surfaces/Damaged_Brick_Wall_Plaster_vcvodh0/T_Damaged_Brick_Wall_Plaster_vcvodh0_4K_N",
+    "/Game/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/MI_Mossy_Stone_Wall_ue4mcfelw_8K",
+    "/Game/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/T_MossyStoneWall_ue4mcfelw_8K_ORDp",
+    "/Game/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/T_Mossy_Stone_Wall_ue4mcfelw_8K_D",
+    "/Game/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/T_Mossy_Stone_Wall_ue4mcfelw_8K_N",
+    "/Game/Megascans/Surfaces/Painted_Cracked_Concrete_Wall_sionccva/MI_Painted_Cracked_Concrete_Wall_sionccva_2K",
+    "/Game/Megascans/Surfaces/Painted_Cracked_Concrete_Wall_sionccva/T_PaintedCrackedConcreteWall_sionccva_2K_ORDp",
+    "/Game/Megascans/Surfaces/Painted_Cracked_Concrete_Wall_sionccva/T_Painted_Cracked_Concrete_Wall_sionccva_2K_D",
+    "/Game/Megascans/Surfaces/Painted_Cracked_Concrete_Wall_sionccva/T_Painted_Cracked_Concrete_Wall_sionccva_2K_N",
+    "/Game/Megascans/Surfaces/Red_Roof_Tiles_tfqnfggs/MI_Red_Roof_Tiles_tfqnfggs_4K",
+    "/Game/Megascans/Surfaces/Red_Roof_Tiles_tfqnfggs/T_RedRoofTiles_tfqnfggs_4K_ORDp",
+    "/Game/Megascans/Surfaces/Red_Roof_Tiles_tfqnfggs/T_Red_Roof_Tiles_tfqnfggs_4K_D",
+    "/Game/Megascans/Surfaces/Red_Roof_Tiles_tfqnfggs/T_Red_Roof_Tiles_tfqnfggs_4K_N",
+    "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/MI_Roman_Stone_Wall_tf2kaa2n_4K",
+    "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/T_RomanStoneWall_tf2kaa2n_4K_ORDp",
+    "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/T_Roman_Stone_Wall_tf2kaa2n_4K_D",
+    "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/T_Roman_Stone_Wall_tf2kaa2n_4K_N",
+    "/Game/Megascans/Surfaces/Stucco_Facade_wfnjdgl/MI_Stucco_Facade_wfnjdgl_2K",
+    "/Game/Megascans/Surfaces/Stucco_Facade_wfnjdgl/T_StuccoFacade_wfnjdgl_2K_ORDp",
+    "/Game/Megascans/Surfaces/Stucco_Facade_wfnjdgl/T_Stucco_Facade_wfnjdgl_2K_D",
+    "/Game/Megascans/Surfaces/Stucco_Facade_wfnjdgl/T_Stucco_Facade_wfnjdgl_2K_N",
+    "/Game/OldWestAssets/OldWestVol3/Shared/Materials/MF_Detail_Normal_01a",
+    "/Game/OldWestAssets/OldWestVol3/Shared/Materials/MF_Normal_Intensity_01a",
+    "/Game/OldWestAssets/OldWestVol3/Shared/Materials/MM_Glass_01a",
+    "/Game/OldWestAssets/OldWestVol3/Shared/Materials/MM_MasterMaterial_01a",
+    "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Fill_01_ALB",
+    "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Fill_01_NRM",
+    "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Fill_01_RMA",
+    "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Glass_01a_MASK",
+    "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Microdetail_01a_MASK",
+    "/Game/OldWestAssets/OldWestVol3/VOL3/Materials/MI_Lamp_01a",
+    "/Game/OldWestAssets/OldWestVol3/VOL3/Materials/MI_Lamp_Glass_01a1",
+    "/Game/OldWestAssets/OldWestVol3/VOL3/Meshes/SM_Lamp_01a",
+    "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_ALB",
+    "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_Glass_ALB",
+    "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_Glass_NRM",
+    "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_Glass_RMA",
+    "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_NRM",
+    "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_RMA",
+    "/Game/OldWestAssets/OldWestVol4/Materials/MM_Glass_01a",
+    "/Game/OldWestAssets/OldWestVol4/Shared/Textures/TX_Fill_01_ALB",
+    "/Game/OldWestAssets/OldWestVol4/Shared/Textures/TX_Fill_01_NRM",
+    "/Game/OldWestAssets/OldWestVol4/Shared/Textures/TX_Fill_01_RMA",
+    "/Game/OldWestAssets/OldWestVol4/Textures/TX_Fill_01_ALB",
+    "/Game/OldWestAssets/OldWestVol4/Textures/TX_Fill_01_NRM",
+    "/Game/OldWestAssets/OldWestVol4/Textures/TX_Fill_01_RMA",
+    "/Game/OldWestAssets/OldWestVol4/Textures/TX_Glass_01a_MASK",
+    "/Game/OldWestAssets/OldWestVol5/Shared/Materials/MF_Normal_Intensity_01a",
+    "/Game/OldWestAssets/OldWestVol5/Shared/Materials/MM_MasterMaterial_01a",
+    "/Game/OldWestAssets/OldWestVol5/Shared/Textures/TX_Fill_01_ALB",
+    "/Game/OldWestAssets/OldWestVol5/Shared/Textures/TX_Fill_01_NRM",
+    "/Game/OldWestAssets/OldWestVol5/Shared/Textures/TX_Fill_01_RMA",
+    "/Game/OldWestAssets/OldWestVol5/VOL5/Materials/MI_Bench_01a",
+    "/Game/OldWestAssets/OldWestVol5/VOL5/Meshes/SM_Bench_01a",
+    "/Game/OldWestAssets/OldWestVol5/VOL5/Textures/TX_Bench_01a_ALB",
+    "/Game/OldWestAssets/OldWestVol5/VOL5/Textures/TX_Bench_01a_NRM",
+    "/Game/OldWestAssets/OldWestVol5/VOL5/Textures/TX_Bench_01a_RMA",
+    "/Game/OldWestAssets/OldWestVol6/Shared/Materials/MF_Normal_Intensity_01a",
+    "/Game/OldWestAssets/OldWestVol6/Shared/Materials/MM_MasterMaterial_01a",
+    "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Fill_01_ALB",
+    "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Fill_01_NRM",
+    "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Fill_01_RMA",
+    "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Glass_01a_MASK",
+    "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Microdetail_01a_MASK",
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Materials/MI_Door_06a",
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Materials/MI_Door_Double_01a",
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06a",
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c",
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_Double_01a",
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_06a_ALB",
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_06a_NRM",
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_06a_RMA",
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_Double_01a_ALB",
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_Double_01a_NRM",
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_Double_01a_RMA",
+    "/Game/SoulCity/Environment/Materials/Building/MI_Slums_Metalwork",
+    "/Game/SoulCity/Environment/Materials/Building/MI_Slums_Window2_NoLight",
+    "/Game/SoulCity/Environment/Materials/Building/M_Signs",
+    "/Game/SoulCity/Environment/Materials/Building/M_Slums_Metalwork",
+    "/Game/SoulCity/Environment/Materials/Building/M_Slums_Window2",
+    "/Game/SoulCity/Environment/Materials/Building/M_Slums_Wood",
+    "/Game/SoulCity/Environment/Materials/Functions/MF_Switch",
+    "/Game/SoulCity/Environment/Materials/Functions/MF_WET_RunningWater",
+    "/Game/SoulCity/Environment/Materials/Functions/MF_WorldAlignedPanner",
+    "/Game/SoulCity/Environment/Materials/MaterialLayers/MF_Slums_Metal",
+    "/Game/SoulCity/Environment/Materials/MaterialLayers/MF_Slums_Paint",
+    "/Game/SoulCity/Environment/Materials/MaterialLayers/MF_Slums_Rusted",
+    "/Game/SoulCity/Environment/Meshes/Building_Slum/SM_Slums_Sign02a",
+    "/Game/SoulCity/Environment/Meshes/Building_Slum/SM_Slums_Window_01a",
+    "/Game/SoulCity/Environment/Meshes/Building_Slum/SM_Slums_Window_01f",
+    "/Game/SoulCity/Environment/PhysicalMaterials/WoodLadder",
+    "/Game/SoulCity/Environment/Textures/Building/T_Slums_Signs_D",
+    "/Game/SoulCity/Environment/Textures/Building/T_Slums_Signs_M",
+    "/Game/SoulCity/Environment/Textures/Building/T_Slums_Signs_N",
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Patina_Metal_D",
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_MetalTexture_M",
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_MetalTexture_N",
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Metal_Rust_03_D",
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Metal_Rust_03_N",
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Metal_Scratches_02_D",
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Metal_Scratches_02_N",
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_TilingMetal_D",
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_TilingMetal_n",
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Window_D",
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Window_M",
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Window_N",
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Wood_D",
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Wood_N",
+    "/Game/SoulCity/Environment/Textures/Water/T_RainPuddleMask",
+    "/Game/SoulCity/Environment/Textures/Water/T_RainStreaming_N",
+    "/Game/SoulCity/Environment/Textures/Water/T_Soul_Water01_N"
+  ],
+  "missing": [],
+  "bytes": 2518526085,
+  "dependencies": {
+    "/Game/Megascans/Surfaces/Stucco_Facade_wfnjdgl/MI_Stucco_Facade_wfnjdgl_2K": [
+      "/Game/MSPresets/M_MS_Surface_Material_VT/M_MS_Surface_Material_VT",
+      "/Game/Megascans/Surfaces/Stucco_Facade_wfnjdgl/MI_Stucco_Facade_wfnjdgl_2K",
+      "/Game/Megascans/Surfaces/Stucco_Facade_wfnjdgl/T_StuccoFacade_wfnjdgl_2K_ORDp",
+      "/Game/Megascans/Surfaces/Stucco_Facade_wfnjdgl/T_Stucco_Facade_wfnjdgl_2K_D",
+      "/Game/Megascans/Surfaces/Stucco_Facade_wfnjdgl/T_Stucco_Facade_wfnjdgl_2K_N"
+    ],
+    "/Game/Megascans/Surfaces/Stucco_Facade_wfnjdgl/T_StuccoFacade_wfnjdgl_2K_ORDp": [
+      "/Game/Megascans/Surfaces/Stucco_Facade_wfnjdgl/T_StuccoFacade_wfnjdgl_2K_ORDp"
+    ],
+    "/Game/MSPresets/M_MS_Surface_Material_VT/M_MS_Surface_Material_VT": [
+      "/Game/MSPresets/M_MS_Surface_Material_VT/M_MS_Surface_Material_VT"
+    ],
+    "/Game/Megascans/Surfaces/Stucco_Facade_wfnjdgl/T_Stucco_Facade_wfnjdgl_2K_D": [
+      "/Game/Megascans/Surfaces/Stucco_Facade_wfnjdgl/T_Stucco_Facade_wfnjdgl_2K_D"
+    ],
+    "/Game/Megascans/Surfaces/Stucco_Facade_wfnjdgl/T_Stucco_Facade_wfnjdgl_2K_N": [
+      "/Game/Megascans/Surfaces/Stucco_Facade_wfnjdgl/T_Stucco_Facade_wfnjdgl_2K_N"
+    ],
+    "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/MI_Roman_Stone_Wall_tf2kaa2n_4K": [
+      "/Game/MSPresets/M_MS_Surface_Material/M_MS_Surface_Material",
+      "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/MI_Roman_Stone_Wall_tf2kaa2n_4K",
+      "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/T_RomanStoneWall_tf2kaa2n_4K_ORDp",
+      "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/T_Roman_Stone_Wall_tf2kaa2n_4K_D",
+      "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/T_Roman_Stone_Wall_tf2kaa2n_4K_N"
+    ],
+    "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/T_RomanStoneWall_tf2kaa2n_4K_ORDp": [
+      "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/T_RomanStoneWall_tf2kaa2n_4K_ORDp"
+    ],
+    "/Game/MSPresets/M_MS_Surface_Material/M_MS_Surface_Material": [
+      "/Game/MSPresets/M_MS_Surface_Material/M_MS_Surface_Material"
+    ],
+    "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/T_Roman_Stone_Wall_tf2kaa2n_4K_D": [
+      "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/T_Roman_Stone_Wall_tf2kaa2n_4K_D"
+    ],
+    "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/T_Roman_Stone_Wall_tf2kaa2n_4K_N": [
+      "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/T_Roman_Stone_Wall_tf2kaa2n_4K_N"
+    ],
+    "/Game/Megascans/Surfaces/Red_Roof_Tiles_tfqnfggs/MI_Red_Roof_Tiles_tfqnfggs_4K": [
+      "/Game/MSPresets/M_MS_Surface_Material/M_MS_Surface_Material",
+      "/Game/Megascans/Surfaces/Red_Roof_Tiles_tfqnfggs/MI_Red_Roof_Tiles_tfqnfggs_4K",
+      "/Game/Megascans/Surfaces/Red_Roof_Tiles_tfqnfggs/T_RedRoofTiles_tfqnfggs_4K_ORDp",
+      "/Game/Megascans/Surfaces/Red_Roof_Tiles_tfqnfggs/T_Red_Roof_Tiles_tfqnfggs_4K_D",
+      "/Game/Megascans/Surfaces/Red_Roof_Tiles_tfqnfggs/T_Red_Roof_Tiles_tfqnfggs_4K_N"
+    ],
+    "/Game/Megascans/Surfaces/Red_Roof_Tiles_tfqnfggs/T_Red_Roof_Tiles_tfqnfggs_4K_N": [
+      "/Game/Megascans/Surfaces/Red_Roof_Tiles_tfqnfggs/T_Red_Roof_Tiles_tfqnfggs_4K_N"
+    ],
+    "/Game/Megascans/Surfaces/Red_Roof_Tiles_tfqnfggs/T_RedRoofTiles_tfqnfggs_4K_ORDp": [
+      "/Game/Megascans/Surfaces/Red_Roof_Tiles_tfqnfggs/T_RedRoofTiles_tfqnfggs_4K_ORDp"
+    ],
+    "/Game/Megascans/Surfaces/Red_Roof_Tiles_tfqnfggs/T_Red_Roof_Tiles_tfqnfggs_4K_D": [
+      "/Game/Megascans/Surfaces/Red_Roof_Tiles_tfqnfggs/T_Red_Roof_Tiles_tfqnfggs_4K_D"
+    ],
+    "/Game/SoulCity/Environment/Meshes/Building_Slum/SM_Slums_Sign02a": [
+      "/Game/SoulCity/Environment/Materials/Building/M_Signs",
+      "/Game/SoulCity/Environment/Meshes/Building_Slum/SM_Slums_Sign02a"
+    ],
+    "/Game/SoulCity/Environment/Materials/Building/M_Signs": [
+      "/Game/SoulCity/Environment/Materials/Building/M_Signs",
+      "/Game/SoulCity/Environment/Textures/Building/T_Slums_Signs_D",
+      "/Game/SoulCity/Environment/Textures/Building/T_Slums_Signs_M",
+      "/Game/SoulCity/Environment/Textures/Building/T_Slums_Signs_N"
+    ],
+    "/Game/SoulCity/Environment/Textures/Building/T_Slums_Signs_D": [
+      "/Game/SoulCity/Environment/Textures/Building/T_Slums_Signs_D",
+      "/Game/SoulCity/Environment/Textures/Building/T_Slums_Signs_N"
+    ],
+    "/Game/SoulCity/Environment/Textures/Building/T_Slums_Signs_N": [
+      "/Game/SoulCity/Environment/Textures/Building/T_Slums_Signs_N"
+    ],
+    "/Game/SoulCity/Environment/Textures/Building/T_Slums_Signs_M": [
+      "/Game/SoulCity/Environment/Textures/Building/T_Slums_Signs_M"
+    ],
+    "/Game/OldWestAssets/OldWestVol5/VOL5/Meshes/SM_Bench_01a": [
+      "/Game/OldWestAssets/OldWestVol5/VOL5/Materials/MI_Bench_01a",
+      "/Game/OldWestAssets/OldWestVol5/VOL5/Meshes/SM_Bench_01a"
+    ],
+    "/Game/OldWestAssets/OldWestVol5/VOL5/Materials/MI_Bench_01a": [
+      "/Game/OldWestAssets/OldWestVol5/Shared/Materials/MM_MasterMaterial_01a",
+      "/Game/OldWestAssets/OldWestVol5/VOL5/Materials/MI_Bench_01a",
+      "/Game/OldWestAssets/OldWestVol5/VOL5/Textures/TX_Bench_01a_ALB",
+      "/Game/OldWestAssets/OldWestVol5/VOL5/Textures/TX_Bench_01a_NRM",
+      "/Game/OldWestAssets/OldWestVol5/VOL5/Textures/TX_Bench_01a_RMA"
+    ],
+    "/Game/OldWestAssets/OldWestVol5/VOL5/Textures/TX_Bench_01a_ALB": [
+      "/Game/OldWestAssets/OldWestVol5/VOL5/Textures/TX_Bench_01a_ALB"
+    ],
+    "/Game/OldWestAssets/OldWestVol5/Shared/Materials/MM_MasterMaterial_01a": [
+      "/Game/OldWestAssets/OldWestVol4/Shared/Textures/TX_Fill_01_ALB",
+      "/Game/OldWestAssets/OldWestVol4/Shared/Textures/TX_Fill_01_NRM",
+      "/Game/OldWestAssets/OldWestVol4/Shared/Textures/TX_Fill_01_RMA",
+      "/Game/OldWestAssets/OldWestVol5/Shared/Materials/MF_Normal_Intensity_01a",
+      "/Game/OldWestAssets/OldWestVol5/Shared/Materials/MM_MasterMaterial_01a",
+      "/Game/OldWestAssets/OldWestVol5/Shared/Textures/TX_Fill_01_ALB",
+      "/Game/OldWestAssets/OldWestVol5/Shared/Textures/TX_Fill_01_NRM",
+      "/Game/OldWestAssets/OldWestVol5/Shared/Textures/TX_Fill_01_RMA"
+    ],
+    "/Game/OldWestAssets/OldWestVol4/Shared/Textures/TX_Fill_01_ALB": [
+      "/Game/OldWestAssets/OldWestVol4/Shared/Textures/TX_Fill_01_ALB"
+    ],
+    "/Game/OldWestAssets/OldWestVol4/Shared/Textures/TX_Fill_01_NRM": [
+      "/Game/OldWestAssets/OldWestVol4/Shared/Textures/TX_Fill_01_NRM"
+    ],
+    "/Game/OldWestAssets/OldWestVol5/Shared/Textures/TX_Fill_01_RMA": [
+      "/Game/OldWestAssets/OldWestVol5/Shared/Textures/TX_Fill_01_RMA"
+    ],
+    "/Game/OldWestAssets/OldWestVol5/Shared/Materials/MF_Normal_Intensity_01a": [
+      "/Game/OldWestAssets/OldWestVol5/Shared/Materials/MF_Normal_Intensity_01a"
+    ],
+    "/Game/OldWestAssets/OldWestVol5/Shared/Textures/TX_Fill_01_NRM": [
+      "/Game/OldWestAssets/OldWestVol5/Shared/Textures/TX_Fill_01_NRM"
+    ],
+    "/Game/OldWestAssets/OldWestVol5/Shared/Textures/TX_Fill_01_ALB": [
+      "/Game/OldWestAssets/OldWestVol5/Shared/Textures/TX_Fill_01_ALB"
+    ],
+    "/Game/OldWestAssets/OldWestVol4/Shared/Textures/TX_Fill_01_RMA": [
+      "/Game/OldWestAssets/OldWestVol4/Shared/Textures/TX_Fill_01_RMA"
+    ],
+    "/Game/OldWestAssets/OldWestVol5/VOL5/Textures/TX_Bench_01a_NRM": [
+      "/Game/OldWestAssets/OldWestVol5/VOL5/Textures/TX_Bench_01a_NRM"
+    ],
+    "/Game/OldWestAssets/OldWestVol5/VOL5/Textures/TX_Bench_01a_RMA": [
+      "/Game/OldWestAssets/OldWestVol5/VOL5/Textures/TX_Bench_01a_RMA"
+    ],
+    "/Game/OldWestAssets/OldWestVol3/VOL3/Meshes/SM_Lamp_01a": [
+      "/Game/OldWestAssets/OldWestVol3/VOL3/Materials/MI_Lamp_01a",
+      "/Game/OldWestAssets/OldWestVol3/VOL3/Materials/MI_Lamp_Glass_01a1",
+      "/Game/OldWestAssets/OldWestVol3/VOL3/Meshes/SM_Lamp_01a"
+    ],
+    "/Game/OldWestAssets/OldWestVol3/VOL3/Materials/MI_Lamp_01a": [
+      "/Game/OldWestAssets/OldWestVol3/Shared/Materials/MM_MasterMaterial_01a",
+      "/Game/OldWestAssets/OldWestVol3/VOL3/Materials/MI_Lamp_01a",
+      "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_ALB",
+      "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_NRM",
+      "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_RMA"
+    ],
+    "/Game/OldWestAssets/OldWestVol3/Shared/Materials/MM_MasterMaterial_01a": [
+      "/Game/OldWestAssets/OldWestVol3/Shared/Materials/MF_Detail_Normal_01a",
+      "/Game/OldWestAssets/OldWestVol3/Shared/Materials/MF_Normal_Intensity_01a",
+      "/Game/OldWestAssets/OldWestVol3/Shared/Materials/MM_MasterMaterial_01a",
+      "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Fill_01_ALB",
+      "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Fill_01_NRM",
+      "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Fill_01_RMA",
+      "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Fill_01_ALB",
+      "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Fill_01_NRM",
+      "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Fill_01_RMA"
+    ],
+    "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Fill_01_ALB": [
+      "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Fill_01_ALB"
+    ],
+    "/Game/OldWestAssets/OldWestVol3/Shared/Materials/MF_Detail_Normal_01a": [
+      "/Game/OldWestAssets/OldWestVol3/Shared/Materials/MF_Detail_Normal_01a"
+    ],
+    "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Fill_01_RMA": [
+      "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Fill_01_RMA"
+    ],
+    "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Fill_01_ALB": [
+      "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Fill_01_ALB"
+    ],
+    "/Game/OldWestAssets/OldWestVol3/Shared/Materials/MF_Normal_Intensity_01a": [
+      "/Game/OldWestAssets/OldWestVol3/Shared/Materials/MF_Normal_Intensity_01a"
+    ],
+    "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Fill_01_NRM": [
+      "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Fill_01_NRM"
+    ],
+    "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Fill_01_RMA": [
+      "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Fill_01_RMA"
+    ],
+    "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Fill_01_NRM": [
+      "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Fill_01_NRM"
+    ],
+    "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_RMA": [
+      "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_RMA"
+    ],
+    "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_NRM": [
+      "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_NRM"
+    ],
+    "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_ALB": [
+      "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_ALB"
+    ],
+    "/Game/OldWestAssets/OldWestVol3/VOL3/Materials/MI_Lamp_Glass_01a1": [
+      "/Game/OldWestAssets/OldWestVol3/Shared/Materials/MM_Glass_01a",
+      "/Game/OldWestAssets/OldWestVol3/VOL3/Materials/MI_Lamp_Glass_01a1",
+      "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_Glass_ALB",
+      "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_Glass_NRM",
+      "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_Glass_RMA",
+      "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Glass_01a_MASK",
+      "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Microdetail_01a_MASK"
+    ],
+    "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Microdetail_01a_MASK": [
+      "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Microdetail_01a_MASK"
+    ],
+    "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_Glass_ALB": [
+      "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_Glass_ALB"
+    ],
+    "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_Glass_NRM": [
+      "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_Glass_NRM"
+    ],
+    "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Glass_01a_MASK": [
+      "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Glass_01a_MASK"
+    ],
+    "/Game/OldWestAssets/OldWestVol3/Shared/Materials/MM_Glass_01a": [
+      "/Game/OldWestAssets/OldWestVol3/Shared/Materials/MM_Glass_01a",
+      "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Fill_01_ALB",
+      "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Fill_01_NRM",
+      "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Fill_01_RMA",
+      "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Glass_01a_MASK",
+      "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Microdetail_01a_MASK",
+      "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Glass_01a_MASK",
+      "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Microdetail_01a_MASK"
+    ],
+    "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Glass_01a_MASK": [
+      "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Glass_01a_MASK"
+    ],
+    "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Microdetail_01a_MASK": [
+      "/Game/OldWestAssets/OldWestVol3/Shared/Textures/TX_Microdetail_01a_MASK"
+    ],
+    "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_Glass_RMA": [
+      "/Game/OldWestAssets/OldWestVol3/VOL3/Textures/TX_Lamp_01a_Glass_RMA"
+    ],
+    "/Game/SoulCity/Environment/Meshes/Building_Slum/SM_Slums_Window_01f": [
+      "/Game/SoulCity/Environment/Materials/Building/MI_Slums_Window2_NoLight",
+      "/Game/SoulCity/Environment/Materials/Building/M_Slums_Wood",
+      "/Game/SoulCity/Environment/Meshes/Building_Slum/SM_Slums_Window_01f"
+    ],
+    "/Game/SoulCity/Environment/Materials/Building/MI_Slums_Window2_NoLight": [
+      "/Game/SoulCity/Environment/Materials/Building/MI_Slums_Window2_NoLight",
+      "/Game/SoulCity/Environment/Materials/Building/M_Slums_Window2"
+    ],
+    "/Game/SoulCity/Environment/Materials/Building/M_Slums_Window2": [
+      "/Game/SoulCity/Environment/Materials/Building/M_Slums_Window2",
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Window_D",
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Window_M",
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Window_N"
+    ],
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Window_N": [
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Window_N"
+    ],
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Window_D": [
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Window_D"
+    ],
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Window_M": [
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Window_M"
+    ],
+    "/Game/SoulCity/Environment/Materials/Building/M_Slums_Wood": [
+      "/Game/SoulCity/Environment/Materials/Building/M_Slums_Wood",
+      "/Game/SoulCity/Environment/PhysicalMaterials/WoodLadder",
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Wood_D",
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Wood_N"
+    ],
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Wood_D": [
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Wood_D"
+    ],
+    "/Game/SoulCity/Environment/PhysicalMaterials/WoodLadder": [
+      "/Game/SoulCity/Environment/PhysicalMaterials/WoodLadder"
+    ],
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Wood_N": [
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Wood_N"
+    ],
+    "/Game/SoulCity/Environment/Meshes/Building_Slum/SM_Slums_Window_01a": [
+      "/Game/SoulCity/Environment/Materials/Building/MI_Slums_Metalwork",
+      "/Game/SoulCity/Environment/Materials/Building/MI_Slums_Window2_NoLight",
+      "/Game/SoulCity/Environment/Materials/Building/M_Slums_Wood",
+      "/Game/SoulCity/Environment/Meshes/Building_Slum/SM_Slums_Window_01a"
+    ],
+    "/Game/SoulCity/Environment/Materials/Building/MI_Slums_Metalwork": [
+      "/Game/SoulCity/Environment/Materials/Building/MI_Slums_Metalwork",
+      "/Game/SoulCity/Environment/Materials/Building/M_Slums_Metalwork"
+    ],
+    "/Game/SoulCity/Environment/Materials/Building/M_Slums_Metalwork": [
+      "/Game/SoulCity/Environment/Materials/Building/M_Slums_Metalwork",
+      "/Game/SoulCity/Environment/Materials/Functions/MF_Switch",
+      "/Game/SoulCity/Environment/Materials/Functions/MF_WET_RunningWater",
+      "/Game/SoulCity/Environment/Materials/Functions/MF_WorldAlignedPanner",
+      "/Game/SoulCity/Environment/Materials/MaterialLayers/MF_Slums_Metal",
+      "/Game/SoulCity/Environment/Materials/MaterialLayers/MF_Slums_Paint",
+      "/Game/SoulCity/Environment/Materials/MaterialLayers/MF_Slums_Rusted",
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Patina_Metal_D",
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_MetalTexture_M",
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_MetalTexture_N",
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Metal_Rust_03_D",
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Metal_Rust_03_N",
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_TilingMetal_D",
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_TilingMetal_n"
+    ],
+    "/Game/SoulCity/Environment/Materials/Functions/MF_WET_RunningWater": [
+      "/Game/SoulCity/Environment/Materials/Functions/MF_WET_RunningWater",
+      "/Game/SoulCity/Environment/Materials/Functions/MF_WorldAlignedPanner",
+      "/Game/SoulCity/Environment/Textures/Water/T_RainPuddleMask",
+      "/Game/SoulCity/Environment/Textures/Water/T_RainStreaming_N",
+      "/Game/SoulCity/Environment/Textures/Water/T_Soul_Water01_N"
+    ],
+    "/Game/SoulCity/Environment/Textures/Water/T_Soul_Water01_N": [
+      "/Game/SoulCity/Environment/Textures/Water/T_Soul_Water01_N"
+    ],
+    "/Game/SoulCity/Environment/Textures/Water/T_RainStreaming_N": [
+      "/Game/SoulCity/Environment/Textures/Water/T_RainStreaming_N"
+    ],
+    "/Game/SoulCity/Environment/Textures/Water/T_RainPuddleMask": [
+      "/Game/SoulCity/Environment/Textures/Water/T_RainPuddleMask"
+    ],
+    "/Game/SoulCity/Environment/Materials/MaterialLayers/MF_Slums_Rusted": [
+      "/Game/SoulCity/Environment/Materials/MaterialLayers/MF_Slums_Rusted",
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Metal_Rust_03_D",
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Metal_Rust_03_N"
+    ],
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Metal_Rust_03_D": [
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Metal_Rust_03_D"
+    ],
+    "/Game/SoulCity/Environment/Materials/Functions/MF_Switch": [
+      "/Game/SoulCity/Environment/Materials/Functions/MF_Switch"
+    ],
+    "/Game/SoulCity/Environment/Materials/Functions/MF_WorldAlignedPanner": [
+      "/Game/SoulCity/Environment/Materials/Functions/MF_WorldAlignedPanner"
+    ],
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_TilingMetal_n": [
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_TilingMetal_n"
+    ],
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_MetalTexture_N": [
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_MetalTexture_N"
+    ],
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Metal_Rust_03_N": [
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Metal_Rust_03_N"
+    ],
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Patina_Metal_D": [
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Patina_Metal_D"
+    ],
+    "/Game/SoulCity/Environment/Materials/MaterialLayers/MF_Slums_Paint": [
+      "/Game/SoulCity/Environment/Materials/MaterialLayers/MF_Slums_Paint",
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Metal_Scratches_02_D",
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Metal_Scratches_02_N",
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_TilingMetal_D",
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_TilingMetal_n"
+    ],
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Metal_Scratches_02_D": [
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Metal_Scratches_02_D"
+    ],
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Metal_Scratches_02_N": [
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_Metal_Scratches_02_N"
+    ],
+    "/Game/SoulCity/Environment/Materials/MaterialLayers/MF_Slums_Metal": [
+      "/Game/SoulCity/Environment/Materials/MaterialLayers/MF_Slums_Metal",
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Patina_Metal_D",
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_TilingMetal_n"
+    ],
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_MetalTexture_M": [
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_MetalTexture_M"
+    ],
+    "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_TilingMetal_D": [
+      "/Game/SoulCity/Environment/Textures/Building_Slum/T_Slums_TilingMetal_D"
+    ],
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_Double_01a": [
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Materials/MI_Door_Double_01a",
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_Double_01a"
+    ],
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Materials/MI_Door_Double_01a": [
+      "/Game/OldWestAssets/OldWestVol6/Shared/Materials/MM_MasterMaterial_01a",
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Materials/MI_Door_Double_01a",
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_Double_01a_ALB",
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_Double_01a_NRM",
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_Double_01a_RMA"
+    ],
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_Double_01a_ALB": [
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_Double_01a_ALB"
+    ],
+    "/Game/OldWestAssets/OldWestVol6/Shared/Materials/MM_MasterMaterial_01a": [
+      "/Game/OldWestAssets/OldWestVol5/Shared/Textures/TX_Fill_01_ALB",
+      "/Game/OldWestAssets/OldWestVol5/Shared/Textures/TX_Fill_01_NRM",
+      "/Game/OldWestAssets/OldWestVol5/Shared/Textures/TX_Fill_01_RMA",
+      "/Game/OldWestAssets/OldWestVol6/Shared/Materials/MF_Normal_Intensity_01a",
+      "/Game/OldWestAssets/OldWestVol6/Shared/Materials/MM_MasterMaterial_01a",
+      "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Fill_01_ALB",
+      "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Fill_01_NRM",
+      "/Game/OldWestAssets/OldWestVol6/Shared/Textures/TX_Fill_01_RMA"
+    ],
+    "/Game/OldWestAssets/OldWestVol6/Shared/Materials/MF_Normal_Intensity_01a": [
+      "/Game/OldWestAssets/OldWestVol6/Shared/Materials/MF_Normal_Intensity_01a"
+    ],
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_Double_01a_NRM": [
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_Double_01a_NRM"
+    ],
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_Double_01a_RMA": [
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_Double_01a_RMA"
+    ],
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c": [
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Materials/MI_Door_06a",
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c"
+    ],
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Materials/MI_Door_06a": [
+      "/Game/OldWestAssets/OldWestVol6/Shared/Materials/MM_MasterMaterial_01a",
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Materials/MI_Door_06a",
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_06a_ALB",
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_06a_NRM",
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_06a_RMA"
+    ],
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_06a_RMA": [
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_06a_RMA"
+    ],
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_06a_NRM": [
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_06a_NRM"
+    ],
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_06a_ALB": [
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_06a_ALB"
+    ],
+    "/Game/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06a": [
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Materials/MI_Door_06a",
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06a"
+    ],
+    "/Game/Esercitazioni/CasaFloresta/window_low": [
+      "/Game/Esercitazioni/CasaFloresta/DefaultMaterial",
+      "/Game/Esercitazioni/CasaFloresta/window_low",
+      "/Game/OldWestAssets/OldWestVol4/Materials/MM_Glass_01a"
+    ],
+    "/Game/Esercitazioni/CasaFloresta/DefaultMaterial": [
+      "/Game/Esercitazioni/CasaFloresta/DefaultMaterial",
+      "/Game/Esercitazioni/CasaFloresta/DefaultMaterial_albedo"
+    ],
+    "/Game/Esercitazioni/CasaFloresta/DefaultMaterial_albedo": [
+      "/Game/Esercitazioni/CasaFloresta/DefaultMaterial_albedo"
+    ],
+    "/Game/OldWestAssets/OldWestVol4/Materials/MM_Glass_01a": [
+      "/Game/OldWestAssets/OldWestVol4/Materials/MM_Glass_01a",
+      "/Game/OldWestAssets/OldWestVol4/Textures/TX_Fill_01_ALB",
+      "/Game/OldWestAssets/OldWestVol4/Textures/TX_Fill_01_NRM",
+      "/Game/OldWestAssets/OldWestVol4/Textures/TX_Fill_01_RMA",
+      "/Game/OldWestAssets/OldWestVol4/Textures/TX_Glass_01a_MASK"
+    ],
+    "/Game/OldWestAssets/OldWestVol4/Textures/TX_Fill_01_ALB": [
+      "/Game/OldWestAssets/OldWestVol4/Textures/TX_Fill_01_ALB"
+    ],
+    "/Game/OldWestAssets/OldWestVol4/Textures/TX_Glass_01a_MASK": [
+      "/Game/OldWestAssets/OldWestVol4/Textures/TX_Glass_01a_MASK"
+    ],
+    "/Game/OldWestAssets/OldWestVol4/Textures/TX_Fill_01_NRM": [
+      "/Game/OldWestAssets/OldWestVol4/Textures/TX_Fill_01_NRM"
+    ],
+    "/Game/OldWestAssets/OldWestVol4/Textures/TX_Fill_01_RMA": [
+      "/Game/OldWestAssets/OldWestVol4/Textures/TX_Fill_01_RMA"
+    ],
+    "/Game/Megascans/Surfaces/Painted_Cracked_Concrete_Wall_sionccva/MI_Painted_Cracked_Concrete_Wall_sionccva_2K": [
+      "/Game/MSPresets/M_MS_Surface_Material_VT/M_MS_Surface_Material_VT",
+      "/Game/Megascans/Surfaces/Painted_Cracked_Concrete_Wall_sionccva/MI_Painted_Cracked_Concrete_Wall_sionccva_2K",
+      "/Game/Megascans/Surfaces/Painted_Cracked_Concrete_Wall_sionccva/T_PaintedCrackedConcreteWall_sionccva_2K_ORDp",
+      "/Game/Megascans/Surfaces/Painted_Cracked_Concrete_Wall_sionccva/T_Painted_Cracked_Concrete_Wall_sionccva_2K_D",
+      "/Game/Megascans/Surfaces/Painted_Cracked_Concrete_Wall_sionccva/T_Painted_Cracked_Concrete_Wall_sionccva_2K_N"
+    ],
+    "/Game/Megascans/Surfaces/Painted_Cracked_Concrete_Wall_sionccva/T_PaintedCrackedConcreteWall_sionccva_2K_ORDp": [
+      "/Game/Megascans/Surfaces/Painted_Cracked_Concrete_Wall_sionccva/T_PaintedCrackedConcreteWall_sionccva_2K_ORDp"
+    ],
+    "/Game/Megascans/Surfaces/Painted_Cracked_Concrete_Wall_sionccva/T_Painted_Cracked_Concrete_Wall_sionccva_2K_N": [
+      "/Game/Megascans/Surfaces/Painted_Cracked_Concrete_Wall_sionccva/T_Painted_Cracked_Concrete_Wall_sionccva_2K_N"
+    ],
+    "/Game/Megascans/Surfaces/Painted_Cracked_Concrete_Wall_sionccva/T_Painted_Cracked_Concrete_Wall_sionccva_2K_D": [
+      "/Game/Megascans/Surfaces/Painted_Cracked_Concrete_Wall_sionccva/T_Painted_Cracked_Concrete_Wall_sionccva_2K_D"
+    ],
+    "/Game/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/MI_Mossy_Stone_Wall_ue4mcfelw_8K": [
+      "/Game/MSPresets/M_MS_Surface_Material/M_MS_Surface_Material",
+      "/Game/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/MI_Mossy_Stone_Wall_ue4mcfelw_8K",
+      "/Game/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/T_MossyStoneWall_ue4mcfelw_8K_ORDp",
+      "/Game/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/T_Mossy_Stone_Wall_ue4mcfelw_8K_D",
+      "/Game/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/T_Mossy_Stone_Wall_ue4mcfelw_8K_N"
+    ],
+    "/Game/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/T_MossyStoneWall_ue4mcfelw_8K_ORDp": [
+      "/Game/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/T_MossyStoneWall_ue4mcfelw_8K_ORDp"
+    ],
+    "/Game/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/T_Mossy_Stone_Wall_ue4mcfelw_8K_D": [
+      "/Game/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/T_Mossy_Stone_Wall_ue4mcfelw_8K_D"
+    ],
+    "/Game/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/T_Mossy_Stone_Wall_ue4mcfelw_8K_N": [
+      "/Game/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/T_Mossy_Stone_Wall_ue4mcfelw_8K_N"
+    ],
+    "/Game/Megascans/Surfaces/Damaged_Brick_Wall_Plaster_vcvodh0/MI_Damaged_Brick_Wall_Plaster_vcvodh0_4K": [
+      "/Game/MSPresets/M_MS_Surface_Material/M_MS_Surface_Material",
+      "/Game/Megascans/Surfaces/Damaged_Brick_Wall_Plaster_vcvodh0/MI_Damaged_Brick_Wall_Plaster_vcvodh0_4K",
+      "/Game/Megascans/Surfaces/Damaged_Brick_Wall_Plaster_vcvodh0/T_DamagedBrickWallPlaster_vcvodh0_4K_ORDp",
+      "/Game/Megascans/Surfaces/Damaged_Brick_Wall_Plaster_vcvodh0/T_Damaged_Brick_Wall_Plaster_vcvodh0_4K_D",
+      "/Game/Megascans/Surfaces/Damaged_Brick_Wall_Plaster_vcvodh0/T_Damaged_Brick_Wall_Plaster_vcvodh0_4K_N"
+    ],
+    "/Game/Megascans/Surfaces/Damaged_Brick_Wall_Plaster_vcvodh0/T_Damaged_Brick_Wall_Plaster_vcvodh0_4K_D": [
+      "/Game/Megascans/Surfaces/Damaged_Brick_Wall_Plaster_vcvodh0/T_Damaged_Brick_Wall_Plaster_vcvodh0_4K_D"
+    ],
+    "/Game/Megascans/Surfaces/Damaged_Brick_Wall_Plaster_vcvodh0/T_DamagedBrickWallPlaster_vcvodh0_4K_ORDp": [
+      "/Game/Megascans/Surfaces/Damaged_Brick_Wall_Plaster_vcvodh0/T_DamagedBrickWallPlaster_vcvodh0_4K_ORDp"
+    ],
+    "/Game/Megascans/Surfaces/Damaged_Brick_Wall_Plaster_vcvodh0/T_Damaged_Brick_Wall_Plaster_vcvodh0_4K_N": [
+      "/Game/Megascans/Surfaces/Damaged_Brick_Wall_Plaster_vcvodh0/T_Damaged_Brick_Wall_Plaster_vcvodh0_4K_N"
+    ],
+    "/Game/Megapack/Material/Yakohama/MI_Stucco_04": [
+      "/Game/Megapack/Material/Yakohama/MI_Stucco_04",
+      "/Game/Megapack/Material/Yakohama/M_Asphalt",
+      "/Game/Megapack/Textures/Yakohama/T_Asphalt_BC",
+      "/Game/Megapack/Textures/Yakohama/T_Asphalt_N",
+      "/Game/Megapack/Textures/Yakohama/T_Asphalt_ORM",
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_04_BC",
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_04_N",
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_04_ORM"
+    ],
+    "/Game/Megapack/Textures/Yakohama/T_Asphalt_N": [
+      "/Game/Megapack/Textures/Yakohama/T_Asphalt_N"
+    ],
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_04_N": [
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_04_N"
+    ],
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_04_ORM": [
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_04_ORM"
+    ],
+    "/Game/Megapack/Material/Yakohama/M_Asphalt": [
+      "/Game/Megapack/Material/Yakohama/M_Asphalt",
+      "/Game/Megapack/Textures/Yakohama/T_Asphalt_BC",
+      "/Game/Megapack/Textures/Yakohama/T_Asphalt_N",
+      "/Game/Megapack/Textures/Yakohama/T_Asphalt_ORM"
+    ],
+    "/Game/Megapack/Textures/Yakohama/T_Asphalt_ORM": [
+      "/Game/Megapack/Textures/Yakohama/T_Asphalt_ORM"
+    ],
+    "/Game/Megapack/Textures/Yakohama/T_Asphalt_BC": [
+      "/Game/Megapack/Textures/Yakohama/T_Asphalt_BC"
+    ],
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_04_BC": [
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_04_BC"
+    ],
+    "/Game/Megapack/Material/Yakohama/MI_Stucco_03": [
+      "/Game/Megapack/Material/Yakohama/MI_Stucco_03",
+      "/Game/Megapack/Material/Yakohama/M_Asphalt",
+      "/Game/Megapack/Textures/Yakohama/T_Asphalt_BC",
+      "/Game/Megapack/Textures/Yakohama/T_Asphalt_N",
+      "/Game/Megapack/Textures/Yakohama/T_Asphalt_ORM",
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_03_BC",
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_03_N",
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_03_ORM"
+    ],
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_03_N": [
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_03_N"
+    ],
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_03_BC": [
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_03_BC"
+    ],
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_03_ORM": [
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_03_ORM"
+    ],
+    "/Game/Megapack/Material/Yakohama/MI_Stucco_02": [
+      "/Game/Megapack/Material/Yakohama/MI_Stucco_02",
+      "/Game/Megapack/Material/Yakohama/M_Asphalt",
+      "/Game/Megapack/Textures/Yakohama/T_Asphalt_BC",
+      "/Game/Megapack/Textures/Yakohama/T_Asphalt_N",
+      "/Game/Megapack/Textures/Yakohama/T_Asphalt_ORM",
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_02_BC",
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_02_N",
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_02_ORM"
+    ],
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_02_BC": [
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_02_BC"
+    ],
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_02_ORM": [
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_02_ORM"
+    ],
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_02_N": [
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_02_N"
+    ],
+    "/Game/Megapack/Material/Yakohama/MI_Stucco_01": [
+      "/Game/Megapack/Material/Yakohama/MI_Stucco_01",
+      "/Game/Megapack/Material/Yakohama/M_Asphalt",
+      "/Game/Megapack/Textures/Yakohama/T_Asphalt_BC",
+      "/Game/Megapack/Textures/Yakohama/T_Asphalt_N",
+      "/Game/Megapack/Textures/Yakohama/T_Asphalt_ORM",
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_01_BC",
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_01_N",
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_01_ORM"
+    ],
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_01_N": [
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_01_N"
+    ],
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_01_ORM": [
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_01_ORM"
+    ],
+    "/Game/Megapack/Textures/Yakohama/T_Stucco_01_BC": [
+      "/Game/Megapack/Textures/Yakohama/T_Stucco_01_BC"
+    ],
+    "/Game/Megapack/Material/Yakohama/MI_StuccoPainted_02": [
+      "/Game/Megapack/Material/Yakohama/MI_StuccoPainted_02"
+    ]
+  }
+}

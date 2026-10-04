@@ -1,0 +1,57 @@
+{
+  "map": "/Game/Levels/Mazzarino80_PCG_Quartieri_Preview",
+  "phase": 3,
+  "started": 1790931759.700819,
+  "phase_started": 1790931760.5589194,
+  "status": "complete",
+  "sectors": [
+    {
+      "id": "Q001",
+      "lots": [
+        "1249068307",
+        "1249069200",
+        "1249069204",
+        "1249069205",
+        "1249069213",
+        "1249069235",
+        "1249069246",
+        "1249069271",
+        "1249069275",
+        "1249069276"
+      ],
+      "expected_instances": 17907,
+      "actual_instances": 17907,
+      "status": "complete",
+      "elapsed_seconds": 0.15
+    },
+    {
+      "id": "Q002",
+      "lots": [
+        "1249069219",
+        "1249069229",
+        "1249069286"
+      ],
+      "expected_instances": 3205,
+      "actual_instances": 3205,
+      "status": "complete",
+      "elapsed_seconds": 0.7
+    },
+    {
+      "id": "Q003",
+      "lots": [
+        "1249069202",
+        "1249069228",
+        "1249069237",
+        "1249069247",
+        "1249069287"
+      ],
+      "expected_instances": 15925,
+      "actual_instances": 15925,
+      "status": "complete",
+      "elapsed_seconds": 1.84
+    }
+  ],
+  "error": null,
+  "saved": false,
+  "elapsed_seconds": 2.7
+}

@@ -1,0 +1,34 @@
+{
+  "masters": [
+    "/Game/Mazzarino80/PCG/SurfaceMaster/M_M80_PCG_Surface.M_M80_PCG_Surface",
+    "/Game/Mazzarino80/PCG/SurfaceMaster/M_M80_PCG_Surface_VT.M_M80_PCG_Surface_VT"
+  ],
+  "instances": {
+    "Stone_0": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Stone_0.MI_M80_PCG_Stone_0",
+    "Stone_1": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Stone_1.MI_M80_PCG_Stone_1",
+    "StoneTrim": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_StoneTrim.MI_M80_PCG_StoneTrim",
+    "Plaster_0": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_0.MI_M80_PCG_Plaster_0",
+    "Plaster_1": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_1.MI_M80_PCG_Plaster_1",
+    "Plaster_2": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_2.MI_M80_PCG_Plaster_2",
+    "Plaster_3": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_3.MI_M80_PCG_Plaster_3",
+    "Plaster_4": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_4.MI_M80_PCG_Plaster_4",
+    "Plaster_5": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Plaster_5.MI_M80_PCG_Plaster_5",
+    "RoofSurface": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_RoofSurface.MI_M80_PCG_RoofSurface",
+    "Tile3D": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Tile3D.MI_M80_PCG_Tile3D",
+    "Terrace": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Terrace.MI_M80_PCG_Terrace",
+    "GutterStone": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_GutterStone.MI_M80_PCG_GutterStone",
+    "Wood_0": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Wood_0.MI_M80_PCG_Wood_0",
+    "Wood_1": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Wood_1.MI_M80_PCG_Wood_1",
+    "Wood_2": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Wood_2.MI_M80_PCG_Wood_2",
+    "Iron": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Iron.MI_M80_PCG_Iron",
+    "Glass": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Glass.MI_M80_PCG_Glass",
+    "Paving": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_Paving.MI_M80_PCG_Paving",
+    "BrickRed": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_BrickRed.MI_M80_PCG_BrickRed",
+    "BrickYellow": "/Game/Mazzarino80/PCG/SurfaceMaster/MI_M80_PCG_BrickYellow.MI_M80_PCG_BrickYellow"
+  },
+  "source_textures_are_virtual": {
+    "color": true,
+    "normal": true
+  },
+  "approved_level_edited": false
+}

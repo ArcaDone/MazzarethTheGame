@@ -1,0 +1,881 @@
+{
+  "map": "Mazzarino80_PCG_Quartieri_Batch01_FullPCG",
+  "houses": {
+    "1249054419": {
+      "pcg_location_cm": [
+        87659.935,
+        434.365,
+        17375.01
+      ],
+      "pcg_rotation": "<Struct 'Rotator' (0x00000243AC3FC740) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+      "pcg_scale": [
+        2.836,
+        2.892,
+        2.01
+      ],
+      "source_location_cm": [
+        87764.91,
+        665.685,
+        16870.01
+      ],
+      "source_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "roles": {
+        "doors": {
+          "expected": 1,
+          "matched": 1,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                87928.049878,
+                1310.634135,
+                16870.699396
+              ],
+              "nearest_actual_cm": [
+                87928.05,
+                1310.634,
+                16870.699
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "footprint_roof_surface": {
+          "expected": 1,
+          "matched": 1,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                87659.935,
+                434.365,
+                17880.009966621397
+              ],
+              "nearest_actual_cm": [
+                87659.935,
+                434.365,
+                17880.01
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "footprint_wall_surface": {
+          "expected": 1,
+          "matched": 1,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                87659.935,
+                434.365,
+                16870.01
+              ],
+              "nearest_actual_cm": [
+                87659.935,
+                434.365,
+                16870.01
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "masonry_details": {
+          "expected": 13,
+          "matched": 13,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                87961.971271,
+                1282.701038,
+                16910.01
+              ],
+              "nearest_actual_cm": [
+                87961.971,
+                1282.701,
+                16910.01
+              ],
+              "offset_cm": 0.0
+            },
+            {
+              "expected_cm": [
+                87964.340725,
+                1285.923721,
+                17200.676656
+              ],
+              "nearest_actual_cm": [
+                87964.341,
+                1285.924,
+                17200.677
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "metal_details": {
+          "expected": 34,
+          "matched": 34,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                88006.990894,
+                1343.932023,
+                17306.676656
+              ],
+              "nearest_actual_cm": [
+                88006.991,
+                1343.932,
+                17306.677
+              ],
+              "offset_cm": 0.0
+            },
+            {
+              "expected_cm": [
+                88006.990894,
+                1343.932023,
+                17218.676656
+              ],
+              "nearest_actual_cm": [
+                88006.991,
+                1343.932,
+                17218.677
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "rain_pipe_segment": {
+          "expected": 5,
+          "matched": 5,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                88060.7217,
+                1211.3367,
+                16974.1772
+              ],
+              "nearest_actual_cm": [
+                88060.722,
+                1211.337,
+                16974.177
+              ],
+              "offset_cm": 0.0
+            },
+            {
+              "expected_cm": [
+                88060.7217,
+                1211.3367,
+                17182.5116
+              ],
+              "nearest_actual_cm": [
+                88060.722,
+                1211.337,
+                17182.512
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "shutters": {
+          "expected": 44,
+          "matched": 44,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                88036.21118,
+                1236.805113,
+                17324.676656
+              ],
+              "nearest_actual_cm": [
+                88036.211,
+                1236.805,
+                17324.677
+              ],
+              "offset_cm": 0.0
+            },
+            {
+              "expected_cm": [
+                88038.580634,
+                1240.027796,
+                17226.676656
+              ],
+              "nearest_actual_cm": [
+                88038.581,
+                1240.028,
+                17226.677
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "window_backings": {
+          "expected": 2,
+          "matched": 2,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                87960.194181,
+                1280.284025,
+                17324.676656
+              ],
+              "nearest_actual_cm": [
+                87960.194,
+                1280.284,
+                17324.677
+              ],
+              "offset_cm": 0.0
+            },
+            {
+              "expected_cm": [
+                87960.194181,
+                1280.284025,
+                17703.343313
+              ],
+              "nearest_actual_cm": [
+                87960.194,
+                1280.284,
+                17703.343
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "windows": {
+          "expected": 2,
+          "matched": 2,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                87916.154224,
+                1304.793117,
+                17224.858268
+              ],
+              "nearest_actual_cm": [
+                87916.154,
+                1304.793,
+                17224.858
+              ],
+              "offset_cm": 0.0
+            },
+            {
+              "expected_cm": [
+                87916.154224,
+                1304.793117,
+                17639.82252
+              ],
+              "nearest_actual_cm": [
+                87916.154,
+                1304.793,
+                17639.823
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        }
+      }
+    },
+    "1249067196": {
+      "pcg_location_cm": [
+        73651.082,
+        3948.54,
+        17338.637
+      ],
+      "pcg_rotation": "<Struct 'Rotator' (0x00000243AC3FC740) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+      "pcg_scale": [
+        9.822,
+        8.975,
+        2.0
+      ],
+      "source_location_cm": [
+        73249.291,
+        4252.714,
+        17013.637
+      ],
+      "source_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "roles": {
+        "doors": {
+          "expected": 2,
+          "matched": 2,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                71571.960506,
+                7598.145174,
+                17014.326357
+              ],
+              "nearest_actual_cm": [
+                71571.961,
+                7598.145,
+                17014.326
+              ],
+              "offset_cm": 0.0
+            },
+            {
+              "expected_cm": [
+                70806.135506,
+                7785.895174,
+                17014.326357
+              ],
+              "nearest_actual_cm": [
+                70806.136,
+                7785.895,
+                17014.326
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "footprint_roof_surface": {
+          "expected": 1,
+          "matched": 1,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                73651.0823545,
+                3948.54,
+                17663.636961
+              ],
+              "nearest_actual_cm": [
+                73651.082,
+                3948.54,
+                17663.637
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "footprint_wall_surface": {
+          "expected": 1,
+          "matched": 1,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                73651.0823545,
+                3948.54,
+                17013.636961
+              ],
+              "nearest_actual_cm": [
+                73651.082,
+                3948.54,
+                17013.637
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "masonry_details": {
+          "expected": 1237,
+          "matched": 1237,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                72060.918413,
+                4476.983702,
+                17053.636961
+              ],
+              "nearest_actual_cm": [
+                72060.918,
+                4476.984,
+                17053.637
+              ],
+              "offset_cm": 0.0
+            },
+            {
+              "expected_cm": [
+                72059.657708,
+                4473.187569,
+                17332.636961
+              ],
+              "nearest_actual_cm": [
+                72059.658,
+                4473.188,
+                17332.637
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "metal_details": {
+          "expected": 3864,
+          "matched": 3864,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                72036.965014,
+                4404.857183,
+                17438.636961
+              ],
+              "nearest_actual_cm": [
+                72036.965,
+                4404.857,
+                17438.637
+              ],
+              "offset_cm": 0.0
+            },
+            {
+              "expected_cm": [
+                72036.965014,
+                4404.857183,
+                17350.636961
+              ],
+              "nearest_actual_cm": [
+                72036.965,
+                4404.857,
+                17350.637
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "rain_pipe_segment": {
+          "expected": 3,
+          "matched": 3,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                71859.3026,
+                7526.2474,
+                17117.8042
+              ],
+              "nearest_actual_cm": [
+                71859.303,
+                7526.247,
+                17117.804
+              ],
+              "offset_cm": 0.0
+            },
+            {
+              "expected_cm": [
+                71859.3026,
+                7526.2474,
+                17326.1386
+              ],
+              "nearest_actual_cm": [
+                71859.303,
+                7526.247,
+                17326.139
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "shutters": {
+          "expected": 4162,
+          "matched": 4162,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                71976.146296,
+                4497.760809,
+                17173.636961
+              ],
+              "nearest_actual_cm": [
+                71976.146,
+                4497.761,
+                17173.637
+              ],
+              "offset_cm": 0.0
+            },
+            {
+              "expected_cm": [
+                71974.885591,
+                4493.964676,
+                17115.636961
+              ],
+              "nearest_actual_cm": [
+                71974.886,
+                4493.965,
+                17115.637
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "window_backings": {
+          "expected": 250,
+          "matched": 250,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                72061.863942,
+                4479.830801,
+                17173.636961
+              ],
+              "nearest_actual_cm": [
+                72061.864,
+                4479.831,
+                17173.637
+              ],
+              "offset_cm": 0.0
+            },
+            {
+              "expected_cm": [
+                72061.863942,
+                4479.830801,
+                17456.636961
+              ],
+              "nearest_actual_cm": [
+                72061.864,
+                4479.831,
+                17456.637
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "windows": {
+          "expected": 250,
+          "matched": 250,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                72111.314258,
+                4470.090184,
+                17110.116168
+              ],
+              "nearest_actual_cm": [
+                72111.314,
+                4470.09,
+                17110.116
+              ],
+              "offset_cm": 0.0
+            },
+            {
+              "expected_cm": [
+                72111.314258,
+                4470.090184,
+                17356.818572
+              ],
+              "nearest_actual_cm": [
+                72111.314,
+                4470.09,
+                17356.819
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        }
+      }
+    },
+    "1249067205": {
+      "pcg_location_cm": [
+        65629.375,
+        3993.475,
+        17343.69
+      ],
+      "pcg_rotation": "<Struct 'Rotator' (0x00000243AC3FC740) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+      "pcg_scale": [
+        5.748,
+        3.94,
+        2.0
+      ],
+      "source_location_cm": [
+        65821.441,
+        4185.153,
+        16958.69
+      ],
+      "source_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "roles": {
+        "doors": {
+          "expected": 1,
+          "matched": 1,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                67313.260268,
+                5404.343227,
+                16959.379396
+              ],
+              "nearest_actual_cm": [
+                67313.26,
+                5404.343,
+                16959.379
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "facade_ivy": {
+          "expected": 1,
+          "matched": 1,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                66976.2217,
+                5356.1202,
+                17015.8301
+              ],
+              "nearest_actual_cm": [
+                66976.222,
+                5356.12,
+                17015.83
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "footprint_roof_surface": {
+          "expected": 1,
+          "matched": 1,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                65629.375,
+                3993.475,
+                17728.689980926512
+              ],
+              "nearest_actual_cm": [
+                65629.375,
+                3993.475,
+                17728.69
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "footprint_wall_surface": {
+          "expected": 1,
+          "matched": 1,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                65629.375,
+                3993.475,
+                16958.69
+              ],
+              "nearest_actual_cm": [
+                65629.375,
+                3993.475,
+                16958.69
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "masonry_details": {
+          "expected": 25,
+          "matched": 25,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                67357.114837,
+                5407.11734,
+                16998.69
+              ],
+              "nearest_actual_cm": [
+                67357.115,
+                5407.117,
+                16998.69
+              ],
+              "offset_cm": 0.0
+            },
+            {
+              "expected_cm": [
+                67356.643653,
+                5411.089492,
+                17337.69
+              ],
+              "nearest_actual_cm": [
+                67356.644,
+                5411.089,
+                17337.69
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "metal_details": {
+          "expected": 102,
+          "matched": 102,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                67348.162348,
+                5482.588215,
+                17443.69
+              ],
+              "nearest_actual_cm": [
+                67348.162,
+                5482.588,
+                17443.69
+              ],
+              "offset_cm": 0.0
+            },
+            {
+              "expected_cm": [
+                67348.162348,
+                5482.588215,
+                17355.69
+              ],
+              "nearest_actual_cm": [
+                67348.162,
+                5482.588,
+                17355.69
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "rain_pipe_segment": {
+          "expected": 4,
+          "matched": 4,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                67808.8129,
+                5461.7056,
+                17062.8572
+              ],
+              "nearest_actual_cm": [
+                67808.813,
+                5461.706,
+                17062.857
+              ],
+              "offset_cm": 0.0
+            },
+            {
+              "expected_cm": [
+                67808.8129,
+                5461.7056,
+                17271.1916
+              ],
+              "nearest_actual_cm": [
+                67808.813,
+                5461.706,
+                17271.192
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "window_backings": {
+          "expected": 5,
+          "matched": 5,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                67724.798225,
+                5447.71156,
+                17118.69
+              ],
+              "nearest_actual_cm": [
+                67724.798,
+                5447.712,
+                17118.69
+              ],
+              "offset_cm": 0.0
+            },
+            {
+              "expected_cm": [
+                66990.138225,
+                5360.564894,
+                17118.69
+              ],
+              "nearest_actual_cm": [
+                66990.138,
+                5360.565,
+                17118.69
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        },
+        "windows": {
+          "expected": 5,
+          "matched": 5,
+          "median_offset_cm": 0.0,
+          "max_offset_cm": 0.0,
+          "examples": [
+            {
+              "expected_cm": [
+                67675.893324,
+                5435.524515,
+                17055.169207
+              ],
+              "nearest_actual_cm": [
+                67675.893,
+                5435.525,
+                17055.169
+              ],
+              "offset_cm": 0.0
+            },
+            {
+              "expected_cm": [
+                66941.233324,
+                5348.377848,
+                17055.169207
+              ],
+              "nearest_actual_cm": [
+                66941.233,
+                5348.378,
+                17055.169
+              ],
+              "offset_cm": 0.0
+            }
+          ]
+        }
+      }
+    }
+  }
+}

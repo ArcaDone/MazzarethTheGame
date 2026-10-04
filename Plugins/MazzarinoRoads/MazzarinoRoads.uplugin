@@ -1,0 +1,12 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0",
+  "FriendlyName": "Mazzarino - Strade modificabili",
+  "Description": "Strade con spline, larghezza per punto e pavimentazione sostituibile.",
+  "Category": "World Building",
+  "CanContainContent": false,
+  "EnabledByDefault": true,
+  "Plugins": [{"Name":"ProceduralMeshComponent", "Enabled":true}, {"Name":"PCG", "Enabled":true}],
+  "Modules": [{"Name": "MazzarinoRoads", "Type": "Runtime", "LoadingPhase": "Default", "PlatformAllowList": ["Win64"]}]
+}

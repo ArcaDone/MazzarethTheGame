@@ -1,0 +1,171 @@
+{
+  "preview_map": "/Game/Levels/Mazzarino80_PCG_Quartieri_Preview",
+  "first_batch": [
+    {
+      "id": "Q001",
+      "source_folder": "Mazzarino80/Edifici/Isolato_campione",
+      "new_folder": "Mazzarino80/Quartieri_PCG/Q001",
+      "footprints": 14,
+      "approved_pcg_lots": [
+        "1249068307",
+        "1249069200",
+        "1249069204",
+        "1249069205",
+        "1249069213",
+        "1249069235",
+        "1249069246",
+        "1249069271",
+        "1249069275",
+        "1249069276"
+      ]
+    },
+    {
+      "id": "Q002",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_04_00",
+      "new_folder": "Mazzarino80/Quartieri_PCG/Q002",
+      "footprints": 53,
+      "approved_pcg_lots": [
+        "1249069219",
+        "1249069229",
+        "1249069286"
+      ]
+    },
+    {
+      "id": "Q003",
+      "source_folder": "Mazzarino80/Edifici/Centro_Corso/Settore_05_00",
+      "new_folder": "Mazzarino80/Quartieri_PCG/Q003",
+      "footprints": 18,
+      "approved_pcg_lots": [
+        "1249069202",
+        "1249069228",
+        "1249069237",
+        "1249069247",
+        "1249069287"
+      ]
+    }
+  ],
+  "total_footprints_in_map": 3216,
+  "approved_pcg_in_map": 18,
+  "created": [
+    {
+      "lot": "1249068307",
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249068307.PCG_Building_1249068307",
+      "actor": "BP_ProceduralBuilding_1249068307",
+      "folder": "Mazzarino80/Quartieri_PCG/Q001/Case_PCG_approvate"
+    },
+    {
+      "lot": "1249069200",
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069200.PCG_Building_1249069200",
+      "actor": "BP_ProceduralBuilding_1249069200",
+      "folder": "Mazzarino80/Quartieri_PCG/Q001/Case_PCG_approvate"
+    },
+    {
+      "lot": "1249069204",
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069204.PCG_Building_1249069204",
+      "actor": "BP_ProceduralBuilding_1249069204",
+      "folder": "Mazzarino80/Quartieri_PCG/Q001/Case_PCG_approvate"
+    },
+    {
+      "lot": "1249069205",
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069205.PCG_Building_1249069205",
+      "actor": "BP_ProceduralBuilding_1249069205",
+      "folder": "Mazzarino80/Quartieri_PCG/Q001/Case_PCG_approvate"
+    },
+    {
+      "lot": "1249069213",
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069213.PCG_Building_1249069213",
+      "actor": "BP_ProceduralBuilding_1249069213",
+      "folder": "Mazzarino80/Quartieri_PCG/Q001/Case_PCG_approvate"
+    },
+    {
+      "lot": "1249069235",
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069235.PCG_Building_1249069235",
+      "actor": "BP_ProceduralBuilding_1249069235",
+      "folder": "Mazzarino80/Quartieri_PCG/Q001/Case_PCG_approvate"
+    },
+    {
+      "lot": "1249069246",
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069246.PCG_Building_1249069246",
+      "actor": "BP_ProceduralBuilding_1249069246",
+      "folder": "Mazzarino80/Quartieri_PCG/Q001/Case_PCG_approvate"
+    },
+    {
+      "lot": "1249069271",
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069271.PCG_Building_1249069271",
+      "actor": "BP_ProceduralBuilding_1249069271",
+      "folder": "Mazzarino80/Quartieri_PCG/Q001/Case_PCG_approvate"
+    },
+    {
+      "lot": "1249069275",
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069275.PCG_Building_1249069275",
+      "actor": "BP_ProceduralBuilding_1249069275",
+      "folder": "Mazzarino80/Quartieri_PCG/Q001/Case_PCG_approvate"
+    },
+    {
+      "lot": "1249069276",
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069276.PCG_Building_1249069276",
+      "actor": "BP_ProceduralBuilding_1249069276",
+      "folder": "Mazzarino80/Quartieri_PCG/Q001/Case_PCG_approvate"
+    },
+    {
+      "lot": "1249069219",
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069219.PCG_Building_1249069219",
+      "actor": "BP_ProceduralBuilding_1249069219",
+      "folder": "Mazzarino80/Quartieri_PCG/Q002/Case_PCG_approvate"
+    },
+    {
+      "lot": "1249069229",
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069229.PCG_Building_1249069229",
+      "actor": "BP_ProceduralBuilding_1249069229",
+      "folder": "Mazzarino80/Quartieri_PCG/Q002/Case_PCG_approvate"
+    },
+    {
+      "lot": "1249069286",
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069286.PCG_Building_1249069286",
+      "actor": "BP_ProceduralBuilding_1249069286",
+      "folder": "Mazzarino80/Quartieri_PCG/Q002/Case_PCG_approvate"
+    },
+    {
+      "lot": "1249069202",
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069202.PCG_Building_1249069202",
+      "actor": "BP_ProceduralBuilding_1249069202",
+      "folder": "Mazzarino80/Quartieri_PCG/Q003/Case_PCG_approvate"
+    },
+    {
+      "lot": "1249069228",
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069228.PCG_Building_1249069228",
+      "actor": "BP_ProceduralBuilding_1249069228",
+      "folder": "Mazzarino80/Quartieri_PCG/Q003/Case_PCG_approvate"
+    },
+    {
+      "lot": "1249069237",
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069237.PCG_Building_1249069237",
+      "actor": "BP_ProceduralBuilding_1249069237",
+      "folder": "Mazzarino80/Quartieri_PCG/Q003/Case_PCG_approvate"
+    },
+    {
+      "lot": "1249069247",
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069247.PCG_Building_1249069247",
+      "actor": "BP_ProceduralBuilding_1249069247",
+      "folder": "Mazzarino80/Quartieri_PCG/Q003/Case_PCG_approvate"
+    },
+    {
+      "lot": "1249069287",
+      "graph": "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069287.PCG_Building_1249069287",
+      "actor": "BP_ProceduralBuilding_1249069287",
+      "folder": "Mazzarino80/Quartieri_PCG/Q003/Case_PCG_approvate"
+    }
+  ],
+  "protected_hashes_before": {
+    "sample": "fd4f48df29008d4f3765ba3ffded89d598ff03ac5835628f8b42279fb9bdf034",
+    "panorama": "980f6973d6fd5dfb7ae8b1bace63041f4d2d18d8a422a55f5e3363e4643a96e7"
+  },
+  "protected_hashes_after": {
+    "sample": "fd4f48df29008d4f3765ba3ffded89d598ff03ac5835628f8b42279fb9bdf034",
+    "panorama": "980f6973d6fd5dfb7ae8b1bace63041f4d2d18d8a422a55f5e3363e4643a96e7"
+  },
+  "source_maps_unchanged": true,
+  "remaining_footprints_converted_to_pcg": false,
+  "pcg_generation_may_be_async": true,
+  "errors": []
+}

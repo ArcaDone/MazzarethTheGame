@@ -1,0 +1,176 @@
+{
+  "Spline_StradaLavica": {
+    "/Game/Esercitazioni/Spline_StradaLavica": {
+      "bytes": 98034,
+      "dependencies": [
+        "/Game/Esercitazioni/Spline_StradaLavica",
+        "/Game/Migrated/Lavica_curved"
+      ],
+      "target_exists": false,
+      "same": false
+    },
+    "/Game/Migrated/Lavica_curved": {
+      "bytes": 26844,
+      "dependencies": [
+        "/Game/Migrated/Lavica_curved",
+        "/Game/Migrated/Materials/Material"
+      ],
+      "target_exists": true,
+      "same": false
+    },
+    "/Game/Migrated/Materials/Material": {
+      "bytes": 15402,
+      "dependencies": [
+        "/Game/Migrated/Materials/Material",
+        "/Game/Migrated/Normal2",
+        "/Game/Migrated/Test2_diffuse",
+        "/Game/Migrated/Test2_rough"
+      ],
+      "target_exists": true,
+      "same": false
+    },
+    "/Game/Migrated/Test2_rough": {
+      "bytes": 3928964,
+      "dependencies": [
+        "/Game/Migrated/Test2_rough"
+      ],
+      "target_exists": true,
+      "same": false
+    },
+    "/Game/Migrated/Test2_diffuse": {
+      "bytes": 9680685,
+      "dependencies": [
+        "/Game/Migrated/Test2_diffuse"
+      ],
+      "target_exists": true,
+      "same": false
+    },
+    "/Game/Migrated/Normal2": {
+      "bytes": 2749411,
+      "dependencies": [
+        "/Game/Migrated/Normal2"
+      ],
+      "target_exists": true,
+      "same": false
+    }
+  },
+  "Spline_StradaLavica_simple": {
+    "/Game/Esercitazioni/Spline_StradaLavica_simple": {
+      "bytes": 95958,
+      "dependencies": [
+        "/Game/Esercitazioni/Spline_StradaLavica_simple",
+        "/Game/Migrated/LowPoly"
+      ],
+      "target_exists": false,
+      "same": false
+    },
+    "/Game/Migrated/LowPoly": {
+      "bytes": 16724,
+      "dependencies": [
+        "/Game/Migrated/LowPoly",
+        "/Game/Migrated/Materials/Material"
+      ],
+      "target_exists": true,
+      "same": false
+    },
+    "/Game/Migrated/Materials/Material": {
+      "bytes": 15402,
+      "dependencies": [
+        "/Game/Migrated/Materials/Material",
+        "/Game/Migrated/Normal2",
+        "/Game/Migrated/Test2_diffuse",
+        "/Game/Migrated/Test2_rough"
+      ],
+      "target_exists": true,
+      "same": false
+    },
+    "/Game/Migrated/Test2_rough": {
+      "bytes": 3928964,
+      "dependencies": [
+        "/Game/Migrated/Test2_rough"
+      ],
+      "target_exists": true,
+      "same": false
+    },
+    "/Game/Migrated/Test2_diffuse": {
+      "bytes": 9680685,
+      "dependencies": [
+        "/Game/Migrated/Test2_diffuse"
+      ],
+      "target_exists": true,
+      "same": false
+    },
+    "/Game/Migrated/Normal2": {
+      "bytes": 2749411,
+      "dependencies": [
+        "/Game/Migrated/Normal2"
+      ],
+      "target_exists": true,
+      "same": false
+    }
+  },
+  "Spline_StradaSquared": {
+    "/Game/Esercitazioni/Spline_StradaSquared": {
+      "bytes": 97915,
+      "dependencies": [
+        "/Game/Esercitazioni/Pavers",
+        "/Game/Esercitazioni/Spline_StradaSquared"
+      ],
+      "target_exists": false,
+      "same": false
+    },
+    "/Game/Esercitazioni/Pavers": {
+      "bytes": 16543,
+      "dependencies": [
+        "/Game/Esercitazioni/Mattonelle",
+        "/Game/Esercitazioni/Pavers"
+      ],
+      "target_exists": false,
+      "same": false
+    },
+    "/Game/Esercitazioni/Mattonelle": {
+      "bytes": 12896,
+      "dependencies": [
+        "/Game/Esercitazioni/Mattonelle",
+        "/Game/MSPresets/M_MS_Surface_Material/M_MS_Surface_Material",
+        "/Game/Megascans/Surfaces/Concrete_Pavers_vl0fceco/T_ConcretePavers_vl0fceco_2K_ORDp",
+        "/Game/Megascans/Surfaces/Concrete_Pavers_vl0fceco/T_Concrete_Pavers_vl0fceco_2K_D",
+        "/Game/Megascans/Surfaces/Concrete_Pavers_vl0fceco/T_Concrete_Pavers_vl0fceco_2K_N"
+      ],
+      "target_exists": false,
+      "same": false
+    },
+    "/Game/Megascans/Surfaces/Concrete_Pavers_vl0fceco/T_Concrete_Pavers_vl0fceco_2K_N": {
+      "bytes": 20760713,
+      "dependencies": [
+        "/Game/Megascans/Surfaces/Concrete_Pavers_vl0fceco/T_Concrete_Pavers_vl0fceco_2K_N"
+      ],
+      "target_exists": true,
+      "same": false
+    },
+    "/Game/Megascans/Surfaces/Concrete_Pavers_vl0fceco/T_Concrete_Pavers_vl0fceco_2K_D": {
+      "bytes": 20569878,
+      "dependencies": [
+        "/Game/Megascans/Surfaces/Concrete_Pavers_vl0fceco/T_Concrete_Pavers_vl0fceco_2K_D"
+      ],
+      "target_exists": true,
+      "same": false
+    },
+    "/Game/Megascans/Surfaces/Concrete_Pavers_vl0fceco/T_ConcretePavers_vl0fceco_2K_ORDp": {
+      "bytes": 17172516,
+      "dependencies": [
+        "/Game/Megascans/Surfaces/Concrete_Pavers_vl0fceco/T_ConcretePavers_vl0fceco_2K_ORDp"
+      ],
+      "target_exists": true,
+      "same": false
+    },
+    "/Game/MSPresets/M_MS_Surface_Material/M_MS_Surface_Material": {
+      "bytes": 22430,
+      "dependencies": [
+        "/Game/MSPresets/M_MS_Surface_Material/M_MS_Surface_Material"
+      ],
+      "target_exists": true,
+      "same": false
+    }
+  }
+}

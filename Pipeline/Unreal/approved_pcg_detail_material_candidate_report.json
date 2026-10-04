@@ -1,0 +1,41 @@
+{
+  "source": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\BakedSource\\approved_modules.json",
+  "source_sha256": "a135af659ca514471e71e4f53c61063325de378863f2981eb540a2976cc1be59",
+  "candidate": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\Candidates\\approved_detail_material_v1.json",
+  "houses": 18,
+  "points": 37037,
+  "material_paths_before": 42,
+  "material_paths_after": 32,
+  "material_changes_by_stage": {
+    "Structure": 45,
+    "Facades": 25,
+    "Openings": 4647,
+    "Roofs": 28283,
+    "Details": 3939
+  },
+  "detail_mesh_swaps": [
+    {
+      "lot": "1249069237",
+      "stage": "Details",
+      "index": 361,
+      "old_mesh": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_A_01.SM_clothes_A_01",
+      "new_mesh": "/Game/Megapack/Meshes/Favela/Mannequin/SM_Clothes_01.SM_Clothes_01"
+    },
+    {
+      "lot": "1249069237",
+      "stage": "Details",
+      "index": 362,
+      "old_mesh": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_A_01.SM_clothes_A_01",
+      "new_mesh": "/Game/Megapack/Meshes/Favela/Mannequin/SM_Clothes_01.SM_Clothes_01"
+    },
+    {
+      "lot": "1249069237",
+      "stage": "Details",
+      "index": 363,
+      "old_mesh": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_A_01.SM_clothes_A_01",
+      "new_mesh": "/Game/Megapack/Meshes/Favela/Mannequin/SM_Clothes_01.SM_Clothes_01"
+    }
+  ],
+  "protected_geometry_changes": [],
+  "sample_map_edited": false
+}

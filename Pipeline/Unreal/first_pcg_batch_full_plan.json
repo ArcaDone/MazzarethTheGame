@@ -1,0 +1,2225 @@
+{
+  "houses": {
+    "1249054419": {
+      "district": "Q003",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249054419.obj",
+        "center_xy_cm": [
+          87659.935,
+          434.365
+        ],
+        "base_z_cm": 16870.01,
+        "faces": 13,
+        "height_cm": 1009.9999666213989,
+        "area_cm2": 1692980.157800004
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249054419.obj",
+        "triangles": 66,
+        "vertices": 172,
+        "area_cm2": 1692980.157800004,
+        "center_xy_cm": [
+          87659.935,
+          434.365
+        ],
+        "roof_base_z_cm": 17880.009966621397
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 13,
+        "Openings": 49,
+        "Roofs": 1,
+        "Details": 39
+      }
+    },
+    "1249054423": {
+      "district": "Q003",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249054423.obj",
+        "center_xy_cm": [
+          87971.915,
+          2290.685
+        ],
+        "base_z_cm": 16879.02,
+        "faces": 16,
+        "height_cm": 1009.9999666213989,
+        "area_cm2": 6497955.573350027
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249054423.obj",
+        "triangles": 86,
+        "vertices": 226,
+        "area_cm2": 6497955.573350027,
+        "center_xy_cm": [
+          87971.915,
+          2290.685
+        ],
+        "roof_base_z_cm": 17889.0199666214
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 14,
+        "Openings": 57,
+        "Roofs": 1,
+        "Details": 138
+      }
+    },
+    "1249067196": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249067196.obj",
+        "center_xy_cm": [
+          73651.0823545,
+          3948.54
+        ],
+        "base_z_cm": 17013.636961,
+        "faces": 40,
+        "height_cm": 650.0,
+        "area_cm2": 30757402.859605283
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249067196.obj",
+        "triangles": 156,
+        "vertices": 388,
+        "area_cm2": 30757402.859605283,
+        "center_xy_cm": [
+          73651.0823545,
+          3948.54
+        ],
+        "roof_base_z_cm": 17663.636961
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 1237,
+        "Openings": 4664,
+        "Roofs": 1,
+        "Details": 3867
+      }
+    },
+    "1249067205": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249067205.obj",
+        "center_xy_cm": [
+          65629.375,
+          3993.475
+        ],
+        "base_z_cm": 16958.69,
+        "faces": 12,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 5701481.645500004
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249067205.obj",
+        "triangles": 52,
+        "vertices": 132,
+        "area_cm2": 5701481.645500004,
+        "center_xy_cm": [
+          65629.375,
+          3993.475
+        ],
+        "roof_base_z_cm": 17728.689980926512
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 25,
+        "Openings": 11,
+        "Roofs": 1,
+        "Details": 107
+      }
+    },
+    "1249067206": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249067206.obj",
+        "center_xy_cm": [
+          69591.91,
+          2561.51
+        ],
+        "base_z_cm": 17566.34,
+        "faces": 10,
+        "height_cm": 890.0000095367432,
+        "area_cm2": 892148.27465
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249067206.obj",
+        "triangles": 48,
+        "vertices": 124,
+        "area_cm2": 892148.27465,
+        "center_xy_cm": [
+          69591.91,
+          2561.51
+        ],
+        "roof_base_z_cm": 18456.340009536743
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 13,
+        "Openings": 49,
+        "Roofs": 1,
+        "Details": 42
+      }
+    },
+    "1249067208": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249067208.obj",
+        "center_xy_cm": [
+          60130.465,
+          3765.1099999999997
+        ],
+        "base_z_cm": 17062.96,
+        "faces": 11,
+        "height_cm": 650.0,
+        "area_cm2": 2240513.346000001
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249067208.obj",
+        "triangles": 40,
+        "vertices": 98,
+        "area_cm2": 2240513.346000001,
+        "center_xy_cm": [
+          60130.465,
+          3765.1099999999997
+        ],
+        "roof_base_z_cm": 17712.96
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 41,
+        "Openings": 149,
+        "Roofs": 1,
+        "Details": 102
+      }
+    },
+    "1249067209": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249067209.obj",
+        "center_xy_cm": [
+          68481.315,
+          281.43500000000006
+        ],
+        "base_z_cm": 17606.68,
+        "faces": 22,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 5303163.175250012
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249067209.obj",
+        "triangles": 84,
+        "vertices": 208,
+        "area_cm2": 5303163.175250012,
+        "center_xy_cm": [
+          68481.315,
+          281.43500000000006
+        ],
+        "roof_base_z_cm": 18376.679980926514
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 23,
+        "Openings": 53,
+        "Roofs": 1,
+        "Details": 39
+      }
+    },
+    "1249067216": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249067216.obj",
+        "center_xy_cm": [
+          67816.16,
+          261.67
+        ],
+        "base_z_cm": 17716.78,
+        "faces": 7,
+        "height_cm": 650.0,
+        "area_cm2": 477223.0095000081
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249067216.obj",
+        "triangles": 32,
+        "vertices": 82,
+        "area_cm2": 477223.0095000081,
+        "center_xy_cm": [
+          67816.16,
+          261.67
+        ],
+        "roof_base_z_cm": 18366.78
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 8,
+        "Openings": 29,
+        "Roofs": 1,
+        "Details": 37
+      }
+    },
+    "1249067217": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249067217.obj",
+        "center_xy_cm": [
+          67853.86,
+          3067.435
+        ],
+        "base_z_cm": 17388.68,
+        "faces": 11,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 835230.4652999789
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249067217.obj",
+        "triangles": 56,
+        "vertices": 146,
+        "area_cm2": 835230.4652999789,
+        "center_xy_cm": [
+          67853.86,
+          3067.435
+        ],
+        "roof_base_z_cm": 18158.679980926514
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 26,
+        "Openings": 11,
+        "Roofs": 1,
+        "Details": 73
+      }
+    },
+    "1249067223": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249067223.obj",
+        "center_xy_cm": [
+          62012.775,
+          3633.27
+        ],
+        "base_z_cm": 17036.36,
+        "faces": 6,
+        "height_cm": 1300.0,
+        "area_cm2": 1191152.051900044
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249067223.obj",
+        "triangles": 20,
+        "vertices": 48,
+        "area_cm2": 1191152.051900044,
+        "center_xy_cm": [
+          62012.775,
+          3633.27
+        ],
+        "roof_base_z_cm": 18336.36
+      },
+      "floors": 4,
+      "stages": {
+        "Structure": 1,
+        "Facades": 20,
+        "Openings": 77,
+        "Roofs": 1,
+        "Details": 73
+      }
+    },
+    "1249067225": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249067225.obj",
+        "center_xy_cm": [
+          61352.51,
+          651.73
+        ],
+        "base_z_cm": 17447.37,
+        "faces": 7,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 843369.6086500064
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249067225.obj",
+        "triangles": 30,
+        "vertices": 76,
+        "area_cm2": 843369.6086500064,
+        "center_xy_cm": [
+          61352.51,
+          651.73
+        ],
+        "roof_base_z_cm": 18217.369980926513
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 8,
+        "Openings": 3,
+        "Roofs": 1,
+        "Details": 39
+      }
+    },
+    "1249067229": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249067229.obj",
+        "center_xy_cm": [
+          59992.715,
+          612.6999999999999
+        ],
+        "base_z_cm": 17429.47,
+        "faces": 6,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 1020213.8374000043
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249067229.obj",
+        "triangles": 20,
+        "vertices": 48,
+        "area_cm2": 1020213.8374000043,
+        "center_xy_cm": [
+          59992.715,
+          612.6999999999999
+        ],
+        "roof_base_z_cm": 18199.469980926515
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 21,
+        "Openings": 45,
+        "Roofs": 1,
+        "Details": 38
+      }
+    },
+    "1249067232": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249067232.obj",
+        "center_xy_cm": [
+          61488.28,
+          3712.51
+        ],
+        "base_z_cm": 17142.54,
+        "faces": 4,
+        "height_cm": 650.0,
+        "area_cm2": 239230.46940000355
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249067232.obj",
+        "triangles": 16,
+        "vertices": 40,
+        "area_cm2": 239230.46940000355,
+        "center_xy_cm": [
+          61488.28,
+          3712.51
+        ],
+        "roof_base_z_cm": 17792.54
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 8,
+        "Openings": 29,
+        "Roofs": 1,
+        "Details": 36
+      }
+    },
+    "1249067242": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249067242.obj",
+        "center_xy_cm": [
+          64635.399999999994,
+          1636.6899999999998
+        ],
+        "base_z_cm": 16976.29,
+        "faces": 23,
+        "height_cm": 1300.0,
+        "area_cm2": 15730125.482100021
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249067242.obj",
+        "triangles": 88,
+        "vertices": 218,
+        "area_cm2": 15730125.482100021,
+        "center_xy_cm": [
+          64635.399999999994,
+          1636.6899999999998
+        ],
+        "roof_base_z_cm": 18276.29
+      },
+      "floors": 4,
+      "stages": {
+        "Structure": 1,
+        "Facades": 20,
+        "Openings": 77,
+        "Roofs": 1,
+        "Details": 73
+      }
+    },
+    "1249067262": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249067262.obj",
+        "center_xy_cm": [
+          67966.42,
+          2906.7799999999997
+        ],
+        "base_z_cm": 17518.87,
+        "faces": 3,
+        "height_cm": 890.0000095367432,
+        "area_cm2": 6319.722000002861
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249067262.obj",
+        "triangles": 10,
+        "vertices": 24,
+        "area_cm2": 6319.722000002861,
+        "center_xy_cm": [
+          67966.42,
+          2906.7799999999997
+        ],
+        "roof_base_z_cm": 18408.870009536742
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 13,
+        "Openings": 49,
+        "Roofs": 1,
+        "Details": 38
+      }
+    },
+    "1249067265": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249067265.obj",
+        "center_xy_cm": [
+          69789.76,
+          769.8000000000001
+        ],
+        "base_z_cm": 17724.67,
+        "faces": 7,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 595696.6873000003
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249067265.obj",
+        "triangles": 32,
+        "vertices": 82,
+        "area_cm2": 595696.6873000003,
+        "center_xy_cm": [
+          69789.76,
+          769.8000000000001
+        ],
+        "roof_base_z_cm": 18494.669980926512
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 26,
+        "Openings": 73,
+        "Roofs": 1,
+        "Details": 71
+      }
+    },
+    "1249067267": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249067267.obj",
+        "center_xy_cm": [
+          62374.06,
+          670.695
+        ],
+        "base_z_cm": 17509.08,
+        "faces": 4,
+        "height_cm": 1300.0,
+        "area_cm2": 387603.14520000666
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249067267.obj",
+        "triangles": 12,
+        "vertices": 28,
+        "area_cm2": 387603.14520000666,
+        "center_xy_cm": [
+          62374.06,
+          670.695
+        ],
+        "roof_base_z_cm": 18809.08
+      },
+      "floors": 4,
+      "stages": {
+        "Structure": 1,
+        "Facades": 42,
+        "Openings": 193,
+        "Roofs": 1,
+        "Details": 140
+      }
+    },
+    "1249067277": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249067277.obj",
+        "center_xy_cm": [
+          61262.380000000005,
+          3261.46
+        ],
+        "base_z_cm": 17041.3,
+        "faces": 13,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 1792021.2822000086
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249067277.obj",
+        "triangles": 54,
+        "vertices": 136,
+        "area_cm2": 1792021.2822000086,
+        "center_xy_cm": [
+          61262.380000000005,
+          3261.46
+        ],
+        "roof_base_z_cm": 17811.299980926513
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 21,
+        "Openings": 45,
+        "Roofs": 1,
+        "Details": 38
+      }
+    },
+    "1249068301": {
+      "district": "Q003",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249068301.obj",
+        "center_xy_cm": [
+          85492.955,
+          14601.595000000001
+        ],
+        "base_z_cm": 16534.16,
+        "faces": 6,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 2519821.7275500298
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249068301.obj",
+        "triangles": 26,
+        "vertices": 66,
+        "area_cm2": 2519821.7275500298,
+        "center_xy_cm": [
+          85492.955,
+          14601.595000000001
+        ],
+        "roof_base_z_cm": 17304.159980926514
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 20,
+        "Openings": 53,
+        "Roofs": 1,
+        "Details": 39
+      }
+    },
+    "1249068302": {
+      "district": "Q003",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249068302.obj",
+        "center_xy_cm": [
+          89514.78,
+          8266.395
+        ],
+        "base_z_cm": 16551.53,
+        "faces": 4,
+        "height_cm": 890.0000095367432,
+        "area_cm2": 347184.25324994326
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249068302.obj",
+        "triangles": 12,
+        "vertices": 28,
+        "area_cm2": 347184.25324994326,
+        "center_xy_cm": [
+          89514.78,
+          8266.395
+        ],
+        "roof_base_z_cm": 17441.530009536742
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 14,
+        "Openings": 5,
+        "Roofs": 1,
+        "Details": 42
+      }
+    },
+    "1249068303": {
+      "district": "Q003",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249068303.obj",
+        "center_xy_cm": [
+          89859.13500000001,
+          10165.855
+        ],
+        "base_z_cm": 16503.55,
+        "faces": 4,
+        "height_cm": 1009.9999666213989,
+        "area_cm2": 814324.8984499574
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249068303.obj",
+        "triangles": 12,
+        "vertices": 28,
+        "area_cm2": 814324.8984499574,
+        "center_xy_cm": [
+          89859.13500000001,
+          10165.855
+        ],
+        "roof_base_z_cm": 17513.5499666214
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 62,
+        "Openings": 220,
+        "Roofs": 1,
+        "Details": 203
+      }
+    },
+    "1249068304": {
+      "district": "Q003",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249068304.obj",
+        "center_xy_cm": [
+          89632.42,
+          9265.985
+        ],
+        "base_z_cm": 16517.13,
+        "faces": 5,
+        "height_cm": 650.0,
+        "area_cm2": 1591874.0671499968
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249068304.obj",
+        "triangles": 22,
+        "vertices": 56,
+        "area_cm2": 1591874.0671499968,
+        "center_xy_cm": [
+          89632.42,
+          9265.985
+        ],
+        "roof_base_z_cm": 17167.13
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 20,
+        "Openings": 89,
+        "Roofs": 1,
+        "Details": 38
+      }
+    },
+    "1249068305": {
+      "district": "Q003",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249068305.obj",
+        "center_xy_cm": [
+          87931.25,
+          10728.04
+        ],
+        "base_z_cm": 16549.55,
+        "faces": 4,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 1054088.401200056
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249068305.obj",
+        "triangles": 16,
+        "vertices": 40,
+        "area_cm2": 1054088.401200056,
+        "center_xy_cm": [
+          87931.25,
+          10728.04
+        ],
+        "roof_base_z_cm": 17319.549980926513
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 20,
+        "Openings": 45,
+        "Roofs": 1,
+        "Details": 43
+      }
+    },
+    "1249068306": {
+      "district": "Q003",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249068306.obj",
+        "center_xy_cm": [
+          86947.675,
+          12782.83
+        ],
+        "base_z_cm": 16452.61,
+        "faces": 6,
+        "height_cm": 890.0000095367432,
+        "area_cm2": 4592817.187400043
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249068306.obj",
+        "triangles": 28,
+        "vertices": 72,
+        "area_cm2": 4592817.187400043,
+        "center_xy_cm": [
+          86947.675,
+          12782.83
+        ],
+        "roof_base_z_cm": 17342.610009536744
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 156,
+        "Openings": 597,
+        "Roofs": 1,
+        "Details": 533
+      }
+    },
+    "1249068312": {
+      "district": "Q003",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249068312.obj",
+        "center_xy_cm": [
+          80345.70999999999,
+          703.27
+        ],
+        "base_z_cm": 17015.6,
+        "faces": 7,
+        "height_cm": 650.0,
+        "area_cm2": 1120768.0435499959
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249068312.obj",
+        "triangles": 24,
+        "vertices": 58,
+        "area_cm2": 1120768.0435499959,
+        "center_xy_cm": [
+          80345.70999999999,
+          703.27
+        ],
+        "roof_base_z_cm": 17665.6
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 9,
+        "Openings": 29,
+        "Roofs": 1,
+        "Details": 36
+      }
+    },
+    "1249068315": {
+      "district": "Q003",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249068315.obj",
+        "center_xy_cm": [
+          78875.375,
+          287.76
+        ],
+        "base_z_cm": 17144.43,
+        "faces": 10,
+        "height_cm": 1009.9999666213989,
+        "area_cm2": 3441614.7461499963
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249068315.obj",
+        "triangles": 42,
+        "vertices": 106,
+        "area_cm2": 3441614.7461499963,
+        "center_xy_cm": [
+          78875.375,
+          287.76
+        ],
+        "roof_base_z_cm": 18154.4299666214
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 14,
+        "Openings": 57,
+        "Roofs": 1,
+        "Details": 71
+      }
+    },
+    "1249068327": {
+      "district": "Q003",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249068327.obj",
+        "center_xy_cm": [
+          80546.82,
+          977.1
+        ],
+        "base_z_cm": 17032.46,
+        "faces": 4,
+        "height_cm": 1009.9999666213989,
+        "area_cm2": 768821.0455999821
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249068327.obj",
+        "triangles": 12,
+        "vertices": 28,
+        "area_cm2": 768821.0455999821,
+        "center_xy_cm": [
+          80546.82,
+          977.1
+        ],
+        "roof_base_z_cm": 18042.459966621398
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 32,
+        "Openings": 145,
+        "Roofs": 1,
+        "Details": 104
+      }
+    },
+    "1249068337": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249068337.obj",
+        "center_xy_cm": [
+          71625.26000000001,
+          -126.12500000000006
+        ],
+        "base_z_cm": 17810.01,
+        "faces": 9,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 2691470.4381500036
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249068337.obj",
+        "triangles": 32,
+        "vertices": 78,
+        "area_cm2": 2691470.4381500036,
+        "center_xy_cm": [
+          71625.26000000001,
+          -126.12500000000006
+        ],
+        "roof_base_z_cm": 18580.009980926512
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 21,
+        "Openings": 53,
+        "Roofs": 1,
+        "Details": 39
+      }
+    },
+    "1249068343": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249068343.obj",
+        "center_xy_cm": [
+          72142.405,
+          343.955
+        ],
+        "base_z_cm": 17835.85,
+        "faces": 6,
+        "height_cm": 1009.9999666213989,
+        "area_cm2": 721754.8321499992
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249068343.obj",
+        "triangles": 28,
+        "vertices": 72,
+        "area_cm2": 721754.8321499992,
+        "center_xy_cm": [
+          72142.405,
+          343.955
+        ],
+        "roof_base_z_cm": 18845.849966621397
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 78,
+        "Openings": 272,
+        "Roofs": 1,
+        "Details": 270
+      }
+    },
+    "1249069191": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249069191.obj",
+        "center_xy_cm": [
+          70705.135,
+          14984.11
+        ],
+        "base_z_cm": 15939.16,
+        "faces": 19,
+        "height_cm": 1009.9999666213989,
+        "area_cm2": 3519149.491999805
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249069191.obj",
+        "triangles": 72,
+        "vertices": 178,
+        "area_cm2": 3519149.491999805,
+        "center_xy_cm": [
+          70705.135,
+          14984.11
+        ],
+        "roof_base_z_cm": 16949.1599666214
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 14,
+        "Openings": 5,
+        "Roofs": 1,
+        "Details": 38
+      }
+    },
+    "1249069211": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249069211.obj",
+        "center_xy_cm": [
+          70426.24,
+          12781.150000000001
+        ],
+        "base_z_cm": 16270.02,
+        "faces": 8,
+        "height_cm": 1009.9999666213989,
+        "area_cm2": 890603.7438499928
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249069211.obj",
+        "triangles": 28,
+        "vertices": 68,
+        "area_cm2": 890603.7438499928,
+        "center_xy_cm": [
+          70426.24,
+          12781.150000000001
+        ],
+        "roof_base_z_cm": 17280.0199666214
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 43,
+        "Openings": 17,
+        "Roofs": 1,
+        "Details": 142
+      }
+    },
+    "1249069239": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249069239.obj",
+        "center_xy_cm": [
+          71961.745,
+          14890.91
+        ],
+        "base_z_cm": 16047.72,
+        "faces": 13,
+        "height_cm": 1009.9999666213989,
+        "area_cm2": 1041534.7727998495
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249069239.obj",
+        "triangles": 64,
+        "vertices": 166,
+        "area_cm2": 1041534.7727998495,
+        "center_xy_cm": [
+          71961.745,
+          14890.91
+        ],
+        "roof_base_z_cm": 17057.7199666214
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 13,
+        "Openings": 5,
+        "Roofs": 1,
+        "Details": 38
+      }
+    },
+    "1249069241": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249069241.obj",
+        "center_xy_cm": [
+          72468.59,
+          13755.555
+        ],
+        "base_z_cm": 16183.23,
+        "faces": 8,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 1101311.18475008
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249069241.obj",
+        "triangles": 28,
+        "vertices": 68,
+        "area_cm2": 1101311.18475008,
+        "center_xy_cm": [
+          72468.59,
+          13755.555
+        ],
+        "roof_base_z_cm": 16953.229980926513
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 23,
+        "Openings": 90,
+        "Roofs": 1,
+        "Details": 40
+      }
+    },
+    "1249069252": {
+      "district": "Q003",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249069252.obj",
+        "center_xy_cm": [
+          81514.195,
+          15012.065
+        ],
+        "base_z_cm": 16876.68,
+        "faces": 6,
+        "height_cm": 650.0,
+        "area_cm2": 499691.8290001154
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249069252.obj",
+        "triangles": 20,
+        "vertices": 48,
+        "area_cm2": 499691.8290001154,
+        "center_xy_cm": [
+          81514.195,
+          15012.065
+        ],
+        "roof_base_z_cm": 17526.68
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 22,
+        "Openings": 97,
+        "Roofs": 1,
+        "Details": 70
+      }
+    },
+    "1249069253": {
+      "district": "Q001",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249069253.obj",
+        "center_xy_cm": [
+          71486.845,
+          11266.154999999999
+        ],
+        "base_z_cm": 16394.19,
+        "faces": 6,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 2290488.528450012
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249069253.obj",
+        "triangles": 26,
+        "vertices": 66,
+        "area_cm2": 2290488.528450012,
+        "center_xy_cm": [
+          71486.845,
+          11266.154999999999
+        ],
+        "roof_base_z_cm": 17164.189980926512
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 20,
+        "Openings": 89,
+        "Roofs": 1,
+        "Details": 40
+      }
+    },
+    "1249069267": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249069267.obj",
+        "center_xy_cm": [
+          70611.775,
+          13557.939999999999
+        ],
+        "base_z_cm": 16190.33,
+        "faces": 14,
+        "height_cm": 1009.9999666213989,
+        "area_cm2": 1530010.7122501135
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249069267.obj",
+        "triangles": 52,
+        "vertices": 128,
+        "area_cm2": 1530010.7122501135,
+        "center_xy_cm": [
+          70611.775,
+          13557.939999999999
+        ],
+        "roof_base_z_cm": 17200.3299666214
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 17,
+        "Openings": 6,
+        "Roofs": 1,
+        "Details": 68
+      }
+    },
+    "1249071118": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249071118.obj",
+        "center_xy_cm": [
+          67325.19,
+          8098.6900000000005
+        ],
+        "base_z_cm": 16845.38,
+        "faces": 7,
+        "height_cm": 890.0000095367432,
+        "area_cm2": 931345.5517999828
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249071118.obj",
+        "triangles": 28,
+        "vertices": 70,
+        "area_cm2": 931345.5517999828,
+        "center_xy_cm": [
+          67325.19,
+          8098.6900000000005
+        ],
+        "roof_base_z_cm": 17735.380009536744
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 41,
+        "Openings": 193,
+        "Roofs": 1,
+        "Details": 142
+      }
+    },
+    "1249071121": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249071121.obj",
+        "center_xy_cm": [
+          64661.979999999996,
+          7071.1900000000005
+        ],
+        "base_z_cm": 16800.32,
+        "faces": 6,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 834103.1888000071
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249071121.obj",
+        "triangles": 26,
+        "vertices": 66,
+        "area_cm2": 834103.1888000071,
+        "center_xy_cm": [
+          64661.979999999996,
+          7071.1900000000005
+        ],
+        "roof_base_z_cm": 17570.319980926513
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 8,
+        "Openings": 3,
+        "Roofs": 1,
+        "Details": 40
+      }
+    },
+    "1249071125": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249071125.obj",
+        "center_xy_cm": [
+          61264.455,
+          6203.4400000000005
+        ],
+        "base_z_cm": 16774.93,
+        "faces": 19,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 3090532.8601500094
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249071125.obj",
+        "triangles": 72,
+        "vertices": 178,
+        "area_cm2": 3090532.8601500094,
+        "center_xy_cm": [
+          61264.455,
+          6203.4400000000005
+        ],
+        "roof_base_z_cm": 17544.929980926514
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 8,
+        "Openings": 3,
+        "Roofs": 1,
+        "Details": 4
+      }
+    },
+    "1249071132": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249071132.obj",
+        "center_xy_cm": [
+          64042.86,
+          8453.650000000001
+        ],
+        "base_z_cm": 16733.42,
+        "faces": 28,
+        "height_cm": 650.0,
+        "area_cm2": 6740090.037150055
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249071132.obj",
+        "triangles": 142,
+        "vertices": 370,
+        "area_cm2": 6740090.037150055,
+        "center_xy_cm": [
+          64042.86,
+          8453.650000000001
+        ],
+        "roof_base_z_cm": 17383.42
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 26,
+        "Openings": 91,
+        "Roofs": 1,
+        "Details": 65
+      }
+    },
+    "1249071138": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249071138.obj",
+        "center_xy_cm": [
+          60736.89,
+          6438.625
+        ],
+        "base_z_cm": 16832.6,
+        "faces": 8,
+        "height_cm": 890.0000095367432,
+        "area_cm2": 836182.6008999944
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249071138.obj",
+        "triangles": 36,
+        "vertices": 92,
+        "area_cm2": 836182.6008999944,
+        "center_xy_cm": [
+          60736.89,
+          6438.625
+        ],
+        "roof_base_z_cm": 17722.60000953674
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 14,
+        "Openings": 57,
+        "Roofs": 1,
+        "Details": 67
+      }
+    },
+    "1249071140": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249071140.obj",
+        "center_xy_cm": [
+          67378.38500000001,
+          7102.755
+        ],
+        "base_z_cm": 16824.92,
+        "faces": 29,
+        "height_cm": 650.0,
+        "area_cm2": 7222238.7379000485
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249071140.obj",
+        "triangles": 112,
+        "vertices": 278,
+        "area_cm2": 7222238.7379000485,
+        "center_xy_cm": [
+          67378.38500000001,
+          7102.755
+        ],
+        "roof_base_z_cm": 17474.92
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 23,
+        "Openings": 53,
+        "Roofs": 1,
+        "Details": 72
+      }
+    },
+    "1249071149": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249071149.obj",
+        "center_xy_cm": [
+          63234.845,
+          7742.625
+        ],
+        "base_z_cm": 16760.99,
+        "faces": 10,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 1103139.7915999293
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249071149.obj",
+        "triangles": 36,
+        "vertices": 88,
+        "area_cm2": 1103139.7915999293,
+        "center_xy_cm": [
+          63234.845,
+          7742.625
+        ],
+        "roof_base_z_cm": 17530.989980926515
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 23,
+        "Openings": 9,
+        "Roofs": 1,
+        "Details": 43
+      }
+    },
+    "1249071153": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249071153.obj",
+        "center_xy_cm": [
+          61430.83,
+          7625.2699999999995
+        ],
+        "base_z_cm": 16749.88,
+        "faces": 15,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 2903018.891599983
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249071153.obj",
+        "triangles": 76,
+        "vertices": 198,
+        "area_cm2": 2903018.891599983,
+        "center_xy_cm": [
+          61430.83,
+          7625.2699999999995
+        ],
+        "roof_base_z_cm": 17519.879980926515
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 22,
+        "Openings": 9,
+        "Roofs": 1,
+        "Details": 67
+      }
+    },
+    "1249082254": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249082254.obj",
+        "center_xy_cm": [
+          63802.83,
+          10647.275
+        ],
+        "base_z_cm": 16612.61,
+        "faces": 7,
+        "height_cm": 890.0000095367432,
+        "area_cm2": 1337688.9284499884
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249082254.obj",
+        "triangles": 24,
+        "vertices": 58,
+        "area_cm2": 1337688.9284499884,
+        "center_xy_cm": [
+          63802.83,
+          10647.275
+        ],
+        "roof_base_z_cm": 17502.610009536744
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 14,
+        "Openings": 49,
+        "Roofs": 1,
+        "Details": 42
+      }
+    },
+    "1249082257": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249082257.obj",
+        "center_xy_cm": [
+          64175.815,
+          11857.130000000001
+        ],
+        "base_z_cm": 16486.89,
+        "faces": 6,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 1751627.1444000006
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249082257.obj",
+        "triangles": 24,
+        "vertices": 60,
+        "area_cm2": 1751627.1444000006,
+        "center_xy_cm": [
+          64175.815,
+          11857.130000000001
+        ],
+        "roof_base_z_cm": 17256.889980926513
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 26,
+        "Openings": 117,
+        "Roofs": 1,
+        "Details": 80
+      }
+    },
+    "1249082258": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249082258.obj",
+        "center_xy_cm": [
+          67793.0,
+          9594.59
+        ],
+        "base_z_cm": 16634.51,
+        "faces": 6,
+        "height_cm": 890.0000095367432,
+        "area_cm2": 1715586.765300095
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249082258.obj",
+        "triangles": 20,
+        "vertices": 48,
+        "area_cm2": 1715586.765300095,
+        "center_xy_cm": [
+          67793.0,
+          9594.59
+        ],
+        "roof_base_z_cm": 17524.51000953674
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 69,
+        "Openings": 257,
+        "Roofs": 1,
+        "Details": 223
+      }
+    },
+    "1249082259": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249082259.obj",
+        "center_xy_cm": [
+          67403.04000000001,
+          12217.95
+        ],
+        "base_z_cm": 16268.34,
+        "faces": 15,
+        "height_cm": 1009.9999666213989,
+        "area_cm2": 3492210.5563500524
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249082259.obj",
+        "triangles": 56,
+        "vertices": 138,
+        "area_cm2": 3492210.5563500524,
+        "center_xy_cm": [
+          67403.04000000001,
+          12217.95
+        ],
+        "roof_base_z_cm": 17278.3399666214
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 31,
+        "Openings": 75,
+        "Roofs": 1,
+        "Details": 73
+      }
+    },
+    "1249082261": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249082261.obj",
+        "center_xy_cm": [
+          66107.44,
+          10388.404999999999
+        ],
+        "base_z_cm": 16478.23,
+        "faces": 27,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 5541471.557599843
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249082261.obj",
+        "triangles": 132,
+        "vertices": 342,
+        "area_cm2": 5541471.557599843,
+        "center_xy_cm": [
+          66107.44,
+          10388.404999999999
+        ],
+        "roof_base_z_cm": 17248.229980926513
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 40,
+        "Openings": 141,
+        "Roofs": 1,
+        "Details": 99
+      }
+    },
+    "1249082264": {
+      "district": "Q001",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249082264.obj",
+        "center_xy_cm": [
+          69692.26000000001,
+          9954.05
+        ],
+        "base_z_cm": 16487.88,
+        "faces": 20,
+        "height_cm": 650.0,
+        "area_cm2": 4674127.776000023
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249082264.obj",
+        "triangles": 76,
+        "vertices": 188,
+        "area_cm2": 4674127.776000023,
+        "center_xy_cm": [
+          69692.26000000001,
+          9954.05
+        ],
+        "roof_base_z_cm": 17137.88
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 53,
+        "Openings": 22,
+        "Roofs": 1,
+        "Details": 128
+      }
+    },
+    "1249082269": {
+      "district": "Q001",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249082269.obj",
+        "center_xy_cm": [
+          69688.995,
+          10753.895
+        ],
+        "base_z_cm": 16499.26,
+        "faces": 8,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 872662.4711999297
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249082269.obj",
+        "triangles": 28,
+        "vertices": 68,
+        "area_cm2": 872662.4711999297,
+        "center_xy_cm": [
+          69688.995,
+          10753.895
+        ],
+        "roof_base_z_cm": 17269.259980926512
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 26,
+        "Openings": 117,
+        "Roofs": 1,
+        "Details": 80
+      }
+    },
+    "1249082271": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249082271.obj",
+        "center_xy_cm": [
+          67694.105,
+          14731.11
+        ],
+        "base_z_cm": 15988.98,
+        "faces": 14,
+        "height_cm": 1009.9999666213989,
+        "area_cm2": 4609712.5649498105
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249082271.obj",
+        "triangles": 60,
+        "vertices": 152,
+        "area_cm2": 4609712.5649498105,
+        "center_xy_cm": [
+          67694.105,
+          14731.11
+        ],
+        "roof_base_z_cm": 16998.9799666214
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 55,
+        "Openings": 235,
+        "Roofs": 1,
+        "Details": 253
+      }
+    },
+    "1249082273": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249082273.obj",
+        "center_xy_cm": [
+          66354.75,
+          12997.65
+        ],
+        "base_z_cm": 16268.34,
+        "faces": 5,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 839879.1690999866
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249082273.obj",
+        "triangles": 16,
+        "vertices": 38,
+        "area_cm2": 839879.1690999866,
+        "center_xy_cm": [
+          66354.75,
+          12997.65
+        ],
+        "roof_base_z_cm": 17038.339980926514
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 22,
+        "Openings": 97,
+        "Roofs": 1,
+        "Details": 68
+      }
+    },
+    "1249082275": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249082275.obj",
+        "center_xy_cm": [
+          65361.28,
+          9934.89
+        ],
+        "base_z_cm": 16665.78,
+        "faces": 4,
+        "height_cm": 1009.9999666213989,
+        "area_cm2": 693083.0262500048
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249082275.obj",
+        "triangles": 16,
+        "vertices": 40,
+        "area_cm2": 693083.0262500048,
+        "center_xy_cm": [
+          65361.28,
+          9934.89
+        ],
+        "roof_base_z_cm": 17675.779966621398
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 40,
+        "Openings": 141,
+        "Roofs": 1,
+        "Details": 154
+      }
+    },
+    "1249082283": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249082283.obj",
+        "center_xy_cm": [
+          67042.37,
+          13945.885
+        ],
+        "base_z_cm": 16162.22,
+        "faces": 7,
+        "height_cm": 1009.9999666213989,
+        "area_cm2": 429309.2000000477
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249082283.obj",
+        "triangles": 24,
+        "vertices": 58,
+        "area_cm2": 429309.2000000477,
+        "center_xy_cm": [
+          67042.37,
+          13945.885
+        ],
+        "roof_base_z_cm": 17172.2199666214
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 58,
+        "Openings": 219,
+        "Roofs": 1,
+        "Details": 175
+      }
+    },
+    "1249082286": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249082286.obj",
+        "center_xy_cm": [
+          64961.26,
+          13419.630000000001
+        ],
+        "base_z_cm": 16297.31,
+        "faces": 4,
+        "height_cm": 890.0000095367432,
+        "area_cm2": 2656025.419249952
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249082286.obj",
+        "triangles": 16,
+        "vertices": 40,
+        "area_cm2": 2656025.419249952,
+        "center_xy_cm": [
+          64961.26,
+          13419.630000000001
+        ],
+        "roof_base_z_cm": 17187.31000953674
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 91,
+        "Openings": 322,
+        "Roofs": 1,
+        "Details": 311
+      }
+    },
+    "1249082289": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249082289.obj",
+        "center_xy_cm": [
+          71984.725,
+          8627.84
+        ],
+        "base_z_cm": 16820.77,
+        "faces": 4,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 349950.30380004644
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249082289.obj",
+        "triangles": 12,
+        "vertices": 28,
+        "area_cm2": 349950.30380004644,
+        "center_xy_cm": [
+          71984.725,
+          8627.84
+        ],
+        "roof_base_z_cm": 17590.769980926514
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 21,
+        "Openings": 89,
+        "Roofs": 1,
+        "Details": 39
+      }
+    },
+    "1249082294": {
+      "district": "Q001",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249082294.obj",
+        "center_xy_cm": [
+          69574.77,
+          11398.154999999999
+        ],
+        "base_z_cm": 16356.67,
+        "faces": 14,
+        "height_cm": 890.0000095367432,
+        "area_cm2": 1337265.8331999779
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249082294.obj",
+        "triangles": 52,
+        "vertices": 128,
+        "area_cm2": 1337265.8331999779,
+        "center_xy_cm": [
+          69574.77,
+          11398.154999999999
+        ],
+        "roof_base_z_cm": 17246.67000953674
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 43,
+        "Openings": 131,
+        "Roofs": 1,
+        "Details": 130
+      }
+    },
+    "1249082983": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249082983.obj",
+        "center_xy_cm": [
+          61202.175,
+          11526.685000000001
+        ],
+        "base_z_cm": 16580.34,
+        "faces": 11,
+        "height_cm": 1009.9999666213989,
+        "area_cm2": 2661907.8912500143
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249082983.obj",
+        "triangles": 40,
+        "vertices": 98,
+        "area_cm2": 2661907.8912500143,
+        "center_xy_cm": [
+          61202.175,
+          11526.685000000001
+        ],
+        "roof_base_z_cm": 17590.3399666214
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 16,
+        "Openings": 49,
+        "Roofs": 1,
+        "Details": 40
+      }
+    },
+    "1249083019": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249083019.obj",
+        "center_xy_cm": [
+          61041.28,
+          13082.51
+        ],
+        "base_z_cm": 16545.07,
+        "faces": 10,
+        "height_cm": 1009.9999666213989,
+        "area_cm2": 2542738.714500129
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249083019.obj",
+        "triangles": 46,
+        "vertices": 118,
+        "area_cm2": 2542738.714500129,
+        "center_xy_cm": [
+          61041.28,
+          13082.51
+        ],
+        "roof_base_z_cm": 17555.0699666214
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 13,
+        "Openings": 49,
+        "Roofs": 1,
+        "Details": 40
+      }
+    },
+    "1249083051": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249083051.obj",
+        "center_xy_cm": [
+          61288.145000000004,
+          14877.494999999999
+        ],
+        "base_z_cm": 16482.52,
+        "faces": 9,
+        "height_cm": 1009.9999666213989,
+        "area_cm2": 1395036.119899869
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249083051.obj",
+        "triangles": 40,
+        "vertices": 102,
+        "area_cm2": 1395036.119899869,
+        "center_xy_cm": [
+          61288.145000000004,
+          14877.494999999999
+        ],
+        "roof_base_z_cm": 17492.5199666214
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 15,
+        "Openings": 57,
+        "Roofs": 1,
+        "Details": 67
+      }
+    },
+    "1249083059": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249083059.obj",
+        "center_xy_cm": [
+          61398.524999999994,
+          10769.605
+        ],
+        "base_z_cm": 16635.76,
+        "faces": 6,
+        "height_cm": 1009.9999666213989,
+        "area_cm2": 1325628.4074500203
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249083059.obj",
+        "triangles": 26,
+        "vertices": 66,
+        "area_cm2": 1325628.4074500203,
+        "center_xy_cm": [
+          61398.524999999994,
+          10769.605
+        ],
+        "roof_base_z_cm": 17645.759966621397
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 41,
+        "Openings": 131,
+        "Roofs": 1,
+        "Details": 154
+      }
+    },
+    "1249083070": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249083070.obj",
+        "center_xy_cm": [
+          62448.055,
+          13615.67
+        ],
+        "base_z_cm": 16435.05,
+        "faces": 12,
+        "height_cm": 890.0000095367432,
+        "area_cm2": 2446510.7560998797
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249083070.obj",
+        "triangles": 58,
+        "vertices": 150,
+        "area_cm2": 2446510.7560998797,
+        "center_xy_cm": [
+          62448.055,
+          13615.67
+        ],
+        "roof_base_z_cm": 17325.050009536742
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 64,
+        "Openings": 266,
+        "Roofs": 1,
+        "Details": 210
+      }
+    },
+    "1249083089": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249083089.obj",
+        "center_xy_cm": [
+          62358.04,
+          14676.685
+        ],
+        "base_z_cm": 16464.58,
+        "faces": 5,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 411511.2719500065
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249083089.obj",
+        "triangles": 22,
+        "vertices": 56,
+        "area_cm2": 411511.2719500065,
+        "center_xy_cm": [
+          62358.04,
+          14676.685
+        ],
+        "roof_base_z_cm": 17234.579980926515
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 20,
+        "Openings": 9,
+        "Roofs": 1,
+        "Details": 43
+      }
+    },
+    "1249832594": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_1249832594.obj",
+        "center_xy_cm": [
+          64115.729999999996,
+          7466.535
+        ],
+        "base_z_cm": 16786.23,
+        "faces": 5,
+        "height_cm": 890.0000095367432,
+        "area_cm2": 204287.5069000125
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_1249832594.obj",
+        "triangles": 16,
+        "vertices": 38,
+        "area_cm2": 204287.5069000125,
+        "center_xy_cm": [
+          64115.729999999996,
+          7466.535
+        ],
+        "roof_base_z_cm": 17676.230009536743
+      },
+      "floors": 3,
+      "stages": {
+        "Structure": 1,
+        "Facades": 15,
+        "Openings": 57,
+        "Roofs": 1,
+        "Details": 68
+      }
+    },
+    "372573548": {
+      "district": "Q002",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_372573548.obj",
+        "center_xy_cm": [
+          69205.205,
+          3513.745
+        ],
+        "base_z_cm": 17327.83,
+        "faces": 22,
+        "height_cm": 650.0,
+        "area_cm2": 5760359.37074998
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_372573548.obj",
+        "triangles": 84,
+        "vertices": 208,
+        "area_cm2": 5760359.37074998,
+        "center_xy_cm": [
+          69205.205,
+          3513.745
+        ],
+        "roof_base_z_cm": 17977.83
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 11,
+        "Openings": 30,
+        "Roofs": 1,
+        "Details": 49
+      }
+    },
+    "372573577": {
+      "district": "Q003",
+      "wall": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Walls_372573577.obj",
+        "center_xy_cm": [
+          85462.445,
+          8636.66
+        ],
+        "base_z_cm": 16609.31,
+        "faces": 14,
+        "height_cm": 769.9999809265137,
+        "area_cm2": 13883994.676700026
+      },
+      "roof": {
+        "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource\\SM_PCG_Roof_372573577.obj",
+        "triangles": 52,
+        "vertices": 128,
+        "area_cm2": 13883994.676700026,
+        "center_xy_cm": [
+          85462.445,
+          8636.66
+        ],
+        "roof_base_z_cm": 17379.309980926515
+      },
+      "floors": 2,
+      "stages": {
+        "Structure": 1,
+        "Facades": 810,
+        "Openings": 2959,
+        "Roofs": 1,
+        "Details": 1866
+      }
+    }
+  },
+  "counts": {
+    "Structure": 67,
+    "Facades": 3936,
+    "Openings": 13574,
+    "Roofs": 67,
+    "Details": 11736
+  },
+  "errors": [],
+  "total_points": 29380,
+  "mesh_files": 134
+}

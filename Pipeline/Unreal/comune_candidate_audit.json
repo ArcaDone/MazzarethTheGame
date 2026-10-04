@@ -1,0 +1,598 @@
+{
+  "project": "Comune UE5.4",
+  "candidates": [
+    {
+      "group": "clothes_middleeast",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_A_01",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        2.7,
+        57.3,
+        83.9
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_clothes_03.MI_clothes_03"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/MI_clothes_03"
+      ]
+    },
+    {
+      "group": "clothes_middleeast",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_A_02",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        13.1,
+        81.8,
+        52.2
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_clothes_03.MI_clothes_03"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/MI_clothes_03"
+      ]
+    },
+    {
+      "group": "clothes_middleeast",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_A_03",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        22.1,
+        61.7,
+        66.3
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_clothes_03.MI_clothes_03"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/MI_clothes_03"
+      ]
+    },
+    {
+      "group": "clothes_middleeast",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_A_04",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        21.7,
+        110.3,
+        72.6
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_clothes_03.MI_clothes_03"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/MI_clothes_03"
+      ]
+    },
+    {
+      "group": "clothes_middleeast",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_A_05",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        21.6,
+        69.1,
+        55.0
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_clothes_03.MI_clothes_03"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/MI_clothes_03"
+      ]
+    },
+    {
+      "group": "clothes_middleeast",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_B_01",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        12.8,
+        45.8,
+        75.8
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_clothes_04.MI_clothes_04"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/MI_clothes_04"
+      ]
+    },
+    {
+      "group": "clothes_middleeast",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_B_02",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        52.3,
+        177.7,
+        53.8
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_clothes_04.MI_clothes_04"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/MI_clothes_04"
+      ]
+    },
+    {
+      "group": "clothes_middleeast",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_B_03",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        15.4,
+        92.5,
+        38.0
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_clothes_04.MI_clothes_04"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/MI_clothes_04"
+      ]
+    },
+    {
+      "group": "clothes_favela",
+      "path": "/Game/Megapack/Meshes/Favela/Mannequin/SM_Clothes_01",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        55.6,
+        77.9,
+        117.4
+      ],
+      "materials": [
+        "/Game/Megapack/Material/Favela/MI_Clothes_01.MI_Clothes_01"
+      ],
+      "lods": 3,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/Favela/MI_Clothes_01"
+      ]
+    },
+    {
+      "group": "clothes_favela",
+      "path": "/Game/Megapack/Meshes/Favela/Mannequin/SM_Clothes_02",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        55.6,
+        77.9,
+        117.4
+      ],
+      "materials": [
+        "/Game/Megapack/Material/Favela/MI_Clothes_02.MI_Clothes_02"
+      ],
+      "lods": 3,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/Favela/MI_Clothes_02"
+      ]
+    },
+    {
+      "group": "clothes_favela",
+      "path": "/Game/Megapack/Meshes/Favela/Mannequin/SM_Clothes_03",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        46.4,
+        89.1,
+        181.2
+      ],
+      "materials": [
+        "/Game/Megapack/Material/Favela/MI_Clothes_0.MI_Clothes_0"
+      ],
+      "lods": 3,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/Favela/MI_Clothes_0"
+      ]
+    },
+    {
+      "group": "stairs",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_stairs_01",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        411.0,
+        436.2,
+        362.9
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_stairs_01.MI_stairs_01"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/MI_stairs_01"
+      ]
+    },
+    {
+      "group": "old_stairs",
+      "path": "/Game/Megapack/Meshes/Favela/SM_Old_Stair_01",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        151.8,
+        353.9,
+        152.4
+      ],
+      "materials": [
+        "/Game/Megapack/Material/Favela/MI_Old_Stair_01.MI_Old_Stair_01"
+      ],
+      "lods": 3,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/Favela/MI_Old_Stair_01"
+      ]
+    },
+    {
+      "group": "old_stairs",
+      "path": "/Game/Megapack/Meshes/Favela/SM_Old_Stair_02",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        151.8,
+        353.9,
+        152.4
+      ],
+      "materials": [
+        "/Game/Megapack/Material/Favela/MI_Old_Stair_01.MI_Old_Stair_01"
+      ],
+      "lods": 3,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/Favela/MI_Old_Stair_01"
+      ]
+    },
+    {
+      "group": "pipes_middleeast",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_Water_Pipe_01",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        2262.1,
+        2664.3,
+        1564.1
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/M_Water_Pipe_01.M_Water_Pipe_01"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/M_Water_Pipe_01"
+      ]
+    },
+    {
+      "group": "pipes_favela",
+      "path": "/Game/Megapack/Meshes/Favela/SM_Rain_Pipe_01",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        15.2,
+        30.4,
+        208.3
+      ],
+      "materials": [
+        "/Game/Megapack/Material/Favela/MI_Pipe_01.MI_Pipe_01"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/Favela/MI_Pipe_01"
+      ]
+    },
+    {
+      "group": "awnings",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_awning_01",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        147.9,
+        437.7,
+        126.2
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_awning_cloth_02.MI_awning_cloth_02"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/MI_awning_cloth_02"
+      ]
+    },
+    {
+      "group": "awnings",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_awning_base_01",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        136.3,
+        419.2,
+        123.0
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_wood_blue.MI_wood_blue"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/MI_wood_blue"
+      ]
+    },
+    {
+      "group": "awnings",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_awning_cloth_01",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        147.9,
+        437.7,
+        126.2
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_awning_cloth_01.MI_awning_cloth_01"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/MI_awning_cloth_01"
+      ]
+    },
+    {
+      "group": "railings_middleeast",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_balcony_01",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        563.6,
+        663.6,
+        100.0
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_wall_07.MI_wall_07"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/MI_wall_07"
+      ]
+    },
+    {
+      "group": "railings_middleeast",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_balcony_02",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        219.1,
+        703.5,
+        113.4
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_balcony_03.MI_balcony_03"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/MI_balcony_03"
+      ]
+    },
+    {
+      "group": "railings_middleeast",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_metal_fence_01",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        6.0,
+        134.0,
+        117.5
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_Windows_grill_01.MI_Windows_grill_01"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/MI_Windows_grill_01"
+      ]
+    },
+    {
+      "group": "railings_middleeast",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_Windows_grill_01",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        314.3,
+        11.6,
+        238.7
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_Windows_grill_01.MI_Windows_grill_01"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/MI_Windows_grill_01"
+      ]
+    },
+    {
+      "group": "railings_middleeast",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_Windows_grill_02",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        314.3,
+        11.6,
+        238.7
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_Windows_grill_01.MI_Windows_grill_01"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/MI_Windows_grill_01"
+      ]
+    },
+    {
+      "group": "railings_favela",
+      "path": "/Game/Megapack/Meshes/Favela/SM_Metal_Fence_01",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        39.8,
+        211.2,
+        449.3
+      ],
+      "materials": [
+        "/Game/Megapack/Material/Favela/MI_Pipe_01.MI_Pipe_01",
+        "/Game/Megapack/Material/Favela/M_Grid_01.M_Grid_01"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/Favela/M_Grid_01",
+        "/Game/Megapack/Material/Favela/MI_Pipe_01"
+      ]
+    },
+    {
+      "group": "railings_favela",
+      "path": "/Game/Megapack/Meshes/Favela/SM_Metal_Fence_02",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        6.9,
+        211.5,
+        148.0
+      ],
+      "materials": [
+        "/Game/Megapack/Material/Favela/MI_Pipe_01.MI_Pipe_01",
+        "/Game/Megapack/Material/Favela/M_Grid_01.M_Grid_01"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/Favela/M_Grid_01",
+        "/Game/Megapack/Material/Favela/MI_Pipe_01"
+      ]
+    },
+    {
+      "group": "wood",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_wooden_beams_01",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        25.3,
+        737.6,
+        23.7
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_wood_01.MI_wood_01"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/MI_wood_01"
+      ]
+    },
+    {
+      "group": "wood",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_wooden_beams_02",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        25.3,
+        737.6,
+        23.7
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_wood_blue.MI_wood_blue"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/MI_wood_blue"
+      ]
+    },
+    {
+      "group": "wood",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_wooden_beams_03",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        25.3,
+        737.6,
+        23.7
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_wood_green.MI_wood_green"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/MI_wood_green"
+      ]
+    },
+    {
+      "group": "wood",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_wooden_beams_04",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        25.3,
+        737.6,
+        34.3
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_wood_green.MI_wood_green"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/MI_wood_green"
+      ]
+    },
+    {
+      "group": "wood",
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_wooden_beams_05",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        25.3,
+        737.6,
+        34.3
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_wooden_beam_01.MI_wooden_beam_01"
+      ],
+      "lods": 1,
+      "mesh_stat_error": "'StaticMesh' object has no attribute 'get_num_vertices'",
+      "dependencies": [
+        "/Game/Megapack/Material/MiddleEast/MI_wooden_beam_01"
+      ]
+    }
+  ]
+}

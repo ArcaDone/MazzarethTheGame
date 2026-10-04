@@ -1,0 +1,31 @@
+{
+  "level": "/Game/Mazzarino80/ReuseKit/Maps/L_ReuseKit_QA",
+  "actor_count": 24,
+  "stages": [
+    "QA STYLE_01 Facades - lotto 1249069204",
+    "QA STYLE_01 Openings - lotto 1249069204",
+    "QA STYLE_01 Roofs - lotto 1249069204",
+    "QA STYLE_01 Details - lotto 1249069204",
+    "QA STYLE_02 Facades - lotto 1249068307",
+    "QA STYLE_02 Openings - lotto 1249068307",
+    "QA STYLE_02 Roofs - lotto 1249068307",
+    "QA STYLE_02 Details - lotto 1249068307",
+    "QA STYLE_03 Facades - lotto 1249069200",
+    "QA STYLE_03 Openings - lotto 1249069200",
+    "QA STYLE_03 Roofs - lotto 1249069200",
+    "QA STYLE_03 Details - lotto 1249069200",
+    "QA STYLE_04 Structure - lotto 1249069228",
+    "QA STYLE_04 Facades - lotto 1249069228",
+    "QA STYLE_04 Openings - lotto 1249069228",
+    "QA STYLE_04 Roofs - lotto 1249069228",
+    "QA STYLE_04 Details - lotto 1249069228"
+  ],
+  "mannequins": [
+    "Manichino 1.8m STYLE_01",
+    "Manichino 1.8m STYLE_02",
+    "Manichino 1.8m STYLE_03",
+    "Manichino 1.8m STYLE_04"
+  ],
+  "missing_assets": [],
+  "empty_material_slots": []
+}

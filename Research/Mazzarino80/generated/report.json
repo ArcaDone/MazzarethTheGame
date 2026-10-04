@@ -1,0 +1,31 @@
+{
+  "bbox": [
+    14.204,
+    37.296,
+    14.227,
+    37.313
+  ],
+  "dem_anchor_m": 574.7749694818474,
+  "buildings": 3216,
+  "roads": 1112,
+  "vertices": {
+    "M80_Terreno": 6935,
+    "M80_Strade": 18016,
+    "M80_Edifici": 45684
+  },
+  "faces": {
+    "M80_Terreno": 13536,
+    "M80_Strade": 4504,
+    "M80_Edifici": 39252
+  },
+  "files": [
+    "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\generated\\M80_Terreno.obj",
+    "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\generated\\M80_Strade.obj",
+    "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\generated\\M80_Edifici.obj"
+  ],
+  "placement_cm": [
+    82373.87999999999,
+    -4006.4,
+    17100.0
+  ]
+}

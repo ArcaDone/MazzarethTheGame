@@ -1,0 +1,392 @@
+{
+  "assets": [
+    {
+      "path": "/Game/Mazzarino80/PCG/DA_Buildings_Test18",
+      "loaded": true,
+      "class": "MazzarinoPCGBuildingCatalog"
+    },
+    {
+      "path": "/Game/Mazzarino80/PCG/BP_ProceduralBuilding",
+      "loaded": true,
+      "class": "Blueprint"
+    },
+    {
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_metal_gate_01",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        31.16,
+        340.3,
+        311.79
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_metal_gate_01.MI_metal_gate_01"
+      ],
+      "nanite": false,
+      "lods": 1
+    },
+    {
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_wooden_gates_01",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        7.13,
+        291.17,
+        346.62
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_wooden_gates_01.MI_wooden_gates_01"
+      ],
+      "nanite": false,
+      "lods": 1
+    },
+    {
+      "path": "/Game/Megapack/Meshes/MiddleEast/SM_clothes_A_01",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        2.74,
+        57.32,
+        83.89
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/MI_clothes_03.MI_clothes_03"
+      ],
+      "nanite": false,
+      "lods": 1
+    },
+    {
+      "path": "/Game/Migrated/Balcony",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        256.32,
+        91.83,
+        202.52
+      ],
+      "materials": [
+        "/Game/Megascans/Surfaces/Rusty_Metal_Sheet_vccochnew/MI_Rusty_Metal_Sheet_vccochnew_4K.MI_Rusty_Metal_Sheet_vccochnew_4K",
+        "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/MI_Roman_Stone_Wall_tf2kaa2n_4K.MI_Roman_Stone_Wall_tf2kaa2n_4K"
+      ],
+      "nanite": true,
+      "lods": 1
+    },
+    {
+      "path": "/Game/Migrated/Balcony2",
+      "loaded": true,
+      "class": "StaticMesh",
+      "bounds_cm": [
+        389.13,
+        91.83,
+        203.79
+      ],
+      "materials": [
+        "/Game/Megascans/Surfaces/Rusty_Metal_Sheet_vccochnew/MI_Rusty_Metal_Sheet_vccochnew_4K.MI_Rusty_Metal_Sheet_vccochnew_4K",
+        "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/MI_Roman_Stone_Wall_tf2kaa2n_4K.MI_Roman_Stone_Wall_tf2kaa2n_4K"
+      ],
+      "nanite": true,
+      "lods": 1
+    }
+  ],
+  "buildings": [
+    {
+      "id": "1249068307",
+      "family": "PALAZZETTO",
+      "primary_floors": "2",
+      "floor_height_cm": "306.0",
+      "roof_type": "Terrace",
+      "facade_type": "ExposedStone",
+      "character_profile": "palazzetto_pietra_mantenuto",
+      "variation_seed": "4035",
+      "courtyard_gate": "False",
+      "external_bathroom": "False",
+      "facade_flue": "False",
+      "ivy": "False",
+      "cactus": "False"
+    },
+    {
+      "id": "1249069200",
+      "family": "EXTENDED",
+      "primary_floors": "2",
+      "floor_height_cm": "270.0",
+      "roof_type": "PitchedOrMixed",
+      "facade_type": "Plaster",
+      "character_profile": "casa_ampliata_laterizio",
+      "variation_seed": "3624",
+      "courtyard_gate": "False",
+      "external_bathroom": "False",
+      "facade_flue": "True",
+      "ivy": "False",
+      "cactus": "False"
+    },
+    {
+      "id": "1249069202",
+      "family": "COURTYARD",
+      "primary_floors": "2",
+      "floor_height_cm": "306.0",
+      "roof_type": "PitchedOrMixed",
+      "facade_type": "Plaster",
+      "character_profile": "corte_muratura_stratificata",
+      "variation_seed": "3487",
+      "courtyard_gate": "False",
+      "external_bathroom": "False",
+      "facade_flue": "False",
+      "ivy": "False",
+      "cactus": "False"
+    },
+    {
+      "id": "1249069204",
+      "family": "CORNER",
+      "primary_floors": "2",
+      "floor_height_cm": "294.0",
+      "roof_type": "PitchedOrMixed",
+      "facade_type": "ExposedStone",
+      "character_profile": "angolo_pietra_riparata",
+      "variation_seed": "2802",
+      "courtyard_gate": "False",
+      "external_bathroom": "False",
+      "facade_flue": "True",
+      "ivy": "False",
+      "cactus": "False"
+    },
+    {
+      "id": "1249069205",
+      "family": "COURTYARD",
+      "primary_floors": "2",
+      "floor_height_cm": "282.0",
+      "roof_type": "PitchedOrMixed",
+      "facade_type": "Plaster",
+      "character_profile": "corte_intonaco_consumato",
+      "variation_seed": "3213",
+      "courtyard_gate": "True",
+      "external_bathroom": "False",
+      "facade_flue": "False",
+      "ivy": "True",
+      "cactus": "True"
+    },
+    {
+      "id": "1249069213",
+      "family": "NARROW",
+      "primary_floors": "3",
+      "floor_height_cm": "306.0",
+      "roof_type": "Terrace",
+      "facade_type": "Plaster",
+      "character_profile": "casa_stretta_vicolo",
+      "variation_seed": "2391",
+      "courtyard_gate": "False",
+      "external_bathroom": "False",
+      "facade_flue": "False",
+      "ivy": "False",
+      "cactus": "False"
+    },
+    {
+      "id": "1249069219",
+      "family": "CORNER",
+      "primary_floors": "2",
+      "floor_height_cm": "270.0",
+      "roof_type": "PitchedOrMixed",
+      "facade_type": "Plaster",
+      "character_profile": "angolo_sopraelevato",
+      "variation_seed": "3076",
+      "courtyard_gate": "False",
+      "external_bathroom": "False",
+      "facade_flue": "False",
+      "ivy": "False",
+      "cactus": "False"
+    },
+    {
+      "id": "1249069228",
+      "family": "COURTYARD",
+      "primary_floors": "2",
+      "floor_height_cm": "294.0",
+      "roof_type": "PitchedOrMixed",
+      "facade_type": "ExposedStone",
+      "character_profile": "corte_addizioni_miste",
+      "variation_seed": "3350",
+      "courtyard_gate": "True",
+      "external_bathroom": "True",
+      "facade_flue": "False",
+      "ivy": "True",
+      "cactus": "False"
+    },
+    {
+      "id": "1249069229",
+      "family": "PALAZZETTO",
+      "primary_floors": "2",
+      "floor_height_cm": "282.0",
+      "roof_type": "Terrace",
+      "facade_type": "Plaster",
+      "character_profile": "palazzetto_fronte_regolare",
+      "variation_seed": "4309",
+      "courtyard_gate": "False",
+      "external_bathroom": "False",
+      "facade_flue": "False",
+      "ivy": "False",
+      "cactus": "False"
+    },
+    {
+      "id": "1249069235",
+      "family": "EXTENDED",
+      "primary_floors": "2",
+      "floor_height_cm": "282.0",
+      "roof_type": "PitchedOrMixed",
+      "facade_type": "Plaster",
+      "character_profile": "casa_ampliata_rustica",
+      "variation_seed": "3761",
+      "courtyard_gate": "False",
+      "external_bathroom": "False",
+      "facade_flue": "True",
+      "ivy": "False",
+      "cactus": "False"
+    },
+    {
+      "id": "1249069237",
+      "family": "CORNER",
+      "primary_floors": "2",
+      "floor_height_cm": "306.0",
+      "roof_type": "PitchedOrMixed",
+      "facade_type": "Plaster",
+      "character_profile": "angolo_pietra_irregolare",
+      "variation_seed": "2939",
+      "courtyard_gate": "False",
+      "external_bathroom": "False",
+      "facade_flue": "False",
+      "ivy": "False",
+      "cactus": "False"
+    },
+    {
+      "id": "1249069246",
+      "family": "PALAZZETTO",
+      "primary_floors": "2",
+      "floor_height_cm": "270.0",
+      "roof_type": "Terrace",
+      "facade_type": "ExposedStone",
+      "character_profile": "palazzetto_consunto",
+      "variation_seed": "4172",
+      "courtyard_gate": "False",
+      "external_bathroom": "False",
+      "facade_flue": "False",
+      "ivy": "False",
+      "cactus": "False"
+    },
+    {
+      "id": "1249069247",
+      "family": "POPULAR",
+      "primary_floors": "1",
+      "floor_height_cm": "294.0",
+      "roof_type": "PitchedOrMixed",
+      "facade_type": "Plaster",
+      "character_profile": "popolare_bassa_riparata",
+      "variation_seed": "2254",
+      "courtyard_gate": "False",
+      "external_bathroom": "False",
+      "facade_flue": "False",
+      "ivy": "False",
+      "cactus": "False"
+    },
+    {
+      "id": "1249069271",
+      "family": "NARROW",
+      "primary_floors": "3",
+      "floor_height_cm": "270.0",
+      "roof_type": "Terrace",
+      "facade_type": "Plaster",
+      "character_profile": "casa_stretta_terrazzata",
+      "variation_seed": "2528",
+      "courtyard_gate": "False",
+      "external_bathroom": "False",
+      "facade_flue": "False",
+      "ivy": "False",
+      "cactus": "False"
+    },
+    {
+      "id": "1249069275",
+      "family": "POPULAR",
+      "primary_floors": "1",
+      "floor_height_cm": "270.0",
+      "roof_type": "PitchedOrMixed",
+      "facade_type": "Plaster",
+      "character_profile": "popolare_muratura_lacunosa",
+      "variation_seed": "1980",
+      "courtyard_gate": "False",
+      "external_bathroom": "False",
+      "facade_flue": "False",
+      "ivy": "False",
+      "cactus": "True"
+    },
+    {
+      "id": "1249069276",
+      "family": "NARROW",
+      "primary_floors": "3",
+      "floor_height_cm": "282.0",
+      "roof_type": "Terrace",
+      "facade_type": "ExposedStone",
+      "character_profile": "casa_stretta_sopraelevata",
+      "variation_seed": "2665",
+      "courtyard_gate": "False",
+      "external_bathroom": "False",
+      "facade_flue": "True",
+      "ivy": "False",
+      "cactus": "False"
+    },
+    {
+      "id": "1249069286",
+      "family": "POPULAR",
+      "primary_floors": "1",
+      "floor_height_cm": "282.0",
+      "roof_type": "PitchedOrMixed",
+      "facade_type": "Plaster",
+      "character_profile": "popolare_degrado_localizzato",
+      "variation_seed": "2117",
+      "courtyard_gate": "False",
+      "external_bathroom": "False",
+      "facade_flue": "False",
+      "ivy": "False",
+      "cactus": "True"
+    },
+    {
+      "id": "1249069287",
+      "family": "EXTENDED",
+      "primary_floors": "2",
+      "floor_height_cm": "294.0",
+      "roof_type": "PitchedOrMixed",
+      "facade_type": "Plaster",
+      "character_profile": "casa_ampliata_incompiuta",
+      "variation_seed": "3898",
+      "courtyard_gate": "False",
+      "external_bathroom": "False",
+      "facade_flue": "True",
+      "ivy": "False",
+      "cactus": "False"
+    }
+  ],
+  "graphs": [
+    "/Game/Mazzarino80/PCG/Buildings/PCG_Building_19_TEST",
+    "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069287",
+    "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069286",
+    "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069276",
+    "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069275",
+    "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069271",
+    "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069247",
+    "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069246",
+    "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069237",
+    "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069235",
+    "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069229",
+    "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069228",
+    "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069219",
+    "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069213",
+    "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069205",
+    "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069204",
+    "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069202",
+    "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249069200",
+    "/Game/Mazzarino80/PCG/Buildings/PCG_Building_1249068307",
+    "/Game/Mazzarino80/PCG/Graphs/PCG_Building_Structure",
+    "/Game/Mazzarino80/PCG/Graphs/PCG_Building_Roofs",
+    "/Game/Mazzarino80/PCG/Graphs/PCG_Building_Openings",
+    "/Game/Mazzarino80/PCG/Graphs/PCG_Building_Master",
+    "/Game/Mazzarino80/PCG/Graphs/PCG_Building_Facades",
+    "/Game/Mazzarino80/PCG/Graphs/PCG_Building_Details",
+    "/Game/Mazzarino80/PCG/Validation/PCG_TestStructure_V2",
+    "/Game/Mazzarino80/PCG/Validation/PCG_TestStructure"
+  ]
+}

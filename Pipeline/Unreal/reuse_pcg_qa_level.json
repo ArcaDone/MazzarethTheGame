@@ -1,0 +1,47 @@
+{
+  "map": "/Game/Mazzarino80/ReuseKit/Maps/L_ReuseKit_PCG_QA",
+  "pilot_volumes": [
+    {
+      "style": "STYLE_01",
+      "lot": "1249069204",
+      "graph": "/Game/Mazzarino80/ReuseKit/PCG/PCG_ReuseKit_1249069204",
+      "center_cm": [
+        0.0,
+        0.0,
+        300.0
+      ]
+    },
+    {
+      "style": "STYLE_02",
+      "lot": "1249068307",
+      "graph": "/Game/Mazzarino80/ReuseKit/PCG/PCG_ReuseKit_1249068307",
+      "center_cm": [
+        950.0,
+        0.0,
+        300.0
+      ]
+    },
+    {
+      "style": "STYLE_03",
+      "lot": "1249069200",
+      "graph": "/Game/Mazzarino80/ReuseKit/PCG/PCG_ReuseKit_1249069200",
+      "center_cm": [
+        1900.0,
+        0.0,
+        300.0
+      ]
+    },
+    {
+      "style": "STYLE_04",
+      "lot": "1249069228",
+      "graph": "/Game/Mazzarino80/ReuseKit/PCG/PCG_ReuseKit_1249069228",
+      "center_cm": [
+        2850.0,
+        0.0,
+        300.0
+      ]
+    }
+  ],
+  "stage_actors_removed": 17,
+  "note": "QA-only PCG assemblies; town's irregular 18-lot geometry untouched"
+}

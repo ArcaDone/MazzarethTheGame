@@ -1,0 +1,31 @@
+{
+  "stages": {
+    "Structure": "<Object '/Game/Mazzarino80/PCG/Graphs/PCG_Building_Structure.PCG_Building_Structure' (0x00000B720A1A1E00) Class 'PCGGraph'>",
+    "Facades": "<Object '/Game/Mazzarino80/PCG/Graphs/PCG_Building_Facades.PCG_Building_Facades' (0x00000B720A1A2400) Class 'PCGGraph'>",
+    "Openings": "<Object '/Game/Mazzarino80/PCG/Graphs/PCG_Building_Openings.PCG_Building_Openings' (0x00000B720A1A2D00) Class 'PCGGraph'>",
+    "Roofs": "<Object '/Game/Mazzarino80/PCG/Graphs/PCG_Building_Roofs.PCG_Building_Roofs' (0x00000B720A1A3300) Class 'PCGGraph'>",
+    "Details": "<Object '/Game/Mazzarino80/PCG/Graphs/PCG_Building_Details.PCG_Building_Details' (0x00000B720A1A3900) Class 'PCGGraph'>"
+  },
+  "lots": {
+    "1249068307": "<Object '/Game/Mazzarino80/ReuseKit/PCG/Lots/PCG_Building_1249068307.PCG_Building_1249068307' (0x00000B720A1A6600) Class 'PCGGraph'>",
+    "1249069200": "<Object '/Game/Mazzarino80/ReuseKit/PCG/Lots/PCG_Building_1249069200.PCG_Building_1249069200' (0x00000B720A1A8400) Class 'PCGGraph'>",
+    "1249069202": "<Object '/Game/Mazzarino80/ReuseKit/PCG/Lots/PCG_Building_1249069202.PCG_Building_1249069202' (0x00000B720A1AB400) Class 'PCGGraph'>",
+    "1249069204": "<Object '/Game/Mazzarino80/ReuseKit/PCG/Lots/PCG_Building_1249069204.PCG_Building_1249069204' (0x00000B720A1ACF00) Class 'PCGGraph'>",
+    "1249069205": "<Object '/Game/Mazzarino80/ReuseKit/PCG/Lots/PCG_Building_1249069205.PCG_Building_1249069205' (0x00000B720A1AF900) Class 'PCGGraph'>",
+    "1249069213": "<Object '/Game/Mazzarino80/ReuseKit/PCG/Lots/PCG_Building_1249069213.PCG_Building_1249069213' (0x00000B720A3B1500) Class 'PCGGraph'>",
+    "1249069219": "<Object '/Game/Mazzarino80/ReuseKit/PCG/Lots/PCG_Building_1249069219.PCG_Building_1249069219' (0x00000B720A3B3000) Class 'PCGGraph'>",
+    "1249069228": "<Object '/Game/Mazzarino80/ReuseKit/PCG/Lots/PCG_Building_1249069228.PCG_Building_1249069228' (0x00000B720A3B4E00) Class 'PCGGraph'>",
+    "1249069229": "<Object '/Game/Mazzarino80/ReuseKit/PCG/Lots/PCG_Building_1249069229.PCG_Building_1249069229' (0x00000B720A3B6C00) Class 'PCGGraph'>",
+    "1249069235": "<Object '/Game/Mazzarino80/ReuseKit/PCG/Lots/PCG_Building_1249069235.PCG_Building_1249069235' (0x00000B720A3B8700) Class 'PCGGraph'>",
+    "1249069237": "<Object '/Game/Mazzarino80/ReuseKit/PCG/Lots/PCG_Building_1249069237.PCG_Building_1249069237' (0x00000B720A3BA200) Class 'PCGGraph'>",
+    "1249069246": "<Object '/Game/Mazzarino80/ReuseKit/PCG/Lots/PCG_Building_1249069246.PCG_Building_1249069246' (0x00000B720A3BC000) Class 'PCGGraph'>",
+    "1249069247": "<Object '/Game/Mazzarino80/ReuseKit/PCG/Lots/PCG_Building_1249069247.PCG_Building_1249069247' (0x00000B720A3BDE00) Class 'PCGGraph'>",
+    "1249069271": "<Object '/Game/Mazzarino80/ReuseKit/PCG/Lots/PCG_Building_1249069271.PCG_Building_1249069271' (0x00000B720A3BFC00) Class 'PCGGraph'>",
+    "1249069275": "<Object '/Game/Mazzarino80/ReuseKit/PCG/Lots/PCG_Building_1249069275.PCG_Building_1249069275' (0x00000B720D5A0000) Class 'PCGGraph'>",
+    "1249069276": "<Object '/Game/Mazzarino80/ReuseKit/PCG/Lots/PCG_Building_1249069276.PCG_Building_1249069276' (0x00000B721DB81E00) Class 'PCGGraph'>",
+    "1249069286": "<Object '/Game/Mazzarino80/ReuseKit/PCG/Lots/PCG_Building_1249069286.PCG_Building_1249069286' (0x00000B721DB85100) Class 'PCGGraph'>",
+    "1249069287": "<Object '/Game/Mazzarino80/ReuseKit/PCG/Lots/PCG_Building_1249069287.PCG_Building_1249069287' (0x00000B721DB87200) Class 'PCGGraph'>"
+  },
+  "errors": {},
+  "master": "<Object '/Game/Mazzarino80/PCG/Graphs/PCG_Building_Master.PCG_Building_Master' (0x00000B720A1A3C00) Class 'PCGGraph'>"
+}

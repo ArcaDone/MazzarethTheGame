@@ -1,0 +1,30 @@
+{
+  "source": "/Game/Levels/Mazzarino80_CaseStoriche_Campione",
+  "source_sha256_before": "fd4f48df29008d4f3765ba3ffded89d598ff03ac5835628f8b42279fb9bdf034",
+  "qa_map": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/L_CaseStoriche_DetailQA",
+  "pilot_lots": {
+    "1249069204": {
+      "actor": "BP_ProceduralBuilding_1249069204",
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069204.PCG_Building_1249069204",
+      "generated": true
+    },
+    "1249068307": {
+      "actor": "BP_ProceduralBuilding_1249068307",
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249068307.PCG_Building_1249068307",
+      "generated": true
+    },
+    "1249069200": {
+      "actor": "BP_ProceduralBuilding_1249069200",
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069200.PCG_Building_1249069200",
+      "generated": true
+    },
+    "1249069228": {
+      "actor": "BP_ProceduralBuilding_1249069228",
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069228.PCG_Building_1249069228",
+      "generated": true
+    }
+  },
+  "errors": [],
+  "source_sha256_after": "fd4f48df29008d4f3765ba3ffded89d598ff03ac5835628f8b42279fb9bdf034",
+  "source_unchanged": true
+}

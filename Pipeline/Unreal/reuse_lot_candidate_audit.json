@@ -1,0 +1,205 @@
+{
+  "lots": [
+    {
+      "lot": "1249068307",
+      "style": "STYLE_02",
+      "stages": {
+        "Structure": 115,
+        "Facades": 27,
+        "Openings": 221,
+        "Roofs": 11,
+        "Details": 7
+      }
+    },
+    {
+      "lot": "1249069200",
+      "style": "STYLE_03",
+      "stages": {
+        "Structure": 68,
+        "Facades": 12,
+        "Openings": 116,
+        "Roofs": 1,
+        "Details": 7
+      }
+    },
+    {
+      "lot": "1249069202",
+      "style": "STYLE_04",
+      "stages": {
+        "Structure": 82,
+        "Facades": 27,
+        "Openings": 130,
+        "Roofs": 1,
+        "Details": 1
+      }
+    },
+    {
+      "lot": "1249069204",
+      "style": "STYLE_01",
+      "stages": {
+        "Structure": 45,
+        "Facades": 9,
+        "Openings": 25,
+        "Roofs": 1,
+        "Details": 3
+      }
+    },
+    {
+      "lot": "1249069205",
+      "style": "STYLE_04",
+      "stages": {
+        "Structure": 180,
+        "Facades": 54,
+        "Openings": 214,
+        "Roofs": 1,
+        "Details": 1
+      }
+    },
+    {
+      "lot": "1249069213",
+      "style": "STYLE_03",
+      "stages": {
+        "Structure": 62,
+        "Facades": 6,
+        "Openings": 116,
+        "Roofs": 3,
+        "Details": 1
+      }
+    },
+    {
+      "lot": "1249069219",
+      "style": "STYLE_03",
+      "stages": {
+        "Structure": 37,
+        "Facades": 9,
+        "Openings": 53,
+        "Roofs": 1,
+        "Details": 3
+      }
+    },
+    {
+      "lot": "1249069228",
+      "style": "STYLE_04",
+      "stages": {
+        "Structure": 69,
+        "Facades": 18,
+        "Openings": 95,
+        "Roofs": 1,
+        "Details": 1
+      }
+    },
+    {
+      "lot": "1249069229",
+      "style": "STYLE_02",
+      "stages": {
+        "Structure": 43,
+        "Facades": 9,
+        "Openings": 67,
+        "Roofs": 4,
+        "Details": 5
+      }
+    },
+    {
+      "lot": "1249069235",
+      "style": "STYLE_03",
+      "stages": {
+        "Structure": 71,
+        "Facades": 21,
+        "Openings": 123,
+        "Roofs": 1,
+        "Details": 7
+      }
+    },
+    {
+      "lot": "1249069237",
+      "style": "STYLE_03",
+      "stages": {
+        "Structure": 56,
+        "Facades": 9,
+        "Openings": 102,
+        "Roofs": 1,
+        "Details": 6
+      }
+    },
+    {
+      "lot": "1249069246",
+      "style": "STYLE_02",
+      "stages": {
+        "Structure": 79,
+        "Facades": 12,
+        "Openings": 137,
+        "Roofs": 5,
+        "Details": 7
+      }
+    },
+    {
+      "lot": "1249069247",
+      "style": "STYLE_01",
+      "stages": {
+        "Structure": 10,
+        "Facades": 6,
+        "Openings": 11,
+        "Roofs": 1,
+        "Details": 1
+      }
+    },
+    {
+      "lot": "1249069271",
+      "style": "STYLE_03",
+      "stages": {
+        "Structure": 47,
+        "Facades": 3,
+        "Openings": 81,
+        "Roofs": 2,
+        "Details": 1
+      }
+    },
+    {
+      "lot": "1249069275",
+      "style": "STYLE_01",
+      "stages": {
+        "Structure": 12,
+        "Facades": 4,
+        "Openings": 11,
+        "Roofs": 1,
+        "Details": 1
+      }
+    },
+    {
+      "lot": "1249069276",
+      "style": "STYLE_01",
+      "stages": {
+        "Structure": 50,
+        "Facades": 9,
+        "Openings": 60,
+        "Roofs": 4,
+        "Details": 1
+      }
+    },
+    {
+      "lot": "1249069286",
+      "style": "STYLE_04",
+      "stages": {
+        "Structure": 9,
+        "Facades": 2,
+        "Openings": 11,
+        "Roofs": 1,
+        "Details": 1
+      }
+    },
+    {
+      "lot": "1249069287",
+      "style": "STYLE_03",
+      "stages": {
+        "Structure": 75,
+        "Facades": 18,
+        "Openings": 109,
+        "Roofs": 1,
+        "Details": 3
+      }
+    }
+  ],
+  "rail_points": 20,
+  "distinct_roof_meshes": 18,
+  "issues": []
+}

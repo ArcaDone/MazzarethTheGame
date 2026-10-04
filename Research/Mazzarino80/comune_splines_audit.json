@@ -1,0 +1,313 @@
+[
+  {
+    "label": "Spline_StradaSquared2",
+    "class": "/Game/Esercitazioni/Spline_StradaSquared.Spline_StradaSquared_C",
+    "location": "<Struct 'Vector' (0x00000237AE883C60) {x: -13932.590989, y: -9809.112620, z: 647.361144}>",
+    "splines": [
+      {
+        "name": "Spline",
+        "points": 10,
+        "length_cm": 30073.91796875,
+        "positions": [
+          "<Struct 'Vector' (0x00000237AE883C60) {x: -14194.142858, y: -9989.342649, z: 588.788313}>",
+          "<Struct 'Vector' (0x00000237AE883C60) {x: -13550.897955, y: -11043.260498, z: 767.023656}>",
+          "<Struct 'Vector' (0x00000237AE883C60) {x: -11336.631223, y: -14300.558942, z: 1264.592536}>",
+          "<Struct 'Vector' (0x00000237AE883C60) {x: -6977.604607, y: -14694.425729, z: 1341.987385}>",
+          "<Struct 'Vector' (0x00000237AE883C60) {x: -3042.490058, y: -14795.499262, z: 1136.879235}>",
+          "<Struct 'Vector' (0x00000237AE883C60) {x: -2851.940956, y: -12331.598686, z: 965.331157}>",
+          "<Struct 'Vector' (0x00000237AE883C60) {x: -4539.619978, y: -8791.561616, z: 647.361144}>",
+          "<Struct 'Vector' (0x00000237AE883C60) {x: -5710.144609, y: -6868.390366, z: 400.613846}>",
+          "<Struct 'Vector' (0x00000237AE883C60) {x: -7639.148254, y: -5465.127348, z: 193.496640}>",
+          "<Struct 'Vector' (0x00000237AE883C60) {x: -8098.075165, y: -596.690435, z: 54.595506}>"
+        ]
+      }
+    ],
+    "meshes": [
+      {
+        "mesh": "/Game/Esercitazioni/Pavers.Pavers",
+        "materials": [
+          "/Game/Esercitazioni/Mattonelle.Mattonelle"
+        ],
+        "component_class": "SplineMeshComponent",
+        "scale": "<Struct 'Vector' (0x000008E1F1621598) {x: 1.000000, y: 1.000000, z: 1.000000}>",
+        "start_scale": "<Struct 'Vector2D' (0x00000237AE8926E0) {x: 1.000000, y: 1.000000}>"
+      }
+    ],
+    "available_properties": [
+      "add_actor_world_transform_keep_scale",
+      "get_actor_relative_scale3d",
+      "get_actor_scale3d",
+      "set_actor_relative_scale3d",
+      "set_actor_scale3d",
+      "sprite_scale"
+    ]
+  },
+  {
+    "label": "Spline_StradaLavica2",
+    "class": "/Game/Esercitazioni/Spline_StradaLavica.Spline_StradaLavica_C",
+    "location": "<Struct 'Vector' (0x00000237AE898920) {x: -24141.683522, y: 3365.437101, z: -8.257171}>",
+    "splines": [
+      {
+        "name": "Spline",
+        "points": 20,
+        "length_cm": 104357.09375,
+        "positions": [
+          "<Struct 'Vector' (0x00000237AE898920) {x: -37907.627240, y: 4544.944042, z: -663.257169}>",
+          "<Struct 'Vector' (0x00000237AE898920) {x: -34503.378989, y: 4580.437119, z: -663.257171}>",
+          "<Struct 'Vector' (0x00000237AE898920) {x: -26199.450975, y: 4581.990927, z: -348.993955}>",
+          "<Struct 'Vector' (0x00000237AE898920) {x: -20618.506022, y: 4174.933413, z: -91.163346}>",
+          "<Struct 'Vector' (0x00000237AE898920) {x: -16394.434497, y: 3784.785133, z: -7.724131}>",
+          "<Struct 'Vector' (0x00000237AE898920) {x: -9763.089475, y: 2747.231973, z: -8.257171}>",
+          "<Struct 'Vector' (0x00000237AE898920) {x: -1288.504855, y: 2004.579491, z: -8.257170}>",
+          "<Struct 'Vector' (0x00000237AE898920) {x: 524.694959, y: 1715.170133, z: -8.257170}>",
+          "<Struct 'Vector' (0x00000237AE898920) {x: 4211.262533, y: 1121.258489, z: 1.146166}>",
+          "<Struct 'Vector' (0x00000237AE898920) {x: 4995.900394, y: 972.390797, z: 1.146163}>",
+          "<Struct 'Vector' (0x00000237AE898920) {x: 10089.871253, y: 557.429551, z: 39.989011}>",
+          "<Struct 'Vector' (0x00000237AE898920) {x: 17325.148702, y: 796.451305, z: 235.874760}>",
+          "<Struct 'Vector' (0x00000237AE898920) {x: 20441.965737, y: 947.855715, z: 297.524766}>",
+          "<Struct 'Vector' (0x00000237AE898920) {x: 28020.295707, y: 1008.326805, z: 462.664669}>",
+          "<Struct 'Vector' (0x00000237AE898920) {x: 35326.463295, y: 561.090777, z: 551.158467}>",
+          "<Struct 'Vector' (0x00000237AE898920) {x: 43191.487876, y: -30.706272, z: 628.286070}>",
+          "<Struct 'Vector' (0x00000237AE898920) {x: 47305.930916, y: -739.035784, z: 688.815548}>",
+          "<Struct 'Vector' (0x00000237AE898920) {x: 53828.348125, y: -1425.630622, z: 795.365025}>",
+          "<Struct 'Vector' (0x00000237AE898920) {x: 60580.547260, y: -2252.395770, z: 1011.062651}>",
+          "<Struct 'Vector' (0x00000237AE898920) {x: 63552.506496, y: -6362.926054, z: 1037.075781}>"
+        ]
+      }
+    ],
+    "meshes": [
+      {
+        "mesh": "/Game/Migrated/Lavica_curved.Lavica_curved",
+        "materials": [
+          "/Game/Migrated/Materials/Material.Material"
+        ],
+        "component_class": "SplineMeshComponent",
+        "scale": "<Struct 'Vector' (0x000008E1F1774798) {x: 1.000000, y: 1.000000, z: 1.000000}>",
+        "start_scale": "<Struct 'Vector2D' (0x00000237AAC09860) {x: 1.000000, y: 1.000000}>"
+      }
+    ],
+    "available_properties": [
+      "add_actor_world_transform_keep_scale",
+      "get_actor_relative_scale3d",
+      "get_actor_scale3d",
+      "set_actor_relative_scale3d",
+      "set_actor_scale3d",
+      "sprite_scale"
+    ]
+  },
+  {
+    "label": "Spline_StradaLavica_simple",
+    "class": "/Game/Esercitazioni/Spline_StradaLavica_simple.Spline_StradaLavica_simple_C",
+    "location": "<Struct 'Vector' (0x00000237AE89A900) {x: 9749.999993, y: 315.000004, z: 35.000000}>",
+    "splines": [
+      {
+        "name": "Spline",
+        "points": 11,
+        "length_cm": 22274.548828125,
+        "positions": [
+          "<Struct 'Vector' (0x00000237AE89A900) {x: 9749.999995, y: 321.790378, z: 35.000000}>",
+          "<Struct 'Vector' (0x00000237AE89A900) {x: 9749.999996, y: -717.716245, z: -4.154551}>",
+          "<Struct 'Vector' (0x00000237AE89A900) {x: 9750.037898, y: -1780.371793, z: 83.500191}>",
+          "<Struct 'Vector' (0x00000237AE89A900) {x: 9621.361864, y: -5197.039002, z: 493.736967}>",
+          "<Struct 'Vector' (0x00000237AE89A900) {x: 9259.393184, y: -7042.974048, z: 599.530972}>",
+          "<Struct 'Vector' (0x00000237AE89A900) {x: 8827.577523, y: -8669.957369, z: 772.178636}>",
+          "<Struct 'Vector' (0x00000237AE89A900) {x: 8474.670273, y: -10327.567257, z: 1113.668503}>",
+          "<Struct 'Vector' (0x00000237AE89A900) {x: 8325.080572, y: -13594.987636, z: 1341.311800}>",
+          "<Struct 'Vector' (0x00000237AE89A900) {x: 8310.768929, y: -15583.030280, z: 1525.197254}>",
+          "<Struct 'Vector' (0x00000237AE89A900) {x: 8301.146936, y: -17965.495027, z: 2132.189969}>",
+          "<Struct 'Vector' (0x00000237AE89A900) {x: 8283.133865, y: -21484.703178, z: 1276.399757}>"
+        ]
+      }
+    ],
+    "meshes": [
+      {
+        "mesh": "/Game/Migrated/LowPoly.LowPoly",
+        "materials": [
+          "/Game/Migrated/Materials/Material.Material"
+        ],
+        "component_class": "SplineMeshComponent",
+        "scale": "<Struct 'Vector' (0x000008E1F1B4B598) {x: 1.000000, y: 1.000000, z: 1.000000}>",
+        "start_scale": "<Struct 'Vector2D' (0x00000237AE7DEBE0) {x: 1.000000, y: 1.000000}>"
+      }
+    ],
+    "available_properties": [
+      "add_actor_world_transform_keep_scale",
+      "get_actor_relative_scale3d",
+      "get_actor_scale3d",
+      "set_actor_relative_scale3d",
+      "set_actor_scale3d",
+      "sprite_scale"
+    ]
+  },
+  {
+    "label": "Spline_StradaLavica",
+    "class": "/Game/Esercitazioni/Spline_StradaLavica.Spline_StradaLavica_C",
+    "location": "<Struct 'Vector' (0x00000237AE902EA0) {x: 35594.904682, y: 330.233041, z: 615.000000}>",
+    "splines": [
+      {
+        "name": "Spline",
+        "points": 8,
+        "length_cm": 17156.4296875,
+        "positions": [
+          "<Struct 'Vector' (0x00000237AE902EA0) {x: 35595.420163, y: 336.908403, z: 550.998921}>",
+          "<Struct 'Vector' (0x00000237AE902EA0) {x: 35305.898374, y: -2200.498199, z: 615.000000}>",
+          "<Struct 'Vector' (0x00000237AE902EA0) {x: 34954.698215, y: -5758.422059, z: 735.000000}>",
+          "<Struct 'Vector' (0x00000237AE902EA0) {x: 34725.010372, y: -8317.695820, z: 785.317580}>",
+          "<Struct 'Vector' (0x00000237AE902EA0) {x: 34579.310003, y: -10041.448300, z: 805.079118}>",
+          "<Struct 'Vector' (0x00000237AE902EA0) {x: 34486.324520, y: -11182.643597, z: 812.709058}>",
+          "<Struct 'Vector' (0x00000237AE902EA0) {x: 34230.059067, y: -14397.799275, z: 660.245813}>",
+          "<Struct 'Vector' (0x00000237AE902EA0) {x: 34045.823539, y: -16739.671278, z: 595.470638}>"
+        ]
+      }
+    ],
+    "meshes": [
+      {
+        "mesh": "/Game/Migrated/Lavica_curved.Lavica_curved",
+        "materials": [
+          "/Game/Migrated/Materials/Material.Material"
+        ],
+        "component_class": "SplineMeshComponent",
+        "scale": "<Struct 'Vector' (0x000008E1F1EDD398) {x: 1.000000, y: 1.000000, z: 1.000000}>",
+        "start_scale": "<Struct 'Vector2D' (0x00000237AE914F20) {x: 1.000000, y: 1.000000}>"
+      }
+    ],
+    "available_properties": [
+      "add_actor_world_transform_keep_scale",
+      "get_actor_relative_scale3d",
+      "get_actor_scale3d",
+      "set_actor_relative_scale3d",
+      "set_actor_scale3d",
+      "sprite_scale"
+    ]
+  },
+  {
+    "label": "Spline_StradaSquared",
+    "class": "/Game/Esercitazioni/Spline_StradaSquared.Spline_StradaSquared_C",
+    "location": "<Struct 'Vector' (0x00000237AE902EF0) {x: -21812.591228, y: 3880.887242, z: -92.638856}>",
+    "splines": [
+      {
+        "name": "Spline",
+        "points": 7,
+        "length_cm": 17807.09765625,
+        "positions": [
+          "<Struct 'Vector' (0x00000237AE902EF0) {x: -21812.591227, y: 3930.117726, z: -128.478869}>",
+          "<Struct 'Vector' (0x00000237AE902EF0) {x: -21812.591221, y: 2969.946319, z: -92.638856}>",
+          "<Struct 'Vector' (0x00000237AE902EF0) {x: -20568.758513, y: 632.637690, z: 65.057204}>",
+          "<Struct 'Vector' (0x00000237AE902EF0) {x: -18515.212412, y: -2475.296480, z: 244.191649}>",
+          "<Struct 'Vector' (0x00000237AE902EF0) {x: -16255.591546, y: -7042.153185, z: 415.926176}>",
+          "<Struct 'Vector' (0x00000237AE902EF0) {x: -14502.869026, y: -10675.827724, z: 575.774992}>",
+          "<Struct 'Vector' (0x00000237AE902EF0) {x: -13943.627878, y: -11620.750399, z: 219.816030}>"
+        ]
+      }
+    ],
+    "meshes": [
+      {
+        "mesh": "/Game/Esercitazioni/Pavers.Pavers",
+        "materials": [
+          "/Game/Esercitazioni/Mattonelle.Mattonelle"
+        ],
+        "component_class": "SplineMeshComponent",
+        "scale": "<Struct 'Vector' (0x000008E1F2308398) {x: 1.000000, y: 1.000000, z: 1.000000}>",
+        "start_scale": "<Struct 'Vector2D' (0x00000237AE9151A0) {x: 1.000000, y: 1.000000}>"
+      }
+    ],
+    "available_properties": [
+      "add_actor_world_transform_keep_scale",
+      "get_actor_relative_scale3d",
+      "get_actor_scale3d",
+      "set_actor_relative_scale3d",
+      "set_actor_scale3d",
+      "sprite_scale"
+    ]
+  },
+  {
+    "label": "Spline_StradaSquared3",
+    "class": "/Game/Esercitazioni/Spline_StradaSquared.Spline_StradaSquared_C",
+    "location": "<Struct 'Vector' (0x00000237AE902F90) {x: 82592.408947, y: -6199.110936, z: 562.361144}>",
+    "splines": [
+      {
+        "name": "Spline",
+        "points": 15,
+        "length_cm": 94136.2734375,
+        "positions": [
+          "<Struct 'Vector' (0x00000237AE902F90) {x: 63235.105293, y: -6325.269552, z: 1324.555336}>",
+          "<Struct 'Vector' (0x00000237AE902F90) {x: 64947.135521, y: -7848.734871, z: 1291.083182}>",
+          "<Struct 'Vector' (0x00000237AE902F90) {x: 61449.757226, y: -10486.293233, z: 1636.694828}>",
+          "<Struct 'Vector' (0x00000237AE902F90) {x: 55957.693508, y: -16934.025510, z: 2404.584181}>",
+          "<Struct 'Vector' (0x00000237AE902F90) {x: 48805.401157, y: -21532.486436, z: 2854.829088}>",
+          "<Struct 'Vector' (0x00000237AE902F90) {x: 42260.422197, y: -21037.082373, z: 699.259636}>",
+          "<Struct 'Vector' (0x00000237AE902F90) {x: 34804.176851, y: -16075.992649, z: 515.600308}>",
+          "<Struct 'Vector' (0x00000237AE902F90) {x: 30584.444987, y: -21399.476374, z: 966.451611}>",
+          "<Struct 'Vector' (0x00000237AE902F90) {x: 22752.416377, y: -24760.606507, z: 1420.514157}>",
+          "<Struct 'Vector' (0x00000237AE902F90) {x: 18682.379974, y: -28168.949819, z: 1618.411780}>",
+          "<Struct 'Vector' (0x00000237AE902F90) {x: 13561.834092, y: -28502.761620, z: 1346.705226}>",
+          "<Struct 'Vector' (0x00000237AE902F90) {x: 6532.029763, y: -25464.751939, z: 1243.341791}>",
+          "<Struct 'Vector' (0x00000237AE902F90) {x: 8.826352, y: -21741.137337, z: 1731.635804}>",
+          "<Struct 'Vector' (0x00000237AE902F90) {x: -5489.066328, y: -16621.767627, z: 1728.568730}>",
+          "<Struct 'Vector' (0x00000237AE902F90) {x: -9639.574931, y: -14755.279772, z: 1340.337347}>"
+        ]
+      }
+    ],
+    "meshes": [
+      {
+        "mesh": "/Game/Esercitazioni/Pavers.Pavers",
+        "materials": [
+          "/Game/Esercitazioni/Mattonelle.Mattonelle"
+        ],
+        "component_class": "SplineMeshComponent",
+        "scale": "<Struct 'Vector' (0x000008E1F2354798) {x: 1.000000, y: 1.000000, z: 1.000000}>",
+        "start_scale": "<Struct 'Vector2D' (0x00000237AE915420) {x: 1.000000, y: 1.000000}>"
+      }
+    ],
+    "available_properties": [
+      "add_actor_world_transform_keep_scale",
+      "get_actor_relative_scale3d",
+      "get_actor_scale3d",
+      "set_actor_relative_scale3d",
+      "set_actor_scale3d",
+      "sprite_scale"
+    ]
+  },
+  {
+    "label": "Spline_StradaSquared4",
+    "class": "/Game/Esercitazioni/Spline_StradaSquared.Spline_StradaSquared_C",
+    "location": "<Struct 'Vector' (0x00000237AE903030) {x: 37294.478383, y: -18792.696976, z: 345.000000}>",
+    "splines": [
+      {
+        "name": "Spline",
+        "points": 9,
+        "length_cm": 49890.80859375,
+        "positions": [
+          "<Struct 'Vector' (0x00000237AE903030) {x: 37291.904452, y: -18781.511764, z: 345.000000}>",
+          "<Struct 'Vector' (0x00000237AE903030) {x: 37009.640636, y: -22147.836735, z: -350.000000}>",
+          "<Struct 'Vector' (0x00000237AE903030) {x: 31856.426720, y: -25860.236409, z: -350.000001}>",
+          "<Struct 'Vector' (0x00000237AE903030) {x: 29848.332082, y: -30966.307403, z: -839.998153}>",
+          "<Struct 'Vector' (0x00000237AE903030) {x: 28582.384350, y: -34240.124188, z: -839.998153}>",
+          "<Struct 'Vector' (0x00000237AE903030) {x: 25785.342206, y: -44375.142588, z: -388.471978}>",
+          "<Struct 'Vector' (0x00000237AE903030) {x: 14105.294592, y: -46689.298299, z: -1882.351220}>",
+          "<Struct 'Vector' (0x00000237AE903030) {x: 9730.255126, y: -47230.914311, z: -3288.684338}>",
+          "<Struct 'Vector' (0x00000237AE903030) {x: 6425.691983, y: -47643.521145, z: -3849.265168}>"
+        ]
+      }
+    ],
+    "meshes": [
+      {
+        "mesh": "/Game/Esercitazioni/Pavers.Pavers",
+        "materials": [
+          "/Game/Esercitazioni/Mattonelle.Mattonelle"
+        ],
+        "component_class": "SplineMeshComponent",
+        "scale": "<Struct 'Vector' (0x000008E1F24B7998) {x: 1.000000, y: 1.000000, z: 1.000000}>",
+        "start_scale": "<Struct 'Vector2D' (0x00000237AE9156A0) {x: 1.000000, y: 1.000000}>"
+      }
+    ],
+    "available_properties": [
+      "add_actor_world_transform_keep_scale",
+      "get_actor_relative_scale3d",
+      "get_actor_scale3d",
+      "set_actor_relative_scale3d",
+      "set_actor_scale3d",
+      "sprite_scale"
+    ]
+  }
+]

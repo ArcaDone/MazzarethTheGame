@@ -1,0 +1,213 @@
+{
+  "selected": [
+    "/Game/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1",
+    "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/S_Modular_Building_Roof_Kit_ukjsdfvdw_lod3_Var1",
+    "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/S_Modular_Building_Roof_Kit_ukjsdfvdw_lod3_Var2",
+    "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/S_Modular_Building_Roof_Kit_ukjsdfvdw_lod3_Var3",
+    "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/S_Modular_Building_Roof_Kit_ukjsdfvdw_lod3_Var4",
+    "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/S_Modular_Building_Roof_Kit_ukjsdfvdw_lod3_Var5",
+    "/Game/Megapack/Meshes/MiddleEast/Wires/BP_Wires",
+    "/Game/Megapack/Meshes/MiddleEast/Wires/SM_wire_part_01",
+    "/Game/Migrated/Balcony2",
+    "/Game/Migrated/Balcony"
+  ],
+  "packages": [
+    "/Game/MSPresets/M_MS_Default_Material/M_MS_Default_Material",
+    "/Game/MSPresets/M_MS_Surface_Material/M_MS_Surface_Material",
+    "/Game/Megapack/Material/MiddleEast/M_black_rubber",
+    "/Game/Megapack/Meshes/MiddleEast/Wires/BP_Wires",
+    "/Game/Megapack/Meshes/MiddleEast/Wires/SM_wire_part_01",
+    "/Game/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/MI_Modular_Building_Balcony_ukjsdavdw_2K",
+    "/Game/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1",
+    "/Game/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/T_ModularBuildingBalcony_ukjsdavdw_2K_DpR",
+    "/Game/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/T_Modular_Building_Balcony_ukjsdavdw_2K_D",
+    "/Game/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/T_Modular_Building_Balcony_ukjsdavdw_2K_N",
+    "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/MI_Modular_Building_Roof_Kit_ukjsdfvdw_2K",
+    "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/S_Modular_Building_Roof_Kit_ukjsdfvdw_lod3_Var1",
+    "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/S_Modular_Building_Roof_Kit_ukjsdfvdw_lod3_Var2",
+    "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/S_Modular_Building_Roof_Kit_ukjsdfvdw_lod3_Var3",
+    "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/S_Modular_Building_Roof_Kit_ukjsdfvdw_lod3_Var4",
+    "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/S_Modular_Building_Roof_Kit_ukjsdfvdw_lod3_Var5",
+    "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/T_ModularBuildingRoofKit_ukjsdfvdw_2K_DpR",
+    "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/T_Modular_Building_Roof_Kit_ukjsdfvdw_2K_D",
+    "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/T_Modular_Building_Roof_Kit_ukjsdfvdw_2K_N",
+    "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/MI_Roman_Stone_Wall_tf2kaa2n_4K",
+    "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/T_RomanStoneWall_tf2kaa2n_4K_ORDp",
+    "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/T_Roman_Stone_Wall_tf2kaa2n_4K_D",
+    "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/T_Roman_Stone_Wall_tf2kaa2n_4K_N",
+    "/Game/Megascans/Surfaces/Rusty_Metal_Sheet_vccochnew/MI_Rusty_Metal_Sheet_vccochnew_4K",
+    "/Game/Megascans/Surfaces/Rusty_Metal_Sheet_vccochnew/T_RustyMetalSheet_vccochnew_4K_ORDp",
+    "/Game/Megascans/Surfaces/Rusty_Metal_Sheet_vccochnew/T_Rusty_Metal_Sheet_vccochnew_4K_D",
+    "/Game/Megascans/Surfaces/Rusty_Metal_Sheet_vccochnew/T_Rusty_Metal_Sheet_vccochnew_4K_N",
+    "/Game/Migrated/Balcony",
+    "/Game/Migrated/Balcony2"
+  ],
+  "missing": [],
+  "assets": [
+    {
+      "path": "/Game/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1",
+      "class": "StaticMesh",
+      "origin": [
+        135.24166870117188,
+        37.6462345123291,
+        80.8287582397461
+      ],
+      "extent": [
+        135.97467041015625,
+        72.86335945129395,
+        81.21631622314453
+      ],
+      "materials": [
+        "/Game/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/MI_Modular_Building_Balcony_ukjsdavdw_2K.MI_Modular_Building_Balcony_ukjsdavdw_2K"
+      ]
+    },
+    {
+      "path": "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/S_Modular_Building_Roof_Kit_ukjsdfvdw_lod3_Var1",
+      "class": "StaticMesh",
+      "origin": [
+        75.05499267578125,
+        -298.4624938964844,
+        126.48934173583984
+      ],
+      "extent": [
+        75.07059478759766,
+        302.4607849121094,
+        131.04473876953125
+      ],
+      "materials": [
+        "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/MI_Modular_Building_Roof_Kit_ukjsdfvdw_2K.MI_Modular_Building_Roof_Kit_ukjsdfvdw_2K"
+      ]
+    },
+    {
+      "path": "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/S_Modular_Building_Roof_Kit_ukjsdfvdw_lod3_Var2",
+      "class": "StaticMesh",
+      "origin": [
+        -298.0350646972656,
+        -298.0337829589844,
+        126.5548095703125
+      ],
+      "extent": [
+        302.0289611816406,
+        302.0231018066406,
+        131.0987091064453
+      ],
+      "materials": [
+        "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/MI_Modular_Building_Roof_Kit_ukjsdfvdw_2K.MI_Modular_Building_Roof_Kit_ukjsdfvdw_2K"
+      ]
+    },
+    {
+      "path": "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/S_Modular_Building_Roof_Kit_ukjsdfvdw_lod3_Var3",
+      "class": "StaticMesh",
+      "origin": [
+        300.45257568359375,
+        -300.45880126953125,
+        128.18809509277344
+      ],
+      "extent": [
+        300.4709777832031,
+        300.46832275390625,
+        129.33560180664062
+      ],
+      "materials": [
+        "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/MI_Modular_Building_Roof_Kit_ukjsdfvdw_2K.MI_Modular_Building_Roof_Kit_ukjsdfvdw_2K"
+      ]
+    },
+    {
+      "path": "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/S_Modular_Building_Roof_Kit_ukjsdfvdw_lod3_Var4",
+      "class": "StaticMesh",
+      "origin": [
+        149.9991455078125,
+        -298.46429443359375,
+        126.47220611572266
+      ],
+      "extent": [
+        150.0104522705078,
+        302.46002197265625,
+        131.04180908203125
+      ],
+      "materials": [
+        "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/MI_Modular_Building_Roof_Kit_ukjsdfvdw_2K.MI_Modular_Building_Roof_Kit_ukjsdfvdw_2K"
+      ]
+    },
+    {
+      "path": "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/S_Modular_Building_Roof_Kit_ukjsdfvdw_lod3_Var5",
+      "class": "StaticMesh",
+      "origin": [
+        150.0391082763672,
+        -298.4658508300781,
+        126.47445678710938
+      ],
+      "extent": [
+        150.0404052734375,
+        302.4599304199219,
+        131.06405639648438
+      ],
+      "materials": [
+        "/Game/Megascans/3D_Assets/Modular_Building_Roof_Kit_ukjsdfvdw/MI_Modular_Building_Roof_Kit_ukjsdfvdw_2K.MI_Modular_Building_Roof_Kit_ukjsdfvdw_2K"
+      ]
+    },
+    {
+      "path": "/Game/Megapack/Meshes/MiddleEast/Wires/BP_Wires",
+      "class": "Blueprint"
+    },
+    {
+      "path": "/Game/Megapack/Meshes/MiddleEast/Wires/SM_wire_part_01",
+      "class": "StaticMesh",
+      "origin": [
+        -15.0,
+        0.12381446361541748,
+        -2.384185791015625e-06
+      ],
+      "extent": [
+        15.0,
+        1.1728137731552124,
+        1.2331691980361938
+      ],
+      "materials": [
+        "/Game/Megapack/Material/MiddleEast/M_black_rubber.M_black_rubber"
+      ]
+    },
+    {
+      "path": "/Game/Migrated/Balcony2",
+      "class": "StaticMesh",
+      "origin": [
+        6.7509765625,
+        34.13855743408203,
+        103.27937173843384
+      ],
+      "extent": [
+        194.5626678466797,
+        45.91314697265625,
+        101.89528036117554
+      ],
+      "materials": [
+        "/Game/Megascans/Surfaces/Rusty_Metal_Sheet_vccochnew/MI_Rusty_Metal_Sheet_vccochnew_4K.MI_Rusty_Metal_Sheet_vccochnew_4K",
+        "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/MI_Roman_Stone_Wall_tf2kaa2n_4K.MI_Roman_Stone_Wall_tf2kaa2n_4K"
+      ]
+    },
+    {
+      "path": "/Game/Migrated/Balcony",
+      "class": "StaticMesh",
+      "origin": [
+        0.22936248779296875,
+        34.13855743408203,
+        102.64452981948853
+      ],
+      "extent": [
+        128.1607437133789,
+        45.91314697265625,
+        101.26043844223022
+      ],
+      "materials": [
+        "/Game/Megascans/Surfaces/Rusty_Metal_Sheet_vccochnew/MI_Rusty_Metal_Sheet_vccochnew_4K.MI_Rusty_Metal_Sheet_vccochnew_4K",
+        "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/MI_Roman_Stone_Wall_tf2kaa2n_4K.MI_Roman_Stone_Wall_tf2kaa2n_4K"
+      ]
+    }
+  ],
+  "wire_blueprint": {
+    "NODE_AddSplineMeshComponent-0": {
+      "mesh": "/Game/Megapack/Meshes/MiddleEast/Wires/SM_wire_part_01.SM_wire_part_01",
+      "axis": "<SplineMeshAxis.X: 0>"
+    }
+  }
+}

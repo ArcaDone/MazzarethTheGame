@@ -1,0 +1,178 @@
+{
+  "map": "/Game/Levels/Mazzarino80_PCG_Quartieri_Preview",
+  "all_footprints": 3216,
+  "pcg_houses": 18,
+  "districts": 108,
+  "footprints_grouped": 3216,
+  "expected_pcg_instances": 37037,
+  "actual_pcg_instances": 37037,
+  "houses": {
+    "1249068307": {
+      "instances": 880,
+      "expected_instances": 880,
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249068307.PCG_Building_1249068307",
+      "expected_graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249068307.PCG_Building_1249068307",
+      "generated": true,
+      "original_hidden_in_game": true,
+      "original_visible_components": 0
+    },
+    "1249069200": {
+      "instances": 2469,
+      "expected_instances": 2469,
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069200.PCG_Building_1249069200",
+      "expected_graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069200.PCG_Building_1249069200",
+      "generated": true,
+      "original_hidden_in_game": true,
+      "original_visible_components": 0
+    },
+    "1249069202": {
+      "instances": 4862,
+      "expected_instances": 4862,
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069202.PCG_Building_1249069202",
+      "expected_graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069202.PCG_Building_1249069202",
+      "generated": true,
+      "original_hidden_in_game": true,
+      "original_visible_components": 0
+    },
+    "1249069204": {
+      "instances": 3466,
+      "expected_instances": 3466,
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069204.PCG_Building_1249069204",
+      "expected_graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069204.PCG_Building_1249069204",
+      "generated": true,
+      "original_hidden_in_game": true,
+      "original_visible_components": 0
+    },
+    "1249069205": {
+      "instances": 6213,
+      "expected_instances": 6213,
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069205.PCG_Building_1249069205",
+      "expected_graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069205.PCG_Building_1249069205",
+      "generated": true,
+      "original_hidden_in_game": true,
+      "original_visible_components": 0
+    },
+    "1249069213": {
+      "instances": 253,
+      "expected_instances": 253,
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069213.PCG_Building_1249069213",
+      "expected_graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069213.PCG_Building_1249069213",
+      "generated": true,
+      "original_hidden_in_game": true,
+      "original_visible_components": 0
+    },
+    "1249069219": {
+      "instances": 2179,
+      "expected_instances": 2179,
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069219.PCG_Building_1249069219",
+      "expected_graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069219.PCG_Building_1249069219",
+      "generated": true,
+      "original_hidden_in_game": true,
+      "original_visible_components": 0
+    },
+    "1249069228": {
+      "instances": 2738,
+      "expected_instances": 2738,
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069228.PCG_Building_1249069228",
+      "expected_graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069228.PCG_Building_1249069228",
+      "generated": true,
+      "original_hidden_in_game": true,
+      "original_visible_components": 0
+    },
+    "1249069229": {
+      "instances": 277,
+      "expected_instances": 277,
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069229.PCG_Building_1249069229",
+      "expected_graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069229.PCG_Building_1249069229",
+      "generated": true,
+      "original_hidden_in_game": true,
+      "original_visible_components": 0
+    },
+    "1249069235": {
+      "instances": 2476,
+      "expected_instances": 2476,
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069235.PCG_Building_1249069235",
+      "expected_graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069235.PCG_Building_1249069235",
+      "generated": true,
+      "original_hidden_in_game": true,
+      "original_visible_components": 0
+    },
+    "1249069237": {
+      "instances": 3261,
+      "expected_instances": 3261,
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069237.PCG_Building_1249069237",
+      "expected_graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069237.PCG_Building_1249069237",
+      "generated": true,
+      "original_hidden_in_game": true,
+      "original_visible_components": 0
+    },
+    "1249069246": {
+      "instances": 721,
+      "expected_instances": 721,
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069246.PCG_Building_1249069246",
+      "expected_graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069246.PCG_Building_1249069246",
+      "generated": true,
+      "original_hidden_in_game": true,
+      "original_visible_components": 0
+    },
+    "1249069247": {
+      "instances": 1028,
+      "expected_instances": 1028,
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069247.PCG_Building_1249069247",
+      "expected_graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069247.PCG_Building_1249069247",
+      "generated": true,
+      "original_hidden_in_game": true,
+      "original_visible_components": 0
+    },
+    "1249069271": {
+      "instances": 297,
+      "expected_instances": 297,
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069271.PCG_Building_1249069271",
+      "expected_graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069271.PCG_Building_1249069271",
+      "generated": true,
+      "original_hidden_in_game": true,
+      "original_visible_components": 0
+    },
+    "1249069275": {
+      "instances": 887,
+      "expected_instances": 887,
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069275.PCG_Building_1249069275",
+      "expected_graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069275.PCG_Building_1249069275",
+      "generated": true,
+      "original_hidden_in_game": true,
+      "original_visible_components": 0
+    },
+    "1249069276": {
+      "instances": 245,
+      "expected_instances": 245,
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069276.PCG_Building_1249069276",
+      "expected_graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069276.PCG_Building_1249069276",
+      "generated": true,
+      "original_hidden_in_game": true,
+      "original_visible_components": 0
+    },
+    "1249069286": {
+      "instances": 749,
+      "expected_instances": 749,
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069286.PCG_Building_1249069286",
+      "expected_graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069286.PCG_Building_1249069286",
+      "generated": true,
+      "original_hidden_in_game": true,
+      "original_visible_components": 0
+    },
+    "1249069287": {
+      "instances": 4036,
+      "expected_instances": 4036,
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069287.PCG_Building_1249069287",
+      "expected_graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069287.PCG_Building_1249069287",
+      "generated": true,
+      "original_hidden_in_game": true,
+      "original_visible_components": 0
+    }
+  },
+  "protected_source_hashes": {
+    "sample": "fd4f48df29008d4f3765ba3ffded89d598ff03ac5835628f8b42279fb9bdf034",
+    "panorama": "980f6973d6fd5dfb7ae8b1bace63041f4d2d18d8a422a55f5e3363e4643a96e7"
+  },
+  "errors": []
+}

@@ -1,0 +1,277 @@
+{
+  "map": "/Game/Levels/Mazzarino80_PCG_Quartieri_Batch01_FullPCG",
+  "pcg_houses_verified": 67,
+  "generated_instances": 29380,
+  "hidden_source_volumes": [
+    {
+      "lot": "1249054419",
+      "components": 8
+    },
+    {
+      "lot": "1249054423",
+      "components": 8
+    },
+    {
+      "lot": "1249067196",
+      "components": 8
+    },
+    {
+      "lot": "1249067205",
+      "components": 8
+    },
+    {
+      "lot": "1249067206",
+      "components": 8
+    },
+    {
+      "lot": "1249067208",
+      "components": 8
+    },
+    {
+      "lot": "1249067209",
+      "components": 8
+    },
+    {
+      "lot": "1249067216",
+      "components": 8
+    },
+    {
+      "lot": "1249067217",
+      "components": 8
+    },
+    {
+      "lot": "1249067223",
+      "components": 8
+    },
+    {
+      "lot": "1249067225",
+      "components": 8
+    },
+    {
+      "lot": "1249067229",
+      "components": 8
+    },
+    {
+      "lot": "1249067232",
+      "components": 8
+    },
+    {
+      "lot": "1249067242",
+      "components": 8
+    },
+    {
+      "lot": "1249067262",
+      "components": 8
+    },
+    {
+      "lot": "1249067265",
+      "components": 8
+    },
+    {
+      "lot": "1249067267",
+      "components": 8
+    },
+    {
+      "lot": "1249067277",
+      "components": 8
+    },
+    {
+      "lot": "1249068301",
+      "components": 8
+    },
+    {
+      "lot": "1249068302",
+      "components": 8
+    },
+    {
+      "lot": "1249068303",
+      "components": 8
+    },
+    {
+      "lot": "1249068304",
+      "components": 8
+    },
+    {
+      "lot": "1249068305",
+      "components": 8
+    },
+    {
+      "lot": "1249068306",
+      "components": 8
+    },
+    {
+      "lot": "1249068312",
+      "components": 8
+    },
+    {
+      "lot": "1249068315",
+      "components": 8
+    },
+    {
+      "lot": "1249068327",
+      "components": 8
+    },
+    {
+      "lot": "1249068337",
+      "components": 8
+    },
+    {
+      "lot": "1249068343",
+      "components": 8
+    },
+    {
+      "lot": "1249069191",
+      "components": 8
+    },
+    {
+      "lot": "1249069211",
+      "components": 8
+    },
+    {
+      "lot": "1249069239",
+      "components": 8
+    },
+    {
+      "lot": "1249069241",
+      "components": 8
+    },
+    {
+      "lot": "1249069252",
+      "components": 8
+    },
+    {
+      "lot": "1249069253",
+      "components": 8
+    },
+    {
+      "lot": "1249069267",
+      "components": 8
+    },
+    {
+      "lot": "1249071118",
+      "components": 8
+    },
+    {
+      "lot": "1249071121",
+      "components": 8
+    },
+    {
+      "lot": "1249071125",
+      "components": 8
+    },
+    {
+      "lot": "1249071132",
+      "components": 8
+    },
+    {
+      "lot": "1249071138",
+      "components": 8
+    },
+    {
+      "lot": "1249071140",
+      "components": 8
+    },
+    {
+      "lot": "1249071149",
+      "components": 8
+    },
+    {
+      "lot": "1249071153",
+      "components": 8
+    },
+    {
+      "lot": "1249082254",
+      "components": 8
+    },
+    {
+      "lot": "1249082257",
+      "components": 8
+    },
+    {
+      "lot": "1249082258",
+      "components": 8
+    },
+    {
+      "lot": "1249082259",
+      "components": 8
+    },
+    {
+      "lot": "1249082261",
+      "components": 8
+    },
+    {
+      "lot": "1249082264",
+      "components": 8
+    },
+    {
+      "lot": "1249082269",
+      "components": 8
+    },
+    {
+      "lot": "1249082271",
+      "components": 8
+    },
+    {
+      "lot": "1249082273",
+      "components": 8
+    },
+    {
+      "lot": "1249082275",
+      "components": 8
+    },
+    {
+      "lot": "1249082283",
+      "components": 8
+    },
+    {
+      "lot": "1249082286",
+      "components": 8
+    },
+    {
+      "lot": "1249082289",
+      "components": 8
+    },
+    {
+      "lot": "1249082294",
+      "components": 8
+    },
+    {
+      "lot": "1249082983",
+      "components": 8
+    },
+    {
+      "lot": "1249083019",
+      "components": 8
+    },
+    {
+      "lot": "1249083051",
+      "components": 8
+    },
+    {
+      "lot": "1249083059",
+      "components": 8
+    },
+    {
+      "lot": "1249083070",
+      "components": 8
+    },
+    {
+      "lot": "1249083089",
+      "components": 8
+    },
+    {
+      "lot": "1249832594",
+      "components": 8
+    },
+    {
+      "lot": "372573548",
+      "components": 8
+    },
+    {
+      "lot": "372573577",
+      "components": 8
+    }
+  ],
+  "source_footprints_retained": true,
+  "all_other_source_volumes_untouched": true
+}

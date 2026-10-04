@@ -1,0 +1,11 @@
+{
+  "catalog": "/Game/Mazzarino80/PCG/DA_Buildings_Test18",
+  "style_by_lot": {
+    "1249069204": "STYLE_01",
+    "1249068307": "STYLE_02",
+    "1249069200": "STYLE_03",
+    "1249069228": "STYLE_04"
+  },
+  "all_18_lots_preserved": true,
+  "building_count": 18
+}

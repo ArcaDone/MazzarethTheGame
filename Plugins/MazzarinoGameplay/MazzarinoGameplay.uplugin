@@ -1,0 +1,12 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0",
+  "FriendlyName": "Mazzarino - Gioco",
+  "Description": "Giocatore a piedi, salire e scendere dalle auto (E), HUD in stile GTA con radar della citta.",
+  "Category": "Gameplay",
+  "CanContainContent": false,
+  "EnabledByDefault": true,
+  "Plugins": [{"Name": "MazzarinoVehicles", "Enabled": true}, {"Name": "MazzarinoRoads", "Enabled": true}, {"Name": "EnhancedInput", "Enabled": true}],
+  "Modules": [{"Name": "MazzarinoGameplay", "Type": "Runtime", "LoadingPhase": "Default", "PlatformAllowList": ["Win64"]}]
+}

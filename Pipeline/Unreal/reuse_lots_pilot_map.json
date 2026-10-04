@@ -1,0 +1,64 @@
+{
+  "map": "/Game/Mazzarino80/ReuseKit/Maps/L_ReuseKit_4Lots_QA",
+  "source_map": "/Game/Mazzarino80/PCG/Validation/L_PCGBuildings_Validation",
+  "candidate_pilots": [
+    {
+      "lot": "1249069204",
+      "graph": "/Game/Mazzarino80/ReuseKit/PCG/Lots/PCG_Building_1249069204",
+      "location_cm": [
+        75002.59999658588,
+        9789.715,
+        17254.402704975397
+      ],
+      "scale": [
+        4.028899999999995,
+        2.907029999999999,
+        2.0
+      ]
+    },
+    {
+      "lot": "1249068307",
+      "graph": "/Game/Mazzarino80/ReuseKit/PCG/Lots/PCG_Building_1249068307",
+      "location_cm": [
+        81754.82,
+        10385.45,
+        17669.925017550955
+      ],
+      "scale": [
+        3.984699999999997,
+        4.542120000000001,
+        2.0
+      ]
+    },
+    {
+      "lot": "1249069200",
+      "graph": "/Game/Mazzarino80/ReuseKit/PCG/Lots/PCG_Building_1249069200",
+      "location_cm": [
+        73390.86,
+        10233.455,
+        17165.043849912112
+      ],
+      "scale": [
+        4.790440000000002,
+        2.7449700000000012,
+        2.0
+      ]
+    },
+    {
+      "lot": "1249069228",
+      "graph": "/Game/Mazzarino80/ReuseKit/PCG/Lots/PCG_Building_1249069228",
+      "location_cm": [
+        78839.72,
+        12099.105,
+        17221.30957588186
+      ],
+      "scale": [
+        3.4062400000000053,
+        4.059270000000001,
+        2.0
+      ]
+    }
+  ],
+  "other_lots_unchanged": 14,
+  "note": "Open in graphical editor and generate PCG before visual signoff"
+}

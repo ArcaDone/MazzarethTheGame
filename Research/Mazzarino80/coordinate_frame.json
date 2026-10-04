@@ -1,0 +1,10 @@
+{
+  "working_level": "/Game/Levels/Mazzarino80_Panoramica",
+  "applied_on": "2026-09-28",
+  "transformation_from_previous_world_cm": "(x, y, z) -> (x, -y, z)",
+  "reflection_plane_world_y_cm": 0,
+  "current_geographic_anchor_world_cm": [82373.88, 4006.4, 17100.0],
+  "source_generated_files": "Historical generated files retain their previous coordinate frame. Apply this world reflection when using them for placement in the current working level.",
+  "terrain_mesh": "/Game/Mazzarino80/Roads/ReflectedBase/M80_Terreno_WorldYReflected",
+  "buildings_mesh": "/Game/Mazzarino80/Roads/ReflectedBase/M80_Edifici_WorldYReflected"
+}

@@ -1,0 +1,314 @@
+{
+  "source": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\Candidates\\approved_detail_material_v1.json",
+  "asset_root": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1",
+  "shared_five_stage_graph": "/Game/Mazzarino80/PCG/Graphs/PCG_Building_Master",
+  "lots": {
+    "1249069275": {
+      "data": {
+        "path": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCGDA_Building_1249069275",
+        "saved": true,
+        "style": "STYLE_01",
+        "counts": {
+          "Structure": 1,
+          "Facades": 1,
+          "Openings": 33,
+          "Roofs": 750,
+          "Details": 102
+        },
+        "tagged_count": 5
+      },
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069275",
+      "points": 887
+    },
+    "1249069286": {
+      "data": {
+        "path": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCGDA_Building_1249069286",
+        "saved": true,
+        "style": "STYLE_04",
+        "counts": {
+          "Structure": 1,
+          "Facades": 1,
+          "Openings": 34,
+          "Roofs": 638,
+          "Details": 75
+        },
+        "tagged_count": 5
+      },
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069286",
+      "points": 749
+    },
+    "1249069247": {
+      "data": {
+        "path": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCGDA_Building_1249069247",
+        "saved": true,
+        "style": "STYLE_01",
+        "counts": {
+          "Structure": 1,
+          "Facades": 1,
+          "Openings": 24,
+          "Roofs": 893,
+          "Details": 109
+        },
+        "tagged_count": 5
+      },
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069247",
+      "points": 1028
+    },
+    "1249069213": {
+      "data": {
+        "path": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCGDA_Building_1249069213",
+        "saved": true,
+        "style": "STYLE_03",
+        "counts": {
+          "Structure": 1,
+          "Facades": 1,
+          "Openings": 160,
+          "Roofs": 1,
+          "Details": 90
+        },
+        "tagged_count": 5
+      },
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069213",
+      "points": 253
+    },
+    "1249069271": {
+      "data": {
+        "path": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCGDA_Building_1249069271",
+        "saved": true,
+        "style": "STYLE_03",
+        "counts": {
+          "Structure": 1,
+          "Facades": 1,
+          "Openings": 182,
+          "Roofs": 1,
+          "Details": 112
+        },
+        "tagged_count": 5
+      },
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069271",
+      "points": 297
+    },
+    "1249069276": {
+      "data": {
+        "path": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCGDA_Building_1249069276",
+        "saved": true,
+        "style": "STYLE_01",
+        "counts": {
+          "Structure": 1,
+          "Facades": 2,
+          "Openings": 157,
+          "Roofs": 1,
+          "Details": 84
+        },
+        "tagged_count": 5
+      },
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069276",
+      "points": 245
+    },
+    "1249069204": {
+      "data": {
+        "path": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCGDA_Building_1249069204",
+        "saved": true,
+        "style": "STYLE_01",
+        "counts": {
+          "Structure": 1,
+          "Facades": 1,
+          "Openings": 132,
+          "Roofs": 3163,
+          "Details": 169
+        },
+        "tagged_count": 5
+      },
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069204",
+      "points": 3466
+    },
+    "1249069237": {
+      "data": {
+        "path": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCGDA_Building_1249069237",
+        "saved": true,
+        "style": "STYLE_03",
+        "counts": {
+          "Structure": 1,
+          "Facades": 1,
+          "Openings": 282,
+          "Roofs": 2612,
+          "Details": 365
+        },
+        "tagged_count": 5
+      },
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069237",
+      "points": 3261
+    },
+    "1249069219": {
+      "data": {
+        "path": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCGDA_Building_1249069219",
+        "saved": true,
+        "style": "STYLE_03",
+        "counts": {
+          "Structure": 1,
+          "Facades": 2,
+          "Openings": 60,
+          "Roofs": 2012,
+          "Details": 104
+        },
+        "tagged_count": 5
+      },
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069219",
+      "points": 2179
+    },
+    "1249069205": {
+      "data": {
+        "path": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCGDA_Building_1249069205",
+        "saved": true,
+        "style": "STYLE_04",
+        "counts": {
+          "Structure": 18,
+          "Facades": 1,
+          "Openings": 562,
+          "Roofs": 5017,
+          "Details": 615
+        },
+        "tagged_count": 5
+      },
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069205",
+      "points": 6213
+    },
+    "1249069228": {
+      "data": {
+        "path": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCGDA_Building_1249069228",
+        "saved": true,
+        "style": "STYLE_04",
+        "counts": {
+          "Structure": 10,
+          "Facades": 2,
+          "Openings": 225,
+          "Roofs": 2182,
+          "Details": 319
+        },
+        "tagged_count": 5
+      },
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069228",
+      "points": 2738
+    },
+    "1249069202": {
+      "data": {
+        "path": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCGDA_Building_1249069202",
+        "saved": true,
+        "style": "STYLE_04",
+        "counts": {
+          "Structure": 2,
+          "Facades": 2,
+          "Openings": 405,
+          "Roofs": 4121,
+          "Details": 332
+        },
+        "tagged_count": 5
+      },
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069202",
+      "points": 4862
+    },
+    "1249069200": {
+      "data": {
+        "path": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCGDA_Building_1249069200",
+        "saved": true,
+        "style": "STYLE_03",
+        "counts": {
+          "Structure": 1,
+          "Facades": 2,
+          "Openings": 380,
+          "Roofs": 1904,
+          "Details": 182
+        },
+        "tagged_count": 5
+      },
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069200",
+      "points": 2469
+    },
+    "1249069235": {
+      "data": {
+        "path": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCGDA_Building_1249069235",
+        "saved": true,
+        "style": "STYLE_03",
+        "counts": {
+          "Structure": 1,
+          "Facades": 2,
+          "Openings": 381,
+          "Roofs": 1677,
+          "Details": 415
+        },
+        "tagged_count": 5
+      },
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069235",
+      "points": 2476
+    },
+    "1249069287": {
+      "data": {
+        "path": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCGDA_Building_1249069287",
+        "saved": true,
+        "style": "STYLE_03",
+        "counts": {
+          "Structure": 1,
+          "Facades": 2,
+          "Openings": 350,
+          "Roofs": 3308,
+          "Details": 375
+        },
+        "tagged_count": 5
+      },
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069287",
+      "points": 4036
+    },
+    "1249068307": {
+      "data": {
+        "path": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCGDA_Building_1249068307",
+        "saved": true,
+        "style": "STYLE_02",
+        "counts": {
+          "Structure": 1,
+          "Facades": 1,
+          "Openings": 630,
+          "Roofs": 1,
+          "Details": 247
+        },
+        "tagged_count": 5
+      },
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249068307",
+      "points": 880
+    },
+    "1249069246": {
+      "data": {
+        "path": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCGDA_Building_1249069246",
+        "saved": true,
+        "style": "STYLE_02",
+        "counts": {
+          "Structure": 1,
+          "Facades": 1,
+          "Openings": 520,
+          "Roofs": 1,
+          "Details": 198
+        },
+        "tagged_count": 5
+      },
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069246",
+      "points": 721
+    },
+    "1249069229": {
+      "data": {
+        "path": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCGDA_Building_1249069229",
+        "saved": true,
+        "style": "STYLE_02",
+        "counts": {
+          "Structure": 1,
+          "Facades": 1,
+          "Openings": 158,
+          "Roofs": 1,
+          "Details": 116
+        },
+        "tagged_count": 5
+      },
+      "graph": "/Game/Mazzarino80/PCG/DetailMaterialCandidate_v1/PCG_Building_1249069229",
+      "points": 277
+    }
+  },
+  "errors": {}
+}

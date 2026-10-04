@@ -1,0 +1,172 @@
+{
+  "/Game/Megapack/Material/Yakohama/MI_StuccoPainted_02": {
+    "path": "/Game/Mazzarino80/Library/Comune/Megapack/Material/Yakohama/MI_StuccoPainted_02",
+    "class": "MaterialInstanceConstant"
+  },
+  "/Game/Megapack/Material/Yakohama/MI_Stucco_01": {
+    "path": "/Game/Mazzarino80/Library/Comune/Megapack/Material/Yakohama/MI_Stucco_01",
+    "class": "MaterialInstanceConstant"
+  },
+  "/Game/Megapack/Material/Yakohama/MI_Stucco_02": {
+    "path": "/Game/Mazzarino80/Library/Comune/Megapack/Material/Yakohama/MI_Stucco_02",
+    "class": "MaterialInstanceConstant"
+  },
+  "/Game/Megapack/Material/Yakohama/MI_Stucco_03": {
+    "path": "/Game/Mazzarino80/Library/Comune/Megapack/Material/Yakohama/MI_Stucco_03",
+    "class": "MaterialInstanceConstant"
+  },
+  "/Game/Megapack/Material/Yakohama/MI_Stucco_04": {
+    "path": "/Game/Mazzarino80/Library/Comune/Megapack/Material/Yakohama/MI_Stucco_04",
+    "class": "MaterialInstanceConstant"
+  },
+  "/Game/Megascans/Surfaces/Damaged_Brick_Wall_Plaster_vcvodh0/MI_Damaged_Brick_Wall_Plaster_vcvodh0_4K": {
+    "path": "/Game/Mazzarino80/Library/Comune/Megascans/Surfaces/Damaged_Brick_Wall_Plaster_vcvodh0/MI_Damaged_Brick_Wall_Plaster_vcvodh0_4K",
+    "class": "MaterialInstanceConstant"
+  },
+  "/Game/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/MI_Mossy_Stone_Wall_ue4mcfelw_8K": {
+    "path": "/Game/Mazzarino80/Library/Comune/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/MI_Mossy_Stone_Wall_ue4mcfelw_8K",
+    "class": "MaterialInstanceConstant"
+  },
+  "/Game/Megascans/Surfaces/Painted_Cracked_Concrete_Wall_sionccva/MI_Painted_Cracked_Concrete_Wall_sionccva_2K": {
+    "path": "/Game/Mazzarino80/Library/Comune/Megascans/Surfaces/Painted_Cracked_Concrete_Wall_sionccva/MI_Painted_Cracked_Concrete_Wall_sionccva_2K",
+    "class": "MaterialInstanceConstant"
+  },
+  "/Game/Esercitazioni/CasaFloresta/window_low": {
+    "path": "/Game/Mazzarino80/Library/Comune/Esercitazioni/CasaFloresta/window_low",
+    "class": "StaticMesh",
+    "origin": [
+      0.0,
+      2.47955322265625e-05,
+      7.62939453125e-06
+    ],
+    "extent": [
+      94.96050262451172,
+      51.56871223449707,
+      152.44298553466797
+    ]
+  },
+  "/Game/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06a": {
+    "path": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06a",
+    "class": "StaticMesh",
+    "origin": [
+      43.74038553237915,
+      -6.411084175109863,
+      104.6544542312622
+    ],
+    "extent": [
+      55.01217794418335,
+      11.085577964782715,
+      105.3476209640503
+    ]
+  },
+  "/Game/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c": {
+    "path": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c",
+    "class": "StaticMesh",
+    "origin": [
+      44.45911645889282,
+      -6.411088705062866,
+      109.90825429558754
+    ],
+    "extent": [
+      55.730924129486084,
+      11.08557915687561,
+      110.60141977667809
+    ]
+  },
+  "/Game/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_Double_01a": {
+    "path": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_Double_01a",
+    "class": "StaticMesh",
+    "origin": [
+      -0.2981719970703125,
+      13.774086713790894,
+      124.59638753533363
+    ],
+    "extent": [
+      62.02642059326172,
+      14.805629014968872,
+      125.3907798230648
+    ]
+  },
+  "/Game/SoulCity/Environment/Meshes/Building_Slum/SM_Slums_Window_01a": {
+    "path": "/Game/Mazzarino80/Library/Comune/SoulCity/Environment/Meshes/Building_Slum/SM_Slums_Window_01a",
+    "class": "StaticMesh",
+    "origin": [
+      80.0,
+      9.341400146484375,
+      82.94694519042969
+    ],
+    "extent": [
+      80.0,
+      9.341400146484375,
+      91.40764617919922
+    ]
+  },
+  "/Game/SoulCity/Environment/Meshes/Building_Slum/SM_Slums_Window_01f": {
+    "path": "/Game/Mazzarino80/Library/Comune/SoulCity/Environment/Meshes/Building_Slum/SM_Slums_Window_01f",
+    "class": "StaticMesh",
+    "origin": [
+      80.20995330810547,
+      14.79648208618164,
+      67.14492797851562
+    ],
+    "extent": [
+      80.20995330810547,
+      15.34348201751709,
+      78.60697174072266
+    ]
+  },
+  "/Game/OldWestAssets/OldWestVol3/VOL3/Meshes/SM_Lamp_01a": {
+    "path": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol3/VOL3/Meshes/SM_Lamp_01a",
+    "class": "StaticMesh",
+    "origin": [
+      -0.21880340576171875,
+      0.0,
+      36.72296142578125
+    ],
+    "extent": [
+      26.54541778564453,
+      26.743297576904297,
+      36.72296142578125
+    ]
+  },
+  "/Game/OldWestAssets/OldWestVol5/VOL5/Meshes/SM_Bench_01a": {
+    "path": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol5/VOL5/Meshes/SM_Bench_01a",
+    "class": "StaticMesh",
+    "origin": [
+      -0.0138702392578125,
+      -4.198860168457031,
+      47.95803451538086
+    ],
+    "extent": [
+      91.23725128173828,
+      29.924415588378906,
+      47.95806121826172
+    ]
+  },
+  "/Game/SoulCity/Environment/Meshes/Building_Slum/SM_Slums_Sign02a": {
+    "path": "/Game/Mazzarino80/Library/Comune/SoulCity/Environment/Meshes/Building_Slum/SM_Slums_Sign02a",
+    "class": "StaticMesh",
+    "origin": [
+      -110.46765899658203,
+      3.24249267578125e-05,
+      37.79900360107422
+    ],
+    "extent": [
+      111.5258560180664,
+      24.47287368774414,
+      109.72410583496094
+    ]
+  },
+  "/Game/Megascans/Surfaces/Red_Roof_Tiles_tfqnfggs/MI_Red_Roof_Tiles_tfqnfggs_4K": {
+    "path": "/Game/Mazzarino80/Library/Comune/Megascans/Surfaces/Red_Roof_Tiles_tfqnfggs/MI_Red_Roof_Tiles_tfqnfggs_4K",
+    "class": "MaterialInstanceConstant"
+  },
+  "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/MI_Roman_Stone_Wall_tf2kaa2n_4K": {
+    "path": "/Game/Mazzarino80/Library/Comune/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/MI_Roman_Stone_Wall_tf2kaa2n_4K",
+    "class": "MaterialInstanceConstant"
+  },
+  "/Game/Megascans/Surfaces/Stucco_Facade_wfnjdgl/MI_Stucco_Facade_wfnjdgl_2K": {
+    "path": "/Game/Mazzarino80/Library/Comune/Megascans/Surfaces/Stucco_Facade_wfnjdgl/MI_Stucco_Facade_wfnjdgl_2K",
+    "class": "MaterialInstanceConstant"
+  }
+}

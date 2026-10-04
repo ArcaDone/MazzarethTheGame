@@ -1,0 +1,422 @@
+{
+  "map": "/Game/Levels/Mazzarino80_PCG_Quartieri_Batch01_FullPCG",
+  "status": "generated_needs_gui_save",
+  "started": 1790936353.8165379,
+  "total_lots": 67,
+  "completed_lots": 67,
+  "completed_by_district": {
+    "Q001": 4,
+    "Q002": 50,
+    "Q003": 13
+  },
+  "expected_instances": 29380,
+  "actual_instances": 29380,
+  "current_lot": "372573577",
+  "lots": {
+    "1249069253": {
+      "district": "Q001",
+      "expected": 151,
+      "actual": 151,
+      "elapsed_seconds": 16.53
+    },
+    "1249082264": {
+      "district": "Q001",
+      "expected": 205,
+      "actual": 205,
+      "elapsed_seconds": 0.7
+    },
+    "1249082269": {
+      "district": "Q001",
+      "expected": 225,
+      "actual": 225,
+      "elapsed_seconds": 0.7
+    },
+    "1249082294": {
+      "district": "Q001",
+      "expected": 306,
+      "actual": 306,
+      "elapsed_seconds": 0.71
+    },
+    "1249067196": {
+      "district": "Q002",
+      "expected": 9770,
+      "actual": 9770,
+      "elapsed_seconds": 0.7
+    },
+    "1249067205": {
+      "district": "Q002",
+      "expected": 145,
+      "actual": 145,
+      "elapsed_seconds": 0.71
+    },
+    "1249067206": {
+      "district": "Q002",
+      "expected": 106,
+      "actual": 106,
+      "elapsed_seconds": 0.71
+    },
+    "1249067208": {
+      "district": "Q002",
+      "expected": 294,
+      "actual": 294,
+      "elapsed_seconds": 0.7
+    },
+    "1249067209": {
+      "district": "Q002",
+      "expected": 117,
+      "actual": 117,
+      "elapsed_seconds": 0.7
+    },
+    "1249067216": {
+      "district": "Q002",
+      "expected": 76,
+      "actual": 76,
+      "elapsed_seconds": 0.71
+    },
+    "1249067217": {
+      "district": "Q002",
+      "expected": 112,
+      "actual": 112,
+      "elapsed_seconds": 0.7
+    },
+    "1249067223": {
+      "district": "Q002",
+      "expected": 172,
+      "actual": 172,
+      "elapsed_seconds": 0.71
+    },
+    "1249067225": {
+      "district": "Q002",
+      "expected": 52,
+      "actual": 52,
+      "elapsed_seconds": 0.7
+    },
+    "1249067229": {
+      "district": "Q002",
+      "expected": 106,
+      "actual": 106,
+      "elapsed_seconds": 0.7
+    },
+    "1249067232": {
+      "district": "Q002",
+      "expected": 75,
+      "actual": 75,
+      "elapsed_seconds": 0.7
+    },
+    "1249067242": {
+      "district": "Q002",
+      "expected": 172,
+      "actual": 172,
+      "elapsed_seconds": 0.7
+    },
+    "1249067262": {
+      "district": "Q002",
+      "expected": 102,
+      "actual": 102,
+      "elapsed_seconds": 0.7
+    },
+    "1249067265": {
+      "district": "Q002",
+      "expected": 172,
+      "actual": 172,
+      "elapsed_seconds": 0.71
+    },
+    "1249067267": {
+      "district": "Q002",
+      "expected": 377,
+      "actual": 377,
+      "elapsed_seconds": 0.7
+    },
+    "1249067277": {
+      "district": "Q002",
+      "expected": 106,
+      "actual": 106,
+      "elapsed_seconds": 0.7
+    },
+    "1249068337": {
+      "district": "Q002",
+      "expected": 115,
+      "actual": 115,
+      "elapsed_seconds": 0.71
+    },
+    "1249068343": {
+      "district": "Q002",
+      "expected": 622,
+      "actual": 622,
+      "elapsed_seconds": 0.7
+    },
+    "1249069191": {
+      "district": "Q002",
+      "expected": 59,
+      "actual": 59,
+      "elapsed_seconds": 0.7
+    },
+    "1249069211": {
+      "district": "Q002",
+      "expected": 204,
+      "actual": 204,
+      "elapsed_seconds": 0.7
+    },
+    "1249069239": {
+      "district": "Q002",
+      "expected": 58,
+      "actual": 58,
+      "elapsed_seconds": 0.71
+    },
+    "1249069241": {
+      "district": "Q002",
+      "expected": 155,
+      "actual": 155,
+      "elapsed_seconds": 0.71
+    },
+    "1249069267": {
+      "district": "Q002",
+      "expected": 93,
+      "actual": 93,
+      "elapsed_seconds": 0.71
+    },
+    "1249071118": {
+      "district": "Q002",
+      "expected": 378,
+      "actual": 378,
+      "elapsed_seconds": 0.71
+    },
+    "1249071121": {
+      "district": "Q002",
+      "expected": 53,
+      "actual": 53,
+      "elapsed_seconds": 0.71
+    },
+    "1249071125": {
+      "district": "Q002",
+      "expected": 17,
+      "actual": 17,
+      "elapsed_seconds": 0.7
+    },
+    "1249071132": {
+      "district": "Q002",
+      "expected": 184,
+      "actual": 184,
+      "elapsed_seconds": 0.71
+    },
+    "1249071138": {
+      "district": "Q002",
+      "expected": 140,
+      "actual": 140,
+      "elapsed_seconds": 0.71
+    },
+    "1249071140": {
+      "district": "Q002",
+      "expected": 150,
+      "actual": 150,
+      "elapsed_seconds": 0.7
+    },
+    "1249071149": {
+      "district": "Q002",
+      "expected": 77,
+      "actual": 77,
+      "elapsed_seconds": 0.71
+    },
+    "1249071153": {
+      "district": "Q002",
+      "expected": 100,
+      "actual": 100,
+      "elapsed_seconds": 0.71
+    },
+    "1249082254": {
+      "district": "Q002",
+      "expected": 107,
+      "actual": 107,
+      "elapsed_seconds": 0.7
+    },
+    "1249082257": {
+      "district": "Q002",
+      "expected": 225,
+      "actual": 225,
+      "elapsed_seconds": 0.71
+    },
+    "1249082258": {
+      "district": "Q002",
+      "expected": 551,
+      "actual": 551,
+      "elapsed_seconds": 0.7
+    },
+    "1249082259": {
+      "district": "Q002",
+      "expected": 181,
+      "actual": 181,
+      "elapsed_seconds": 0.71
+    },
+    "1249082261": {
+      "district": "Q002",
+      "expected": 282,
+      "actual": 282,
+      "elapsed_seconds": 0.71
+    },
+    "1249082271": {
+      "district": "Q002",
+      "expected": 545,
+      "actual": 545,
+      "elapsed_seconds": 0.71
+    },
+    "1249082273": {
+      "district": "Q002",
+      "expected": 189,
+      "actual": 189,
+      "elapsed_seconds": 0.71
+    },
+    "1249082275": {
+      "district": "Q002",
+      "expected": 337,
+      "actual": 337,
+      "elapsed_seconds": 0.71
+    },
+    "1249082283": {
+      "district": "Q002",
+      "expected": 454,
+      "actual": 454,
+      "elapsed_seconds": 0.7
+    },
+    "1249082286": {
+      "district": "Q002",
+      "expected": 726,
+      "actual": 726,
+      "elapsed_seconds": 0.71
+    },
+    "1249082289": {
+      "district": "Q002",
+      "expected": 151,
+      "actual": 151,
+      "elapsed_seconds": 0.71
+    },
+    "1249082983": {
+      "district": "Q002",
+      "expected": 107,
+      "actual": 107,
+      "elapsed_seconds": 0.71
+    },
+    "1249083019": {
+      "district": "Q002",
+      "expected": 104,
+      "actual": 104,
+      "elapsed_seconds": 0.7
+    },
+    "1249083051": {
+      "district": "Q002",
+      "expected": 141,
+      "actual": 141,
+      "elapsed_seconds": 0.71
+    },
+    "1249083059": {
+      "district": "Q002",
+      "expected": 328,
+      "actual": 328,
+      "elapsed_seconds": 0.7
+    },
+    "1249083070": {
+      "district": "Q002",
+      "expected": 542,
+      "actual": 542,
+      "elapsed_seconds": 0.7
+    },
+    "1249083089": {
+      "district": "Q002",
+      "expected": 74,
+      "actual": 74,
+      "elapsed_seconds": 0.71
+    },
+    "1249832594": {
+      "district": "Q002",
+      "expected": 142,
+      "actual": 142,
+      "elapsed_seconds": 0.7
+    },
+    "372573548": {
+      "district": "Q002",
+      "expected": 92,
+      "actual": 92,
+      "elapsed_seconds": 0.7
+    },
+    "1249054419": {
+      "district": "Q003",
+      "expected": 103,
+      "actual": 103,
+      "elapsed_seconds": 0.7
+    },
+    "1249054423": {
+      "district": "Q003",
+      "expected": 211,
+      "actual": 211,
+      "elapsed_seconds": 0.7
+    },
+    "1249068301": {
+      "district": "Q003",
+      "expected": 114,
+      "actual": 114,
+      "elapsed_seconds": 0.71
+    },
+    "1249068302": {
+      "district": "Q003",
+      "expected": 63,
+      "actual": 63,
+      "elapsed_seconds": 0.7
+    },
+    "1249068303": {
+      "district": "Q003",
+      "expected": 487,
+      "actual": 487,
+      "elapsed_seconds": 0.71
+    },
+    "1249068304": {
+      "district": "Q003",
+      "expected": 149,
+      "actual": 149,
+      "elapsed_seconds": 0.7
+    },
+    "1249068305": {
+      "district": "Q003",
+      "expected": 110,
+      "actual": 110,
+      "elapsed_seconds": 0.71
+    },
+    "1249068306": {
+      "district": "Q003",
+      "expected": 1288,
+      "actual": 1288,
+      "elapsed_seconds": 0.7
+    },
+    "1249068312": {
+      "district": "Q003",
+      "expected": 76,
+      "actual": 76,
+      "elapsed_seconds": 0.7
+    },
+    "1249068315": {
+      "district": "Q003",
+      "expected": 144,
+      "actual": 144,
+      "elapsed_seconds": 0.71
+    },
+    "1249068327": {
+      "district": "Q003",
+      "expected": 283,
+      "actual": 283,
+      "elapsed_seconds": 0.71
+    },
+    "1249069252": {
+      "district": "Q003",
+      "expected": 191,
+      "actual": 191,
+      "elapsed_seconds": 0.7
+    },
+    "372573577": {
+      "district": "Q003",
+      "expected": 5637,
+      "actual": 5637,
+      "elapsed_seconds": 0.7
+    }
+  },
+  "error": null,
+  "saved": false,
+  "elapsed_seconds": 63.06
+}

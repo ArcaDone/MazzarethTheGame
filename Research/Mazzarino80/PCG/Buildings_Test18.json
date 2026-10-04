@@ -1,0 +1,2190 @@
+{
+  "schema_version": 1,
+  "coordinate_frame": "reflected_world_y_2026-09-28",
+  "buildings": [
+    {
+      "building_id": "1249068307",
+      "family": "PALAZZETTO",
+      "family_label": "Piccolo palazzetto",
+      "position_world_cm": [
+        81329.813,
+        10448.977,
+        17363.925017550955
+      ],
+      "footprint_world_cm": [
+        [
+          81495.88,
+          8614.39,
+          17363.925017550955
+        ],
+        [
+          82579.01000000001,
+          10445.62,
+          17363.925017550955
+        ],
+        [
+          82737.08,
+          10376.62,
+          17363.925017550955
+        ],
+        [
+          83247.17,
+          11284.64,
+          17363.925017550955
+        ],
+        [
+          80675.6,
+          12156.51,
+          17363.925017550955
+        ],
+        [
+          80412.82,
+          11036.0,
+          17363.925017550955
+        ],
+        [
+          80687.96,
+          10925.01,
+          17363.925017550955
+        ],
+        [
+          80484.14,
+          10285.86,
+          17363.925017550955
+        ],
+        [
+          80716.0,
+          10219.4,
+          17363.925017550955
+        ],
+        [
+          80262.47,
+          9145.72,
+          17363.925017550955
+        ]
+      ],
+      "front_edge": 9,
+      "party_wall_edges": "[]",
+      "entrance_road_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.MazzarinoRoadSpline_961",
+      "ground_actor_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.StaticMeshActor_0",
+      "primary_floors": 2,
+      "floor_height_cm": 306.0,
+      "wall_thickness_cm": 42.0,
+      "roof_type": "Terrace",
+      "roof_rise_cm": 106.0,
+      "roof_direction": "FrontEdgeDerived",
+      "facade_type": "ExposedStone",
+      "window_pattern": "FamilyRule",
+      "door_type": "ExistingModuleOrProcedural",
+      "balcony_type": "FamilyRule",
+      "ground_relationship": "RoadEntranceAndTerrainFoundations",
+      "importance": "Secondary",
+      "reference_quality": "PhotoInformedDesignHypothesis",
+      "variation_seed": 4035,
+      "facade_irregularity": 0.6499999761581421,
+      "balcony_density": 0.41999998688697815,
+      "decay": 0.41999998688697815,
+      "materials": {
+        "plaster_material": "/Game/Mazzarino80/Historic/Materials/Case/MI_Pietra_1249068307.MI_Pietra_1249068307",
+        "stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_modesta.M80_Pietra_modesta",
+        "roof_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_vecchi.M80_Coppi_vecchi",
+        "terrace_material": "/Game/Mazzarino80/Historic/Materials/M80_Terrazza_calce.M80_Terrazza_calce",
+        "iron_material": "/Game/Mazzarino80/Historic/Materials/M80_Ferro_ossidato.M80_Ferro_ossidato",
+        "wood_material": "/Game/Mazzarino80/Historic/Materials/M80_Legno_persiane_0.M80_Legno_persiane_0",
+        "glass_material": "/Game/Mazzarino80/Historic/Materials/M80_Vetro_ombra.M80_Vetro_ombra",
+        "damp_material": "/Game/Mazzarino80/Historic/Materials/MI_Umidita_sfumata.MI_Umidita_sfumata",
+        "repair_material": "/Game/Mazzarino80/Historic/Materials/M80_Rappezzo.M80_Rappezzo",
+        "exposed_stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_esposta.M80_Pietra_esposta",
+        "drain_material": "/Game/Mazzarino80/Historic/Materials/M80_Canaletta_pietra_opaca.M80_Canaletta_pietra_opaca",
+        "tile_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_terracotta_3D.M80_Coppi_terracotta_3D"
+      },
+      "modules": {
+        "roof_tile_mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano",
+        "cable_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megapack/Meshes/MiddleEast/Wires/SM_wire_part_01.SM_wire_part_01",
+        "balcony_module_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1.S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1",
+        "door_mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c",
+        "pot_mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+      },
+      "source_actor_label": "M80_Storica_PALAZZETTO_1249068307",
+      "character_profile": "palazzetto_pietra_mantenuto",
+      "upper_brick_floor": false,
+      "masonry_loss": 0.06,
+      "upper_brick_material": "/Game/Mazzarino80/Historic/Materials/M80_Laterizio_giallo_macro.M80_Laterizio_giallo_macro",
+      "rooftop_tank": false,
+      "rooftop_tank_mesh": "",
+      "tank_vessel_mesh": "",
+      "tank_vessel_material": "",
+      "courtyard_gate": false,
+      "external_bathroom": false,
+      "facade_flue": false,
+      "cactus": false,
+      "ivy": false
+    },
+    {
+      "building_id": "1249069200",
+      "family": "EXTENDED",
+      "family_label": "Casa ampliata",
+      "position_world_cm": [
+        73395.49666666667,
+        10207.37888888889,
+        16895.043849912112
+      ],
+      "footprint_world_cm": [
+        [
+          71495.64,
+          9796.51,
+          16895.043849912112
+        ],
+        [
+          73488.15000000001,
+          9360.97,
+          16895.043849912112
+        ],
+        [
+          73854.93000000001,
+          10502.85,
+          16895.043849912112
+        ],
+        [
+          75204.3,
+          10000.94,
+          16895.043849912112
+        ],
+        [
+          75286.08,
+          10438.37,
+          16895.043849912112
+        ],
+        [
+          73706.90000000001,
+          11105.94,
+          16895.043849912112
+        ],
+        [
+          73250.37000000001,
+          9952.87,
+          16895.043849912112
+        ],
+        [
+          72389.33,
+          10270.27,
+          16895.043849912112
+        ],
+        [
+          71883.77,
+          10437.69,
+          16895.043849912112
+        ]
+      ],
+      "front_edge": 0,
+      "party_wall_edges": "[1, 2, 3, 5, 6]",
+      "entrance_road_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.MazzarinoRoadSpline_641",
+      "ground_actor_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.StaticMeshActor_0",
+      "primary_floors": 2,
+      "floor_height_cm": 270.0,
+      "wall_thickness_cm": 42.0,
+      "roof_type": "PitchedOrMixed",
+      "roof_rise_cm": 55.0,
+      "roof_direction": "FrontEdgeDerived",
+      "facade_type": "Plaster",
+      "window_pattern": "FamilyRule",
+      "door_type": "ExistingModuleOrProcedural",
+      "balcony_type": "FamilyRule",
+      "ground_relationship": "RoadEntranceAndTerrainFoundations",
+      "importance": "Secondary",
+      "reference_quality": "PhotoInformedDesignHypothesis",
+      "variation_seed": 3624,
+      "facade_irregularity": 0.6499999761581421,
+      "balcony_density": 0.30000001192092896,
+      "decay": 0.18000000715255737,
+      "materials": {
+        "plaster_material": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069200.MI_Calce_1249069200",
+        "stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_modesta.M80_Pietra_modesta",
+        "roof_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_vecchi.M80_Coppi_vecchi",
+        "terrace_material": "/Game/Mazzarino80/Historic/Materials/M80_Terrazza_calce.M80_Terrazza_calce",
+        "iron_material": "/Game/Mazzarino80/Historic/Materials/M80_Ferro_ossidato.M80_Ferro_ossidato",
+        "wood_material": "/Game/Mazzarino80/Historic/Materials/M80_Legno_persiane_0.M80_Legno_persiane_0",
+        "glass_material": "/Game/Mazzarino80/Historic/Materials/M80_Vetro_ombra.M80_Vetro_ombra",
+        "damp_material": "/Game/Mazzarino80/Historic/Materials/MI_Umidita_sfumata.MI_Umidita_sfumata",
+        "repair_material": "/Game/Mazzarino80/Historic/Materials/M80_Rappezzo.M80_Rappezzo",
+        "exposed_stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_esposta.M80_Pietra_esposta",
+        "drain_material": "/Game/Mazzarino80/Historic/Materials/M80_Canaletta_pietra_opaca.M80_Canaletta_pietra_opaca",
+        "tile_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_terracotta_3D.M80_Coppi_terracotta_3D"
+      },
+      "modules": {
+        "roof_tile_mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano",
+        "cable_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megapack/Meshes/MiddleEast/Wires/SM_wire_part_01.SM_wire_part_01",
+        "balcony_module_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1.S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1",
+        "door_mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c",
+        "pot_mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+      },
+      "source_actor_label": "M80_Storica_EXTENDED_1249069200",
+      "character_profile": "casa_ampliata_laterizio",
+      "upper_brick_floor": true,
+      "masonry_loss": 0.62,
+      "upper_brick_material": "/Game/Mazzarino80/Historic/Materials/M80_Laterizio_rosso_macro.M80_Laterizio_rosso_macro",
+      "rooftop_tank": false,
+      "rooftop_tank_mesh": "",
+      "tank_vessel_mesh": "",
+      "tank_vessel_material": "",
+      "courtyard_gate": false,
+      "external_bathroom": false,
+      "facade_flue": true,
+      "cactus": false,
+      "ivy": false
+    },
+    {
+      "building_id": "1249069202",
+      "family": "COURTYARD",
+      "family_label": "Casa con piccolo cortile",
+      "position_world_cm": [
+        82578.07153846153,
+        12885.807692307691,
+        17095.512132058313
+      ],
+      "footprint_world_cm": [
+        [
+          81757.82,
+          14283.93,
+          17095.512132058313
+        ],
+        [
+          81242.55,
+          14333.63,
+          17095.512132058313
+        ],
+        [
+          81062.15000000001,
+          13516.56,
+          17095.512132058313
+        ],
+        [
+          81487.75,
+          13370.88,
+          17095.512132058313
+        ],
+        [
+          81168.33,
+          12441.84,
+          17095.512132058313
+        ],
+        [
+          81540.91,
+          12301.59,
+          17095.512132058313
+        ],
+        [
+          81513.51000000001,
+          12157.03,
+          17095.512132058313
+        ],
+        [
+          83370.59000000001,
+          11745.35,
+          17095.512132058313
+        ],
+        [
+          83632.23000000001,
+          12378.34,
+          17095.512132058313
+        ],
+        [
+          83824.3,
+          12294.46,
+          17095.512132058313
+        ],
+        [
+          84009.3,
+          12754.6,
+          17095.512132058313
+        ],
+        [
+          84341.84000000001,
+          12621.539999999999,
+          17095.512132058313
+        ],
+        [
+          84563.65000000001,
+          13315.75,
+          17095.512132058313
+        ]
+      ],
+      "front_edge": 0,
+      "party_wall_edges": "[1, 2, 3]",
+      "entrance_road_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.MazzarinoRoadSpline_465",
+      "ground_actor_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.StaticMeshActor_0",
+      "primary_floors": 2,
+      "floor_height_cm": 306.0,
+      "wall_thickness_cm": 42.0,
+      "roof_type": "PitchedOrMixed",
+      "roof_rise_cm": 106.0,
+      "roof_direction": "FrontEdgeDerived",
+      "facade_type": "Plaster",
+      "window_pattern": "FamilyRule",
+      "door_type": "ExistingModuleOrProcedural",
+      "balcony_type": "FamilyRule",
+      "ground_relationship": "RoadEntranceAndTerrainFoundations",
+      "importance": "Secondary",
+      "reference_quality": "PhotoInformedDesignHypothesis",
+      "variation_seed": 3487,
+      "facade_irregularity": 0.6499999761581421,
+      "balcony_density": 0.30000001192092896,
+      "decay": 0.8299999833106995,
+      "materials": {
+        "plaster_material": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069202.MI_Calce_1249069202",
+        "stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_modesta.M80_Pietra_modesta",
+        "roof_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_vecchi.M80_Coppi_vecchi",
+        "terrace_material": "/Game/Mazzarino80/Historic/Materials/M80_Vicolo_pietra_consumata.M80_Vicolo_pietra_consumata",
+        "iron_material": "/Game/Mazzarino80/Historic/Materials/M80_Ferro_ossidato.M80_Ferro_ossidato",
+        "wood_material": "/Game/Mazzarino80/Historic/Materials/M80_Legno_persiane_2.M80_Legno_persiane_2",
+        "glass_material": "/Game/Mazzarino80/Historic/Materials/M80_Vetro_ombra.M80_Vetro_ombra",
+        "damp_material": "/Game/Mazzarino80/Historic/Materials/MI_Umidita_sfumata.MI_Umidita_sfumata",
+        "repair_material": "/Game/Mazzarino80/Historic/Materials/M80_Rappezzo.M80_Rappezzo",
+        "exposed_stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_esposta.M80_Pietra_esposta",
+        "drain_material": "/Game/Mazzarino80/Historic/Materials/M80_Canaletta_pietra_opaca.M80_Canaletta_pietra_opaca",
+        "tile_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_terracotta_3D.M80_Coppi_terracotta_3D"
+      },
+      "modules": {
+        "roof_tile_mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano",
+        "cable_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megapack/Meshes/MiddleEast/Wires/SM_wire_part_01.SM_wire_part_01",
+        "balcony_module_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1.S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1",
+        "door_mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c",
+        "pot_mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+      },
+      "source_actor_label": "M80_Storica_COURTYARD_1249069202",
+      "character_profile": "corte_muratura_stratificata",
+      "upper_brick_floor": true,
+      "masonry_loss": 0.8,
+      "upper_brick_material": "/Game/Mazzarino80/Historic/Materials/M80_Laterizio_giallo_macro.M80_Laterizio_giallo_macro",
+      "rooftop_tank": false,
+      "rooftop_tank_mesh": "",
+      "tank_vessel_mesh": "",
+      "tank_vessel_material": "",
+      "courtyard_gate": false,
+      "external_bathroom": false,
+      "facade_flue": false,
+      "cactus": false,
+      "ivy": false
+    },
+    {
+      "building_id": "1249069204",
+      "family": "CORNER",
+      "family_label": "Casa d'angolo",
+      "position_world_cm": [
+        75323.52999658587,
+        9827.675882352942,
+        16960.402704975397
+      ],
+      "footprint_world_cm": [
+        [
+          75204.29999658588,
+          10000.94,
+          16960.402704975397
+        ],
+        [
+          73854.92999658588,
+          10502.85,
+          16960.402704975397
+        ],
+        [
+          73488.14999658588,
+          9360.97,
+          16960.402704975397
+        ],
+        [
+          74083.27999658587,
+          9223.210000000001,
+          16960.402704975397
+        ],
+        [
+          74440.21999658587,
+          10055.76,
+          16960.402704975397
+        ],
+        [
+          75389.96999658587,
+          9663.72,
+          16960.402704975397
+        ],
+        [
+          75174.61999658588,
+          8973.47,
+          16960.402704975397
+        ],
+        [
+          75774.71999658587,
+          8836.2,
+          16960.402704975397
+        ],
+        [
+          75939.41999658587,
+          9429.57,
+          16960.402704975397
+        ],
+        [
+          75495.91999658587,
+          9586.52,
+          16960.402704975397
+        ],
+        [
+          75612.06999658588,
+          9860.36,
+          16960.402704975397
+        ],
+        [
+          76399.40999658588,
+          9606.76,
+          16960.402704975397
+        ],
+        [
+          76479.71999658587,
+          9850.31,
+          16960.402704975397
+        ],
+        [
+          76517.04999658588,
+          10390.18,
+          16960.402704975397
+        ],
+        [
+          76001.25999658588,
+          10548.07,
+          16960.402704975397
+        ],
+        [
+          75358.88999658587,
+          10743.23,
+          16960.402704975397
+        ],
+        [
+          75286.07999658588,
+          10438.37,
+          16960.402704975397
+        ]
+      ],
+      "front_edge": 6,
+      "party_wall_edges": "[0, 1, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 16]",
+      "entrance_road_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.MazzarinoRoadSpline_641",
+      "ground_actor_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.StaticMeshActor_0",
+      "primary_floors": 2,
+      "floor_height_cm": 294.0,
+      "wall_thickness_cm": 42.0,
+      "roof_type": "PitchedOrMixed",
+      "roof_rise_cm": 89.0,
+      "roof_direction": "FrontEdgeDerived",
+      "facade_type": "ExposedStone",
+      "window_pattern": "FamilyRule",
+      "door_type": "ExistingModuleOrProcedural",
+      "balcony_type": "FamilyRule",
+      "ground_relationship": "RoadEntranceAndTerrainFoundations",
+      "importance": "Secondary",
+      "reference_quality": "PhotoInformedDesignHypothesis",
+      "variation_seed": 2802,
+      "facade_irregularity": 0.6499999761581421,
+      "balcony_density": 0.30000001192092896,
+      "decay": 0.18000000715255737,
+      "materials": {
+        "plaster_material": "/Game/Mazzarino80/Historic/Materials/Case/MI_Pietra_1249069204.MI_Pietra_1249069204",
+        "stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_modesta.M80_Pietra_modesta",
+        "roof_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_vecchi.M80_Coppi_vecchi",
+        "terrace_material": "/Game/Mazzarino80/Historic/Materials/M80_Terrazza_calce.M80_Terrazza_calce",
+        "iron_material": "/Game/Mazzarino80/Historic/Materials/M80_Ferro_ossidato.M80_Ferro_ossidato",
+        "wood_material": "/Game/Mazzarino80/Historic/Materials/M80_Legno_persiane_0.M80_Legno_persiane_0",
+        "glass_material": "/Game/Mazzarino80/Historic/Materials/M80_Vetro_ombra.M80_Vetro_ombra",
+        "damp_material": "/Game/Mazzarino80/Historic/Materials/MI_Umidita_sfumata.MI_Umidita_sfumata",
+        "repair_material": "/Game/Mazzarino80/Historic/Materials/M80_Rappezzo.M80_Rappezzo",
+        "exposed_stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_esposta.M80_Pietra_esposta",
+        "drain_material": "/Game/Mazzarino80/Historic/Materials/M80_Canaletta_pietra_opaca.M80_Canaletta_pietra_opaca",
+        "tile_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_terracotta_3D.M80_Coppi_terracotta_3D"
+      },
+      "modules": {
+        "roof_tile_mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano",
+        "cable_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megapack/Meshes/MiddleEast/Wires/SM_wire_part_01.SM_wire_part_01",
+        "balcony_module_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1.S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1",
+        "door_mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c",
+        "pot_mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+      },
+      "source_actor_label": "M80_Storica_CORNER_1249069204",
+      "character_profile": "angolo_pietra_riparata",
+      "upper_brick_floor": false,
+      "masonry_loss": 0.42,
+      "upper_brick_material": "/Game/Mazzarino80/Historic/Materials/M80_Laterizio_giallo_macro.M80_Laterizio_giallo_macro",
+      "rooftop_tank": false,
+      "rooftop_tank_mesh": "",
+      "tank_vessel_mesh": "",
+      "tank_vessel_material": "",
+      "courtyard_gate": false,
+      "external_bathroom": false,
+      "facade_flue": true,
+      "cactus": false,
+      "ivy": false
+    },
+    {
+      "building_id": "1249069205",
+      "family": "COURTYARD",
+      "family_label": "Casa con piccolo cortile",
+      "position_world_cm": [
+        76891.06094629242,
+        11770.299545454543,
+        17021.934167809002
+      ],
+      "footprint_world_cm": [
+        [
+          75353.05003720154,
+          12366.859999999999,
+          17021.934167809002
+        ],
+        [
+          75942.28003720153,
+          11663.67,
+          17021.934167809002
+        ],
+        [
+          76185.72003720154,
+          11661.81,
+          17021.934167809002
+        ],
+        [
+          75990.70003720155,
+          11134.37,
+          17021.934167809002
+        ],
+        [
+          76128.71003720154,
+          11101.54,
+          17021.934167809002
+        ],
+        [
+          76001.26003720154,
+          10548.07,
+          17021.934167809002
+        ],
+        [
+          76517.05003720154,
+          10390.18,
+          17021.934167809002
+        ],
+        [
+          76479.72003720154,
+          9850.31,
+          17021.934167809002
+        ],
+        [
+          76399.41003720154,
+          9606.76,
+          17021.934167809002
+        ],
+        [
+          75612.07003720154,
+          9860.36,
+          17021.934167809002
+        ],
+        [
+          75495.92003720153,
+          9586.52,
+          17021.934167809002
+        ],
+        [
+          75939.42003720153,
+          9429.57,
+          17021.934167809002
+        ],
+        [
+          75774.72003720154,
+          8836.2,
+          17021.934167809002
+        ],
+        [
+          76702.90003720154,
+          8627.95,
+          17021.934167809002
+        ],
+        [
+          77011.34003720155,
+          9621.27,
+          17021.934167809002
+        ],
+        [
+          77666.49003720154,
+          9505.28,
+          17021.934167809002
+        ],
+        [
+          77742.09003720155,
+          9835.53,
+          17021.934167809002
+        ],
+        [
+          77809.10003720154,
+          10259.19,
+          17021.934167809002
+        ],
+        [
+          78039.95003720155,
+          10291.15,
+          17021.934167809002
+        ],
+        [
+          78058.19003720154,
+          10584.48,
+          17021.934167809002
+        ],
+        [
+          77525.72003720154,
+          10577.79,
+          17021.934167809002
+        ],
+        [
+          77516.33003720154,
+          10297.87,
+          17021.934167809002
+        ],
+        [
+          77121.11003720154,
+          10351.82,
+          17021.934167809002
+        ],
+        [
+          77339.70003720155,
+          12056.27,
+          17021.934167809002
+        ],
+        [
+          77046.25003720153,
+          12425.51,
+          17021.934167809002
+        ],
+        [
+          78645.43003720154,
+          13791.699999999999,
+          17021.934167809002
+        ],
+        [
+          79155.05003720154,
+          13901.3,
+          17021.934167809002
+        ],
+        [
+          79894.55003720154,
+          13950.869999999999,
+          17021.934167809002
+        ],
+        [
+          79971.08003720154,
+          14622.48,
+          17021.934167809002
+        ],
+        [
+          79063.13003720154,
+          14552.55,
+          17021.934167809002
+        ],
+        [
+          78886.03003720153,
+          14874.97,
+          17021.934167809002
+        ],
+        [
+          78782.41003720154,
+          14816.699999999999,
+          17021.934167809002
+        ],
+        [
+          78277.84003720155,
+          14530.68,
+          17021.934167809002
+        ],
+        [
+          77293.40003720154,
+          13973.39,
+          17021.934167809002
+        ],
+        [
+          77547.53003720153,
+          13616.15,
+          17021.934167809002
+        ],
+        [
+          76595.01003720154,
+          13003.74,
+          17021.934167809002
+        ],
+        [
+          76544.75003720153,
+          13376.07,
+          17021.934167809002
+        ],
+        [
+          75978.13003720154,
+          12949.42,
+          17021.934167809002
+        ],
+        [
+          75551.19003720154,
+          13526.48,
+          17021.934167809002
+        ],
+        [
+          74822.18003720154,
+          13047.859999999999,
+          17021.934167809002
+        ],
+        [
+          74918.82003720154,
+          12927.82,
+          17021.934167809002
+        ],
+        [
+          74594.57003720154,
+          12715.68,
+          17021.934167809002
+        ],
+        [
+          74434.42003720153,
+          11712.55,
+          17021.934167809002
+        ],
+        [
+          74851.96003720154,
+          11532.44,
+          17021.934167809002
+        ]
+      ],
+      "front_edge": 12,
+      "party_wall_edges": "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]",
+      "entrance_road_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.MazzarinoRoadSpline_641",
+      "ground_actor_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.StaticMeshActor_0",
+      "primary_floors": 2,
+      "floor_height_cm": 282.0,
+      "wall_thickness_cm": 42.0,
+      "roof_type": "PitchedOrMixed",
+      "roof_rise_cm": 72.0,
+      "roof_direction": "FrontEdgeDerived",
+      "facade_type": "Plaster",
+      "window_pattern": "FamilyRule",
+      "door_type": "ExistingModuleOrProcedural",
+      "balcony_type": "FamilyRule",
+      "ground_relationship": "RoadEntranceAndTerrainFoundations",
+      "importance": "Secondary",
+      "reference_quality": "PhotoInformedDesignHypothesis",
+      "variation_seed": 3213,
+      "facade_irregularity": 0.6499999761581421,
+      "balcony_density": 0.30000001192092896,
+      "decay": 0.41999998688697815,
+      "materials": {
+        "plaster_material": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069205.MI_Calce_1249069205",
+        "stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_modesta.M80_Pietra_modesta",
+        "roof_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_vecchi.M80_Coppi_vecchi",
+        "terrace_material": "/Game/Mazzarino80/Historic/Materials/M80_Vicolo_pietra_consumata.M80_Vicolo_pietra_consumata",
+        "iron_material": "/Game/Mazzarino80/Historic/Materials/M80_Ferro_ossidato.M80_Ferro_ossidato",
+        "wood_material": "/Game/Mazzarino80/Historic/Materials/M80_Legno_persiane_0.M80_Legno_persiane_0",
+        "glass_material": "/Game/Mazzarino80/Historic/Materials/M80_Vetro_ombra.M80_Vetro_ombra",
+        "damp_material": "/Game/Mazzarino80/Historic/Materials/MI_Umidita_sfumata.MI_Umidita_sfumata",
+        "repair_material": "/Game/Mazzarino80/Historic/Materials/M80_Rappezzo.M80_Rappezzo",
+        "exposed_stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_esposta.M80_Pietra_esposta",
+        "drain_material": "/Game/Mazzarino80/Historic/Materials/M80_Canaletta_pietra_opaca.M80_Canaletta_pietra_opaca",
+        "tile_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_terracotta_3D.M80_Coppi_terracotta_3D"
+      },
+      "modules": {
+        "roof_tile_mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano",
+        "cable_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megapack/Meshes/MiddleEast/Wires/SM_wire_part_01.SM_wire_part_01",
+        "balcony_module_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1.S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1",
+        "door_mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c",
+        "pot_mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+      },
+      "source_actor_label": "M80_Storica_COURTYARD_1249069205",
+      "character_profile": "corte_intonaco_consumato",
+      "upper_brick_floor": false,
+      "masonry_loss": 0.48,
+      "upper_brick_material": "/Game/Mazzarino80/Historic/Materials/M80_Laterizio_giallo_macro.M80_Laterizio_giallo_macro",
+      "rooftop_tank": false,
+      "rooftop_tank_mesh": "",
+      "tank_vessel_mesh": "",
+      "tank_vessel_material": "",
+      "courtyard_gate": true,
+      "external_bathroom": false,
+      "facade_flue": false,
+      "cactus": true,
+      "ivy": true
+    },
+    {
+      "building_id": "1249069213",
+      "family": "NARROW",
+      "family_label": "Casa stretta su più piani",
+      "position_world_cm": [
+        78083.945,
+        11505.047499999999,
+        17000.107783520893
+      ],
+      "footprint_world_cm": [
+        [
+          77636.6,
+          11874.47,
+          17000.107783520893
+        ],
+        [
+          77587.69,
+          11158.210000000001,
+          17000.107783520893
+        ],
+        [
+          78550.19,
+          11147.55,
+          17000.107783520893
+        ],
+        [
+          78561.3,
+          11839.960000000001,
+          17000.107783520893
+        ]
+      ],
+      "front_edge": 1,
+      "party_wall_edges": "[2, 3]",
+      "entrance_road_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.MazzarinoRoadSpline_466",
+      "ground_actor_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.StaticMeshActor_0",
+      "primary_floors": 3,
+      "floor_height_cm": 306.0,
+      "wall_thickness_cm": 42.0,
+      "roof_type": "Terrace",
+      "roof_rise_cm": 106.0,
+      "roof_direction": "FrontEdgeDerived",
+      "facade_type": "Plaster",
+      "window_pattern": "FamilyRule",
+      "door_type": "ExistingModuleOrProcedural",
+      "balcony_type": "FamilyRule",
+      "ground_relationship": "RoadEntranceAndTerrainFoundations",
+      "importance": "Secondary",
+      "reference_quality": "PhotoInformedDesignHypothesis",
+      "variation_seed": 2391,
+      "facade_irregularity": 0.6499999761581421,
+      "balcony_density": 0.30000001192092896,
+      "decay": 0.41999998688697815,
+      "materials": {
+        "plaster_material": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069213.MI_Calce_1249069213",
+        "stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_modesta.M80_Pietra_modesta",
+        "roof_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_vecchi.M80_Coppi_vecchi",
+        "terrace_material": "/Game/Mazzarino80/Historic/Materials/M80_Terrazza_calce.M80_Terrazza_calce",
+        "iron_material": "/Game/Mazzarino80/Historic/Materials/M80_Ferro_ossidato.M80_Ferro_ossidato",
+        "wood_material": "/Game/Mazzarino80/Historic/Materials/M80_Legno_persiane_0.M80_Legno_persiane_0",
+        "glass_material": "/Game/Mazzarino80/Historic/Materials/M80_Vetro_ombra.M80_Vetro_ombra",
+        "damp_material": "/Game/Mazzarino80/Historic/Materials/MI_Umidita_sfumata.MI_Umidita_sfumata",
+        "repair_material": "/Game/Mazzarino80/Historic/Materials/M80_Rappezzo.M80_Rappezzo",
+        "exposed_stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_esposta.M80_Pietra_esposta",
+        "drain_material": "/Game/Mazzarino80/Historic/Materials/M80_Canaletta_pietra_opaca.M80_Canaletta_pietra_opaca",
+        "tile_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_terracotta_3D.M80_Coppi_terracotta_3D"
+      },
+      "modules": {
+        "roof_tile_mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano",
+        "cable_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megapack/Meshes/MiddleEast/Wires/SM_wire_part_01.SM_wire_part_01",
+        "balcony_module_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1.S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1",
+        "door_mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c",
+        "pot_mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+      },
+      "source_actor_label": "M80_Storica_NARROW_1249069213",
+      "character_profile": "casa_stretta_vicolo",
+      "upper_brick_floor": false,
+      "masonry_loss": 0.22,
+      "upper_brick_material": "/Game/Mazzarino80/Historic/Materials/M80_Laterizio_giallo_macro.M80_Laterizio_giallo_macro",
+      "rooftop_tank": true,
+      "rooftop_tank_mesh": "/Game/Megapack/Meshes/MiddleEast/SM_Platform_Water_Tank_01.SM_Platform_Water_Tank_01",
+      "tank_vessel_mesh": "/Engine/BasicShapes/Cylinder.Cylinder",
+      "tank_vessel_material": "/Game/Mazzarino80/Historic/Materials/M80_Canaletta_pietra_opaca.M80_Canaletta_pietra_opaca",
+      "courtyard_gate": false,
+      "external_bathroom": false,
+      "facade_flue": false,
+      "cactus": false,
+      "ivy": false
+    },
+    {
+      "building_id": "1249069219",
+      "family": "CORNER",
+      "family_label": "Casa d'angolo",
+      "position_world_cm": [
+        72331.93142857144,
+        12702.524285714284,
+        16506.69945115234
+      ],
+      "footprint_world_cm": [
+        [
+          72427.32,
+          11852.98,
+          16506.69945115234
+        ],
+        [
+          72692.18000000001,
+          12356.51,
+          16506.69945115234
+        ],
+        [
+          73094.53,
+          12692.15,
+          16506.69945115234
+        ],
+        [
+          72658.98000000001,
+          13250.84,
+          16506.69945115234
+        ],
+        [
+          72397.63,
+          13040.39,
+          16506.69945115234
+        ],
+        [
+          71771.72,
+          13346.119999999999,
+          16506.69945115234
+        ],
+        [
+          71281.16,
+          12378.68,
+          16506.69945115234
+        ]
+      ],
+      "front_edge": 1,
+      "party_wall_edges": "[2, 3, 4, 6]",
+      "entrance_road_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.MazzarinoRoadSpline_31",
+      "ground_actor_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.StaticMeshActor_0",
+      "primary_floors": 2,
+      "floor_height_cm": 270.0,
+      "wall_thickness_cm": 42.0,
+      "roof_type": "PitchedOrMixed",
+      "roof_rise_cm": 55.0,
+      "roof_direction": "FrontEdgeDerived",
+      "facade_type": "Plaster",
+      "window_pattern": "FamilyRule",
+      "door_type": "ExistingModuleOrProcedural",
+      "balcony_type": "FamilyRule",
+      "ground_relationship": "RoadEntranceAndTerrainFoundations",
+      "importance": "Secondary",
+      "reference_quality": "PhotoInformedDesignHypothesis",
+      "variation_seed": 3076,
+      "facade_irregularity": 0.6499999761581421,
+      "balcony_density": 0.30000001192092896,
+      "decay": 0.6200000047683716,
+      "materials": {
+        "plaster_material": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069219.MI_Calce_1249069219",
+        "stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_modesta.M80_Pietra_modesta",
+        "roof_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_vecchi.M80_Coppi_vecchi",
+        "terrace_material": "/Game/Mazzarino80/Historic/Materials/M80_Terrazza_calce.M80_Terrazza_calce",
+        "iron_material": "/Game/Mazzarino80/Historic/Materials/M80_Ferro_ossidato.M80_Ferro_ossidato",
+        "wood_material": "/Game/Mazzarino80/Historic/Materials/M80_Legno_persiane_2.M80_Legno_persiane_2",
+        "glass_material": "/Game/Mazzarino80/Historic/Materials/M80_Vetro_ombra.M80_Vetro_ombra",
+        "damp_material": "/Game/Mazzarino80/Historic/Materials/MI_Umidita_sfumata.MI_Umidita_sfumata",
+        "repair_material": "/Game/Mazzarino80/Historic/Materials/M80_Rappezzo.M80_Rappezzo",
+        "exposed_stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_esposta.M80_Pietra_esposta",
+        "drain_material": "/Game/Mazzarino80/Historic/Materials/M80_Canaletta_pietra_opaca.M80_Canaletta_pietra_opaca",
+        "tile_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_terracotta_3D.M80_Coppi_terracotta_3D"
+      },
+      "modules": {
+        "roof_tile_mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano",
+        "cable_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megapack/Meshes/MiddleEast/Wires/SM_wire_part_01.SM_wire_part_01",
+        "balcony_module_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1.S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1",
+        "door_mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c",
+        "pot_mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+      },
+      "source_actor_label": "M80_Storica_CORNER_1249069219",
+      "character_profile": "angolo_sopraelevato",
+      "upper_brick_floor": true,
+      "masonry_loss": 0.58,
+      "upper_brick_material": "/Game/Mazzarino80/Historic/Materials/M80_Laterizio_rosso_macro.M80_Laterizio_rosso_macro",
+      "rooftop_tank": false,
+      "rooftop_tank_mesh": "",
+      "tank_vessel_mesh": "",
+      "tank_vessel_material": "",
+      "courtyard_gate": false,
+      "external_bathroom": false,
+      "facade_flue": false,
+      "cactus": false,
+      "ivy": false
+    },
+    {
+      "building_id": "1249069228",
+      "family": "COURTYARD",
+      "family_label": "Casa con piccolo cortile",
+      "position_world_cm": [
+        78985.49571428572,
+        11822.853571428572,
+        16927.30957588186
+      ],
+      "footprint_world_cm": [
+        [
+          78561.3,
+          11839.960000000001,
+          16927.30957588186
+        ],
+        [
+          78550.19,
+          11147.55,
+          16927.30957588186
+        ],
+        [
+          78480.74,
+          10569.47,
+          16927.30957588186
+        ],
+        [
+          79126.37000000001,
+          10580.19,
+          16927.30957588186
+        ],
+        [
+          79143.55,
+          10958.45,
+          16927.30957588186
+        ],
+        [
+          79484.6,
+          10928.55,
+          16927.30957588186
+        ],
+        [
+          80040.94,
+          11088.93,
+          16927.30957588186
+        ],
+        [
+          80042.84000000001,
+          11765.51,
+          16927.30957588186
+        ],
+        [
+          79893.8,
+          12486.69,
+          16927.30957588186
+        ],
+        [
+          79225.61,
+          12475.63,
+          16927.30957588186
+        ],
+        [
+          79261.28,
+          13628.74,
+          16927.30957588186
+        ],
+        [
+          78612.41,
+          13504.25,
+          16927.30957588186
+        ],
+        [
+          77736.71,
+          12671.56,
+          16927.30957588186
+        ],
+        [
+          77636.6,
+          11874.47,
+          16927.30957588186
+        ]
+      ],
+      "front_edge": 11,
+      "party_wall_edges": "[0, 2, 3, 4, 5, 8, 9, 13]",
+      "entrance_road_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.MazzarinoRoadSpline_466",
+      "ground_actor_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.StaticMeshActor_0",
+      "primary_floors": 2,
+      "floor_height_cm": 294.0,
+      "wall_thickness_cm": 42.0,
+      "roof_type": "PitchedOrMixed",
+      "roof_rise_cm": 89.0,
+      "roof_direction": "FrontEdgeDerived",
+      "facade_type": "ExposedStone",
+      "window_pattern": "FamilyRule",
+      "door_type": "ExistingModuleOrProcedural",
+      "balcony_type": "FamilyRule",
+      "ground_relationship": "RoadEntranceAndTerrainFoundations",
+      "importance": "Secondary",
+      "reference_quality": "PhotoInformedDesignHypothesis",
+      "variation_seed": 3350,
+      "facade_irregularity": 0.6499999761581421,
+      "balcony_density": 0.30000001192092896,
+      "decay": 0.5799999833106995,
+      "materials": {
+        "plaster_material": "/Game/Mazzarino80/Historic/Materials/Case/MI_Pietra_1249069228.MI_Pietra_1249069228",
+        "stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_modesta.M80_Pietra_modesta",
+        "roof_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_vecchi.M80_Coppi_vecchi",
+        "terrace_material": "/Game/Mazzarino80/Historic/Materials/M80_Vicolo_pietra_consumata.M80_Vicolo_pietra_consumata",
+        "iron_material": "/Game/Mazzarino80/Historic/Materials/M80_Ferro_ossidato.M80_Ferro_ossidato",
+        "wood_material": "/Game/Mazzarino80/Historic/Materials/M80_Legno_persiane_1.M80_Legno_persiane_1",
+        "glass_material": "/Game/Mazzarino80/Historic/Materials/M80_Vetro_ombra.M80_Vetro_ombra",
+        "damp_material": "/Game/Mazzarino80/Historic/Materials/MI_Umidita_sfumata.MI_Umidita_sfumata",
+        "repair_material": "/Game/Mazzarino80/Historic/Materials/M80_Rappezzo.M80_Rappezzo",
+        "exposed_stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_esposta.M80_Pietra_esposta",
+        "drain_material": "/Game/Mazzarino80/Historic/Materials/M80_Canaletta_pietra_opaca.M80_Canaletta_pietra_opaca",
+        "tile_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_terracotta_3D.M80_Coppi_terracotta_3D"
+      },
+      "modules": {
+        "roof_tile_mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano",
+        "cable_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megapack/Meshes/MiddleEast/Wires/SM_wire_part_01.SM_wire_part_01",
+        "balcony_module_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1.S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1",
+        "door_mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c",
+        "pot_mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+      },
+      "source_actor_label": "M80_Storica_COURTYARD_1249069228",
+      "character_profile": "corte_addizioni_miste",
+      "upper_brick_floor": true,
+      "masonry_loss": 0.67,
+      "upper_brick_material": "/Game/Mazzarino80/Historic/Materials/M80_Laterizio_giallo_macro.M80_Laterizio_giallo_macro",
+      "rooftop_tank": false,
+      "rooftop_tank_mesh": "",
+      "tank_vessel_mesh": "",
+      "tank_vessel_material": "",
+      "courtyard_gate": true,
+      "external_bathroom": true,
+      "facade_flue": false,
+      "cactus": false,
+      "ivy": true
+    },
+    {
+      "building_id": "1249069229",
+      "family": "PALAZZETTO",
+      "family_label": "Piccolo palazzetto",
+      "position_world_cm": [
+        73547.61714285714,
+        13995.782857142858,
+        16461.393977859698
+      ],
+      "footprint_world_cm": [
+        [
+          73611.27,
+          13191.33,
+          16461.393977859698
+        ],
+        [
+          74301.28,
+          13762.99,
+          16461.393977859698
+        ],
+        [
+          74532.35,
+          13980.4,
+          16461.393977859698
+        ],
+        [
+          73607.53,
+          15059.109999999999,
+          16461.393977859698
+        ],
+        [
+          72747.81,
+          14235.1,
+          16461.393977859698
+        ],
+        [
+          72867.62000000001,
+          14073.529999999999,
+          16461.393977859698
+        ],
+        [
+          73165.46,
+          13668.02,
+          16461.393977859698
+        ]
+      ],
+      "front_edge": 0,
+      "party_wall_edges": "[2, 4, 5, 6]",
+      "entrance_road_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.MazzarinoRoadSpline_31",
+      "ground_actor_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.StaticMeshActor_0",
+      "primary_floors": 2,
+      "floor_height_cm": 282.0,
+      "wall_thickness_cm": 42.0,
+      "roof_type": "Terrace",
+      "roof_rise_cm": 72.0,
+      "roof_direction": "FrontEdgeDerived",
+      "facade_type": "Plaster",
+      "window_pattern": "FamilyRule",
+      "door_type": "ExistingModuleOrProcedural",
+      "balcony_type": "FamilyRule",
+      "ground_relationship": "RoadEntranceAndTerrainFoundations",
+      "importance": "Secondary",
+      "reference_quality": "PhotoInformedDesignHypothesis",
+      "variation_seed": 4309,
+      "facade_irregularity": 0.6499999761581421,
+      "balcony_density": 0.41999998688697815,
+      "decay": 0.8299999833106995,
+      "materials": {
+        "plaster_material": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069229.MI_Calce_1249069229",
+        "stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_modesta.M80_Pietra_modesta",
+        "roof_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_vecchi.M80_Coppi_vecchi",
+        "terrace_material": "/Game/Mazzarino80/Historic/Materials/M80_Terrazza_calce.M80_Terrazza_calce",
+        "iron_material": "/Game/Mazzarino80/Historic/Materials/M80_Ferro_ossidato.M80_Ferro_ossidato",
+        "wood_material": "/Game/Mazzarino80/Historic/Materials/M80_Legno_persiane_2.M80_Legno_persiane_2",
+        "glass_material": "/Game/Mazzarino80/Historic/Materials/M80_Vetro_ombra.M80_Vetro_ombra",
+        "damp_material": "/Game/Mazzarino80/Historic/Materials/MI_Umidita_sfumata.MI_Umidita_sfumata",
+        "repair_material": "/Game/Mazzarino80/Historic/Materials/M80_Rappezzo.M80_Rappezzo",
+        "exposed_stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_esposta.M80_Pietra_esposta",
+        "drain_material": "/Game/Mazzarino80/Historic/Materials/M80_Canaletta_pietra_opaca.M80_Canaletta_pietra_opaca",
+        "tile_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_terracotta_3D.M80_Coppi_terracotta_3D"
+      },
+      "modules": {
+        "roof_tile_mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano",
+        "cable_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megapack/Meshes/MiddleEast/Wires/SM_wire_part_01.SM_wire_part_01",
+        "balcony_module_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1.S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1",
+        "door_mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c",
+        "pot_mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+      },
+      "source_actor_label": "M80_Storica_PALAZZETTO_1249069229",
+      "character_profile": "palazzetto_fronte_regolare",
+      "upper_brick_floor": false,
+      "masonry_loss": 0.03,
+      "upper_brick_material": "/Game/Mazzarino80/Historic/Materials/M80_Laterizio_giallo_macro.M80_Laterizio_giallo_macro",
+      "rooftop_tank": false,
+      "rooftop_tank_mesh": "",
+      "tank_vessel_mesh": "",
+      "tank_vessel_material": "",
+      "courtyard_gate": false,
+      "external_bathroom": false,
+      "facade_flue": false,
+      "cactus": false,
+      "ivy": false
+    },
+    {
+      "building_id": "1249069235",
+      "family": "EXTENDED",
+      "family_label": "Casa ampliata",
+      "position_world_cm": [
+        73386.97222364621,
+        11644.280000000002,
+        16475.223093049826
+      ],
+      "footprint_world_cm": [
+        [
+          72936.240001424,
+          11918.460000000001,
+          16475.223093049826
+        ],
+        [
+          72709.520001424,
+          11368.72,
+          16475.223093049826
+        ],
+        [
+          72389.330001424,
+          10270.27,
+          16475.223093049826
+        ],
+        [
+          73250.370001424,
+          9952.87,
+          16475.223093049826
+        ],
+        [
+          73706.900001424,
+          11105.94,
+          16475.223093049826
+        ],
+        [
+          73912.420001424,
+          11579.0,
+          16475.223093049826
+        ],
+        [
+          74381.110001424,
+          12984.55,
+          16475.223093049826
+        ],
+        [
+          73980.800001424,
+          13181.75,
+          16475.223093049826
+        ],
+        [
+          73216.06000142399,
+          12436.96,
+          16475.223093049826
+        ]
+      ],
+      "front_edge": 7,
+      "party_wall_edges": "[2, 3]",
+      "entrance_road_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.MazzarinoRoadSpline_31",
+      "ground_actor_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.StaticMeshActor_0",
+      "primary_floors": 2,
+      "floor_height_cm": 282.0,
+      "wall_thickness_cm": 42.0,
+      "roof_type": "PitchedOrMixed",
+      "roof_rise_cm": 72.0,
+      "roof_direction": "FrontEdgeDerived",
+      "facade_type": "Plaster",
+      "window_pattern": "FamilyRule",
+      "door_type": "ExistingModuleOrProcedural",
+      "balcony_type": "FamilyRule",
+      "ground_relationship": "RoadEntranceAndTerrainFoundations",
+      "importance": "Secondary",
+      "reference_quality": "PhotoInformedDesignHypothesis",
+      "variation_seed": 3761,
+      "facade_irregularity": 0.6499999761581421,
+      "balcony_density": 0.30000001192092896,
+      "decay": 0.47999998927116394,
+      "materials": {
+        "plaster_material": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069235.MI_Calce_1249069235",
+        "stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_modesta.M80_Pietra_modesta",
+        "roof_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_vecchi.M80_Coppi_vecchi",
+        "terrace_material": "/Game/Mazzarino80/Historic/Materials/M80_Terrazza_calce.M80_Terrazza_calce",
+        "iron_material": "/Game/Mazzarino80/Historic/Materials/M80_Ferro_ossidato.M80_Ferro_ossidato",
+        "wood_material": "/Game/Mazzarino80/Historic/Materials/M80_Legno_persiane_1.M80_Legno_persiane_1",
+        "glass_material": "/Game/Mazzarino80/Historic/Materials/M80_Vetro_ombra.M80_Vetro_ombra",
+        "damp_material": "/Game/Mazzarino80/Historic/Materials/MI_Umidita_sfumata.MI_Umidita_sfumata",
+        "repair_material": "/Game/Mazzarino80/Historic/Materials/M80_Rappezzo.M80_Rappezzo",
+        "exposed_stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_esposta.M80_Pietra_esposta",
+        "drain_material": "/Game/Mazzarino80/Historic/Materials/M80_Canaletta_pietra_opaca.M80_Canaletta_pietra_opaca",
+        "tile_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_terracotta_3D.M80_Coppi_terracotta_3D"
+      },
+      "modules": {
+        "roof_tile_mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano",
+        "cable_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megapack/Meshes/MiddleEast/Wires/SM_wire_part_01.SM_wire_part_01",
+        "balcony_module_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1.S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1",
+        "door_mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c",
+        "pot_mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+      },
+      "source_actor_label": "M80_Storica_EXTENDED_1249069235",
+      "character_profile": "casa_ampliata_rustica",
+      "upper_brick_floor": true,
+      "masonry_loss": 0.72,
+      "upper_brick_material": "/Game/Mazzarino80/Historic/Materials/M80_Laterizio_rosso_macro.M80_Laterizio_rosso_macro",
+      "rooftop_tank": false,
+      "rooftop_tank_mesh": "",
+      "tank_vessel_mesh": "",
+      "tank_vessel_material": "",
+      "courtyard_gate": false,
+      "external_bathroom": false,
+      "facade_flue": true,
+      "cactus": false,
+      "ivy": false
+    },
+    {
+      "building_id": "1249069237",
+      "family": "CORNER",
+      "family_label": "Casa d'angolo",
+      "position_world_cm": [
+        80892.32833333334,
+        13471.626666666669,
+        17079.62085394225
+      ],
+      "footprint_world_cm": [
+        [
+          80311.47,
+          14469.83,
+          17079.62085394225
+        ],
+        [
+          80081.72,
+          12697.02,
+          17079.62085394225
+        ],
+        [
+          81168.33,
+          12441.84,
+          17079.62085394225
+        ],
+        [
+          81487.75,
+          13370.88,
+          17079.62085394225
+        ],
+        [
+          81062.15000000001,
+          13516.56,
+          17079.62085394225
+        ],
+        [
+          81242.55,
+          14333.63,
+          17079.62085394225
+        ]
+      ],
+      "front_edge": 0,
+      "party_wall_edges": "[2, 3, 4]",
+      "entrance_road_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.MazzarinoRoadSpline_407",
+      "ground_actor_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.StaticMeshActor_0",
+      "primary_floors": 2,
+      "floor_height_cm": 306.0,
+      "wall_thickness_cm": 42.0,
+      "roof_type": "PitchedOrMixed",
+      "roof_rise_cm": 106.0,
+      "roof_direction": "FrontEdgeDerived",
+      "facade_type": "Plaster",
+      "window_pattern": "FamilyRule",
+      "door_type": "ExistingModuleOrProcedural",
+      "balcony_type": "FamilyRule",
+      "ground_relationship": "RoadEntranceAndTerrainFoundations",
+      "importance": "Secondary",
+      "reference_quality": "PhotoInformedDesignHypothesis",
+      "variation_seed": 2939,
+      "facade_irregularity": 0.6499999761581421,
+      "balcony_density": 0.30000001192092896,
+      "decay": 0.47999998927116394,
+      "materials": {
+        "plaster_material": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069237.MI_Calce_1249069237",
+        "stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_modesta.M80_Pietra_modesta",
+        "roof_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_vecchi.M80_Coppi_vecchi",
+        "terrace_material": "/Game/Mazzarino80/Historic/Materials/M80_Terrazza_calce.M80_Terrazza_calce",
+        "iron_material": "/Game/Mazzarino80/Historic/Materials/M80_Ferro_ossidato.M80_Ferro_ossidato",
+        "wood_material": "/Game/Mazzarino80/Historic/Materials/M80_Legno_persiane_1.M80_Legno_persiane_1",
+        "glass_material": "/Game/Mazzarino80/Historic/Materials/M80_Vetro_ombra.M80_Vetro_ombra",
+        "damp_material": "/Game/Mazzarino80/Historic/Materials/MI_Umidita_sfumata.MI_Umidita_sfumata",
+        "repair_material": "/Game/Mazzarino80/Historic/Materials/M80_Rappezzo.M80_Rappezzo",
+        "exposed_stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_esposta.M80_Pietra_esposta",
+        "drain_material": "/Game/Mazzarino80/Historic/Materials/M80_Canaletta_pietra_opaca.M80_Canaletta_pietra_opaca",
+        "tile_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_terracotta_3D.M80_Coppi_terracotta_3D"
+      },
+      "modules": {
+        "roof_tile_mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano",
+        "cable_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megapack/Meshes/MiddleEast/Wires/SM_wire_part_01.SM_wire_part_01",
+        "balcony_module_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1.S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1",
+        "door_mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c",
+        "pot_mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+      },
+      "source_actor_label": "M80_Storica_CORNER_1249069237",
+      "character_profile": "angolo_pietra_irregolare",
+      "upper_brick_floor": false,
+      "masonry_loss": 0.44,
+      "upper_brick_material": "/Game/Mazzarino80/Historic/Materials/M80_Laterizio_giallo_macro.M80_Laterizio_giallo_macro",
+      "rooftop_tank": false,
+      "rooftop_tank_mesh": "",
+      "tank_vessel_mesh": "",
+      "tank_vessel_material": "",
+      "courtyard_gate": false,
+      "external_bathroom": false,
+      "facade_flue": false,
+      "cactus": false,
+      "ivy": false
+    },
+    {
+      "building_id": "1249069246",
+      "family": "PALAZZETTO",
+      "family_label": "Piccolo palazzetto",
+      "position_world_cm": [
+        78750.41100135085,
+        9796.669,
+        17276.761022404327
+      ],
+      "footprint_world_cm": [
+        [
+          77501.91999982957,
+          8465.960000309322,
+          17276.761022404327
+        ],
+        [
+          79759.13000135084,
+          8006.98,
+          17276.761022404327
+        ],
+        [
+          80040.94000135084,
+          11088.93,
+          17276.761022404327
+        ],
+        [
+          79484.60000135085,
+          10928.55,
+          17276.761022404327
+        ],
+        [
+          79143.55000135084,
+          10958.45,
+          17276.761022404327
+        ],
+        [
+          79126.37000135085,
+          10580.19,
+          17276.761022404327
+        ],
+        [
+          78480.74000135084,
+          10569.47,
+          17276.761022404327
+        ],
+        [
+          78298.38000135084,
+          9062.31,
+          17276.761022404327
+        ],
+        [
+          78035.78000135084,
+          9106.33,
+          17276.761022404327
+        ],
+        [
+          77632.70000135085,
+          9199.52,
+          17276.761022404327
+        ]
+      ],
+      "front_edge": 0,
+      "party_wall_edges": "[2, 3, 4, 5, 8, 9]",
+      "entrance_road_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.MazzarinoRoadSpline_641",
+      "ground_actor_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.StaticMeshActor_0",
+      "primary_floors": 2,
+      "floor_height_cm": 270.0,
+      "wall_thickness_cm": 42.0,
+      "roof_type": "Terrace",
+      "roof_rise_cm": 55.0,
+      "roof_direction": "FrontEdgeDerived",
+      "facade_type": "ExposedStone",
+      "window_pattern": "FamilyRule",
+      "door_type": "ExistingModuleOrProcedural",
+      "balcony_type": "FamilyRule",
+      "ground_relationship": "RoadEntranceAndTerrainFoundations",
+      "importance": "Secondary",
+      "reference_quality": "PhotoInformedDesignHypothesis",
+      "variation_seed": 4172,
+      "facade_irregularity": 0.6499999761581421,
+      "balcony_density": 0.41999998688697815,
+      "decay": 0.5799999833106995,
+      "materials": {
+        "plaster_material": "/Game/Mazzarino80/Historic/Materials/Case/MI_Pietra_1249069246.MI_Pietra_1249069246",
+        "stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_modesta.M80_Pietra_modesta",
+        "roof_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_vecchi.M80_Coppi_vecchi",
+        "terrace_material": "/Game/Mazzarino80/Historic/Materials/M80_Terrazza_calce.M80_Terrazza_calce",
+        "iron_material": "/Game/Mazzarino80/Historic/Materials/M80_Ferro_ossidato.M80_Ferro_ossidato",
+        "wood_material": "/Game/Mazzarino80/Historic/Materials/M80_Legno_persiane_1.M80_Legno_persiane_1",
+        "glass_material": "/Game/Mazzarino80/Historic/Materials/M80_Vetro_ombra.M80_Vetro_ombra",
+        "damp_material": "/Game/Mazzarino80/Historic/Materials/MI_Umidita_sfumata.MI_Umidita_sfumata",
+        "repair_material": "/Game/Mazzarino80/Historic/Materials/M80_Rappezzo.M80_Rappezzo",
+        "exposed_stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_esposta.M80_Pietra_esposta",
+        "drain_material": "/Game/Mazzarino80/Historic/Materials/M80_Canaletta_pietra_opaca.M80_Canaletta_pietra_opaca",
+        "tile_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_terracotta_3D.M80_Coppi_terracotta_3D"
+      },
+      "modules": {
+        "roof_tile_mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano",
+        "cable_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megapack/Meshes/MiddleEast/Wires/SM_wire_part_01.SM_wire_part_01",
+        "balcony_module_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1.S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1",
+        "door_mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c",
+        "pot_mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+      },
+      "source_actor_label": "M80_Storica_PALAZZETTO_1249069246",
+      "character_profile": "palazzetto_consunto",
+      "upper_brick_floor": false,
+      "masonry_loss": 0.18,
+      "upper_brick_material": "/Game/Mazzarino80/Historic/Materials/M80_Laterizio_giallo_macro.M80_Laterizio_giallo_macro",
+      "rooftop_tank": false,
+      "rooftop_tank_mesh": "",
+      "tank_vessel_mesh": "",
+      "tank_vessel_material": "",
+      "courtyard_gate": false,
+      "external_bathroom": false,
+      "facade_flue": false,
+      "cactus": false,
+      "ivy": false
+    },
+    {
+      "building_id": "1249069247",
+      "family": "POPULAR",
+      "family_label": "Casa bassa popolare",
+      "position_world_cm": [
+        79606.724,
+        13055.207999999999,
+        17150.204545424633
+      ],
+      "footprint_world_cm": [
+        [
+          79893.8,
+          12486.69,
+          17150.204545424633
+        ],
+        [
+          79808.73000000001,
+          13065.66,
+          17150.204545424633
+        ],
+        [
+          79844.20000000001,
+          13619.32,
+          17150.204545424633
+        ],
+        [
+          79261.28,
+          13628.74,
+          17150.204545424633
+        ],
+        [
+          79225.61,
+          12475.63,
+          17150.204545424633
+        ]
+      ],
+      "front_edge": 0,
+      "party_wall_edges": "[3, 4]",
+      "entrance_road_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.MazzarinoRoadSpline_407",
+      "ground_actor_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.StaticMeshActor_0",
+      "primary_floors": 1,
+      "floor_height_cm": 294.0,
+      "wall_thickness_cm": 42.0,
+      "roof_type": "PitchedOrMixed",
+      "roof_rise_cm": 89.0,
+      "roof_direction": "FrontEdgeDerived",
+      "facade_type": "Plaster",
+      "window_pattern": "FamilyRule",
+      "door_type": "ExistingModuleOrProcedural",
+      "balcony_type": "FamilyRule",
+      "ground_relationship": "RoadEntranceAndTerrainFoundations",
+      "importance": "Secondary",
+      "reference_quality": "PhotoInformedDesignHypothesis",
+      "variation_seed": 2254,
+      "facade_irregularity": 0.6499999761581421,
+      "balcony_density": 0.18000000715255737,
+      "decay": 0.6200000047683716,
+      "materials": {
+        "plaster_material": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069247.MI_Calce_1249069247",
+        "stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_modesta.M80_Pietra_modesta",
+        "roof_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_vecchi.M80_Coppi_vecchi",
+        "terrace_material": "/Game/Mazzarino80/Historic/Materials/M80_Terrazza_calce.M80_Terrazza_calce",
+        "iron_material": "/Game/Mazzarino80/Historic/Materials/M80_Ferro_ossidato.M80_Ferro_ossidato",
+        "wood_material": "/Game/Mazzarino80/Historic/Materials/M80_Legno_persiane_2.M80_Legno_persiane_2",
+        "glass_material": "/Game/Mazzarino80/Historic/Materials/M80_Vetro_ombra.M80_Vetro_ombra",
+        "damp_material": "/Game/Mazzarino80/Historic/Materials/MI_Umidita_sfumata.MI_Umidita_sfumata",
+        "repair_material": "/Game/Mazzarino80/Historic/Materials/M80_Rappezzo.M80_Rappezzo",
+        "exposed_stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_esposta.M80_Pietra_esposta",
+        "drain_material": "/Game/Mazzarino80/Historic/Materials/M80_Canaletta_pietra_opaca.M80_Canaletta_pietra_opaca",
+        "tile_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_terracotta_3D.M80_Coppi_terracotta_3D"
+      },
+      "modules": {
+        "roof_tile_mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano",
+        "cable_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megapack/Meshes/MiddleEast/Wires/SM_wire_part_01.SM_wire_part_01",
+        "balcony_module_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1.S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1",
+        "door_mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c",
+        "pot_mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+      },
+      "source_actor_label": "M80_Storica_POPULAR_1249069247",
+      "character_profile": "popolare_bassa_riparata",
+      "upper_brick_floor": false,
+      "masonry_loss": 0.75,
+      "upper_brick_material": "/Game/Mazzarino80/Historic/Materials/M80_Laterizio_giallo_macro.M80_Laterizio_giallo_macro",
+      "rooftop_tank": false,
+      "rooftop_tank_mesh": "",
+      "tank_vessel_mesh": "",
+      "tank_vessel_material": "",
+      "courtyard_gate": false,
+      "external_bathroom": false,
+      "facade_flue": false,
+      "cactus": false,
+      "ivy": false
+    },
+    {
+      "building_id": "1249069271",
+      "family": "NARROW",
+      "family_label": "Casa stretta su più piani",
+      "position_world_cm": [
+        74772.0225,
+        9479.04,
+        16919.473483273658
+      ],
+      "footprint_world_cm": [
+        [
+          74083.28,
+          9223.210000000001,
+          16919.473483273658
+        ],
+        [
+          75174.62000000001,
+          8973.47,
+          16919.473483273658
+        ],
+        [
+          75389.97,
+          9663.72,
+          16919.473483273658
+        ],
+        [
+          74440.22,
+          10055.76,
+          16919.473483273658
+        ]
+      ],
+      "front_edge": 0,
+      "party_wall_edges": "[1, 2, 3]",
+      "entrance_road_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.MazzarinoRoadSpline_641",
+      "ground_actor_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.StaticMeshActor_0",
+      "primary_floors": 3,
+      "floor_height_cm": 270.0,
+      "wall_thickness_cm": 42.0,
+      "roof_type": "Terrace",
+      "roof_rise_cm": 55.0,
+      "roof_direction": "FrontEdgeDerived",
+      "facade_type": "Plaster",
+      "window_pattern": "FamilyRule",
+      "door_type": "ExistingModuleOrProcedural",
+      "balcony_type": "FamilyRule",
+      "ground_relationship": "RoadEntranceAndTerrainFoundations",
+      "importance": "Secondary",
+      "reference_quality": "PhotoInformedDesignHypothesis",
+      "variation_seed": 2528,
+      "facade_irregularity": 0.6499999761581421,
+      "balcony_density": 0.30000001192092896,
+      "decay": 0.5799999833106995,
+      "materials": {
+        "plaster_material": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069271.MI_Calce_1249069271",
+        "stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_modesta.M80_Pietra_modesta",
+        "roof_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_vecchi.M80_Coppi_vecchi",
+        "terrace_material": "/Game/Mazzarino80/Historic/Materials/M80_Terrazza_calce.M80_Terrazza_calce",
+        "iron_material": "/Game/Mazzarino80/Historic/Materials/M80_Ferro_ossidato.M80_Ferro_ossidato",
+        "wood_material": "/Game/Mazzarino80/Historic/Materials/M80_Legno_persiane_1.M80_Legno_persiane_1",
+        "glass_material": "/Game/Mazzarino80/Historic/Materials/M80_Vetro_ombra.M80_Vetro_ombra",
+        "damp_material": "/Game/Mazzarino80/Historic/Materials/MI_Umidita_sfumata.MI_Umidita_sfumata",
+        "repair_material": "/Game/Mazzarino80/Historic/Materials/M80_Rappezzo.M80_Rappezzo",
+        "exposed_stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_esposta.M80_Pietra_esposta",
+        "drain_material": "/Game/Mazzarino80/Historic/Materials/M80_Canaletta_pietra_opaca.M80_Canaletta_pietra_opaca",
+        "tile_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_terracotta_3D.M80_Coppi_terracotta_3D"
+      },
+      "modules": {
+        "roof_tile_mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano",
+        "cable_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megapack/Meshes/MiddleEast/Wires/SM_wire_part_01.SM_wire_part_01",
+        "balcony_module_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1.S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1",
+        "door_mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c",
+        "pot_mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+      },
+      "source_actor_label": "M80_Storica_NARROW_1249069271",
+      "character_profile": "casa_stretta_terrazzata",
+      "upper_brick_floor": false,
+      "masonry_loss": 0.37,
+      "upper_brick_material": "/Game/Mazzarino80/Historic/Materials/M80_Laterizio_giallo_macro.M80_Laterizio_giallo_macro",
+      "rooftop_tank": true,
+      "rooftop_tank_mesh": "/Game/Megapack/Meshes/MiddleEast/SM_Platform_Water_Tank_01.SM_Platform_Water_Tank_01",
+      "tank_vessel_mesh": "/Engine/BasicShapes/Cylinder.Cylinder",
+      "tank_vessel_material": "/Game/Mazzarino80/Historic/Materials/M80_Canaletta_pietra_opaca.M80_Canaletta_pietra_opaca",
+      "courtyard_gate": false,
+      "external_bathroom": false,
+      "facade_flue": false,
+      "cactus": false,
+      "ivy": false
+    },
+    {
+      "building_id": "1249069275",
+      "family": "POPULAR",
+      "family_label": "Casa bassa popolare",
+      "position_world_cm": [
+        75882.12000000001,
+        11171.427142857143,
+        16720.535606741905
+      ],
+      "footprint_world_cm": [
+        [
+          75567.28,
+          11347.3,
+          16720.535606741905
+        ],
+        [
+          75358.89,
+          10743.23,
+          16720.535606741905
+        ],
+        [
+          76001.26000000001,
+          10548.07,
+          16720.535606741905
+        ],
+        [
+          76128.71,
+          11101.54,
+          16720.535606741905
+        ],
+        [
+          75990.70000000001,
+          11134.37,
+          16720.535606741905
+        ],
+        [
+          76185.72,
+          11661.81,
+          16720.535606741905
+        ],
+        [
+          75942.28,
+          11663.67,
+          16720.535606741905
+        ]
+      ],
+      "front_edge": 0,
+      "party_wall_edges": "[1, 2, 3, 4, 5]",
+      "entrance_road_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.MazzarinoRoadSpline_512",
+      "ground_actor_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.StaticMeshActor_0",
+      "primary_floors": 1,
+      "floor_height_cm": 270.0,
+      "wall_thickness_cm": 42.0,
+      "roof_type": "PitchedOrMixed",
+      "roof_rise_cm": 55.0,
+      "roof_direction": "FrontEdgeDerived",
+      "facade_type": "Plaster",
+      "window_pattern": "FamilyRule",
+      "door_type": "ExistingModuleOrProcedural",
+      "balcony_type": "FamilyRule",
+      "ground_relationship": "RoadEntranceAndTerrainFoundations",
+      "importance": "Secondary",
+      "reference_quality": "PhotoInformedDesignHypothesis",
+      "variation_seed": 1980,
+      "facade_irregularity": 0.6499999761581421,
+      "balcony_density": 0.18000000715255737,
+      "decay": 0.18000000715255737,
+      "materials": {
+        "plaster_material": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069275.MI_Calce_1249069275",
+        "stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_modesta.M80_Pietra_modesta",
+        "roof_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_vecchi.M80_Coppi_vecchi",
+        "terrace_material": "/Game/Mazzarino80/Historic/Materials/M80_Terrazza_calce.M80_Terrazza_calce",
+        "iron_material": "/Game/Mazzarino80/Historic/Materials/M80_Ferro_ossidato.M80_Ferro_ossidato",
+        "wood_material": "/Game/Mazzarino80/Historic/Materials/M80_Legno_persiane_0.M80_Legno_persiane_0",
+        "glass_material": "/Game/Mazzarino80/Historic/Materials/M80_Vetro_ombra.M80_Vetro_ombra",
+        "damp_material": "/Game/Mazzarino80/Historic/Materials/MI_Umidita_sfumata.MI_Umidita_sfumata",
+        "repair_material": "/Game/Mazzarino80/Historic/Materials/M80_Rappezzo.M80_Rappezzo",
+        "exposed_stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_esposta.M80_Pietra_esposta",
+        "drain_material": "/Game/Mazzarino80/Historic/Materials/M80_Canaletta_pietra_opaca.M80_Canaletta_pietra_opaca",
+        "tile_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_terracotta_3D.M80_Coppi_terracotta_3D"
+      },
+      "modules": {
+        "roof_tile_mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano",
+        "cable_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megapack/Meshes/MiddleEast/Wires/SM_wire_part_01.SM_wire_part_01",
+        "balcony_module_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1.S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1",
+        "door_mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c",
+        "pot_mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+      },
+      "source_actor_label": "M80_Storica_POPULAR_1249069275",
+      "character_profile": "popolare_muratura_lacunosa",
+      "upper_brick_floor": false,
+      "masonry_loss": 0.84,
+      "upper_brick_material": "/Game/Mazzarino80/Historic/Materials/M80_Laterizio_giallo_macro.M80_Laterizio_giallo_macro",
+      "rooftop_tank": false,
+      "rooftop_tank_mesh": "",
+      "tank_vessel_mesh": "",
+      "tank_vessel_material": "",
+      "courtyard_gate": false,
+      "external_bathroom": false,
+      "facade_flue": false,
+      "cactus": true,
+      "ivy": false
+    },
+    {
+      "building_id": "1249069276",
+      "family": "NARROW",
+      "family_label": "Casa stretta su più piani",
+      "position_world_cm": [
+        77557.7225,
+        9264.5825,
+        17113.50099722906
+      ],
+      "footprint_world_cm": [
+        [
+          76702.90000000001,
+          8627.95,
+          17113.50099722906
+        ],
+        [
+          77501.92,
+          8465.960000000001,
+          17113.50099722906
+        ],
+        [
+          77632.70000000001,
+          9199.52,
+          17113.50099722906
+        ],
+        [
+          78035.78,
+          9106.33,
+          17113.50099722906
+        ],
+        [
+          78168.56,
+          9754.82,
+          17113.50099722906
+        ],
+        [
+          77742.09000000001,
+          9835.53,
+          17113.50099722906
+        ],
+        [
+          77666.49,
+          9505.28,
+          17113.50099722906
+        ],
+        [
+          77011.34000000001,
+          9621.27,
+          17113.50099722906
+        ]
+      ],
+      "front_edge": 0,
+      "party_wall_edges": "[1, 2, 5, 6, 7]",
+      "entrance_road_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.MazzarinoRoadSpline_641",
+      "ground_actor_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.StaticMeshActor_0",
+      "primary_floors": 3,
+      "floor_height_cm": 282.0,
+      "wall_thickness_cm": 42.0,
+      "roof_type": "Terrace",
+      "roof_rise_cm": 72.0,
+      "roof_direction": "FrontEdgeDerived",
+      "facade_type": "ExposedStone",
+      "window_pattern": "FamilyRule",
+      "door_type": "ExistingModuleOrProcedural",
+      "balcony_type": "FamilyRule",
+      "ground_relationship": "RoadEntranceAndTerrainFoundations",
+      "importance": "Secondary",
+      "reference_quality": "PhotoInformedDesignHypothesis",
+      "variation_seed": 2665,
+      "facade_irregularity": 0.6499999761581421,
+      "balcony_density": 0.30000001192092896,
+      "decay": 0.8299999833106995,
+      "materials": {
+        "plaster_material": "/Game/Mazzarino80/Historic/Materials/Case/MI_Pietra_1249069276.MI_Pietra_1249069276",
+        "stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_modesta.M80_Pietra_modesta",
+        "roof_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_vecchi.M80_Coppi_vecchi",
+        "terrace_material": "/Game/Mazzarino80/Historic/Materials/M80_Terrazza_calce.M80_Terrazza_calce",
+        "iron_material": "/Game/Mazzarino80/Historic/Materials/M80_Ferro_ossidato.M80_Ferro_ossidato",
+        "wood_material": "/Game/Mazzarino80/Historic/Materials/M80_Legno_persiane_2.M80_Legno_persiane_2",
+        "glass_material": "/Game/Mazzarino80/Historic/Materials/M80_Vetro_ombra.M80_Vetro_ombra",
+        "damp_material": "/Game/Mazzarino80/Historic/Materials/MI_Umidita_sfumata.MI_Umidita_sfumata",
+        "repair_material": "/Game/Mazzarino80/Historic/Materials/M80_Rappezzo.M80_Rappezzo",
+        "exposed_stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_esposta.M80_Pietra_esposta",
+        "drain_material": "/Game/Mazzarino80/Historic/Materials/M80_Canaletta_pietra_opaca.M80_Canaletta_pietra_opaca",
+        "tile_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_terracotta_3D.M80_Coppi_terracotta_3D"
+      },
+      "modules": {
+        "roof_tile_mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano",
+        "cable_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megapack/Meshes/MiddleEast/Wires/SM_wire_part_01.SM_wire_part_01",
+        "balcony_module_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1.S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1",
+        "door_mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c",
+        "pot_mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+      },
+      "source_actor_label": "M80_Storica_NARROW_1249069276",
+      "character_profile": "casa_stretta_sopraelevata",
+      "upper_brick_floor": true,
+      "masonry_loss": 0.49,
+      "upper_brick_material": "/Game/Mazzarino80/Historic/Materials/M80_Laterizio_rosso_macro.M80_Laterizio_rosso_macro",
+      "rooftop_tank": false,
+      "rooftop_tank_mesh": "",
+      "tank_vessel_mesh": "",
+      "tank_vessel_material": "",
+      "courtyard_gate": false,
+      "external_bathroom": false,
+      "facade_flue": true,
+      "cactus": false,
+      "ivy": false
+    },
+    {
+      "building_id": "1249069286",
+      "family": "POPULAR",
+      "family_label": "Casa bassa popolare",
+      "position_world_cm": [
+        73132.56,
+        13200.585000000001,
+        16477.355681371442
+      ],
+      "footprint_world_cm": [
+        [
+          73165.46,
+          13668.02,
+          16477.355681371442
+        ],
+        [
+          72658.98000000001,
+          13250.84,
+          16477.355681371442
+        ],
+        [
+          73094.53,
+          12692.15,
+          16477.355681371442
+        ],
+        [
+          73611.27,
+          13191.33,
+          16477.355681371442
+        ]
+      ],
+      "front_edge": 2,
+      "party_wall_edges": "[0, 1, 3]",
+      "entrance_road_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.MazzarinoRoadSpline_31",
+      "ground_actor_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.StaticMeshActor_0",
+      "primary_floors": 1,
+      "floor_height_cm": 282.0,
+      "wall_thickness_cm": 42.0,
+      "roof_type": "PitchedOrMixed",
+      "roof_rise_cm": 72.0,
+      "roof_direction": "FrontEdgeDerived",
+      "facade_type": "Plaster",
+      "window_pattern": "FamilyRule",
+      "door_type": "ExistingModuleOrProcedural",
+      "balcony_type": "FamilyRule",
+      "ground_relationship": "RoadEntranceAndTerrainFoundations",
+      "importance": "Secondary",
+      "reference_quality": "PhotoInformedDesignHypothesis",
+      "variation_seed": 2117,
+      "facade_irregularity": 0.6499999761581421,
+      "balcony_density": 0.18000000715255737,
+      "decay": 0.47999998927116394,
+      "materials": {
+        "plaster_material": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069286.MI_Calce_1249069286",
+        "stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_modesta.M80_Pietra_modesta",
+        "roof_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_vecchi.M80_Coppi_vecchi",
+        "terrace_material": "/Game/Mazzarino80/Historic/Materials/M80_Terrazza_calce.M80_Terrazza_calce",
+        "iron_material": "/Game/Mazzarino80/Historic/Materials/M80_Ferro_ossidato.M80_Ferro_ossidato",
+        "wood_material": "/Game/Mazzarino80/Historic/Materials/M80_Legno_persiane_1.M80_Legno_persiane_1",
+        "glass_material": "/Game/Mazzarino80/Historic/Materials/M80_Vetro_ombra.M80_Vetro_ombra",
+        "damp_material": "/Game/Mazzarino80/Historic/Materials/MI_Umidita_sfumata.MI_Umidita_sfumata",
+        "repair_material": "/Game/Mazzarino80/Historic/Materials/M80_Rappezzo.M80_Rappezzo",
+        "exposed_stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_esposta.M80_Pietra_esposta",
+        "drain_material": "/Game/Mazzarino80/Historic/Materials/M80_Canaletta_pietra_opaca.M80_Canaletta_pietra_opaca",
+        "tile_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_terracotta_3D.M80_Coppi_terracotta_3D"
+      },
+      "modules": {
+        "roof_tile_mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano",
+        "cable_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megapack/Meshes/MiddleEast/Wires/SM_wire_part_01.SM_wire_part_01",
+        "balcony_module_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1.S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1",
+        "door_mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c",
+        "pot_mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+      },
+      "source_actor_label": "M80_Storica_POPULAR_1249069286",
+      "character_profile": "popolare_degrado_localizzato",
+      "upper_brick_floor": false,
+      "masonry_loss": 0.69,
+      "upper_brick_material": "/Game/Mazzarino80/Historic/Materials/M80_Laterizio_giallo_macro.M80_Laterizio_giallo_macro",
+      "rooftop_tank": false,
+      "rooftop_tank_mesh": "",
+      "tank_vessel_mesh": "",
+      "tank_vessel_material": "",
+      "courtyard_gate": false,
+      "external_bathroom": false,
+      "facade_flue": false,
+      "cactus": true,
+      "ivy": false
+    },
+    {
+      "building_id": "1249069287",
+      "family": "EXTENDED",
+      "family_label": "Casa ampliata",
+      "position_world_cm": [
+        76411.49071428573,
+        13944.059285714287,
+        16566.625551038473
+      ],
+      "footprint_world_cm": [
+        [
+          76570.44,
+          14495.029999999999,
+          16566.625551038473
+        ],
+        [
+          76160.32,
+          14172.84,
+          16566.625551038473
+        ],
+        [
+          75906.89,
+          14554.539999999999,
+          16566.625551038473
+        ],
+        [
+          74513.45000000001,
+          13432.88,
+          16566.625551038473
+        ],
+        [
+          74822.18000000001,
+          13047.859999999999,
+          16566.625551038473
+        ],
+        [
+          75551.19,
+          13526.48,
+          16566.625551038473
+        ],
+        [
+          75978.13,
+          12949.42,
+          16566.625551038473
+        ],
+        [
+          76544.75,
+          13376.07,
+          16566.625551038473
+        ],
+        [
+          76595.01000000001,
+          13003.74,
+          16566.625551038473
+        ],
+        [
+          77547.53,
+          13616.15,
+          16566.625551038473
+        ],
+        [
+          77293.40000000001,
+          13973.39,
+          16566.625551038473
+        ],
+        [
+          78277.84000000001,
+          14530.68,
+          16566.625551038473
+        ],
+        [
+          77661.12000000001,
+          15660.55,
+          16566.625551038473
+        ],
+        [
+          76338.62000000001,
+          14877.199999999999,
+          16566.625551038473
+        ]
+      ],
+      "front_edge": 0,
+      "party_wall_edges": "[4, 5, 6, 7, 8, 9, 10, 11]",
+      "entrance_road_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.MazzarinoRoadSpline_31",
+      "ground_actor_path": "/Game/Levels/Mazzarino80_CaseStoriche_Campione.Mazzarino80_CaseStoriche_Campione:PersistentLevel.StaticMeshActor_0",
+      "primary_floors": 2,
+      "floor_height_cm": 294.0,
+      "wall_thickness_cm": 42.0,
+      "roof_type": "PitchedOrMixed",
+      "roof_rise_cm": 89.0,
+      "roof_direction": "FrontEdgeDerived",
+      "facade_type": "Plaster",
+      "window_pattern": "FamilyRule",
+      "door_type": "ExistingModuleOrProcedural",
+      "balcony_type": "FamilyRule",
+      "ground_relationship": "RoadEntranceAndTerrainFoundations",
+      "importance": "Secondary",
+      "reference_quality": "PhotoInformedDesignHypothesis",
+      "variation_seed": 3898,
+      "facade_irregularity": 0.6499999761581421,
+      "balcony_density": 0.30000001192092896,
+      "decay": 0.6200000047683716,
+      "materials": {
+        "plaster_material": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069287.MI_Calce_1249069287",
+        "stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_modesta.M80_Pietra_modesta",
+        "roof_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_vecchi.M80_Coppi_vecchi",
+        "terrace_material": "/Game/Mazzarino80/Historic/Materials/M80_Terrazza_calce.M80_Terrazza_calce",
+        "iron_material": "/Game/Mazzarino80/Historic/Materials/M80_Ferro_ossidato.M80_Ferro_ossidato",
+        "wood_material": "/Game/Mazzarino80/Historic/Materials/M80_Legno_persiane_2.M80_Legno_persiane_2",
+        "glass_material": "/Game/Mazzarino80/Historic/Materials/M80_Vetro_ombra.M80_Vetro_ombra",
+        "damp_material": "/Game/Mazzarino80/Historic/Materials/MI_Umidita_sfumata.MI_Umidita_sfumata",
+        "repair_material": "/Game/Mazzarino80/Historic/Materials/M80_Rappezzo.M80_Rappezzo",
+        "exposed_stone_material": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_esposta.M80_Pietra_esposta",
+        "drain_material": "/Game/Mazzarino80/Historic/Materials/M80_Canaletta_pietra_opaca.M80_Canaletta_pietra_opaca",
+        "tile_material": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_terracotta_3D.M80_Coppi_terracotta_3D"
+      },
+      "modules": {
+        "roof_tile_mesh": "/Game/Mazzarino80/Historic/Modules/SM_Coppo_siciliano.SM_Coppo_siciliano",
+        "cable_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megapack/Meshes/MiddleEast/Wires/SM_wire_part_01.SM_wire_part_01",
+        "balcony_module_mesh": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1.S_Modular_Building_Balcony_ukjsdavdw_lod3_Var1",
+        "door_mesh": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c",
+        "pot_mesh": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3"
+      },
+      "source_actor_label": "M80_Storica_EXTENDED_1249069287",
+      "character_profile": "casa_ampliata_incompiuta",
+      "upper_brick_floor": true,
+      "masonry_loss": 0.78,
+      "upper_brick_material": "/Game/Mazzarino80/Historic/Materials/M80_Laterizio_rosso_macro.M80_Laterizio_rosso_macro",
+      "rooftop_tank": false,
+      "rooftop_tank_mesh": "",
+      "tank_vessel_mesh": "",
+      "tank_vessel_material": "",
+      "courtyard_gate": false,
+      "external_bathroom": false,
+      "facade_flue": true,
+      "cactus": false,
+      "ivy": false
+    }
+  ]
+}

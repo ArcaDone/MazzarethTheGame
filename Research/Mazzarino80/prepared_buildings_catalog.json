@@ -1,0 +1,95 @@
+{
+  "level": "/Game/Levels/Mazzarino80_Catalogo",
+  "structures": [
+    {
+      "label": "A_Agip",
+      "class": "/Game/Migrated/Arinazzo/A_Agip.A_Agip_C",
+      "position": [
+        0.0,
+        0.0,
+        84.54714046228452
+      ]
+    },
+    {
+      "label": "A_Liardo",
+      "class": "/Game/Migrated/Arinazzo/A_Liardo.A_Liardo_C",
+      "position": [
+        40000.0,
+        0.0,
+        173.13037328163028
+      ]
+    },
+    {
+      "label": "A_Madonna",
+      "class": "/Game/Migrated/Madonna/A_Madonna.A_Madonna_C",
+      "position": [
+        80000.0,
+        0.0,
+        827.253662109375
+      ]
+    },
+    {
+      "label": "A_Salesiane",
+      "class": "/Game/Migrated/Salesiane/A_Salesiane.A_Salesiane_C",
+      "position": [
+        120000.0,
+        0.0,
+        237.35592651367188
+      ]
+    },
+    {
+      "label": "A_SanDomenico",
+      "class": "/Game/Migrated/SanDomenico/A_SanDomenico.A_SanDomenico_C",
+      "position": [
+        160000.0,
+        0.0,
+        58.21145872706143
+      ]
+    },
+    {
+      "label": "A_ZzaRita",
+      "class": "/Game/Migrated/Case/A_ZzaRita.A_ZzaRita_C",
+      "position": [
+        0.0,
+        40000.0,
+        67.82588577270508
+      ]
+    },
+    {
+      "label": "CastelCompleted",
+      "class": "/Game/Migrated/Castello/CastelCompleted.CastelCompleted_C",
+      "position": [
+        40000.0,
+        40000.0,
+        1841.1119407521473
+      ]
+    },
+    {
+      "label": "ComuneCompleto",
+      "class": "/Game/Migrated/Animations/ComuneCompleto.ComuneCompleto_C",
+      "position": [
+        80000.0,
+        40000.0,
+        56.42101419919072
+      ]
+    },
+    {
+      "label": "Matrice",
+      "class": "/Game/Migrated/Animations/Matrice.Matrice_C",
+      "position": [
+        120000.0,
+        40000.0,
+        301.5016174316406
+      ]
+    },
+    {
+      "label": "ScuolaMatrice",
+      "class": "/Game/Migrated/Matrice/Scuola/ScuolaMatrice.ScuolaMatrice_C",
+      "position": [
+        160000.0,
+        40000.0,
+        212.02496291087402
+      ]
+    }
+  ]
+}

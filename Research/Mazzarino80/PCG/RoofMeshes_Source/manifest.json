@@ -1,0 +1,200 @@
+{
+  "1249068307": {
+    "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\RoofMeshes_Source\\SM_PCG_Roof_1249068307.obj",
+    "triangles": 36,
+    "vertices": 88,
+    "area_cm2": 5896858.454350054,
+    "center_xy_cm": [
+      81754.82,
+      10385.45
+    ],
+    "roof_base_z_cm": 17975.925017550955
+  },
+  "1249069200": {
+    "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\RoofMeshes_Source\\SM_PCG_Roof_1249069200.obj",
+    "triangles": 36,
+    "vertices": 90,
+    "area_cm2": 2288011.2528998256,
+    "center_xy_cm": [
+      73390.86,
+      10233.455
+    ],
+    "roof_base_z_cm": 17435.043849912112
+  },
+  "1249069202": {
+    "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\RoofMeshes_Source\\SM_PCG_Roof_1249069202.obj",
+    "triangles": 60,
+    "vertices": 154,
+    "area_cm2": 5598975.680050075,
+    "center_xy_cm": [
+      82812.90000000001,
+      13039.49
+    ],
+    "roof_base_z_cm": 17707.512132058313
+  },
+  "1249069204": {
+    "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\RoofMeshes_Source\\SM_PCG_Roof_1249069204.obj",
+    "triangles": 76,
+    "vertices": 194,
+    "area_cm2": 2410127.5211500525,
+    "center_xy_cm": [
+      75002.59999658588,
+      9789.715
+    ],
+    "roof_base_z_cm": 17548.402704975397
+  },
+  "1249069205": {
+    "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\RoofMeshes_Source\\SM_PCG_Roof_1249069205.obj",
+    "triangles": 186,
+    "vertices": 470,
+    "area_cm2": 9854370.948500156,
+    "center_xy_cm": [
+      77202.75003720153,
+      11751.46
+    ],
+    "roof_base_z_cm": 17585.934167809002
+  },
+  "1249069213": {
+    "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\RoofMeshes_Source\\SM_PCG_Roof_1249069213.obj",
+    "triangles": 12,
+    "vertices": 28,
+    "area_cm2": 665288.2818500996,
+    "center_xy_cm": [
+      78074.495,
+      11511.009999999998
+    ],
+    "roof_base_z_cm": 17918.107783520893
+  },
+  "1249069219": {
+    "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\RoofMeshes_Source\\SM_PCG_Roof_1249069219.obj",
+    "triangles": 32,
+    "vertices": 82,
+    "area_cm2": 1521003.659549892,
+    "center_xy_cm": [
+      72187.845,
+      12599.55
+    ],
+    "roof_base_z_cm": 17046.69945115234
+  },
+  "1249069228": {
+    "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\RoofMeshes_Source\\SM_PCG_Roof_1249069228.obj",
+    "triangles": 68,
+    "vertices": 176,
+    "area_cm2": 4200523.568199813,
+    "center_xy_cm": [
+      78839.72,
+      12099.105
+    ],
+    "roof_base_z_cm": 17515.30957588186
+  },
+  "1249069229": {
+    "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\RoofMeshes_Source\\SM_PCG_Roof_1249069229.obj",
+    "triangles": 24,
+    "vertices": 58,
+    "area_cm2": 1701677.6765499115,
+    "center_xy_cm": [
+      73640.08,
+      14125.22
+    ],
+    "roof_base_z_cm": 17025.393977859698
+  },
+  "1249069235": {
+    "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\RoofMeshes_Source\\SM_PCG_Roof_1249069235.obj",
+    "triangles": 42,
+    "vertices": 108,
+    "area_cm2": 2943932.5036500096,
+    "center_xy_cm": [
+      73385.220001424,
+      11567.310000000001
+    ],
+    "roof_base_z_cm": 17039.223093049826
+  },
+  "1249069237": {
+    "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\RoofMeshes_Source\\SM_PCG_Roof_1249069237.obj",
+    "triangles": 28,
+    "vertices": 72,
+    "area_cm2": 1958896.9126498103,
+    "center_xy_cm": [
+      80784.735,
+      13455.835
+    ],
+    "roof_base_z_cm": 17691.62085394225
+  },
+  "1249069246": {
+    "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\RoofMeshes_Source\\SM_PCG_Roof_1249069246.obj",
+    "triangles": 36,
+    "vertices": 88,
+    "area_cm2": 4607250.729028225,
+    "center_xy_cm": [
+      78771.4300005902,
+      9547.955
+    ],
+    "roof_base_z_cm": 17816.761022404327
+  },
+  "1249069247": {
+    "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\RoofMeshes_Source\\SM_PCG_Roof_1249069247.obj",
+    "triangles": 22,
+    "vertices": 56,
+    "area_cm2": 681115.7930999398,
+    "center_xy_cm": [
+      79559.705,
+      13052.185
+    ],
+    "roof_base_z_cm": 17444.204545424633
+  },
+  "1249069271": {
+    "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\RoofMeshes_Source\\SM_PCG_Roof_1249069271.obj",
+    "triangles": 12,
+    "vertices": 28,
+    "area_cm2": 868864.0320500135,
+    "center_xy_cm": [
+      74736.625,
+      9514.615
+    ],
+    "roof_base_z_cm": 17729.473483273658
+  },
+  "1249069275": {
+    "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\RoofMeshes_Source\\SM_PCG_Roof_1249069275.obj",
+    "triangles": 30,
+    "vertices": 76,
+    "area_cm2": 548922.9439498782,
+    "center_xy_cm": [
+      75772.305,
+      11105.869999999999
+    ],
+    "roof_base_z_cm": 16990.535606741905
+  },
+  "1249069276": {
+    "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\RoofMeshes_Source\\SM_PCG_Roof_1249069276.obj",
+    "triangles": 28,
+    "vertices": 68,
+    "area_cm2": 1062318.7461000085,
+    "center_xy_cm": [
+      77435.73000000001,
+      9150.745
+    ],
+    "roof_base_z_cm": 17959.50099722906
+  },
+  "1249069286": {
+    "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\RoofMeshes_Source\\SM_PCG_Roof_1249069286.obj",
+    "triangles": 16,
+    "vertices": 40,
+    "area_cm2": 466766.14329993725,
+    "center_xy_cm": [
+      73135.125,
+      13180.085
+    ],
+    "roof_base_z_cm": 16759.355681371442
+  },
+  "1249069287": {
+    "path": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\RoofMeshes_Source\\SM_PCG_Roof_1249069287.obj",
+    "triangles": 68,
+    "vertices": 176,
+    "area_cm2": 4366752.283599913,
+    "center_xy_cm": [
+      76395.64500000002,
+      14304.985
+    ],
+    "roof_base_z_cm": 17154.625551038473
+  }
+}

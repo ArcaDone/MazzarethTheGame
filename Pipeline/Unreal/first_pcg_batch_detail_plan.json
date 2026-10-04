@@ -1,0 +1,809 @@
+{
+  "source_sha256": "8d3de65eb8593b400c28da70c8b19ecbbaae10e8479b4add66653e8481f0ec51",
+  "mesh_audit_sha256": "4bb32fdd790f9af03061ab7e0b742093036796d43be0005d2bc190ef827f3208",
+  "lots": {
+    "1249054419": {
+      "district": "Q003",
+      "front_length_cm": 353.7,
+      "front_edge": 7,
+      "floor_count": 3,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 5
+      },
+      "points": 5
+    },
+    "1249054423": {
+      "district": "Q003",
+      "front_length_cm": 623.6,
+      "front_edge": 15,
+      "floor_count": 3,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 5,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249067196": {
+      "district": "Q002",
+      "front_length_cm": 1577.0,
+      "front_edge": 33,
+      "floor_count": 2,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 3
+      },
+      "points": 3
+    },
+    "1249067205": {
+      "district": "Q002",
+      "front_length_cm": 1109.7,
+      "front_edge": 4,
+      "floor_count": 2,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 4,
+        "facade_ivy": 1
+      },
+      "points": 5
+    },
+    "1249067206": {
+      "district": "Q002",
+      "front_length_cm": 469.5,
+      "front_edge": 7,
+      "floor_count": 3,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 5
+      },
+      "points": 5
+    },
+    "1249067208": {
+      "district": "Q002",
+      "front_length_cm": 1283.6,
+      "front_edge": 10,
+      "floor_count": 2,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 3
+      },
+      "points": 3
+    },
+    "1249067209": {
+      "district": "Q002",
+      "front_length_cm": 720.1,
+      "front_edge": 16,
+      "floor_count": 2,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 4,
+        "facade_ivy": 1,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249067216": {
+      "district": "Q002",
+      "front_length_cm": 565.8,
+      "front_edge": 6,
+      "floor_count": 2,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 3,
+        "balcony_pot": 1
+      },
+      "points": 4
+    },
+    "1249067217": {
+      "district": "Q002",
+      "front_length_cm": 963.4,
+      "front_edge": 9,
+      "floor_count": 2,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 4,
+        "facade_ivy": 1
+      },
+      "points": 5
+    },
+    "1249067223": {
+      "district": "Q002",
+      "front_length_cm": 485.5,
+      "front_edge": 2,
+      "floor_count": 4,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 7
+      },
+      "points": 7
+    },
+    "1249067225": {
+      "district": "Q002",
+      "front_length_cm": 465.9,
+      "front_edge": 2,
+      "floor_count": 2,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 4,
+        "facade_ivy": 1,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249067229": {
+      "district": "Q002",
+      "front_length_cm": 623.7,
+      "front_edge": 0,
+      "floor_count": 2,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 4,
+        "facade_ivy": 1
+      },
+      "points": 5
+    },
+    "1249067232": {
+      "district": "Q002",
+      "front_length_cm": 506.9,
+      "front_edge": 3,
+      "floor_count": 2,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 3
+      },
+      "points": 3
+    },
+    "1249067242": {
+      "district": "Q002",
+      "front_length_cm": 572.2,
+      "front_edge": 3,
+      "floor_count": 4,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 7
+      },
+      "points": 7
+    },
+    "1249067262": {
+      "district": "Q002",
+      "front_length_cm": 306.3,
+      "front_edge": 1,
+      "floor_count": 3,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 5
+      },
+      "points": 5
+    },
+    "1249067265": {
+      "district": "Q002",
+      "front_length_cm": 1124.0,
+      "front_edge": 0,
+      "floor_count": 2,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 4,
+        "facade_ivy": 1
+      },
+      "points": 5
+    },
+    "1249067267": {
+      "district": "Q002",
+      "front_length_cm": 671.8,
+      "front_edge": 2,
+      "floor_count": 4,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 7,
+        "balcony_pot": 1
+      },
+      "points": 8
+    },
+    "1249067277": {
+      "district": "Q002",
+      "front_length_cm": 745.9,
+      "front_edge": 12,
+      "floor_count": 2,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 4,
+        "facade_ivy": 1
+      },
+      "points": 5
+    },
+    "1249068301": {
+      "district": "Q003",
+      "front_length_cm": 735.8,
+      "front_edge": 1,
+      "floor_count": 2,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 4,
+        "facade_ivy": 1,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249068302": {
+      "district": "Q003",
+      "front_length_cm": 388.1,
+      "front_edge": 3,
+      "floor_count": 3,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 5
+      },
+      "points": 5
+    },
+    "1249068303": {
+      "district": "Q003",
+      "front_length_cm": 1330.4,
+      "front_edge": 0,
+      "floor_count": 3,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 5
+      },
+      "points": 5
+    },
+    "1249068304": {
+      "district": "Q003",
+      "front_length_cm": 805.2,
+      "front_edge": 4,
+      "floor_count": 2,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 3,
+        "balcony_pot": 1
+      },
+      "points": 4
+    },
+    "1249068305": {
+      "district": "Q003",
+      "front_length_cm": 713.2,
+      "front_edge": 1,
+      "floor_count": 2,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 4,
+        "facade_ivy": 1,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249068306": {
+      "district": "Q003",
+      "front_length_cm": 3805.4,
+      "front_edge": 5,
+      "floor_count": 3,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 5
+      },
+      "points": 5
+    },
+    "1249068312": {
+      "district": "Q003",
+      "front_length_cm": 472.3,
+      "front_edge": 1,
+      "floor_count": 2,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 3
+      },
+      "points": 3
+    },
+    "1249068315": {
+      "district": "Q003",
+      "front_length_cm": 580.1,
+      "front_edge": 2,
+      "floor_count": 3,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 5
+      },
+      "points": 5
+    },
+    "1249068327": {
+      "district": "Q003",
+      "front_length_cm": 823.3,
+      "front_edge": 3,
+      "floor_count": 3,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 5
+      },
+      "points": 5
+    },
+    "1249068337": {
+      "district": "Q002",
+      "front_length_cm": 613.4,
+      "front_edge": 6,
+      "floor_count": 2,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 4,
+        "facade_ivy": 1,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249068343": {
+      "district": "Q002",
+      "front_length_cm": 1857.3,
+      "front_edge": 0,
+      "floor_count": 3,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 5,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249069191": {
+      "district": "Q002",
+      "front_length_cm": 494.3,
+      "front_edge": 1,
+      "floor_count": 3,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 5
+      },
+      "points": 5
+    },
+    "1249069211": {
+      "district": "Q002",
+      "front_length_cm": 1042.4,
+      "front_edge": 0,
+      "floor_count": 3,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 5,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249069239": {
+      "district": "Q002",
+      "front_length_cm": 531.7,
+      "front_edge": 10,
+      "floor_count": 3,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 5
+      },
+      "points": 5
+    },
+    "1249069241": {
+      "district": "Q002",
+      "front_length_cm": 696.6,
+      "front_edge": 2,
+      "floor_count": 2,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 4,
+        "facade_ivy": 1,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249069252": {
+      "district": "Q003",
+      "front_length_cm": 629.2,
+      "front_edge": 1,
+      "floor_count": 2,
+      "existing_detailed_facade": false,
+      "roles": {
+        "rain_pipe_segment": 3,
+        "balcony_pot": 1
+      },
+      "points": 4
+    },
+    "1249069253": {
+      "district": "Q001",
+      "front_length_cm": 754.6,
+      "front_edge": 5,
+      "floor_count": 2,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 4,
+        "facade_ivy": 1,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249069267": {
+      "district": "Q002",
+      "front_length_cm": 426.8,
+      "front_edge": 1,
+      "floor_count": 3,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 5,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249071118": {
+      "district": "Q002",
+      "front_length_cm": 979.0,
+      "front_edge": 0,
+      "floor_count": 3,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 5,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249071121": {
+      "district": "Q002",
+      "front_length_cm": 471.8,
+      "front_edge": 4,
+      "floor_count": 2,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 4,
+        "facade_ivy": 1,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249071125": {
+      "district": "Q002",
+      "front_length_cm": 423.3,
+      "front_edge": 8,
+      "floor_count": 2,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 4
+      },
+      "points": 4
+    },
+    "1249071132": {
+      "district": "Q002",
+      "front_length_cm": 920.0,
+      "front_edge": 0,
+      "floor_count": 2,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 3
+      },
+      "points": 3
+    },
+    "1249071138": {
+      "district": "Q002",
+      "front_length_cm": 501.2,
+      "front_edge": 0,
+      "floor_count": 3,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 5
+      },
+      "points": 5
+    },
+    "1249071140": {
+      "district": "Q002",
+      "front_length_cm": 643.4,
+      "front_edge": 15,
+      "floor_count": 2,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 3,
+        "balcony_pot": 1
+      },
+      "points": 4
+    },
+    "1249071149": {
+      "district": "Q002",
+      "front_length_cm": 710.0,
+      "front_edge": 5,
+      "floor_count": 2,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 4,
+        "facade_ivy": 1,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249071153": {
+      "district": "Q002",
+      "front_length_cm": 654.7,
+      "front_edge": 13,
+      "floor_count": 2,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 4,
+        "facade_ivy": 1
+      },
+      "points": 5
+    },
+    "1249082254": {
+      "district": "Q002",
+      "front_length_cm": 465.1,
+      "front_edge": 0,
+      "floor_count": 3,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 5
+      },
+      "points": 5
+    },
+    "1249082257": {
+      "district": "Q002",
+      "front_length_cm": 1170.4,
+      "front_edge": 0,
+      "floor_count": 2,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 4,
+        "facade_ivy": 1,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249082258": {
+      "district": "Q002",
+      "front_length_cm": 1505.4,
+      "front_edge": 5,
+      "floor_count": 3,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 5,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249082259": {
+      "district": "Q002",
+      "front_length_cm": 756.6,
+      "front_edge": 7,
+      "floor_count": 3,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 5
+      },
+      "points": 5
+    },
+    "1249082261": {
+      "district": "Q002",
+      "front_length_cm": 1196.3,
+      "front_edge": 26,
+      "floor_count": 2,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 4,
+        "facade_ivy": 1,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249082264": {
+      "district": "Q001",
+      "front_length_cm": 1754.5,
+      "front_edge": 0,
+      "floor_count": 2,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 3,
+        "balcony_pot": 1
+      },
+      "points": 4
+    },
+    "1249082269": {
+      "district": "Q001",
+      "front_length_cm": 1133.2,
+      "front_edge": 0,
+      "floor_count": 2,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 4,
+        "facade_ivy": 1,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249082271": {
+      "district": "Q002",
+      "front_length_cm": 1404.5,
+      "front_edge": 13,
+      "floor_count": 3,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 5
+      },
+      "points": 5
+    },
+    "1249082273": {
+      "district": "Q002",
+      "front_length_cm": 727.0,
+      "front_edge": 4,
+      "floor_count": 2,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 4,
+        "facade_ivy": 1,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249082275": {
+      "district": "Q002",
+      "front_length_cm": 995.0,
+      "front_edge": 3,
+      "floor_count": 3,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 5,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249082283": {
+      "district": "Q002",
+      "front_length_cm": 1244.9,
+      "front_edge": 3,
+      "floor_count": 3,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 5
+      },
+      "points": 5
+    },
+    "1249082286": {
+      "district": "Q002",
+      "front_length_cm": 2280.1,
+      "front_edge": 3,
+      "floor_count": 3,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 5
+      },
+      "points": 5
+    },
+    "1249082289": {
+      "district": "Q002",
+      "front_length_cm": 653.8,
+      "front_edge": 3,
+      "floor_count": 2,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 4,
+        "facade_ivy": 1
+      },
+      "points": 5
+    },
+    "1249082294": {
+      "district": "Q001",
+      "front_length_cm": 1098.5,
+      "front_edge": 9,
+      "floor_count": 3,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 5,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249082983": {
+      "district": "Q002",
+      "front_length_cm": 499.6,
+      "front_edge": 1,
+      "floor_count": 3,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 5,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249083019": {
+      "district": "Q002",
+      "front_length_cm": 551.0,
+      "front_edge": 0,
+      "floor_count": 3,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 5,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249083051": {
+      "district": "Q002",
+      "front_length_cm": 526.2,
+      "front_edge": 1,
+      "floor_count": 3,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 5
+      },
+      "points": 5
+    },
+    "1249083059": {
+      "district": "Q002",
+      "front_length_cm": 1150.9,
+      "front_edge": 0,
+      "floor_count": 3,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 5,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249083070": {
+      "district": "Q002",
+      "front_length_cm": 1666.3,
+      "front_edge": 0,
+      "floor_count": 3,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 5,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249083089": {
+      "district": "Q002",
+      "front_length_cm": 640.1,
+      "front_edge": 1,
+      "floor_count": 2,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 4,
+        "facade_ivy": 1,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "1249832594": {
+      "district": "Q002",
+      "front_length_cm": 492.1,
+      "front_edge": 1,
+      "floor_count": 3,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 5,
+        "balcony_pot": 1
+      },
+      "points": 6
+    },
+    "372573548": {
+      "district": "Q002",
+      "front_length_cm": 374.1,
+      "front_edge": 14,
+      "floor_count": 2,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 3,
+        "balcony_pot": 1
+      },
+      "points": 4
+    },
+    "372573577": {
+      "district": "Q003",
+      "front_length_cm": 3511.7,
+      "front_edge": 12,
+      "floor_count": 2,
+      "existing_detailed_facade": true,
+      "roles": {
+        "rain_pipe_segment": 4,
+        "facade_ivy": 1,
+        "balcony_pot": 1
+      },
+      "points": 6
+    }
+  },
+  "skipped": {},
+  "roles": {
+    "rain_pipe_segment": 296,
+    "balcony_pot": 35,
+    "facade_ivy": 22
+  },
+  "errors": [],
+  "houses": 67,
+  "points": 353
+}

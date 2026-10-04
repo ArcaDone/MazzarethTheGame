@@ -1,0 +1,34 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "2.0",
+  "FriendlyName": "Mazzarino - Case procedurali",
+  "Description": "Case siciliane procedurali: perimetro a spline, piani, facciate, tetti e terreno in pendenza.",
+  "Category": "World Building",
+  "CanContainContent": true,
+  "EnabledByDefault": true,
+  "Modules": [
+    {
+      "Name": "MazzarinoHouses",
+      "Type": "Runtime",
+      "LoadingPhase": "Default",
+      "PlatformAllowList": [
+        "Win64"
+      ]
+    },
+    {
+      "Name": "MazzarinoHousesEditor",
+      "Type": "Editor",
+      "LoadingPhase": "Default",
+      "PlatformAllowList": [
+        "Win64"
+      ]
+    }
+  ],
+  "Plugins": [
+    {
+      "Name": "MeshModelingToolset",
+      "Enabled": true
+    }
+  ]
+}

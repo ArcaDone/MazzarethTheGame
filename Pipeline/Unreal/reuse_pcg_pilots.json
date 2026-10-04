@@ -1,0 +1,62 @@
+{
+  "stage_graphs": [
+    "/Game/Mazzarino80/ReuseKit/PCG/PCG_ReuseKit_Structure",
+    "/Game/Mazzarino80/ReuseKit/PCG/PCG_ReuseKit_Facades",
+    "/Game/Mazzarino80/ReuseKit/PCG/PCG_ReuseKit_Openings",
+    "/Game/Mazzarino80/ReuseKit/PCG/PCG_ReuseKit_Roofs",
+    "/Game/Mazzarino80/ReuseKit/PCG/PCG_ReuseKit_Details"
+  ],
+  "master": "/Game/Mazzarino80/ReuseKit/PCG/PCG_ReuseKit_Master",
+  "pilots": {
+    "1249069204": {
+      "style": "STYLE_01",
+      "data": "/Game/Mazzarino80/ReuseKit/PCG/PCGDA_ReuseKit_1249069204",
+      "graph": "/Game/Mazzarino80/ReuseKit/PCG/PCG_ReuseKit_1249069204",
+      "stages": [
+        "Facades",
+        "Openings",
+        "Roofs",
+        "Details"
+      ],
+      "world_x_cm": 0
+    },
+    "1249068307": {
+      "style": "STYLE_02",
+      "data": "/Game/Mazzarino80/ReuseKit/PCG/PCGDA_ReuseKit_1249068307",
+      "graph": "/Game/Mazzarino80/ReuseKit/PCG/PCG_ReuseKit_1249068307",
+      "stages": [
+        "Facades",
+        "Openings",
+        "Roofs",
+        "Details"
+      ],
+      "world_x_cm": 950
+    },
+    "1249069200": {
+      "style": "STYLE_03",
+      "data": "/Game/Mazzarino80/ReuseKit/PCG/PCGDA_ReuseKit_1249069200",
+      "graph": "/Game/Mazzarino80/ReuseKit/PCG/PCG_ReuseKit_1249069200",
+      "stages": [
+        "Facades",
+        "Openings",
+        "Roofs",
+        "Details"
+      ],
+      "world_x_cm": 1900
+    },
+    "1249069228": {
+      "style": "STYLE_04",
+      "data": "/Game/Mazzarino80/ReuseKit/PCG/PCGDA_ReuseKit_1249069228",
+      "graph": "/Game/Mazzarino80/ReuseKit/PCG/PCG_ReuseKit_1249069228",
+      "stages": [
+        "Structure",
+        "Facades",
+        "Openings",
+        "Roofs",
+        "Details"
+      ],
+      "world_x_cm": 2850
+    }
+  },
+  "errors": {}
+}

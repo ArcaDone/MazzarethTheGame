@@ -1,0 +1,11 @@
+import unreal
+ue=unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem)
+levels=unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)
+world=ue.get_editor_world()
+if world.get_name()!='Mazzarino80_Panoramica':assert levels.load_level('/Game/Levels/Mazzarino80_Panoramica')
+actors=unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
+sample=next(a for a in actors.get_all_level_actors() if a.get_actor_label()=='M80_Edificio_1249069276')
+actors.set_selected_level_actors([sample])
+ue.set_level_viewport_camera_info(unreal.Vector(76200,12300,18300),unreal.Rotator(pitch=-22,yaw=-55,roll=0))
+unreal.SystemLibrary.execute_console_command(ue.get_editor_world(),'viewmode lit')
+unreal.log('M80_BUILDING_SAMPLE_CAMERA')

@@ -1,0 +1,895 @@
+{
+  "source": "D:\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\BakedSource\\approved_modules.json",
+  "houses": 18,
+  "point_count": 37037,
+  "unique_material_paths": 42,
+  "materials": [
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_terracotta_3D.M80_Coppi_terracotta_3D",
+      "point_count": 28259,
+      "roles": {
+        "Coppi_tridimensionali": 28259
+      },
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/M80_Canaletta_pietra_opaca.M80_Canaletta_pietra_opaca",
+      "point_count": 3037,
+      "roles": {
+        "Canalette_riparazioni": 3030,
+        "rooftop_water_vessel": 2,
+        "facade_flue": 5
+      },
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/M80_Legno_persiane_0.M80_Legno_persiane_0",
+      "point_count": 1412,
+      "roles": {
+        "Legno_portoni_persiane": 1412
+      },
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/M80_Legno_persiane_1.M80_Legno_persiane_1",
+      "point_count": 1180,
+      "roles": {
+        "Legno_portoni_persiane": 1180
+      },
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_modesta.M80_Pietra_modesta",
+      "point_count": 1003,
+      "roles": {
+        "surface_section_1": 18,
+        "Pietra_soglie_balconi": 983,
+        "external_bathroom_corbel_-1": 1,
+        "external_bathroom_corbel_+1": 1
+      },
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/M80_Ferro_ossidato.M80_Ferro_ossidato",
+      "point_count": 936,
+      "roles": {
+        "Ferro_ringhiere": 889,
+        "surface_section_9": 11,
+        "courtyard_gate_bar_00": 2,
+        "courtyard_gate_bar_01": 2,
+        "courtyard_gate_bar_02": 2,
+        "courtyard_gate_bar_03": 2,
+        "courtyard_gate_bar_04": 2,
+        "courtyard_gate_bar_05": 2,
+        "courtyard_gate_bar_06": 2,
+        "courtyard_gate_bar_07": 2,
+        "courtyard_gate_bar_08": 2,
+        "courtyard_gate_bar_09": 2,
+        "courtyard_gate_bar_10": 2,
+        "courtyard_gate_bar_11": 2,
+        "courtyard_gate_bar_12": 2,
+        "courtyard_gate_bar_13": 2,
+        "courtyard_gate_bar_14": 2,
+        "courtyard_gate_rail_018": 2,
+        "courtyard_gate_rail_118": 2,
+        "courtyard_gate_rail_230": 2
+      },
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/M80_Legno_persiane_2.M80_Legno_persiane_2",
+      "point_count": 800,
+      "roles": {
+        "Legno_portoni_persiane": 800
+      },
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/M80_Vetro_ombra.M80_Vetro_ombra",
+      "point_count": 236,
+      "roles": {
+        "Vetri_incassati": 226,
+        "surface_section_11": 10
+      },
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Materials/MI_Door_06a.MI_Door_06a",
+      "point_count": 28,
+      "roles": {
+        "Portoni_recuperati": 28
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/Shared/Materials/MM_MasterMaterial_01a.MM_MasterMaterial_01a",
+      "scalar_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95A1E498) {name: \"Roughness Multi\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "1.317209005355835"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95A1F9D8) {name: \"Roughness Power\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "1.0929490327835083"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95A1ECB8) {name: \"RefractionDepthBias\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.0"
+        }
+      ],
+      "vector_parameter_values": [],
+      "texture_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95AA3EDC) {name: \"Albedo \", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_06a_ALB.TX_Door_06a_ALB"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95AA3B1C) {name: \"Normal\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_06a_NRM.TX_Door_06a_NRM"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95AA3E3C) {name: \"RMA\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Textures/TX_Door_06a_RMA.TX_Door_06a_RMA"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/M80_Muratura_locale_0.M80_Muratura_locale_0",
+      "point_count": 24,
+      "roles": {
+        "courtyard_wall_-1_00": 2,
+        "courtyard_wall_-1_01": 2,
+        "courtyard_wall_-1_02": 2,
+        "courtyard_wall_-1_03": 2,
+        "courtyard_wall_-1_04": 1,
+        "courtyard_wall_-1_05": 1,
+        "courtyard_wall_-1_06": 1,
+        "courtyard_wall_-1_07": 1,
+        "courtyard_wall_+1_00": 2,
+        "courtyard_wall_+1_01": 2,
+        "courtyard_wall_+1_02": 2,
+        "courtyard_wall_+1_03": 2,
+        "courtyard_wall_+1_04": 1,
+        "courtyard_wall_+1_05": 1,
+        "courtyard_wall_+1_06": 1,
+        "courtyard_wall_+1_07": 1
+      },
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/MI_Flower_Pot_tmekfduiw_2K.MI_Flower_Pot_tmekfduiw_2K",
+      "point_count": 18,
+      "roles": {
+        "Vasi_recuperati": 18
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Library/Comune/MSPresets/M_MS_Default_Material_VT/M_MS_Default_Material_VT.M_MS_Default_Material_VT",
+      "scalar_parameter_values": [],
+      "vector_parameter_values": [],
+      "texture_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95E3124C) {name: \"DR\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/T_FlowerPot_tmekfduiw_2K_DpR.T_FlowerPot_tmekfduiw_2K_DpR"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95E32F8C) {name: \"albedo\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/T_Flower_Pot_tmekfduiw_2K_D.T_Flower_Pot_tmekfduiw_2K_D"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95E3280C) {name: \"normal\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/T_Flower_Pot_tmekfduiw_2K_N.T_Flower_Pot_tmekfduiw_2K_N"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Megapack/Material/MiddleEast/MI_clothes_03.MI_clothes_03",
+      "point_count": 18,
+      "roles": {
+        "Bucato_indumenti": 18
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Megapack/Material/MiddleEast/M_Tent_Orange_02.M_Tent_Orange_02",
+      "scalar_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC0D98) {name: \"RefractionDepthBias\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.0"
+        }
+      ],
+      "vector_parameter_values": [],
+      "texture_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95AA474C) {name: \"BC\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Megapack/Textures/MiddleEast/T_clothes_01_BC.T_clothes_01_BC"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95E3280C) {name: \"N\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Megapack/Textures/MiddleEast/T_clothes_01_N.T_clothes_01_N"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95E32C8C) {name: \"ORM\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Megapack/Textures/MiddleEast/T_clothes_01_ORM.T_clothes_01_ORM"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/MI_Umidita_sfumata.MI_Umidita_sfumata",
+      "point_count": 14,
+      "roles": {
+        "surface_section_4": 14
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Historic/Materials/M80_Umidita.M80_Umidita",
+      "scalar_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC0A78) {name: \"Sfuma_umidita_in_altezza\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "7.5"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC07F8) {name: \"Rilievo_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.07999999821186066"
+        }
+      ],
+      "vector_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95E3324C) {name: \"Tinta\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "<Struct 'LinearColor' (0x00000ABE95E33260) {r: 0.360000, g: 0.340000, b: 0.290000, a: 1.000000}>"
+        }
+      ],
+      "texture_parameter_values": []
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_vecchi.M80_Coppi_vecchi",
+      "point_count": 12,
+      "roles": {
+        "surface_section_2": 12
+      },
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/M80_Terrazza_calce.M80_Terrazza_calce",
+      "point_count": 9,
+      "roles": {
+        "surface_section_3": 9
+      },
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/MI_Modular_Building_Balcony_ukjsdavdw_2K.MI_Modular_Building_Balcony_ukjsdavdw_2K",
+      "point_count": 8,
+      "roles": {
+        "Balconi_completi": 8
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Library/ComuneDetail/MSPresets/M_MS_Default_Material/M_MS_Default_Material.M_MS_Default_Material",
+      "scalar_parameter_values": [],
+      "vector_parameter_values": [],
+      "texture_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95E359CC) {name: \"albedo\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/T_Modular_Building_Balcony_ukjsdavdw_2K_D.T_Modular_Building_Balcony_ukjsdavdw_2K_D"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95E35A8C) {name: \"normal\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/T_Modular_Building_Balcony_ukjsdavdw_2K_N.T_Modular_Building_Balcony_ukjsdavdw_2K_N"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95E35B0C) {name: \"DR\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Mazzarino80/Library/ComuneDetail/Megascans/3D_Assets/Modular_Building_Balcony_ukjsdavdw/T_ModularBuildingBalcony_ukjsdavdw_2K_DpR.T_ModularBuildingBalcony_ukjsdavdw_2K_DpR"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/M80_Vicolo_pietra_consumata.M80_Vicolo_pietra_consumata",
+      "point_count": 6,
+      "roles": {
+        "surface_section_8": 3,
+        "surface_section_3": 3
+      },
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/M80_Laterizio_rosso_macro.M80_Laterizio_rosso_macro",
+      "point_count": 5,
+      "roles": {
+        "surface_section_10": 5
+      },
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Mazzarino80/Library/Comune/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/MI_Mossy_Stone_Wall_ue4mcfelw_8K.MI_Mossy_Stone_Wall_ue4mcfelw_8K",
+      "point_count": 4,
+      "roles": {
+        "surface_section_4": 4
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Library/Comune/MSPresets/M_MS_Surface_Material/M_MS_Surface_Material.M_MS_Surface_Material",
+      "scalar_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC1478) {name: \"RefractionDepthBias\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.0"
+        }
+      ],
+      "vector_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95E3900C) {name: \"Tiling/Offset\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "<Struct 'LinearColor' (0x00000ABE95E39020) {r: 6.000000, g: 6.000000, b: 0.000000, a: 0.000000}>"
+        }
+      ],
+      "texture_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95E392CC) {name: \"Albedo\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Mazzarino80/Library/Comune/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/T_Mossy_Stone_Wall_ue4mcfelw_8K_D.T_Mossy_Stone_Wall_ue4mcfelw_8K_D"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95E3934C) {name: \"ARD\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Mazzarino80/Library/Comune/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/T_MossyStoneWall_ue4mcfelw_8K_ORDp.T_MossyStoneWall_ue4mcfelw_8K_ORDp"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95E3968C) {name: \"Normal\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Mazzarino80/Library/Comune/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/T_Mossy_Stone_Wall_ue4mcfelw_8K_N.T_Mossy_Stone_Wall_ue4mcfelw_8K_N"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Megascans/3D_Assets/Cactus_udugdfvfa/MI_Cactus_udugdfvfa_2K.MI_Cactus_udugdfvfa_2K",
+      "point_count": 3,
+      "roles": {
+        "street_cactus": 3
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/MSPresets/M_MS_Default_Material_VT/M_MS_Default_Material_VT.M_MS_Default_Material_VT",
+      "scalar_parameter_values": [],
+      "vector_parameter_values": [],
+      "texture_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95E3AD0C) {name: \"DR\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Megascans/3D_Assets/Cactus_udugdfvfa/T_Cactus_udugdfvfa_2K_DpR.T_Cactus_udugdfvfa_2K_DpR"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95E3AD8C) {name: \"albedo\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Megascans/3D_Assets/Cactus_udugdfvfa/T_Cactus_udugdfvfa_2K_D.T_Cactus_udugdfvfa_2K_D"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95E3AE0C) {name: \"normal\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Megascans/3D_Assets/Cactus_udugdfvfa/T_Cactus_udugdfvfa_2K_N.T_Cactus_udugdfvfa_2K_N"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Megapack/Material/MiddleEast/MI_Platform_Water_Tank_01.MI_Platform_Water_Tank_01",
+      "point_count": 2,
+      "roles": {
+        "rooftop_water_tank": 2
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Megapack/Material/MiddleEast/M_wall_01.M_wall_01",
+      "scalar_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC3DB8) {name: \"RefractionDepthBias\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.0"
+        }
+      ],
+      "vector_parameter_values": [],
+      "texture_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95E3B88C) {name: \"Base Color\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Megapack/Textures/MiddleEast/T_Platform_Water_Tank_01_BC.T_Platform_Water_Tank_01_BC"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95E3B94C) {name: \"Normal\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Megapack/Textures/MiddleEast/T_Platform_Water_Tank_01_N.T_Platform_Water_Tank_01_N"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95E3BB0C) {name: \"ORM\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Megapack/Textures/MiddleEast/T_Platform_Water_Tank_01_ORM.T_Platform_Water_Tank_01_ORM"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Plants/English_Ivy_rkEit/MI_English_Ivy_rkEit_2K.MI_English_Ivy_rkEit_2K",
+      "point_count": 2,
+      "roles": {
+        "facade_ivy": 2
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Library/Comune/MSPresets/M_MS_Foliage_Material/M_MS_Foliage_Material.M_MS_Foliage_Material",
+      "scalar_parameter_values": [],
+      "vector_parameter_values": [],
+      "texture_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95E3FF8C) {name: \"albedo\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Plants/English_Ivy_rkEit/T_English_Ivy_rkEit_2K_D.T_English_Ivy_rkEit_2K_D"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95AA9A1C) {name: \"normal\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Plants/English_Ivy_rkEit/T_English_Ivy_rkEit_2K_N.T_English_Ivy_rkEit_2K_N"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95AA979C) {name: \"ORT\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Plants/English_Ivy_rkEit/T_EnglishIvy_rkEit_2K_ART.T_EnglishIvy_rkEit_2K_ART"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/M80_Laterizio_giallo_macro.M80_Laterizio_giallo_macro",
+      "point_count": 2,
+      "roles": {
+        "surface_section_10": 2
+      },
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069275.MI_Calce_1249069275",
+      "point_count": 1,
+      "roles": {
+        "surface_section_0": 1
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Historic/Materials/M80_Calce_consumata_0.M80_Calce_consumata_0",
+      "scalar_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC6A18) {name: \"Contrasto_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.22859999537467957"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC6B58) {name: \"Rilievo_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.11339999735355377"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC6BF8) {name: \"Rugosita\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.8880000114440918"
+        }
+      ],
+      "vector_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE96BE1A8C) {name: \"Tinta\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "<Struct 'LinearColor' (0x00000ABE96BE1AA0) {r: 0.508220, g: 0.461162, b: 0.376459, a: 1.000000}>"
+        }
+      ],
+      "texture_parameter_values": []
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069286.MI_Calce_1249069286",
+      "point_count": 1,
+      "roles": {
+        "surface_section_0": 1
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Historic/Materials/M80_Calce_consumata_5.M80_Calce_consumata_5",
+      "scalar_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC6D38) {name: \"Contrasto_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.30959999561309814"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC6BF8) {name: \"Rilievo_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.15240000188350677"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC6A18) {name: \"Rugosita\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.9179999828338623"
+        }
+      ],
+      "vector_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE96BE2FCC) {name: \"Tinta\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "<Struct 'LinearColor' (0x00000ABE96BE2FE0) {r: 0.491122, g: 0.414083, b: 0.346674, a: 1.000000}>"
+        }
+      ],
+      "texture_parameter_values": []
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069247.MI_Calce_1249069247",
+      "point_count": 1,
+      "roles": {
+        "surface_section_0": 1
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Historic/Materials/M80_Calce_consumata_4.M80_Calce_consumata_4",
+      "scalar_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC6838) {name: \"Contrasto_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.3474000096321106"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC6AB8) {name: \"Rilievo_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.17059999704360962"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC4038) {name: \"Rugosita\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.9319999814033508"
+        }
+      ],
+      "vector_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE96BE268C) {name: \"Tinta\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "<Struct 'LinearColor' (0x00000ABE96BE26A0) {r: 0.664112, g: 0.635238, b: 0.538990, a: 1.000000}>"
+        }
+      ],
+      "texture_parameter_values": []
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069213.MI_Calce_1249069213",
+      "point_count": 1,
+      "roles": {
+        "surface_section_0": 1
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Historic/Materials/M80_Calce_consumata_3.M80_Calce_consumata_3",
+      "scalar_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC6FB8) {name: \"Contrasto_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.29339998960494995"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC70F8) {name: \"Rilievo_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.1446000039577484"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC7198) {name: \"Rugosita\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.9120000004768372"
+        }
+      ],
+      "vector_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE96BE4A4C) {name: \"Tinta\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "<Struct 'LinearColor' (0x00000ABE96BE4A60) {r: 0.580225, g: 0.444839, b: 0.319124, a: 1.000000}>"
+        }
+      ],
+      "texture_parameter_values": []
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069271.MI_Calce_1249069271",
+      "point_count": 1,
+      "roles": {
+        "surface_section_0": 1
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Historic/Materials/M80_Calce_consumata_2.M80_Calce_consumata_2",
+      "scalar_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC6E78) {name: \"Contrasto_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.33660000562667847"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC6DD8) {name: \"Rilievo_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.16539999842643738"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC4F38) {name: \"Rugosita\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.9279999732971191"
+        }
+      ],
+      "vector_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE96BE138C) {name: \"Tinta\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "<Struct 'LinearColor' (0x00000ABE96BE13A0) {r: 0.408633, g: 0.398903, b: 0.340527, a: 1.000000}>"
+        }
+      ],
+      "texture_parameter_values": []
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/Case/MI_Pietra_1249069276.MI_Pietra_1249069276",
+      "point_count": 1,
+      "roles": {
+        "surface_section_0": 1
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Historic/Materials/M80_Muratura_locale_1.M80_Muratura_locale_1",
+      "scalar_parameter_values": [],
+      "vector_parameter_values": [],
+      "texture_parameter_values": []
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/Case/MI_Pietra_1249069204.MI_Pietra_1249069204",
+      "point_count": 1,
+      "roles": {
+        "surface_section_0": 1
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Historic/Materials/M80_Muratura_locale_1.M80_Muratura_locale_1",
+      "scalar_parameter_values": [],
+      "vector_parameter_values": [],
+      "texture_parameter_values": []
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069237.MI_Calce_1249069237",
+      "point_count": 1,
+      "roles": {
+        "surface_section_0": 1
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Historic/Materials/M80_Calce_consumata_5.M80_Calce_consumata_5",
+      "scalar_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC7CD8) {name: \"Contrasto_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.30959999561309814"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC6F18) {name: \"Rilievo_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.15240000188350677"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC7238) {name: \"Rugosita\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.9179999828338623"
+        }
+      ],
+      "vector_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE96BE7E0C) {name: \"Tinta\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "<Struct 'LinearColor' (0x00000ABE96BE7E20) {r: 0.535794, g: 0.451748, b: 0.378208, a: 1.000000}>"
+        }
+      ],
+      "texture_parameter_values": []
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069219.MI_Calce_1249069219",
+      "point_count": 1,
+      "roles": {
+        "surface_section_0": 1
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Historic/Materials/M80_Calce_consumata_4.M80_Calce_consumata_4",
+      "scalar_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC6E78) {name: \"Contrasto_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.3474000096321106"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC6F18) {name: \"Rilievo_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.17059999704360962"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC7A58) {name: \"Rugosita\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.9319999814033508"
+        }
+      ],
+      "vector_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE96BE738C) {name: \"Tinta\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "<Struct 'LinearColor' (0x00000ABE96BE73A0) {r: 0.696906, g: 0.666605, b: 0.565605, a: 1.000000}>"
+        }
+      ],
+      "texture_parameter_values": []
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069205.MI_Calce_1249069205",
+      "point_count": 1,
+      "roles": {
+        "surface_section_0": 1
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Historic/Materials/M80_Calce_consumata_3.M80_Calce_consumata_3",
+      "scalar_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC72D8) {name: \"Contrasto_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.29339998960494995"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC7A58) {name: \"Rilievo_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.1446000039577484"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC6F18) {name: \"Rugosita\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.9120000004768372"
+        }
+      ],
+      "vector_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE96BE738C) {name: \"Tinta\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "<Struct 'LinearColor' (0x00000ABE96BE73A0) {r: 0.606501, g: 0.464984, b: 0.333576, a: 1.000000}>"
+        }
+      ],
+      "texture_parameter_values": []
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/Case/MI_Pietra_1249069228.MI_Pietra_1249069228",
+      "point_count": 1,
+      "roles": {
+        "surface_section_0": 1
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Historic/Materials/M80_Muratura_locale_1.M80_Muratura_locale_1",
+      "scalar_parameter_values": [],
+      "vector_parameter_values": [],
+      "texture_parameter_values": []
+    },
+    {
+      "path": "/Game/Megascans/Surfaces/Roman_Aqueduct_Wall_tf4kajwn/MI_Roman_Aqueduct_Wall_tf4kajwn_4K.MI_Roman_Aqueduct_Wall_tf4kajwn_4K",
+      "point_count": 1,
+      "roles": {
+        "external_bathroom": 1
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/MSPresets/M_MS_Surface_Material/M_MS_Surface_Material.M_MS_Surface_Material",
+      "scalar_parameter_values": [],
+      "vector_parameter_values": [],
+      "texture_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE96BE884C) {name: \"albedo\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Megascans/Surfaces/Roman_Aqueduct_Wall_tf4kajwn/T_Roman_Aqueduct_Wall_tf4kajwn_4K_D.T_Roman_Aqueduct_Wall_tf4kajwn_4K_D"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE96BE88CC) {name: \"normal\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Megascans/Surfaces/Roman_Aqueduct_Wall_tf4kajwn/T_Roman_Aqueduct_Wall_tf4kajwn_4K_N.T_Roman_Aqueduct_Wall_tf4kajwn_4K_N"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE96BE898C) {name: \"ARD\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "/Game/Megascans/Surfaces/Roman_Aqueduct_Wall_tf4kajwn/T_RomanAqueductWall_tf4kajwn_4K_ORDp.T_RomanAqueductWall_tf4kajwn_4K_ORDp"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069202.MI_Calce_1249069202",
+      "point_count": 1,
+      "roles": {
+        "surface_section_0": 1
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Historic/Materials/M80_Calce_consumata_1.M80_Calce_consumata_1",
+      "scalar_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC8778) {name: \"Contrasto_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.4041000008583069"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC84F8) {name: \"Rilievo_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.19789999723434448"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC89F8) {name: \"Rugosita\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.953000009059906"
+        }
+      ],
+      "vector_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE96BE9CCC) {name: \"Tinta\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "<Struct 'LinearColor' (0x00000ABE96BE9CE0) {r: 0.632427, g: 0.574049, b: 0.467023, a: 1.000000}>"
+        }
+      ],
+      "texture_parameter_values": []
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069200.MI_Calce_1249069200",
+      "point_count": 1,
+      "roles": {
+        "surface_section_0": 1
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Historic/Materials/M80_Calce_consumata_0.M80_Calce_consumata_0",
+      "scalar_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC89F8) {name: \"Contrasto_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.22859999537467957"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC8C78) {name: \"Rilievo_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.11339999735355377"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC89F8) {name: \"Rugosita\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.8880000114440918"
+        }
+      ],
+      "vector_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE96BE9CCC) {name: \"Tinta\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "<Struct 'LinearColor' (0x00000ABE96BE9CE0) {r: 0.528433, g: 0.479504, b: 0.391432, a: 1.000000}>"
+        }
+      ],
+      "texture_parameter_values": []
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069235.MI_Calce_1249069235",
+      "point_count": 1,
+      "roles": {
+        "surface_section_0": 1
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Historic/Materials/M80_Calce_consumata_5.M80_Calce_consumata_5",
+      "scalar_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC8BD8) {name: \"Contrasto_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.30959999561309814"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC6F18) {name: \"Rilievo_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.15240000188350677"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC89F8) {name: \"Rugosita\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.9179999828338623"
+        }
+      ],
+      "vector_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE96BE944C) {name: \"Tinta\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "<Struct 'LinearColor' (0x00000ABE96BE9460) {r: 0.534164, g: 0.450374, b: 0.377057, a: 1.000000}>"
+        }
+      ],
+      "texture_parameter_values": []
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069287.MI_Calce_1249069287",
+      "point_count": 1,
+      "roles": {
+        "surface_section_0": 1
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Historic/Materials/M80_Calce_consumata_4.M80_Calce_consumata_4",
+      "scalar_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC8A98) {name: \"Contrasto_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.3474000096321106"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC8C78) {name: \"Rilievo_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.17059999704360962"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC8A98) {name: \"Rugosita\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.9319999814033508"
+        }
+      ],
+      "vector_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE96BE908C) {name: \"Tinta\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "<Struct 'LinearColor' (0x00000ABE96BE90A0) {r: 0.691696, g: 0.661622, b: 0.561376, a: 1.000000}>"
+        }
+      ],
+      "texture_parameter_values": []
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/Case/MI_Pietra_1249068307.MI_Pietra_1249068307",
+      "point_count": 1,
+      "roles": {
+        "surface_section_0": 1
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Historic/Materials/M80_Muratura_locale_0.M80_Muratura_locale_0",
+      "scalar_parameter_values": [],
+      "vector_parameter_values": [],
+      "texture_parameter_values": []
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/Case/MI_Pietra_1249069246.MI_Pietra_1249069246",
+      "point_count": 1,
+      "roles": {
+        "surface_section_0": 1
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Historic/Materials/M80_Muratura_locale_1.M80_Muratura_locale_1",
+      "scalar_parameter_values": [],
+      "vector_parameter_values": [],
+      "texture_parameter_values": []
+    },
+    {
+      "path": "/Game/Mazzarino80/Historic/Materials/Case/MI_Calce_1249069229.MI_Calce_1249069229",
+      "point_count": 1,
+      "roles": {
+        "surface_section_0": 1
+      },
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Mazzarino80/Historic/Materials/M80_Calce_consumata_1.M80_Calce_consumata_1",
+      "scalar_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC9178) {name: \"Contrasto_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.4041000008583069"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC9038) {name: \"Rilievo_superficie\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.19789999723434448"
+        },
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE95FC8F98) {name: \"Rugosita\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "0.953000009059906"
+        }
+      ],
+      "vector_parameter_values": [
+        {
+          "parameter_info": "<Struct 'MaterialParameterInfo' (0x00000ABE96BE918C) {name: \"Tinta\", association: GlobalParameter, index: -1}>",
+          "parameter_value": "<Struct 'LinearColor' (0x00000ABE96BE91A0) {r: 0.643176, g: 0.583806, b: 0.474961, a: 1.000000}>"
+        }
+      ],
+      "texture_parameter_values": []
+    }
+  ]
+}

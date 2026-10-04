@@ -1,0 +1,159 @@
+{
+  "rain_pipe": {
+    "path": "/Game/Megapack/Meshes/Favela/SM_Rain_Pipe_01.SM_Rain_Pipe_01",
+    "origin": [
+      -3.0517578125e-05,
+      8.077308654785156,
+      0.0
+    ],
+    "box_extent": [
+      7.575347900390625,
+      15.223251342773438,
+      104.16720581054688
+    ],
+    "box_min": [
+      -7.57537841796875,
+      -7.145942687988281,
+      -104.16720581054688
+    ],
+    "box_max": [
+      7.5753173828125,
+      23.300559997558594,
+      104.16720581054688
+    ],
+    "materials": [
+      "/Game/Megapack/Material/Favela/MI_Pipe_01.MI_Pipe_01"
+    ]
+  },
+  "ivy": {
+    "path": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Plants/English_Ivy_rkEit/S_English_Ivy_rkEit_Var3_lod1.S_English_Ivy_rkEit_Var3_lod1",
+    "origin": [
+      5.727716445922852,
+      2.785541296005249,
+      15.138516426086426
+    ],
+    "box_extent": [
+      31.957427978515625,
+      3.4318654537200928,
+      27.5639591217041
+    ],
+    "box_min": [
+      -26.229711532592773,
+      -0.6463241577148438,
+      -12.425442695617676
+    ],
+    "box_max": [
+      37.68514442443848,
+      6.217406749725342,
+      42.70247554779053
+    ],
+    "materials": [
+      "/Game/Mazzarino80/Library/Comune/Megascans/3D_Plants/English_Ivy_rkEit/MI_English_Ivy_rkEit_2K.MI_English_Ivy_rkEit_2K",
+      "/Game/Mazzarino80/Library/Comune/Megascans/3D_Plants/English_Ivy_rkEit/MI_English_Ivy_rkEit_Billboard_2K.MI_English_Ivy_rkEit_Billboard_2K"
+    ]
+  },
+  "pot": {
+    "path": "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/S_Flower_Pot_tmekfduiw_lod3.S_Flower_Pot_tmekfduiw_lod3",
+    "origin": [
+      -0.01262211799621582,
+      0.007904052734375,
+      0.009694099426269531
+    ],
+    "box_extent": [
+      7.0356385707855225,
+      7.008821964263916,
+      5.009300231933594
+    ],
+    "box_min": [
+      -7.048260688781738,
+      -7.000917911529541,
+      -4.999606132507324
+    ],
+    "box_max": [
+      7.023016452789307,
+      7.016726016998291,
+      5.018994331359863
+    ],
+    "materials": [
+      "/Game/Mazzarino80/Library/Comune/Megascans/3D_Assets/Flower_Pot_tmekfduiw/MI_Flower_Pot_tmekfduiw_2K.MI_Flower_Pot_tmekfduiw_2K"
+    ]
+  },
+  "door": {
+    "path": "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c.SM_Door_06c",
+    "origin": [
+      44.45911645889282,
+      -6.411088705062866,
+      109.90825429558754
+    ],
+    "box_extent": [
+      55.730924129486084,
+      11.08557915687561,
+      110.60141977667809
+    ],
+    "box_min": [
+      -11.271807670593262,
+      -17.496667861938477,
+      -0.6931654810905457
+    ],
+    "box_max": [
+      100.1900405883789,
+      4.674490451812744,
+      220.50967407226562
+    ],
+    "materials": [
+      "/Game/Mazzarino80/Library/Comune/OldWestAssets/OldWestVol6/VOL6/Materials/MI_Door_06a.MI_Door_06a"
+    ]
+  },
+  "awning": {
+    "path": "/Game/Megapack/Meshes/MiddleEast/SM_awning_01.SM_awning_01",
+    "origin": [
+      -3.6576766967773438,
+      0.095672607421875,
+      -8.924774169921875
+    ],
+    "box_extent": [
+      73.94954681396484,
+      218.85214233398438,
+      63.10890197753906
+    ],
+    "box_min": [
+      -77.60722351074219,
+      -218.7564697265625,
+      -72.03367614746094
+    ],
+    "box_max": [
+      70.2918701171875,
+      218.94781494140625,
+      54.18412780761719
+    ],
+    "materials": [
+      "/Game/Megapack/Material/MiddleEast/MI_awning_cloth_02.MI_awning_cloth_02"
+    ]
+  },
+  "clothes": {
+    "path": "/Game/Megapack/Meshes/Favela/Mannequin/SM_Clothes_01.SM_Clothes_01",
+    "origin": [
+      -11.157852172851562,
+      13.957050323486328,
+      117.33847045898438
+    ],
+    "box_extent": [
+      27.789352416992188,
+      38.96448516845703,
+      58.699378967285156
+    ],
+    "box_min": [
+      -38.94720458984375,
+      -25.007434844970703,
+      58.63909149169922
+    ],
+    "box_max": [
+      16.631500244140625,
+      52.92153549194336,
+      176.03784942626953
+    ],
+    "materials": [
+      "/Game/Megapack/Material/Favela/MI_Clothes_01.MI_Clothes_01"
+    ]
+  }
+}

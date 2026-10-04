@@ -1,0 +1,1817 @@
+{
+  "source_manifest": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\export_manifest.json",
+  "materials": {
+    "stone": "/Game/Mazzarino80/Historic/Materials/M80_Muratura_locale_0",
+    "formal": "/Game/Mazzarino80/Historic/Materials/M80_Pietra_modesta",
+    "plaster": "/Game/Mazzarino80/Historic/Materials/M80_Calce_consumata_2",
+    "wood": "/Game/Mazzarino80/Historic/Materials/M80_Legno_persiane_1",
+    "iron": "/Game/Mazzarino80/Historic/Materials/M80_Ferro_ossidato",
+    "glass": "/Game/Mazzarino80/Historic/Materials/M80_Vetro_ombra",
+    "tile": "/Game/Mazzarino80/Historic/Materials/M80_Coppi_vecchi",
+    "cloth": "/Game/Mazzarino80/Historic/Materials/M80_Tessuto_sbiadito",
+    "ground": "/Game/Mazzarino80/Historic/Materials/M80_Vicolo_pietra_consumata",
+    "plant": "/Game/Megapack/Material/Favela/Plants/M_Plant_01"
+  },
+  "modules": [
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__Ground_000",
+      "dimensions_cm": [
+        302.67,
+        43.67,
+        300.0
+      ],
+      "slots": [
+        "house_wall_01",
+        "Marble",
+        "black",
+        "metal_wire"
+      ],
+      "material_groups": [
+        "stone",
+        "formal",
+        "iron",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__Ground_000.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__Ground_001",
+      "dimensions_cm": [
+        302.26,
+        68.01,
+        312.1
+      ],
+      "slots": [
+        "house_wall_01",
+        "Metal",
+        "Marble",
+        "black",
+        "broche",
+        "metal_wire",
+        "house_wall_02"
+      ],
+      "material_groups": [
+        "stone",
+        "iron",
+        "formal",
+        "iron",
+        "stone",
+        "iron",
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__Ground_001.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__Ground_002",
+      "dimensions_cm": [
+        302.26,
+        50.1,
+        300.65
+      ],
+      "slots": [
+        "house_wall_01",
+        "Marble",
+        "black",
+        "metal_wire"
+      ],
+      "material_groups": [
+        "stone",
+        "formal",
+        "iron",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__Ground_002.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__Ground_003",
+      "dimensions_cm": [
+        300.95,
+        44.33,
+        300.0
+      ],
+      "slots": [
+        "house_wall_01",
+        "metal_wire"
+      ],
+      "material_groups": [
+        "stone",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__Ground_003.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__Ground_005",
+      "dimensions_cm": [
+        302.26,
+        59.99,
+        300.65
+      ],
+      "slots": [
+        "house_wall_01",
+        "Metal",
+        "Marble",
+        "black",
+        "metal_wire",
+        "Contatore_acqua"
+      ],
+      "material_groups": [
+        "stone",
+        "iron",
+        "formal",
+        "iron",
+        "iron",
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__Ground_005.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__Ground_006",
+      "dimensions_cm": [
+        302.26,
+        59.99,
+        300.65
+      ],
+      "slots": [
+        "house_wall_01",
+        "Marble",
+        "black",
+        "metal_wire"
+      ],
+      "material_groups": [
+        "stone",
+        "formal",
+        "iron",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__Ground_006.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__Ground_007",
+      "dimensions_cm": [
+        302.26,
+        59.99,
+        300.65
+      ],
+      "slots": [
+        "house_wall_01",
+        "Marble",
+        "black",
+        "metal_wire"
+      ],
+      "material_groups": [
+        "stone",
+        "formal",
+        "iron",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__Ground_007.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__Ground_008",
+      "dimensions_cm": [
+        300.95,
+        45.33,
+        300.0
+      ],
+      "slots": [
+        "Wood_002",
+        "house_wall_01",
+        "Marble",
+        "wood4",
+        "PlainRedBricks_1K"
+      ],
+      "material_groups": [
+        "wood",
+        "stone",
+        "formal",
+        "wood",
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__Ground_008.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__Ground_009",
+      "dimensions_cm": [
+        300.95,
+        44.33,
+        300.0
+      ],
+      "slots": [
+        "house_wall_01",
+        "metal_wire",
+        "Contatore_acqua"
+      ],
+      "material_groups": [
+        "stone",
+        "iron",
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__Ground_009.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__Ground_010",
+      "dimensions_cm": [
+        302.26,
+        59.99,
+        300.65
+      ],
+      "slots": [
+        "house_wall_01",
+        "Marble",
+        "black",
+        "metal_wire"
+      ],
+      "material_groups": [
+        "stone",
+        "formal",
+        "iron",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__Ground_010.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__Ground_011",
+      "dimensions_cm": [
+        302.26,
+        68.01,
+        317.99
+      ],
+      "slots": [
+        "house_wall_01",
+        "house_wall_02",
+        "Marble",
+        "black",
+        "metal_wire"
+      ],
+      "material_groups": [
+        "stone",
+        "stone",
+        "formal",
+        "iron",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__Ground_011.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__Ground_012",
+      "dimensions_cm": [
+        302.26,
+        44.33,
+        300.0
+      ],
+      "slots": [
+        "house_wall_01",
+        "metal_wire"
+      ],
+      "material_groups": [
+        "stone",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__Ground_012.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__Ground_013",
+      "dimensions_cm": [
+        302.66,
+        43.67,
+        300.0
+      ],
+      "slots": [
+        "house_wall_01",
+        "Marble",
+        "black",
+        "metal_wire"
+      ],
+      "material_groups": [
+        "stone",
+        "formal",
+        "iron",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__Ground_013.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__Ground_015",
+      "dimensions_cm": [
+        302.26,
+        59.99,
+        300.65
+      ],
+      "slots": [
+        "house_wall_01",
+        "Marble",
+        "black",
+        "metal_wire"
+      ],
+      "material_groups": [
+        "stone",
+        "formal",
+        "iron",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__Ground_015.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__Porta4",
+      "dimensions_cm": [
+        102.19,
+        22.64,
+        261.28
+      ],
+      "slots": [
+        "Metal",
+        "Wood_001",
+        "black"
+      ],
+      "material_groups": [
+        "iron",
+        "wood",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__Porta4.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__Porta6",
+      "dimensions_cm": [
+        100.98,
+        15.72,
+        261.28
+      ],
+      "slots": [
+        "Wood_002",
+        "Metal",
+        "black"
+      ],
+      "material_groups": [
+        "wood",
+        "iron",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__Porta6.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__Tetto",
+      "dimensions_cm": [
+        601.25,
+        388.72,
+        143.02
+      ],
+      "slots": [
+        "house_wall_01",
+        "M80_terracotta",
+        "Metal"
+      ],
+      "material_groups": [
+        "stone",
+        "tile",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__Tetto.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__antenna",
+      "dimensions_cm": [
+        75.11,
+        110.38,
+        201.17
+      ],
+      "slots": [
+        "Metal"
+      ],
+      "material_groups": [
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__antenna.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__ground_floor_pillar",
+      "dimensions_cm": [
+        100.0,
+        95.86,
+        306.85
+      ],
+      "slots": [
+        "house_wall_01"
+      ],
+      "material_groups": [
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__ground_floor_pillar.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__lampione2",
+      "dimensions_cm": [
+        23.7,
+        169.2,
+        277.68
+      ],
+      "slots": [
+        "Metal",
+        "Lumen"
+      ],
+      "material_groups": [
+        "iron",
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__lampione2.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__middle_floor_pillar",
+      "dimensions_cm": [
+        54.93,
+        21.0,
+        300.0
+      ],
+      "slots": [
+        "house_wall_02"
+      ],
+      "material_groups": [
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__middle_floor_pillar.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__small_chimney_pointy",
+      "dimensions_cm": [
+        31.04,
+        31.04,
+        61.91
+      ],
+      "slots": [
+        "proxy_mat_grey"
+      ],
+      "material_groups": [
+        "plaster"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__small_chimney_pointy.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__small_chimney_round",
+      "dimensions_cm": [
+        39.14,
+        39.14,
+        59.49
+      ],
+      "slots": [
+        "proxy_mat_grey"
+      ],
+      "material_groups": [
+        "plaster"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__small_chimney_round.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__tegole",
+      "dimensions_cm": [
+        599.41,
+        176.22,
+        124.17
+      ],
+      "slots": [
+        "M80_terracotta"
+      ],
+      "material_groups": [
+        "tile"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__tegole.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__trimm",
+      "dimensions_cm": [
+        300.24,
+        88.65,
+        90.56
+      ],
+      "slots": [
+        "house_wall_01",
+        "M80_terracotta",
+        "Metal"
+      ],
+      "material_groups": [
+        "stone",
+        "tile",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__trimm.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__wall_000_001",
+      "dimensions_cm": [
+        300.0,
+        36.97,
+        300.0
+      ],
+      "slots": [
+        "house_wall_01"
+      ],
+      "material_groups": [
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__wall_000_001.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__wall_000_002",
+      "dimensions_cm": [
+        300.0,
+        36.97,
+        300.0
+      ],
+      "slots": [
+        "house_wall_01"
+      ],
+      "material_groups": [
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__wall_000_002.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__wall_001",
+      "dimensions_cm": [
+        300.0,
+        36.97,
+        300.0
+      ],
+      "slots": [
+        "house_wall_01"
+      ],
+      "material_groups": [
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__wall_001.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__wall_003",
+      "dimensions_cm": [
+        300.0,
+        36.97,
+        300.0
+      ],
+      "slots": [
+        "house_wall_01"
+      ],
+      "material_groups": [
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__wall_003.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__wall_007",
+      "dimensions_cm": [
+        304.18,
+        37.61,
+        300.0
+      ],
+      "slots": [
+        "house_wall_01"
+      ],
+      "material_groups": [
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_B80__wall_007.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_CLOTH__Favela_01_LOD1",
+      "dimensions_cm": [
+        55.44,
+        77.93,
+        117.47
+      ],
+      "slots": [
+        "M80_Cloth_Faded_Ochre_Shared"
+      ],
+      "material_groups": [
+        "cloth"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_CLOTH__Favela_01_LOD1.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_CLOTH__MiddleEast_DrapedSheet_02",
+      "dimensions_cm": [
+        52.28,
+        177.73,
+        53.83
+      ],
+      "slots": [
+        "M80_Cloth_Faded_Blue_Shared"
+      ],
+      "material_groups": [
+        "cloth"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_CLOTH__MiddleEast_DrapedSheet_02.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_CS__wall_001",
+      "dimensions_cm": [
+        300.0,
+        52.44,
+        300.0
+      ],
+      "slots": [
+        "MailHouseWall",
+        "Wood_003",
+        "M80_glass",
+        "Marble_001",
+        "black_001"
+      ],
+      "material_groups": [
+        "stone",
+        "wood",
+        "glass",
+        "formal",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_CS__wall_001.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_CS__wall_002",
+      "dimensions_cm": [
+        300.0,
+        206.42,
+        454.63
+      ],
+      "slots": [
+        "MailHouseWall",
+        "Wood_003",
+        "M80_glass",
+        "Marble_001",
+        "black_001",
+        "Metal_001",
+        "Lumen_001"
+      ],
+      "material_groups": [
+        "stone",
+        "wood",
+        "glass",
+        "formal",
+        "iron",
+        "iron",
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_CS__wall_002.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_CS__wall_003",
+      "dimensions_cm": [
+        300.0,
+        206.42,
+        490.77
+      ],
+      "slots": [
+        "MailHouseWall",
+        "Metal_001",
+        "Lumen_001"
+      ],
+      "material_groups": [
+        "stone",
+        "iron",
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_CS__wall_003.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_CS__wall_004",
+      "dimensions_cm": [
+        300.0,
+        101.58,
+        300.0
+      ],
+      "slots": [
+        "Wood_003",
+        "MailHouseWall",
+        "Metal_001",
+        "Marble_001",
+        "Wood_004"
+      ],
+      "material_groups": [
+        "wood",
+        "stone",
+        "iron",
+        "formal",
+        "wood"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_CS__wall_004.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_CS__wall_005",
+      "dimensions_cm": [
+        300.0,
+        206.42,
+        414.5
+      ],
+      "slots": [
+        "wood4_001",
+        "MailHouseWall",
+        "Metal_001",
+        "Marble_001",
+        "Wood_004",
+        "Wood_003",
+        "Lumen_001"
+      ],
+      "material_groups": [
+        "wood",
+        "stone",
+        "iron",
+        "formal",
+        "wood",
+        "wood",
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_CS__wall_005.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_CS__wall_006",
+      "dimensions_cm": [
+        300.0,
+        45.85,
+        300.0
+      ],
+      "slots": [
+        "M80_glass",
+        "MailHouseWall",
+        "Marble_001",
+        "Wood_003",
+        "black_001"
+      ],
+      "material_groups": [
+        "glass",
+        "stone",
+        "formal",
+        "wood",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_CS__wall_006.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_CS__wall_007",
+      "dimensions_cm": [
+        300.0,
+        45.85,
+        300.0
+      ],
+      "slots": [
+        "M80_glass",
+        "MailHouseWall",
+        "Marble_001",
+        "Wood_003"
+      ],
+      "material_groups": [
+        "glass",
+        "stone",
+        "formal",
+        "wood"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_CS__wall_007.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_CS__wall_010",
+      "dimensions_cm": [
+        300.0,
+        101.58,
+        300.0
+      ],
+      "slots": [
+        "Wood_004",
+        "MailHouseWall",
+        "Metal_001",
+        "Marble_001",
+        "Plastic",
+        "M80_glass",
+        "Wood_003"
+      ],
+      "material_groups": [
+        "wood",
+        "stone",
+        "iron",
+        "formal",
+        "stone",
+        "glass",
+        "wood"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_CS__wall_010.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_CS__wall_011",
+      "dimensions_cm": [
+        300.0,
+        130.93,
+        300.0
+      ],
+      "slots": [
+        "wood",
+        "MailHouseWall",
+        "Metal_001",
+        "Marble_001",
+        "Wood_004",
+        "Wood_003",
+        "cuerda",
+        "cloth",
+        "leather",
+        "broche_001",
+        "cloth_2"
+      ],
+      "material_groups": [
+        "wood",
+        "stone",
+        "iron",
+        "formal",
+        "wood",
+        "wood",
+        "stone",
+        "cloth",
+        "stone",
+        "stone",
+        "cloth"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_CS__wall_011.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_CS__wall_012",
+      "dimensions_cm": [
+        300.0,
+        53.29,
+        300.0
+      ],
+      "slots": [
+        "wood",
+        "MailHouseWall",
+        "Metal_001",
+        "Marble_001",
+        "Wood_004",
+        "Wood_003"
+      ],
+      "material_groups": [
+        "wood",
+        "stone",
+        "iron",
+        "formal",
+        "wood",
+        "wood"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_CS__wall_012.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_CS__wall_013",
+      "dimensions_cm": [
+        300.0,
+        104.46,
+        300.0
+      ],
+      "slots": [
+        "wood",
+        "MailHouseWall",
+        "Metal_001",
+        "Marble_001",
+        "Plastic",
+        "M80_glass",
+        "Wood_003",
+        "WallPink"
+      ],
+      "material_groups": [
+        "wood",
+        "stone",
+        "iron",
+        "formal",
+        "stone",
+        "glass",
+        "wood",
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_CS__wall_013.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_DOOR__OldItalian_Front_01",
+      "dimensions_cm": [
+        229.98,
+        80.19,
+        368.92
+      ],
+      "slots": [
+        "Rusty_painted_metal",
+        "Rusted_Metal_Paint",
+        "Concrete_Chipped_Cracked",
+        "clean_concrete"
+      ],
+      "material_groups": [
+        "iron",
+        "iron",
+        "stone",
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_DOOR__OldItalian_Front_01.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_EVY__Ivy_Instance_1_old",
+      "dimensions_cm": [
+        70.28,
+        54.38,
+        14.35
+      ],
+      "slots": [
+        "leaf",
+        "Bark"
+      ],
+      "material_groups": [
+        "plant",
+        "plant"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_EVY__Ivy_Instance_1_old.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_EVY__Ivy_Instance_1_old_WALL",
+      "dimensions_cm": [
+        70.28,
+        14.35,
+        54.38
+      ],
+      "slots": [
+        "leaf",
+        "Bark"
+      ],
+      "material_groups": [
+        "plant",
+        "plant"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_EVY__Ivy_Instance_1_old_WALL.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_EVY__Ivy_Instance_2_old",
+      "dimensions_cm": [
+        27.03,
+        25.35,
+        5.73
+      ],
+      "slots": [
+        "leaf",
+        "Bark"
+      ],
+      "material_groups": [
+        "plant",
+        "plant"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_EVY__Ivy_Instance_2_old.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_EVY__Ivy_Instance_2_old_WALL",
+      "dimensions_cm": [
+        27.03,
+        5.73,
+        25.35
+      ],
+      "slots": [
+        "leaf",
+        "Bark"
+      ],
+      "material_groups": [
+        "plant",
+        "plant"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_EVY__Ivy_Instance_2_old_WALL.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_FENCE__Cast_Iron_Fence_09",
+      "dimensions_cm": [
+        256.0,
+        11.68,
+        164.99
+      ],
+      "slots": [
+        "Iron_Rough_Cast",
+        "GWC_Cast_Iron"
+      ],
+      "material_groups": [
+        "iron",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_FENCE__Cast_Iron_Fence_09.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_FENCE__Cast_Iron_Fence_09_LOD1",
+      "dimensions_cm": [
+        256.04,
+        11.7,
+        164.99
+      ],
+      "slots": [
+        "Iron_Rough_Cast",
+        "GWC_Cast_Iron"
+      ],
+      "material_groups": [
+        "iron",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_FENCE__Cast_Iron_Fence_09_LOD1.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_PILOT__KIT_Balcony_StoneAndIron_350",
+      "dimensions_cm": [
+        350.0,
+        120.0,
+        183.0
+      ],
+      "slots": [
+        "M80_iron",
+        "M80_stone"
+      ],
+      "material_groups": [
+        "iron",
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_PILOT__KIT_Balcony_StoneAndIron_350.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_PROP__PottedPlant_Small_01",
+      "dimensions_cm": [
+        42.64,
+        47.02,
+        22.52
+      ],
+      "slots": [
+        "M80_terracotta",
+        "Plant_green",
+        "Soil"
+      ],
+      "material_groups": [
+        "tile",
+        "plant",
+        "ground"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_PROP__PottedPlant_Small_01.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_SRC03__ModernisedWindow_300",
+      "dimensions_cm": [
+        300.0,
+        48.76,
+        300.0
+      ],
+      "slots": [
+        "proxy_mat_grey_001",
+        "proxy_mat_general_reflective_001",
+        "proxy_mat_yellow"
+      ],
+      "material_groups": [
+        "plaster",
+        "glass",
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\modules\\SM_M80_SRC03__ModernisedWindow_300.fbx",
+      "qa_only": false
+    }
+  ],
+  "pilots": [
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Pilots/SM_M80_QA_STYLE_01_1249069204",
+      "dimensions_cm": [
+        611.27,
+        573.73,
+        731.02
+      ],
+      "slots": [
+        "proxy_mat_grey",
+        "Wood_002",
+        "Metal",
+        "black",
+        "M80_Pipe_Rust_Dark_Shared",
+        "M80_terracotta",
+        "Plant_green",
+        "Soil",
+        "M80_stone_wall",
+        "Marble",
+        "metal_wire",
+        "M80_glass",
+        "M80_stone_formal",
+        "Wood_003",
+        "black_001",
+        "leaf",
+        "Bark",
+        "Metal_001",
+        "Wood_004",
+        "Plastic"
+      ],
+      "material_groups": [
+        "plaster",
+        "wood",
+        "iron",
+        "iron",
+        "iron",
+        "tile",
+        "plant",
+        "ground",
+        "stone",
+        "formal",
+        "iron",
+        "glass",
+        "formal",
+        "wood",
+        "iron",
+        "plant",
+        "plant",
+        "iron",
+        "wood",
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\pilots\\SM_M80_QA_STYLE_01_1249069204.fbx",
+      "qa_only": true
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Pilots/SM_M80_QA_STYLE_02_1249068307",
+      "dimensions_cm": [
+        650.0,
+        811.98,
+        679.0
+      ],
+      "slots": [
+        "M80_iron",
+        "M80_stone",
+        "M80_stone_formal",
+        "Wood_002",
+        "Metal",
+        "black",
+        "M80_Pipe_Rust_Dark_Shared",
+        "M80_terracotta",
+        "Plant_green",
+        "Soil",
+        "M80_glass",
+        "Wood_003",
+        "black_001",
+        "Marble",
+        "broche",
+        "metal_wire",
+        "Metal_001",
+        "Wood_004"
+      ],
+      "material_groups": [
+        "iron",
+        "stone",
+        "formal",
+        "wood",
+        "iron",
+        "iron",
+        "iron",
+        "tile",
+        "plant",
+        "ground",
+        "glass",
+        "wood",
+        "iron",
+        "formal",
+        "stone",
+        "iron",
+        "iron",
+        "wood"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\pilots\\SM_M80_QA_STYLE_02_1249068307.fbx",
+      "qa_only": true
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Pilots/SM_M80_QA_STYLE_03_1249069200",
+      "dimensions_cm": [
+        650.0,
+        779.79,
+        762.17
+      ],
+      "slots": [
+        "Metal",
+        "Wood_002",
+        "black",
+        "M80_Pipe_Rust_Dark_Shared",
+        "M80_Cloth_Faded_Blue_Shared",
+        "M80_stone_wall",
+        "M80_Roller_Shutter_70s_Shared",
+        "M80_Cloth_Faded_Ochre_Shared",
+        "M80_plaster",
+        "Marble",
+        "metal_wire",
+        "M80_iron",
+        "M80_wood",
+        "Wood_003",
+        "Metal_001",
+        "M80_stone_formal",
+        "Wood_004",
+        "M80_glass",
+        "Plastic"
+      ],
+      "material_groups": [
+        "iron",
+        "wood",
+        "iron",
+        "iron",
+        "cloth",
+        "stone",
+        "iron",
+        "cloth",
+        "plaster",
+        "formal",
+        "iron",
+        "iron",
+        "wood",
+        "wood",
+        "iron",
+        "formal",
+        "wood",
+        "glass",
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\pilots\\SM_M80_QA_STYLE_03_1249069200.fbx",
+      "qa_only": true
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/Pilots/SM_M80_QA_STYLE_04_1249069228",
+      "dimensions_cm": [
+        640.0,
+        796.01,
+        731.02
+      ],
+      "slots": [
+        "M80_wood",
+        "proxy_mat_grey",
+        "leaf",
+        "Bark",
+        "M80_Court_Paving_Stone_Shared",
+        "M80_terracotta",
+        "Plant_green",
+        "Soil",
+        "M80_stone_wall",
+        "Metal",
+        "Wood_001",
+        "black",
+        "M80_Pipe_Rust_Dark_Shared",
+        "Iron_Rough_Cast",
+        "GWC_Cast_Iron",
+        "M80_iron",
+        "Marble",
+        "metal_wire",
+        "M80_glass",
+        "M80_stone_formal",
+        "Wood_003",
+        "M80_plaster",
+        "wood",
+        "Metal_001",
+        "Wood_004"
+      ],
+      "material_groups": [
+        "wood",
+        "plaster",
+        "plant",
+        "plant",
+        "ground",
+        "tile",
+        "plant",
+        "ground",
+        "stone",
+        "iron",
+        "wood",
+        "iron",
+        "iron",
+        "iron",
+        "iron",
+        "iron",
+        "formal",
+        "iron",
+        "glass",
+        "formal",
+        "wood",
+        "plaster",
+        "wood",
+        "iron",
+        "wood"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\pilots\\SM_M80_QA_STYLE_04_1249069228.fbx",
+      "qa_only": true
+    }
+  ],
+  "pilot_stages": [
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_01_1249069204_Facades",
+      "dimensions_cm": [
+        601.13,
+        101.58,
+        588.0
+      ],
+      "slots": [
+        "M80_stone_wall",
+        "Marble",
+        "black",
+        "metal_wire",
+        "M80_glass",
+        "M80_stone_formal",
+        "Wood_003",
+        "black_001",
+        "Metal_001",
+        "Wood_004",
+        "Plastic"
+      ],
+      "material_groups": [
+        "stone",
+        "formal",
+        "iron",
+        "iron",
+        "glass",
+        "formal",
+        "wood",
+        "iron",
+        "iron",
+        "wood",
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\pilot_stages\\SM_M80_QA_STYLE_01_1249069204_Facades.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_01_1249069204_Openings",
+      "dimensions_cm": [
+        100.98,
+        15.72,
+        256.06
+      ],
+      "slots": [
+        "Wood_002",
+        "Metal",
+        "black"
+      ],
+      "material_groups": [
+        "wood",
+        "iron",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\pilot_stages\\SM_M80_QA_STYLE_01_1249069204_Openings.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_01_1249069204_Roofs",
+      "dimensions_cm": [
+        601.25,
+        388.72,
+        143.02
+      ],
+      "slots": [
+        "proxy_mat_grey",
+        "M80_stone_wall",
+        "M80_terracotta",
+        "Metal"
+      ],
+      "material_groups": [
+        "plaster",
+        "stone",
+        "tile",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\pilot_stages\\SM_M80_QA_STYLE_01_1249069204_Roofs.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_01_1249069204_Details",
+      "dimensions_cm": [
+        610.14,
+        573.73,
+        598.99
+      ],
+      "slots": [
+        "M80_Pipe_Rust_Dark_Shared",
+        "M80_terracotta",
+        "Plant_green",
+        "Soil",
+        "leaf",
+        "Bark",
+        "M80_stone_wall",
+        "Wood_004",
+        "Metal_001",
+        "M80_stone_formal",
+        "Plastic",
+        "M80_glass",
+        "Wood_003"
+      ],
+      "material_groups": [
+        "iron",
+        "tile",
+        "plant",
+        "ground",
+        "plant",
+        "plant",
+        "stone",
+        "wood",
+        "iron",
+        "formal",
+        "stone",
+        "glass",
+        "wood"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\pilot_stages\\SM_M80_QA_STYLE_01_1249069204_Details.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_02_1249068307_Facades",
+      "dimensions_cm": [
+        646.0,
+        101.58,
+        613.0
+      ],
+      "slots": [
+        "M80_stone_formal",
+        "M80_glass",
+        "Wood_003",
+        "black_001",
+        "Metal",
+        "Marble",
+        "black",
+        "broche",
+        "metal_wire",
+        "Metal_001",
+        "Wood_004"
+      ],
+      "material_groups": [
+        "formal",
+        "glass",
+        "wood",
+        "iron",
+        "iron",
+        "formal",
+        "iron",
+        "stone",
+        "iron",
+        "iron",
+        "wood"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\pilot_stages\\SM_M80_QA_STYLE_02_1249068307_Facades.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_02_1249068307_Openings",
+      "dimensions_cm": [
+        100.98,
+        15.72,
+        266.51
+      ],
+      "slots": [
+        "Wood_002",
+        "Metal",
+        "black"
+      ],
+      "material_groups": [
+        "wood",
+        "iron",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\pilot_stages\\SM_M80_QA_STYLE_02_1249068307_Openings.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_02_1249068307_Roofs",
+      "dimensions_cm": [
+        650.0,
+        642.0,
+        69.0
+      ],
+      "slots": [
+        "M80_stone_formal"
+      ],
+      "material_groups": [
+        "formal"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\pilot_stages\\SM_M80_QA_STYLE_02_1249068307_Roofs.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_02_1249068307_Details",
+      "dimensions_cm": [
+        601.0,
+        811.98,
+        622.99
+      ],
+      "slots": [
+        "M80_iron",
+        "M80_stone",
+        "M80_Pipe_Rust_Dark_Shared",
+        "M80_terracotta",
+        "Plant_green",
+        "Soil",
+        "M80_stone_formal",
+        "Wood_003",
+        "Metal_001",
+        "Wood_004"
+      ],
+      "material_groups": [
+        "iron",
+        "stone",
+        "iron",
+        "tile",
+        "plant",
+        "ground",
+        "formal",
+        "wood",
+        "iron",
+        "wood"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\pilot_stages\\SM_M80_QA_STYLE_02_1249068307_Details.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_03_1249069200_Facades",
+      "dimensions_cm": [
+        602.46,
+        101.58,
+        540.0
+      ],
+      "slots": [
+        "M80_stone_wall",
+        "M80_plaster",
+        "Marble",
+        "black",
+        "metal_wire",
+        "Wood_003",
+        "Metal_001",
+        "M80_stone_formal",
+        "Wood_004",
+        "M80_wood",
+        "M80_glass"
+      ],
+      "material_groups": [
+        "stone",
+        "plaster",
+        "formal",
+        "iron",
+        "iron",
+        "wood",
+        "iron",
+        "formal",
+        "wood",
+        "wood",
+        "glass"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\pilot_stages\\SM_M80_QA_STYLE_03_1249069200_Facades.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_03_1249069200_Openings",
+      "dimensions_cm": [
+        487.49,
+        78.0,
+        270.0
+      ],
+      "slots": [
+        "Wood_002",
+        "Metal",
+        "black",
+        "M80_Roller_Shutter_70s_Shared"
+      ],
+      "material_groups": [
+        "wood",
+        "iron",
+        "iron",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\pilot_stages\\SM_M80_QA_STYLE_03_1249069200_Openings.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_03_1249069200_Roofs",
+      "dimensions_cm": [
+        650.0,
+        642.0,
+        218.17
+      ],
+      "slots": [
+        "Metal",
+        "M80_plaster"
+      ],
+      "material_groups": [
+        "iron",
+        "plaster"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\pilot_stages\\SM_M80_QA_STYLE_03_1249069200_Roofs.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_03_1249069200_Details",
+      "dimensions_cm": [
+        600.0,
+        779.79,
+        550.99
+      ],
+      "slots": [
+        "M80_Pipe_Rust_Dark_Shared",
+        "M80_Cloth_Faded_Blue_Shared",
+        "M80_Cloth_Faded_Ochre_Shared",
+        "M80_iron",
+        "M80_wood",
+        "M80_plaster",
+        "Wood_004",
+        "Metal_001",
+        "M80_stone_formal",
+        "Plastic",
+        "M80_glass",
+        "Wood_003"
+      ],
+      "material_groups": [
+        "iron",
+        "cloth",
+        "cloth",
+        "iron",
+        "wood",
+        "plaster",
+        "wood",
+        "iron",
+        "formal",
+        "stone",
+        "glass",
+        "wood"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\pilot_stages\\SM_M80_QA_STYLE_03_1249069200_Details.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_04_1249069228_Structure",
+      "dimensions_cm": [
+        640.0,
+        350.0,
+        220.0
+      ],
+      "slots": [
+        "M80_Court_Paving_Stone_Shared",
+        "M80_stone_wall"
+      ],
+      "material_groups": [
+        "ground",
+        "stone"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\pilot_stages\\SM_M80_QA_STYLE_04_1249069228_Structure.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_04_1249069228_Facades",
+      "dimensions_cm": [
+        601.13,
+        101.58,
+        588.0
+      ],
+      "slots": [
+        "M80_stone_wall",
+        "Marble",
+        "black",
+        "metal_wire",
+        "M80_glass",
+        "M80_stone_formal",
+        "Wood_003",
+        "M80_plaster",
+        "wood",
+        "Metal_001",
+        "Wood_004"
+      ],
+      "material_groups": [
+        "stone",
+        "formal",
+        "iron",
+        "iron",
+        "glass",
+        "formal",
+        "wood",
+        "plaster",
+        "wood",
+        "iron",
+        "wood"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\pilot_stages\\SM_M80_QA_STYLE_04_1249069228_Facades.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_04_1249069228_Openings",
+      "dimensions_cm": [
+        432.43,
+        62.5,
+        487.73
+      ],
+      "slots": [
+        "M80_wood",
+        "Metal",
+        "Wood_001",
+        "black"
+      ],
+      "material_groups": [
+        "wood",
+        "iron",
+        "wood",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\pilot_stages\\SM_M80_QA_STYLE_04_1249069228_Openings.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_04_1249069228_Roofs",
+      "dimensions_cm": [
+        601.25,
+        388.72,
+        143.02
+      ],
+      "slots": [
+        "proxy_mat_grey",
+        "M80_stone_wall",
+        "M80_terracotta",
+        "Metal"
+      ],
+      "material_groups": [
+        "plaster",
+        "stone",
+        "tile",
+        "iron"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\pilot_stages\\SM_M80_QA_STYLE_04_1249069228_Roofs.fbx",
+      "qa_only": false
+    },
+    {
+      "asset": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_04_1249069228_Details",
+      "dimensions_cm": [
+        610.14,
+        796.01,
+        598.99
+      ],
+      "slots": [
+        "leaf",
+        "Bark",
+        "M80_terracotta",
+        "Plant_green",
+        "Soil",
+        "M80_Pipe_Rust_Dark_Shared",
+        "Iron_Rough_Cast",
+        "GWC_Cast_Iron",
+        "M80_iron",
+        "M80_stone_wall",
+        "wood",
+        "Metal_001",
+        "M80_stone_formal",
+        "Wood_004",
+        "Wood_003"
+      ],
+      "material_groups": [
+        "plant",
+        "plant",
+        "tile",
+        "plant",
+        "ground",
+        "iron",
+        "iron",
+        "iron",
+        "iron",
+        "stone",
+        "wood",
+        "iron",
+        "formal",
+        "wood",
+        "wood"
+      ],
+      "source_file": "D:\\UE5Projects\\GameAnimationSample\\Pipeline\\Blender\\output\\mazzarino_reuse_style_gates_v2\\unreal_export\\pilot_stages\\SM_M80_QA_STYLE_04_1249069228_Details.fbx",
+      "qa_only": false
+    }
+  ]
+}

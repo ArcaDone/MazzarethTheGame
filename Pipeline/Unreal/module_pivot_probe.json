@@ -1,0 +1,119 @@
+[
+  {
+    "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__Tetto",
+    "origin_cm": [
+      3.0517578125e-05,
+      194.36218276429585,
+      71.50853729248047
+    ],
+    "extent_cm": [
+      300.6261291503906,
+      194.36218247007918,
+      71.50853729248047
+    ]
+  },
+  {
+    "asset": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_01_1249069204_Roofs",
+    "origin_cm": [
+      3.0517578125e-05,
+      -205.63782405853271,
+      659.508544921875
+    ],
+    "extent_cm": [
+      300.6261291503906,
+      194.36217594146729,
+      71.508544921875
+    ]
+  },
+  {
+    "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__Ground_002",
+    "origin_cm": [
+      7.62939453125e-06,
+      25.05119810172937,
+      150.3263702392578
+    ],
+    "extent_cm": [
+      151.13196563720703,
+      25.0512112610636,
+      150.3263702392578
+    ]
+  },
+  {
+    "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_FENCE__Cast_Iron_Fence_09",
+    "origin_cm": [
+      7.62939453125e-06,
+      5.8424086527525105,
+      82.4941177368164
+    ],
+    "extent_cm": [
+      128.0020523071289,
+      5.842417244464286,
+      82.4941177368164
+    ]
+  },
+  {
+    "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_FENCE__Cast_Iron_Fence_09_LOD1",
+    "origin_cm": [
+      -0.02429962158203125,
+      5.832756398245692,
+      82.49305725097656
+    ],
+    "extent_cm": [
+      128.01985931396484,
+      5.8485666532069445,
+      82.49305725097656
+    ]
+  },
+  {
+    "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_PILOT__KIT_Balcony_StoneAndIron_350",
+    "origin_cm": [
+      7.62939453125e-06,
+      59.99999616520381,
+      91.5
+    ],
+    "extent_cm": [
+      175.00000762939453,
+      60.00001146419072,
+      91.5
+    ]
+  },
+  {
+    "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_PROP__PottedPlant_Small_01",
+    "origin_cm": [
+      9.5367431640625e-07,
+      23.508157646345282,
+      11.261027336120605
+    ],
+    "extent_cm": [
+      21.320927619934082,
+      23.508157813859796,
+      11.261027336120605
+    ]
+  },
+  {
+    "asset": "/Game/Mazzarino80/ReuseKit/Modules/SM_M80_B80__small_chimney_round",
+    "origin_cm": [
+      9.5367431640625e-07,
+      19.5696487426755,
+      29.747093200683594
+    ],
+    "extent_cm": [
+      19.56967258453369,
+      19.56964874267606,
+      29.747093200683594
+    ]
+  },
+  {
+    "asset": "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_01_1249069204_Facades",
+    "origin_cm": [
+      -0.56597900390625,
+      50.78852949211023,
+      294.0
+    ],
+    "extent_cm": [
+      300.56597900390625,
+      50.78854265144446,
+      294.0
+    ]
+  }
+]

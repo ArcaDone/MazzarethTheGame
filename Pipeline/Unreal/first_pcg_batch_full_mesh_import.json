@@ -1,0 +1,1080 @@
+{
+  "source": "..\\..\\..\\..\\UE5Projects\\GameAnimationSample\\Research\\Mazzarino80\\PCG\\DistrictBatch01_Full\\MeshSource",
+  "destination": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes",
+  "requested": 134,
+  "imported": {
+    "SM_PCG_Roof_1249054419": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249054419.SM_PCG_Roof_1249054419",
+      "size_cm": [
+        1836.39,
+        1891.67,
+        154.0
+      ]
+    },
+    "SM_PCG_Roof_1249054423": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249054423.SM_PCG_Roof_1249054423",
+      "size_cm": [
+        4215.03,
+        3341.75,
+        154.0
+      ]
+    },
+    "SM_PCG_Roof_1249067196": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067196.SM_PCG_Roof_1249067196",
+      "size_cm": [
+        8821.67,
+        7974.76,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249067205": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067205.SM_PCG_Roof_1249067205",
+      "size_cm": [
+        4747.85,
+        2940.13,
+        104.0
+      ]
+    },
+    "SM_PCG_Roof_1249067206": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067206.SM_PCG_Roof_1249067206",
+      "size_cm": [
+        1293.42,
+        1976.22,
+        129.0
+      ]
+    },
+    "SM_PCG_Roof_1249067208": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067208.SM_PCG_Roof_1249067208",
+      "size_cm": [
+        1698.01,
+        1952.1,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249067209": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067209.SM_PCG_Roof_1249067209",
+      "size_cm": [
+        3293.67,
+        2641.59,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249067216": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067216.SM_PCG_Roof_1249067216",
+      "size_cm": [
+        905.22,
+        635.82,
+        179.0
+      ]
+    },
+    "SM_PCG_Roof_1249067217": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067217.SM_PCG_Roof_1249067217",
+      "size_cm": [
+        841.34,
+        2048.35,
+        104.0
+      ]
+    },
+    "SM_PCG_Roof_1249067223": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067223.SM_PCG_Roof_1249067223",
+      "size_cm": [
+        724.67,
+        2395.46,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249067225": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067225.SM_PCG_Roof_1249067225",
+      "size_cm": [
+        717.8,
+        1517.44,
+        104.0
+      ]
+    },
+    "SM_PCG_Roof_1249067229": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067229.SM_PCG_Roof_1249067229",
+      "size_cm": [
+        712.31,
+        1629.76,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249067232": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067232.SM_PCG_Roof_1249067232",
+      "size_cm": [
+        546.68,
+        519.98,
+        179.0
+      ]
+    },
+    "SM_PCG_Roof_1249067242": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067242.SM_PCG_Roof_1249067242",
+      "size_cm": [
+        5563.22,
+        6580.42,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249067262": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067262.SM_PCG_Roof_1249067262",
+      "size_cm": [
+        84.0,
+        307.8,
+        129.0
+      ]
+    },
+    "SM_PCG_Roof_1249067265": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067265.SM_PCG_Roof_1249067265",
+      "size_cm": [
+        1110.44,
+        1140.22,
+        104.0
+      ]
+    },
+    "SM_PCG_Roof_1249067267": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067267.SM_PCG_Roof_1249067267",
+      "size_cm": [
+        721.86,
+        664.31,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249067277": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249067277.SM_PCG_Roof_1249067277",
+      "size_cm": [
+        1334.04,
+        3057.12,
+        104.0
+      ]
+    },
+    "SM_PCG_Roof_1249068301": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249068301.SM_PCG_Roof_1249068301",
+      "size_cm": [
+        1992.41,
+        2001.83,
+        179.0
+      ]
+    },
+    "SM_PCG_Roof_1249068302": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249068302.SM_PCG_Roof_1249068302",
+      "size_cm": [
+        755.1,
+        854.87,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249068303": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249068303.SM_PCG_Roof_1249068303",
+      "size_cm": [
+        1477.79,
+        1002.11,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249068304": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249068304.SM_PCG_Roof_1249068304",
+      "size_cm": [
+        1477.56,
+        1703.35,
+        154.0
+      ]
+    },
+    "SM_PCG_Roof_1249068305": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249068305.SM_PCG_Roof_1249068305",
+      "size_cm": [
+        1104.02,
+        1608.56,
+        179.0
+      ]
+    },
+    "SM_PCG_Roof_1249068306": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249068306.SM_PCG_Roof_1249068306",
+      "size_cm": [
+        3993.79,
+        2294.86,
+        104.0
+      ]
+    },
+    "SM_PCG_Roof_1249068312": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249068312.SM_PCG_Roof_1249068312",
+      "size_cm": [
+        1243.2,
+        1780.7,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249068315": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249068315.SM_PCG_Roof_1249068315",
+      "size_cm": [
+        1586.15,
+        3052.0,
+        129.0
+      ]
+    },
+    "SM_PCG_Roof_1249068327": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249068327.SM_PCG_Roof_1249068327",
+      "size_cm": [
+        890.92,
+        1038.86,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249068337": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249068337.SM_PCG_Roof_1249068337",
+      "size_cm": [
+        2601.98,
+        2151.01,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249068343": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249068343.SM_PCG_Roof_1249068343",
+      "size_cm": [
+        1867.91,
+        856.57,
+        104.0
+      ]
+    },
+    "SM_PCG_Roof_1249069191": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249069191.SM_PCG_Roof_1249069191",
+      "size_cm": [
+        2120.47,
+        2686.22,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249069211": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249069211.SM_PCG_Roof_1249069211",
+      "size_cm": [
+        1862.66,
+        767.9,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249069239": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249069239.SM_PCG_Roof_1249069239",
+      "size_cm": [
+        1413.07,
+        1318.08,
+        104.0
+      ]
+    },
+    "SM_PCG_Roof_1249069241": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249069241.SM_PCG_Roof_1249069241",
+      "size_cm": [
+        1393.74,
+        1430.33,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249069252": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249069252.SM_PCG_Roof_1249069252",
+      "size_cm": [
+        1265.03,
+        566.25,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249069253": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249069253.SM_PCG_Roof_1249069253",
+      "size_cm": [
+        1880.95,
+        2225.05,
+        154.0
+      ]
+    },
+    "SM_PCG_Roof_1249069267": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249069267.SM_PCG_Roof_1249069267",
+      "size_cm": [
+        2128.71,
+        1292.88,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249071118": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249071118.SM_PCG_Roof_1249071118",
+      "size_cm": [
+        1668.34,
+        1013.44,
+        129.0
+      ]
+    },
+    "SM_PCG_Roof_1249071121": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249071121.SM_PCG_Roof_1249071121",
+      "size_cm": [
+        838.28,
+        1232.04,
+        104.0
+      ]
+    },
+    "SM_PCG_Roof_1249071125": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249071125.SM_PCG_Roof_1249071125",
+      "size_cm": [
+        2990.01,
+        1864.1,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249071132": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249071132.SM_PCG_Roof_1249071132",
+      "size_cm": [
+        6303.66,
+        1713.28,
+        179.0
+      ]
+    },
+    "SM_PCG_Roof_1249071138": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249071138.SM_PCG_Roof_1249071138",
+      "size_cm": [
+        1613.0,
+        822.83,
+        129.0
+      ]
+    },
+    "SM_PCG_Roof_1249071140": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249071140.SM_PCG_Roof_1249071140",
+      "size_cm": [
+        4145.17,
+        2671.31,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249071149": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249071149.SM_PCG_Roof_1249071149",
+      "size_cm": [
+        1375.23,
+        1352.73,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249071153": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249071153.SM_PCG_Roof_1249071153",
+      "size_cm": [
+        2265.32,
+        2375.9,
+        104.0
+      ]
+    },
+    "SM_PCG_Roof_1249082254": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082254.SM_PCG_Roof_1249082254",
+      "size_cm": [
+        1901.16,
+        1349.11,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249082257": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082257.SM_PCG_Roof_1249082257",
+      "size_cm": [
+        1919.07,
+        1547.02,
+        129.0
+      ]
+    },
+    "SM_PCG_Roof_1249082258": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082258.SM_PCG_Roof_1249082258",
+      "size_cm": [
+        1757.3,
+        1438.98,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249082259": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082259.SM_PCG_Roof_1249082259",
+      "size_cm": [
+        2983.64,
+        2512.16,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249082261": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082261.SM_PCG_Roof_1249082261",
+      "size_cm": [
+        5596.88,
+        2322.85,
+        129.0
+      ]
+    },
+    "SM_PCG_Roof_1249082264": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082264.SM_PCG_Roof_1249082264",
+      "size_cm": [
+        2628.4,
+        3139.9,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249082269": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082269.SM_PCG_Roof_1249082269",
+      "size_cm": [
+        1123.95,
+        1272.33,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249082271": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082271.SM_PCG_Roof_1249082271",
+      "size_cm": [
+        3747.81,
+        2693.98,
+        179.0
+      ]
+    },
+    "SM_PCG_Roof_1249082273": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082273.SM_PCG_Roof_1249082273",
+      "size_cm": [
+        982.52,
+        1395.52,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249082275": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082275.SM_PCG_Roof_1249082275",
+      "size_cm": [
+        1175.5,
+        858.04,
+        179.0
+      ]
+    },
+    "SM_PCG_Roof_1249082283": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082283.SM_PCG_Roof_1249082283",
+      "size_cm": [
+        1245.32,
+        621.07,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249082286": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082286.SM_PCG_Roof_1249082286",
+      "size_cm": [
+        2512.14,
+        1795.02,
+        154.0
+      ]
+    },
+    "SM_PCG_Roof_1249082289": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082289.SM_PCG_Roof_1249082289",
+      "size_cm": [
+        696.69,
+        588.88,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249082294": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082294.SM_PCG_Roof_1249082294",
+      "size_cm": [
+        1560.88,
+        2220.45,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249082983": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249082983.SM_PCG_Roof_1249082983",
+      "size_cm": [
+        2769.05,
+        2140.51,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_1249083019": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249083019.SM_PCG_Roof_1249083019",
+      "size_cm": [
+        3661.04,
+        2109.62,
+        154.0
+      ]
+    },
+    "SM_PCG_Roof_1249083051": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249083051.SM_PCG_Roof_1249083051",
+      "size_cm": [
+        1816.85,
+        1450.21,
+        154.0
+      ]
+    },
+    "SM_PCG_Roof_1249083059": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249083059.SM_PCG_Roof_1249083059",
+      "size_cm": [
+        1886.99,
+        1168.31,
+        154.0
+      ]
+    },
+    "SM_PCG_Roof_1249083070": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249083070.SM_PCG_Roof_1249083070",
+      "size_cm": [
+        2169.79,
+        2128.94,
+        129.0
+      ]
+    },
+    "SM_PCG_Roof_1249083089": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249083089.SM_PCG_Roof_1249083089",
+      "size_cm": [
+        860.2,
+        824.59,
+        104.0
+      ]
+    },
+    "SM_PCG_Roof_1249832594": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_1249832594.SM_PCG_Roof_1249832594",
+      "size_cm": [
+        440.52,
+        539.95,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_372573548": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_372573548.SM_PCG_Roof_372573548",
+      "size_cm": [
+        2562.21,
+        3573.23,
+        14.0
+      ]
+    },
+    "SM_PCG_Roof_372573577": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Roof_372573577.SM_PCG_Roof_372573577",
+      "size_cm": [
+        5886.67,
+        5387.2,
+        14.0
+      ]
+    },
+    "SM_PCG_Walls_1249054419": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249054419.SM_PCG_Walls_1249054419",
+      "size_cm": [
+        1836.39,
+        1891.67,
+        1010.0
+      ]
+    },
+    "SM_PCG_Walls_1249054423": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249054423.SM_PCG_Walls_1249054423",
+      "size_cm": [
+        4215.03,
+        3341.75,
+        1010.0
+      ]
+    },
+    "SM_PCG_Walls_1249067196": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067196.SM_PCG_Walls_1249067196",
+      "size_cm": [
+        8821.67,
+        7974.76,
+        650.0
+      ]
+    },
+    "SM_PCG_Walls_1249067205": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067205.SM_PCG_Walls_1249067205",
+      "size_cm": [
+        4747.85,
+        2940.13,
+        770.0
+      ]
+    },
+    "SM_PCG_Walls_1249067206": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067206.SM_PCG_Walls_1249067206",
+      "size_cm": [
+        1293.42,
+        1976.22,
+        890.0
+      ]
+    },
+    "SM_PCG_Walls_1249067208": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067208.SM_PCG_Walls_1249067208",
+      "size_cm": [
+        1698.01,
+        1952.1,
+        650.0
+      ]
+    },
+    "SM_PCG_Walls_1249067209": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067209.SM_PCG_Walls_1249067209",
+      "size_cm": [
+        3293.67,
+        2641.59,
+        770.0
+      ]
+    },
+    "SM_PCG_Walls_1249067216": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067216.SM_PCG_Walls_1249067216",
+      "size_cm": [
+        905.22,
+        635.82,
+        650.0
+      ]
+    },
+    "SM_PCG_Walls_1249067217": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067217.SM_PCG_Walls_1249067217",
+      "size_cm": [
+        841.34,
+        2048.35,
+        770.0
+      ]
+    },
+    "SM_PCG_Walls_1249067223": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067223.SM_PCG_Walls_1249067223",
+      "size_cm": [
+        724.67,
+        2395.46,
+        1300.0
+      ]
+    },
+    "SM_PCG_Walls_1249067225": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067225.SM_PCG_Walls_1249067225",
+      "size_cm": [
+        717.8,
+        1517.44,
+        770.0
+      ]
+    },
+    "SM_PCG_Walls_1249067229": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067229.SM_PCG_Walls_1249067229",
+      "size_cm": [
+        712.31,
+        1629.76,
+        770.0
+      ]
+    },
+    "SM_PCG_Walls_1249067232": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067232.SM_PCG_Walls_1249067232",
+      "size_cm": [
+        546.68,
+        519.98,
+        650.0
+      ]
+    },
+    "SM_PCG_Walls_1249067242": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067242.SM_PCG_Walls_1249067242",
+      "size_cm": [
+        5563.22,
+        6580.42,
+        1300.0
+      ]
+    },
+    "SM_PCG_Walls_1249067262": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067262.SM_PCG_Walls_1249067262",
+      "size_cm": [
+        84.0,
+        307.8,
+        890.0
+      ]
+    },
+    "SM_PCG_Walls_1249067265": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067265.SM_PCG_Walls_1249067265",
+      "size_cm": [
+        1110.44,
+        1140.22,
+        770.0
+      ]
+    },
+    "SM_PCG_Walls_1249067267": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067267.SM_PCG_Walls_1249067267",
+      "size_cm": [
+        721.86,
+        664.31,
+        1300.0
+      ]
+    },
+    "SM_PCG_Walls_1249067277": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249067277.SM_PCG_Walls_1249067277",
+      "size_cm": [
+        1334.04,
+        3057.12,
+        770.0
+      ]
+    },
+    "SM_PCG_Walls_1249068301": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249068301.SM_PCG_Walls_1249068301",
+      "size_cm": [
+        1992.41,
+        2001.83,
+        770.0
+      ]
+    },
+    "SM_PCG_Walls_1249068302": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249068302.SM_PCG_Walls_1249068302",
+      "size_cm": [
+        755.1,
+        854.87,
+        890.0
+      ]
+    },
+    "SM_PCG_Walls_1249068303": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249068303.SM_PCG_Walls_1249068303",
+      "size_cm": [
+        1477.79,
+        1002.11,
+        1010.0
+      ]
+    },
+    "SM_PCG_Walls_1249068304": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249068304.SM_PCG_Walls_1249068304",
+      "size_cm": [
+        1477.56,
+        1703.35,
+        650.0
+      ]
+    },
+    "SM_PCG_Walls_1249068305": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249068305.SM_PCG_Walls_1249068305",
+      "size_cm": [
+        1104.02,
+        1608.56,
+        770.0
+      ]
+    },
+    "SM_PCG_Walls_1249068306": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249068306.SM_PCG_Walls_1249068306",
+      "size_cm": [
+        3993.79,
+        2294.86,
+        890.0
+      ]
+    },
+    "SM_PCG_Walls_1249068312": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249068312.SM_PCG_Walls_1249068312",
+      "size_cm": [
+        1243.2,
+        1780.7,
+        650.0
+      ]
+    },
+    "SM_PCG_Walls_1249068315": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249068315.SM_PCG_Walls_1249068315",
+      "size_cm": [
+        1586.15,
+        3052.0,
+        1010.0
+      ]
+    },
+    "SM_PCG_Walls_1249068327": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249068327.SM_PCG_Walls_1249068327",
+      "size_cm": [
+        890.92,
+        1038.86,
+        1010.0
+      ]
+    },
+    "SM_PCG_Walls_1249068337": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249068337.SM_PCG_Walls_1249068337",
+      "size_cm": [
+        2601.98,
+        2151.01,
+        770.0
+      ]
+    },
+    "SM_PCG_Walls_1249068343": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249068343.SM_PCG_Walls_1249068343",
+      "size_cm": [
+        1867.91,
+        856.57,
+        1010.0
+      ]
+    },
+    "SM_PCG_Walls_1249069191": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249069191.SM_PCG_Walls_1249069191",
+      "size_cm": [
+        2120.47,
+        2686.22,
+        1010.0
+      ]
+    },
+    "SM_PCG_Walls_1249069211": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249069211.SM_PCG_Walls_1249069211",
+      "size_cm": [
+        1862.66,
+        767.9,
+        1010.0
+      ]
+    },
+    "SM_PCG_Walls_1249069239": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249069239.SM_PCG_Walls_1249069239",
+      "size_cm": [
+        1413.07,
+        1318.08,
+        1010.0
+      ]
+    },
+    "SM_PCG_Walls_1249069241": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249069241.SM_PCG_Walls_1249069241",
+      "size_cm": [
+        1393.74,
+        1430.33,
+        770.0
+      ]
+    },
+    "SM_PCG_Walls_1249069252": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249069252.SM_PCG_Walls_1249069252",
+      "size_cm": [
+        1265.03,
+        566.25,
+        650.0
+      ]
+    },
+    "SM_PCG_Walls_1249069253": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249069253.SM_PCG_Walls_1249069253",
+      "size_cm": [
+        1880.95,
+        2225.05,
+        770.0
+      ]
+    },
+    "SM_PCG_Walls_1249069267": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249069267.SM_PCG_Walls_1249069267",
+      "size_cm": [
+        2128.71,
+        1292.88,
+        1010.0
+      ]
+    },
+    "SM_PCG_Walls_1249071118": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249071118.SM_PCG_Walls_1249071118",
+      "size_cm": [
+        1668.34,
+        1013.44,
+        890.0
+      ]
+    },
+    "SM_PCG_Walls_1249071121": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249071121.SM_PCG_Walls_1249071121",
+      "size_cm": [
+        838.28,
+        1232.04,
+        770.0
+      ]
+    },
+    "SM_PCG_Walls_1249071125": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249071125.SM_PCG_Walls_1249071125",
+      "size_cm": [
+        2990.01,
+        1864.1,
+        770.0
+      ]
+    },
+    "SM_PCG_Walls_1249071132": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249071132.SM_PCG_Walls_1249071132",
+      "size_cm": [
+        6303.66,
+        1713.28,
+        650.0
+      ]
+    },
+    "SM_PCG_Walls_1249071138": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249071138.SM_PCG_Walls_1249071138",
+      "size_cm": [
+        1613.0,
+        822.83,
+        890.0
+      ]
+    },
+    "SM_PCG_Walls_1249071140": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249071140.SM_PCG_Walls_1249071140",
+      "size_cm": [
+        4145.17,
+        2671.31,
+        650.0
+      ]
+    },
+    "SM_PCG_Walls_1249071149": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249071149.SM_PCG_Walls_1249071149",
+      "size_cm": [
+        1375.23,
+        1352.73,
+        770.0
+      ]
+    },
+    "SM_PCG_Walls_1249071153": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249071153.SM_PCG_Walls_1249071153",
+      "size_cm": [
+        2265.32,
+        2375.9,
+        770.0
+      ]
+    },
+    "SM_PCG_Walls_1249082254": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082254.SM_PCG_Walls_1249082254",
+      "size_cm": [
+        1901.16,
+        1349.11,
+        890.0
+      ]
+    },
+    "SM_PCG_Walls_1249082257": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082257.SM_PCG_Walls_1249082257",
+      "size_cm": [
+        1919.07,
+        1547.02,
+        770.0
+      ]
+    },
+    "SM_PCG_Walls_1249082258": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082258.SM_PCG_Walls_1249082258",
+      "size_cm": [
+        1757.3,
+        1438.98,
+        890.0
+      ]
+    },
+    "SM_PCG_Walls_1249082259": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082259.SM_PCG_Walls_1249082259",
+      "size_cm": [
+        2983.64,
+        2512.16,
+        1010.0
+      ]
+    },
+    "SM_PCG_Walls_1249082261": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082261.SM_PCG_Walls_1249082261",
+      "size_cm": [
+        5596.88,
+        2322.85,
+        770.0
+      ]
+    },
+    "SM_PCG_Walls_1249082264": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082264.SM_PCG_Walls_1249082264",
+      "size_cm": [
+        2628.4,
+        3139.9,
+        650.0
+      ]
+    },
+    "SM_PCG_Walls_1249082269": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082269.SM_PCG_Walls_1249082269",
+      "size_cm": [
+        1123.95,
+        1272.33,
+        770.0
+      ]
+    },
+    "SM_PCG_Walls_1249082271": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082271.SM_PCG_Walls_1249082271",
+      "size_cm": [
+        3747.81,
+        2693.98,
+        1010.0
+      ]
+    },
+    "SM_PCG_Walls_1249082273": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082273.SM_PCG_Walls_1249082273",
+      "size_cm": [
+        982.52,
+        1395.52,
+        770.0
+      ]
+    },
+    "SM_PCG_Walls_1249082275": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082275.SM_PCG_Walls_1249082275",
+      "size_cm": [
+        1175.5,
+        858.04,
+        1010.0
+      ]
+    },
+    "SM_PCG_Walls_1249082283": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082283.SM_PCG_Walls_1249082283",
+      "size_cm": [
+        1245.32,
+        621.07,
+        1010.0
+      ]
+    },
+    "SM_PCG_Walls_1249082286": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082286.SM_PCG_Walls_1249082286",
+      "size_cm": [
+        2512.14,
+        1795.02,
+        890.0
+      ]
+    },
+    "SM_PCG_Walls_1249082289": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082289.SM_PCG_Walls_1249082289",
+      "size_cm": [
+        696.69,
+        588.88,
+        770.0
+      ]
+    },
+    "SM_PCG_Walls_1249082294": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082294.SM_PCG_Walls_1249082294",
+      "size_cm": [
+        1560.88,
+        2220.45,
+        890.0
+      ]
+    },
+    "SM_PCG_Walls_1249082983": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249082983.SM_PCG_Walls_1249082983",
+      "size_cm": [
+        2769.05,
+        2140.51,
+        1010.0
+      ]
+    },
+    "SM_PCG_Walls_1249083019": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249083019.SM_PCG_Walls_1249083019",
+      "size_cm": [
+        3661.04,
+        2109.62,
+        1010.0
+      ]
+    },
+    "SM_PCG_Walls_1249083051": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249083051.SM_PCG_Walls_1249083051",
+      "size_cm": [
+        1816.85,
+        1450.21,
+        1010.0
+      ]
+    },
+    "SM_PCG_Walls_1249083059": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249083059.SM_PCG_Walls_1249083059",
+      "size_cm": [
+        1886.99,
+        1168.31,
+        1010.0
+      ]
+    },
+    "SM_PCG_Walls_1249083070": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249083070.SM_PCG_Walls_1249083070",
+      "size_cm": [
+        2169.79,
+        2128.94,
+        890.0
+      ]
+    },
+    "SM_PCG_Walls_1249083089": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249083089.SM_PCG_Walls_1249083089",
+      "size_cm": [
+        860.2,
+        824.59,
+        770.0
+      ]
+    },
+    "SM_PCG_Walls_1249832594": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_1249832594.SM_PCG_Walls_1249832594",
+      "size_cm": [
+        440.52,
+        539.95,
+        890.0
+      ]
+    },
+    "SM_PCG_Walls_372573548": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_372573548.SM_PCG_Walls_372573548",
+      "size_cm": [
+        2562.21,
+        3573.23,
+        650.0
+      ]
+    },
+    "SM_PCG_Walls_372573577": {
+      "path": "/Game/Mazzarino80/PCG/DistrictBatch01_Full/Meshes/SM_PCG_Walls_372573577.SM_PCG_Walls_372573577",
+      "size_cm": [
+        5886.67,
+        5387.2,
+        770.0
+      ]
+    }
+  },
+  "errors": {}
+}

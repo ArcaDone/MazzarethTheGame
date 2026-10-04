@@ -1,0 +1,86 @@
+{
+  "source": "D:\\UE5Projects\\Comune\\Content",
+  "asset_count": 13629,
+  "packages": {
+    "Comune_HLOD0_Instancing.uasset": 1,
+    "AdvancedLocomotionV4": 346,
+    "Characters": 145,
+    "City_of_Brass_Enviroment": 76,
+    "ConstructionMachines": 734,
+    "Decals_mazza": 31,
+    "Drive": 213,
+    "Esercitazioni": 64,
+    "FirstPerson": 12,
+    "FirstPersonArms": 29,
+    "FPS_Weapon_Bundle": 218,
+    "FPWeapon": 20,
+    "LevelPrototyping": 13,
+    "Megapack": 2327,
+    "Megascans": 735,
+    "Megascans_2K": 433,
+    "Megascans_4K": 434,
+    "MetaHumans": 773,
+    "Migrated": 681,
+    "MSPresets": 94,
+    "OldWest": 133,
+    "OldWestAssets": 1645,
+    "PersonalStuff": 3,
+    "ProceduralBiomes": 569,
+    "RattoAnimNiag": 8,
+    "RuralAustralia": 7,
+    "SoulCity": 978,
+    "StarterContent": 264,
+    "Stunt": 12,
+    "ThirdPerson": 7,
+    "VehicleVarietyVol2": 154,
+    "__ExternalActors__": 2437,
+    "__ExternalObjects__": 33
+  },
+  "candidates": {
+    "intonaci_pietra_tetti": [
+      "/Game/Megapack/Material/Yakohama/MI_StuccoPainted_02",
+      "/Game/Megapack/Material/Yakohama/MI_Stucco_01",
+      "/Game/Megapack/Material/Yakohama/MI_Stucco_02",
+      "/Game/Megapack/Material/Yakohama/MI_Stucco_03",
+      "/Game/Megapack/Material/Yakohama/MI_Stucco_04",
+      "/Game/Megascans/Surfaces/Damaged_Brick_Wall_Plaster_vcvodh0/MI_Damaged_Brick_Wall_Plaster_vcvodh0_4K",
+      "/Game/Megascans/Surfaces/Mossy_Stone_Wall_ue4mcfelw/MI_Mossy_Stone_Wall_ue4mcfelw_8K",
+      "/Game/Megascans/Surfaces/Painted_Cracked_Concrete_Wall_sionccva/MI_Painted_Cracked_Concrete_Wall_sionccva_2K",
+      "/Game/Megascans/Surfaces/Red_Roof_Tiles_tfqnfggs/MI_Red_Roof_Tiles_tfqnfggs_4K",
+      "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/MI_Roman_Stone_Wall_tf2kaa2n_4K",
+      "/Game/Megascans/Surfaces/Roman_Stone_Wall_tgtldbtn/MI_Roman_Stone_Wall_tgtldbtn_4K",
+      "/Game/Megascans/Surfaces/Roman_Stone_Wall_thbgfiuo/MI_Roman_Stone_Wall_thbgfiuo_8K",
+      "/Game/Megascans/Surfaces/Roman_Stone_Wall_ti4lfiso/MI_Roman_Stone_Wall_ti4lfiso_4K",
+      "/Game/Megascans/Surfaces/Stone_Wall_uithbatlw/MI_Stone_Wall_uithbatlw_4K",
+      "/Game/Megascans/Surfaces/Stucco_Facade_wfnjdgl/MI_Stucco_Facade_wfnjdgl_2K",
+      "/Game/Megascans/Surfaces/Stucco_Facade_wi5hccujw/MI_Stucco_Facade_wi5hccujw_4K"
+    ],
+    "porte_finestre": [
+      "/Game/Esercitazioni/CasaFloresta/window_low",
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06a",
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_06c",
+      "/Game/OldWestAssets/OldWestVol6/VOL6/Meshes/SM_Door_Double_01a",
+      "/Game/SoulCity/Environment/Meshes/Building_Slum/SM_Slums_Window_01a",
+      "/Game/SoulCity/Environment/Meshes/Building_Slum/SM_Slums_Window_01f"
+    ],
+    "arredi": [
+      "/Game/OldWestAssets/OldWestVol3/VOL3/Meshes/SM_Lamp_01a",
+      "/Game/OldWestAssets/OldWestVol5/VOL5/Meshes/SM_Bench_01a"
+    ],
+    "vegetazione": [
+      "/Game/ProceduralBiomes/Meshes/SM_PalmTree01",
+      "/Game/ProceduralBiomes/Meshes/SM_PineGround",
+      "/Game/ProceduralBiomes/Meshes/SM_PineTree01",
+      "/Game/ProceduralBiomes/Meshes/SM_PineTree02"
+    ],
+    "strutture_personali": [
+      "/Game/Esercitazioni/CasaFloresta/CasaFloresta",
+      "/Game/Esercitazioni/CasaFloresta/Centro",
+      "/Game/Esercitazioni/CasaFloresta/Fontana",
+      "/Game/Migrated/Fontana"
+    ],
+    "cartelli": [
+      "/Game/SoulCity/Environment/Meshes/Building_Slum/SM_Slums_Sign02a"
+    ]
+  }
+}

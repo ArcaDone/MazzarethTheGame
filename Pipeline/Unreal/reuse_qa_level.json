@@ -1,0 +1,87 @@
+{
+  "level": "/Game/Mazzarino80/ReuseKit/Maps/L_ReuseKit_QA",
+  "pilots": [
+    {
+      "style": "STYLE_01",
+      "lot": "1249069204",
+      "stages": [
+        "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_01_1249069204_Facades",
+        "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_01_1249069204_Openings",
+        "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_01_1249069204_Roofs",
+        "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_01_1249069204_Details"
+      ],
+      "world_cm": [
+        0,
+        0,
+        0
+      ],
+      "mannequin_cm": [
+        -390,
+        -310,
+        0
+      ]
+    },
+    {
+      "style": "STYLE_02",
+      "lot": "1249068307",
+      "stages": [
+        "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_02_1249068307_Facades",
+        "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_02_1249068307_Openings",
+        "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_02_1249068307_Roofs",
+        "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_02_1249068307_Details"
+      ],
+      "world_cm": [
+        950,
+        0,
+        0
+      ],
+      "mannequin_cm": [
+        560,
+        -310,
+        0
+      ]
+    },
+    {
+      "style": "STYLE_03",
+      "lot": "1249069200",
+      "stages": [
+        "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_03_1249069200_Facades",
+        "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_03_1249069200_Openings",
+        "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_03_1249069200_Roofs",
+        "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_03_1249069200_Details"
+      ],
+      "world_cm": [
+        1900,
+        0,
+        0
+      ],
+      "mannequin_cm": [
+        1510,
+        -310,
+        0
+      ]
+    },
+    {
+      "style": "STYLE_04",
+      "lot": "1249069228",
+      "stages": [
+        "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_04_1249069228_Structure",
+        "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_04_1249069228_Facades",
+        "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_04_1249069228_Openings",
+        "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_04_1249069228_Roofs",
+        "/Game/Mazzarino80/ReuseKit/PilotStages/SM_M80_QA_STYLE_04_1249069228_Details"
+      ],
+      "world_cm": [
+        2850,
+        0,
+        0
+      ],
+      "mannequin_cm": [
+        2460,
+        -310,
+        0
+      ]
+    }
+  ],
+  "note": "Isolated visual QA; not the town PCG level."
+}

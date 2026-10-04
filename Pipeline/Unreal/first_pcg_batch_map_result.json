@@ -1,0 +1,647 @@
+{
+  "map": "/Game/Levels/Mazzarino80_PCG_Quartieri_Batch01",
+  "source": "/Game/Levels/Mazzarino80_PCG_Quartieri_Preview",
+  "lots": {
+    "1249069253": {
+      "district": "Q001",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249069253",
+      "volume": "PCG_Detail_1249069253",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 4,
+      "geometry_error": ""
+    },
+    "1249082264": {
+      "district": "Q001",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249082264",
+      "volume": "PCG_Detail_1249082264",
+      "facade_enabled": false,
+      "doors": 2,
+      "windows": 10,
+      "geometry_error": ""
+    },
+    "1249082269": {
+      "district": "Q001",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249082269",
+      "volume": "PCG_Detail_1249082269",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 5,
+      "geometry_error": ""
+    },
+    "1249082294": {
+      "district": "Q001",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249082294",
+      "volume": "PCG_Detail_1249082294",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 8,
+      "geometry_error": ""
+    },
+    "1249067196": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249067196",
+      "volume": "PCG_Detail_1249067196",
+      "facade_enabled": false,
+      "doors": 2,
+      "windows": 250,
+      "geometry_error": ""
+    },
+    "1249067205": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249067205",
+      "volume": "PCG_Detail_1249067205",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 5,
+      "geometry_error": ""
+    },
+    "1249067206": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249067206",
+      "volume": "PCG_Detail_1249067206",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 2,
+      "geometry_error": ""
+    },
+    "1249067208": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249067208",
+      "volume": "PCG_Detail_1249067208",
+      "facade_enabled": true,
+      "doors": 1,
+      "windows": 8,
+      "geometry_error": ""
+    },
+    "1249067209": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249067209",
+      "volume": "PCG_Detail_1249067209",
+      "facade_enabled": true,
+      "doors": 1,
+      "windows": 4,
+      "geometry_error": ""
+    },
+    "1249067216": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249067216",
+      "volume": "PCG_Detail_1249067216",
+      "facade_enabled": true,
+      "doors": 1,
+      "windows": 1,
+      "geometry_error": ""
+    },
+    "1249067217": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249067217",
+      "volume": "PCG_Detail_1249067217",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 5,
+      "geometry_error": ""
+    },
+    "1249067223": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249067223",
+      "volume": "PCG_Detail_1249067223",
+      "facade_enabled": true,
+      "doors": 1,
+      "windows": 3,
+      "geometry_error": ""
+    },
+    "1249067225": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249067225",
+      "volume": "PCG_Detail_1249067225",
+      "facade_enabled": true,
+      "doors": 1,
+      "windows": 1,
+      "geometry_error": ""
+    },
+    "1249067229": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249067229",
+      "volume": "PCG_Detail_1249067229",
+      "facade_enabled": true,
+      "doors": 1,
+      "windows": 4,
+      "geometry_error": ""
+    },
+    "1249067232": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249067232",
+      "volume": "PCG_Detail_1249067232",
+      "facade_enabled": true,
+      "doors": 1,
+      "windows": 1,
+      "geometry_error": ""
+    },
+    "1249067242": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249067242",
+      "volume": "PCG_Detail_1249067242",
+      "facade_enabled": true,
+      "doors": 1,
+      "windows": 3,
+      "geometry_error": ""
+    },
+    "1249067262": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249067262",
+      "volume": "PCG_Detail_1249067262",
+      "facade_enabled": true,
+      "doors": 1,
+      "windows": 2,
+      "geometry_error": ""
+    },
+    "1249067265": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249067265",
+      "volume": "PCG_Detail_1249067265",
+      "facade_enabled": true,
+      "doors": 1,
+      "windows": 5,
+      "geometry_error": ""
+    },
+    "1249067267": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249067267",
+      "volume": "PCG_Detail_1249067267",
+      "facade_enabled": true,
+      "doors": 1,
+      "windows": 8,
+      "geometry_error": ""
+    },
+    "1249067277": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249067277",
+      "volume": "PCG_Detail_1249067277",
+      "facade_enabled": true,
+      "doors": 1,
+      "windows": 4,
+      "geometry_error": ""
+    },
+    "1249068337": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249068337",
+      "volume": "PCG_Detail_1249068337",
+      "facade_enabled": true,
+      "doors": 1,
+      "windows": 4,
+      "geometry_error": ""
+    },
+    "1249068343": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249068343",
+      "volume": "PCG_Detail_1249068343",
+      "facade_enabled": true,
+      "doors": 2,
+      "windows": 16,
+      "geometry_error": ""
+    },
+    "1249069191": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249069191",
+      "volume": "PCG_Detail_1249069191",
+      "facade_enabled": true,
+      "doors": 1,
+      "windows": 2,
+      "geometry_error": ""
+    },
+    "1249069211": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249069211",
+      "volume": "PCG_Detail_1249069211",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 8,
+      "geometry_error": ""
+    },
+    "1249069239": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249069239",
+      "volume": "PCG_Detail_1249069239",
+      "facade_enabled": true,
+      "doors": 1,
+      "windows": 2,
+      "geometry_error": ""
+    },
+    "1249069241": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249069241",
+      "volume": "PCG_Detail_1249069241",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 5,
+      "geometry_error": ""
+    },
+    "1249069267": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249069267",
+      "volume": "PCG_Detail_1249069267",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 3,
+      "geometry_error": ""
+    },
+    "1249071118": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249071118",
+      "volume": "PCG_Detail_1249071118",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 8,
+      "geometry_error": ""
+    },
+    "1249071121": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249071121",
+      "volume": "PCG_Detail_1249071121",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 1,
+      "geometry_error": ""
+    },
+    "1249071125": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249071125",
+      "volume": "PCG_Detail_1249071125",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 1,
+      "geometry_error": ""
+    },
+    "1249071132": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249071132",
+      "volume": "PCG_Detail_1249071132",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 5,
+      "geometry_error": ""
+    },
+    "1249071138": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249071138",
+      "volume": "PCG_Detail_1249071138",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 2,
+      "geometry_error": ""
+    },
+    "1249071140": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249071140",
+      "volume": "PCG_Detail_1249071140",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 4,
+      "geometry_error": ""
+    },
+    "1249071149": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249071149",
+      "volume": "PCG_Detail_1249071149",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 4,
+      "geometry_error": ""
+    },
+    "1249071153": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249071153",
+      "volume": "PCG_Detail_1249071153",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 4,
+      "geometry_error": ""
+    },
+    "1249082254": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249082254",
+      "volume": "PCG_Detail_1249082254",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 2,
+      "geometry_error": ""
+    },
+    "1249082257": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249082257",
+      "volume": "PCG_Detail_1249082257",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 5,
+      "geometry_error": ""
+    },
+    "1249082258": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249082258",
+      "volume": "PCG_Detail_1249082258",
+      "facade_enabled": false,
+      "doors": 2,
+      "windows": 14,
+      "geometry_error": ""
+    },
+    "1249082259": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249082259",
+      "volume": "PCG_Detail_1249082259",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 6,
+      "geometry_error": ""
+    },
+    "1249082261": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249082261",
+      "volume": "PCG_Detail_1249082261",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 8,
+      "geometry_error": ""
+    },
+    "1249082271": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249082271",
+      "volume": "PCG_Detail_1249082271",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 12,
+      "geometry_error": ""
+    },
+    "1249082273": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249082273",
+      "volume": "PCG_Detail_1249082273",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 4,
+      "geometry_error": ""
+    },
+    "1249082275": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249082275",
+      "volume": "PCG_Detail_1249082275",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 8,
+      "geometry_error": ""
+    },
+    "1249082283": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249082283",
+      "volume": "PCG_Detail_1249082283",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 12,
+      "geometry_error": ""
+    },
+    "1249082286": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249082286",
+      "volume": "PCG_Detail_1249082286",
+      "facade_enabled": false,
+      "doors": 2,
+      "windows": 19,
+      "geometry_error": ""
+    },
+    "1249082289": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249082289",
+      "volume": "PCG_Detail_1249082289",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 4,
+      "geometry_error": ""
+    },
+    "1249082983": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249082983",
+      "volume": "PCG_Detail_1249082983",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 2,
+      "geometry_error": ""
+    },
+    "1249083019": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249083019",
+      "volume": "PCG_Detail_1249083019",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 2,
+      "geometry_error": ""
+    },
+    "1249083051": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249083051",
+      "volume": "PCG_Detail_1249083051",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 2,
+      "geometry_error": ""
+    },
+    "1249083059": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249083059",
+      "volume": "PCG_Detail_1249083059",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 8,
+      "geometry_error": ""
+    },
+    "1249083070": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249083070",
+      "volume": "PCG_Detail_1249083070",
+      "facade_enabled": false,
+      "doors": 2,
+      "windows": 13,
+      "geometry_error": ""
+    },
+    "1249083089": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249083089",
+      "volume": "PCG_Detail_1249083089",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 4,
+      "geometry_error": ""
+    },
+    "1249832594": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249832594",
+      "volume": "PCG_Detail_1249832594",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 2,
+      "geometry_error": ""
+    },
+    "372573548": {
+      "district": "Q002",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_372573548",
+      "volume": "PCG_Detail_372573548",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 2,
+      "geometry_error": ""
+    },
+    "1249054419": {
+      "district": "Q003",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249054419",
+      "volume": "PCG_Detail_1249054419",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 2,
+      "geometry_error": ""
+    },
+    "1249054423": {
+      "district": "Q003",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249054423",
+      "volume": "PCG_Detail_1249054423",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 2,
+      "geometry_error": ""
+    },
+    "1249068301": {
+      "district": "Q003",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249068301",
+      "volume": "PCG_Detail_1249068301",
+      "facade_enabled": true,
+      "doors": 1,
+      "windows": 4,
+      "geometry_error": ""
+    },
+    "1249068302": {
+      "district": "Q003",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249068302",
+      "volume": "PCG_Detail_1249068302",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 2,
+      "geometry_error": ""
+    },
+    "1249068303": {
+      "district": "Q003",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249068303",
+      "volume": "PCG_Detail_1249068303",
+      "facade_enabled": true,
+      "doors": 2,
+      "windows": 12,
+      "geometry_error": ""
+    },
+    "1249068304": {
+      "district": "Q003",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249068304",
+      "volume": "PCG_Detail_1249068304",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 4,
+      "geometry_error": ""
+    },
+    "1249068305": {
+      "district": "Q003",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249068305",
+      "volume": "PCG_Detail_1249068305",
+      "facade_enabled": false,
+      "doors": 1,
+      "windows": 4,
+      "geometry_error": ""
+    },
+    "1249068306": {
+      "district": "Q003",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249068306",
+      "volume": "PCG_Detail_1249068306",
+      "facade_enabled": true,
+      "doors": 5,
+      "windows": 32,
+      "geometry_error": ""
+    },
+    "1249068312": {
+      "district": "Q003",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249068312",
+      "volume": "PCG_Detail_1249068312",
+      "facade_enabled": true,
+      "doors": 1,
+      "windows": 1,
+      "geometry_error": ""
+    },
+    "1249068315": {
+      "district": "Q003",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249068315",
+      "volume": "PCG_Detail_1249068315",
+      "facade_enabled": true,
+      "doors": 1,
+      "windows": 2,
+      "geometry_error": ""
+    },
+    "1249068327": {
+      "district": "Q003",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249068327",
+      "volume": "PCG_Detail_1249068327",
+      "facade_enabled": true,
+      "doors": 1,
+      "windows": 6,
+      "geometry_error": ""
+    },
+    "1249069252": {
+      "district": "Q003",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_1249069252",
+      "volume": "PCG_Detail_1249069252",
+      "facade_enabled": true,
+      "doors": 1,
+      "windows": 4,
+      "geometry_error": ""
+    },
+    "372573577": {
+      "district": "Q003",
+      "graph": "/Game/Mazzarino80/PCG/DistrictBatch01_Details/PCG_Detail_372573577",
+      "volume": "PCG_Detail_372573577",
+      "facade_enabled": false,
+      "doors": 3,
+      "windows": 168,
+      "geometry_error": ""
+    }
+  },
+  "errors": [],
+  "detailed_facades_enabled": [
+    "1249067208",
+    "1249067209",
+    "1249067216",
+    "1249067223",
+    "1249067225",
+    "1249067229",
+    "1249067232",
+    "1249067242",
+    "1249067262",
+    "1249067265",
+    "1249067267",
+    "1249067277",
+    "1249068337",
+    "1249068343",
+    "1249069191",
+    "1249069239",
+    "1249068301",
+    "1249068303",
+    "1249068306",
+    "1249068312",
+    "1249068315",
+    "1249068327",
+    "1249069252"
+  ],
+  "source_hashes_before": {
+    "panorama": "980f6973d6fd5dfb7ae8b1bace63041f4d2d18d8a422a55f5e3363e4643a96e7",
+    "sample": "fd4f48df29008d4f3765ba3ffded89d598ff03ac5835628f8b42279fb9bdf034",
+    "preview": "bd12bf5eeff97e665c0ecf4fa4fa85a9a3f5740b8fd7406ea42293e58d1be7eb"
+  },
+  "source_hashes_after": {
+    "panorama": "980f6973d6fd5dfb7ae8b1bace63041f4d2d18d8a422a55f5e3363e4643a96e7",
+    "sample": "fd4f48df29008d4f3765ba3ffded89d598ff03ac5835628f8b42279fb9bdf034",
+    "preview": "bd12bf5eeff97e665c0ecf4fa4fa85a9a3f5740b8fd7406ea42293e58d1be7eb"
+  },
+  "source_maps_unchanged": true,
+  "saved": true
+}

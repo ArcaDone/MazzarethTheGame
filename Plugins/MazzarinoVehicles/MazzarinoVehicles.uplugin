@@ -1,0 +1,12 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0",
+  "FriendlyName": "Mazzarino - Veicoli",
+  "Description": "Auto d'epoca guidabili (Fiat 126, Ape) con guida tarata per tipo, e modalita di prova guida.",
+  "Category": "Gameplay",
+  "CanContainContent": false,
+  "EnabledByDefault": true,
+  "Plugins": [{"Name": "ChaosVehiclesPlugin", "Enabled": true}, {"Name": "EnhancedInput", "Enabled": true}],
+  "Modules": [{"Name": "MazzarinoVehicles", "Type": "Runtime", "LoadingPhase": "Default", "PlatformAllowList": ["Win64"]}]
+}

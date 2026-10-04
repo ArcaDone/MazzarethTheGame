@@ -1,13 +1,14 @@
 # Mazzarino 80 – Piano per arrivare a un "GTA" completo
 
-Linea guida per i prossimi step (4 ottobre 2026). Ogni fase ha l'obiettivo, i passi e il criterio
+Linea guida per i prossimi step (creato il 4 ottobre 2026, aggiornato la sera stessa). Ogni fase ha l'obiettivo, i passi e il criterio
 "fatto quando". Le fasi sono in ordine consigliato: ognuna si appoggia alle precedenti. Le case
 (PIANO_CASE_V3.md) proseguono in parallelo.
 
-Regole che restano valide: commit atomici con push uno alla volta; mai salvare le mappe originali
-(`Mazzarino80_CaseStoriche_Campione`); quota LFS quasi piena (avvisare prima di committare mappe
-grandi, `L_M80_Paese` ≈ 114 MB per commit); ogni funzione nuova ha il suo test automatico in PIE
-(`Scripts/m80_*_test.py`) con foto.
+Regole che restano valide: commit atomici con push uno alla volta, solo percorsi espliciti in `git add`;
+mappa ufficiale e sorgente unica `L_M80_Paese`, mappa d'apertura `Main` (leggera); quota LFS: dopo il
+reset della storia del 4 ottobre si usano circa 4,9 GB su 10, ma ogni commit di `L_M80_Paese` costa
+100-200 MB finché non è "un file per attore" (vedi Punti aperti); ogni funzione nuova ha il suo test
+automatico in PIE (`Scripts/m80_*_test.py`) con foto.
 
 ---
 
@@ -15,7 +16,12 @@ grandi, `L_M80_Paese` ≈ 114 MB per commit); ogni funzione nuova ha il suo test
 
 - Paese `L_M80_Paese`: terreno reale, strade OSM dipinte, case procedurali e fatte a mano, marciapiedi,
   cartelli, manifesti, palazzi neoclassici.
-- Auto guidabili Fiat 126 e Ape con fisica Chaos tarata; livello di prova `L_M80_ProvaGuida`.
+- Marciapiedi a spline: aperti, ad anello (spline chiusa) o piazza riempita con cordolo.
+- Edificio delle Poste Italiane con traliccio (Nanite), importato da Blender.
+- Veicoli guidabili: Fiat 126, Ape, Fiat Panda, Fiat 127, Fiat Uno, Golf GTI e Vespa (sta in piedi e
+  piega in curva); nessun testacoda né ribaltamento nel test di guida; livello `L_M80_ProvaGuida`.
+- Pipeline Blender → Unreal per veicoli ed edifici (`m80_prepare_vehicle.py` +
+  `m80_import_blender_assets.py`): pulizia, ruote, decimazione, rig, materiali, physics asset, LOD.
 - Giocatore MetaHuman in tuta acetata viola e occhiali; locomozione del Game Animation Sample (GASP):
   cammina, corre, scatta, si accovaccia, scavalca.
 - E: sali/scendi dall'auto (o salti giù in corsa); posa di guida.
@@ -23,6 +29,13 @@ grandi, `L_M80_Paese` ≈ 114 MB per commit); ogni funzione nuova ha il suo test
   nomi di vie e veicoli.
 - Vita, armatura, stamina; danni da cadute e investimenti; morte con ragdoll, "SEI MORTO", ritorno
   all'ospedale (L. 5.000).
+
+- Fase 1 (armi) in gran parte fatta: armi a terra da raccogliere, quattro slot (pugni, coltello, mazza,
+  revolver, Beretta, lupara), mira con IK delle braccia sul mirino, rinculo, ricarica, lasciare l'arma;
+  caduta e rialzata, capriola uscendo dall'auto in corsa; HUD dell'arma e mirino.
+- Fase 2 (guida) in parte fatta: salute dell'auto da urti e spari, fumo, fuoco ed esplosione, fari e
+  stop, suono del motore con i giri, clacson, guarda indietro, auto parcheggiate chiuse, tachimetro,
+  niente testacoda in curva veloce, 7 veicoli guidabili.
 
 Tasti attuali: WASD, mouse, Shift scatto, Ctrl cammina, C accovacciati, Spazio salto/scavalca,
 E auto, M mappa, P pausa. In auto: W/S, A/D, Spazio freno a mano, C camera, R raddrizza.
@@ -55,6 +68,9 @@ Obiettivo: raccogliere, usare e lasciare armi come in GTA Vice City.
 Fatto quando: nel paese ci sono armi a terra, le prendi, le cambi, spari a bersagli e auto, le lasci
 cadere; test automatico con foto.
 
+Stato: fatti i punti 1-3, 5 (senza lock-on da gamepad), 6 in parte (fori, vetri), 8 e 9. Restano:
+fucile da caccia, lock-on, sangue e scintille, combo di pugni e corpo a corpo completo.
+
 ## 2. Guida completa
 
 Obiettivo: auto che si guidano e si rompono come in GTA, più veicoli d'epoca.
@@ -73,6 +89,11 @@ Obiettivo: auto che si guidano e si rompono come in GTA, più veicoli d'epoca.
 
 Fatto quando: auto che si danneggiano ed esplodono, almeno 6 veicoli guidabili, furto d'auto
 con guidatore.
+
+Stato: fatti i punti 2 (senza pezzi staccabili e gomme forate), 3, 6 (Vespa) e 7 (tachimetro);
+Panda, 127, Uno, Golf e Vespa importati. Restano: visuale dal cofano, ammaccature e pezzi
+staccabili, gomme forate, apertura animata della portiera, trascinare fuori il guidatore, Ritmo,
+Giulietta, Ciao, trattore, Alfetta dei Carabinieri, ambulanza, autobus AST, nome della radio.
 
 ## 3. Paese vivo
 
@@ -178,5 +199,28 @@ Fatto quando: si inizia da un menu, si salva e si ricarica la partita, l'HUD è 
 | D – "Storia" | 7, 8 | Prime missioni con dialoghi e radio |
 | E – "Mondo" | 9, 10 | Campagna, build impacchettata |
 
-Prossimo passo concreto: fase 1, punti 1-3 e 9 (sistema armi, raccolta/rilascio, pistola e lupara,
-HUD dell'arma), poi le animazioni di mira.
+Prossimo passo concreto: chiudere i punti aperti tecnici qui sotto, poi completare la fase 2 (furto
+d'auto con il guidatore, portiere, danni visibili) per chiudere il traguardo A e passare alla fase 3.
+
+---
+
+## Punti aperti (tecnici, fuori dalla direzione di gioco)
+
+1. **Ricuocere il paese.** `L_M80_Paese` contiene il terreno ritoccato a mano il 4 ottobre e le case
+   ancora in anteprima live (mappa a circa 200 MB). Rilanciare il bake: `Scripts/m80_houses_bake.py`
+   con `M80_BAKE_MAP=/Game/Mazzarino80/Houses/Maps/L_M80_Paese` e `M80_BAKE_CAPTURE=0`
+   (o il passo in `Scripts/m80_town_finish.ps1`), controllare le case sui pendii modificati, poi
+   commit della mappa.
+2. **"Un file per attore" (One File Per Actor) su `L_M80_Paese`.** Oggi la mappa è un file unico e
+   ogni commit la ricarica tutta su LFS (100-200 MB). Con un file per attore ogni casa, marciapiede o
+   pezzo di terreno è un file piccolo e un commit salva solo ciò che è cambiato. Da fare a editor
+   chiuso, dopo il bake: funzione in `UM80EditorLibrary` che attiva gli attori esterni sul livello,
+   converte e salva; verificare che la mappa si apra uguale; il primo commit dopo la conversione è
+   grande (tutta la mappa in tanti file), i successivi piccoli.
+3. Mappe `DefaultLevel` e `PaintLandscapeMaterial`: risultavano modificate da una sessione
+   dell'editor e sono entrate così nel commit del 4 ottobre; controllare che vadano bene.
+4. `.git_old` (38 GB, fuori da git) contiene la vecchia storia di 95 commit: spostarlo su un altro
+   disco o cancellarlo quando non serve più. Il Cestino contiene le mappe tolte che non erano in git
+   (circa 1,5 GB).
+5. Poste: alcune lamelle della facciata sono storte come nel modello originale; sistemarle in Blender
+   se danno fastidio, poi reimportare con la pipeline.

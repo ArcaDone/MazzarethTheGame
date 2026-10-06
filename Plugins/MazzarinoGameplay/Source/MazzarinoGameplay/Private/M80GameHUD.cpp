@@ -1,4 +1,5 @@
 #include "M80GameHUD.h"
+#include "M80Atmosphere.h"
 #include "M80Car.h"
 #include "M80PlayerController.h"
 #include "M80Vitals.h"
@@ -328,8 +329,9 @@ void AM80GameHUD::DrawStatus(float S)
 	const AM80PlayerController* PC = Cast<AM80PlayerController>(PlayerOwner);
 	const float R = Canvas->ClipX - 40.f * S;
 	float Y = 30.f * S;
-	// Clock.
-	const float Minutes = StartHour * 60.f + GetWorld()->GetTimeSeconds();
+	// Clock: the atmosphere's (sun and clock together), else from the start hour.
+	const AM80Atmosphere* Atmosphere = AM80Atmosphere::Find(this);
+	const float Minutes = Atmosphere ? Atmosphere->GetHour() * 60.f : StartHour * 60.f + GetWorld()->GetTimeSeconds();
 	const int32 Hh = FMath::FloorToInt(Minutes / 60.f) % 24, Mm = FMath::FloorToInt(Minutes) % 60;
 	Text(FString::Printf(TEXT("%02d:%02d"), Hh, Mm), R, Y, White, 1.25f * S, true);
 	Y += 44.f * S;

@@ -6,6 +6,6 @@ public class MazzarinoGameplay : ModuleRules
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
         PublicDependencyModuleNames.AddRange(new[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "ChaosVehicles", "RenderCore", "AnimGraphRuntime", "AnimationCore",
-            "MazzarinoVehicles", "MazzarinoRoads" });
+            "MazzarinoVehicles", "MazzarinoRoads", "GeometryCore", "GeometryFramework", "Landscape" });
     }
 }

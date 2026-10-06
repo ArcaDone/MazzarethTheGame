@@ -13,6 +13,7 @@ import json
 import math
 import os
 import sys
+import time
 from pathlib import Path
 
 import unreal
@@ -136,7 +137,9 @@ def summarize(csv_path):
 
 def run():
     result = {"map": MAP, "frames_per_view": FRAMES, "views": {}}
+    start = time.time()
     unreal.EditorLoadingAndSavingUtils.load_map(MAP)
+    result["load_seconds"] = round(time.time() - start, 1)
     yield 60
     m80_seq.console("t.MaxFPS 0")
     m80_seq.console("r.VSync 0")

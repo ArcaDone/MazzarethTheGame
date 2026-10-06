@@ -788,12 +788,11 @@ void AM80House::RefreshProps()
 			C->SetupAttachment(Footprint);
 			C->SetMobility(EComponentMobility::Static);
 			C->SetStaticMesh(Prop.Mesh);
-			if (Prop.bPlant)
-			{
-				// Plants: no collision, and they fade out with distance like foliage.
-				C->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-				C->SetCullDistances(0, 9000);
-			}
+			// Small details: no collision or navigation (thousands of instances in a town slow loading
+			// down), and they disappear with distance like foliage; plants reach a little further.
+			C->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			C->SetCanEverAffectNavigation(false);
+			C->SetCullDistances(0, Prop.bPlant ? 9000 : 6000);
 			C->RegisterComponent();
 			PropComponents.Add(C);
 		}

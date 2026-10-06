@@ -7,6 +7,9 @@
 
 AM80ExclusionZone::AM80ExclusionZone()
 {
+#if WITH_EDITORONLY_DATA
+	bIsSpatiallyLoaded = false;   // World Partition: a house must always see its zone, whatever is loaded
+#endif
 	PrimaryActorTick.bCanEverTick = false;
 	Outline = CreateDefaultSubobject<USplineComponent>(TEXT("Outline"));
 	SetRootComponent(Outline);

@@ -1,8 +1,10 @@
 """Exclusion zones around the hand-made buildings placed in the town map (L_M80_Paese).
 
 Every blueprint actor whose class lives under /Game/Migrated (scuola, castello, chiese, Agip, ...),
-trees excepted, and every static mesh imported from Blender under /Game/Mazzarino80/Buildings, gets an "Zona senza case procedurali" shaped as the convex hull of its meshes plus a
-margin: the procedural houses under it disappear (they come back if the zone is switched off or
+trees excepted, and every static mesh imported from Blender under /Game/Mazzarino80/Buildings, gets "Zone senza case procedurali" shaped as its real footprint (m80_footprints.py: walls and
+roofs traced from above, squares, sidewalks and trees left out, one zone per separate block) plus
+a 2 m margin; buildings without collision fall back to the convex hull of their meshes. The
+procedural houses under a zone disappear (they come back if the zone is switched off or
 deleted). Zones are named Zona_<building> in the folder Mazzarino80/Zone_escluse and are recreated on
 every run, so moving a building and re-running keeps them in sync; hand-drawn zones are not touched.
 Env: M80_ZONES_MAP, M80_ZONES_MARGIN_CM (default 150).
@@ -16,6 +18,7 @@ from pathlib import Path
 import unreal
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+import m80_footprints  # noqa: E402
 import m80_seq  # noqa: E402
 
 ROOT = Path(unreal.Paths.project_dir())
@@ -97,16 +100,23 @@ def run():
                  or is_imported_building(a)]
     houses = [h for h in actors if isinstance(h, unreal.M80House)]
     before = {h.get_name() for h in houses if h.is_excluded()}
+    polys = []
     for b in buildings:
-        poly = hull(footprint_points(b))
-        if len(poly) < 3:
+        traced = [p for p in m80_footprints.footprints(world, b) if len(p) >= 3]
+        if traced:
+            polys += [(b, "Zona_{}_{}".format(b.get_actor_label(), k + 1) if len(traced) > 1 else "Zona_" + b.get_actor_label(), p, "traced")
+                      for k, p in enumerate(traced)]
             continue
-        poly = grow(poly, MARGIN)
+        poly = hull(footprint_points(b))
+        if len(poly) >= 3:
+            polys.append((b, "Zona_" + b.get_actor_label(), grow(poly, MARGIN), "hull"))
+        yield 1
+    for b, label, poly, how in polys:
         cx = sum(p[0] for p in poly) / len(poly)
         cy = sum(p[1] for p in poly) / len(poly)
         z = b.get_actor_location().z
         zone = eas.spawn_actor_from_class(unreal.M80ExclusionZone, unreal.Vector(cx, cy, z))
-        zone.set_actor_label("Zona_" + b.get_actor_label())
+        zone.set_actor_label(label)
         zone.set_folder_path(FOLDER)
         outline = zone.get_editor_property("outline")
         outline.set_spline_points([unreal.Vector(x, y, z) for x, y in poly], unreal.SplineCoordinateSpace.WORLD, True)
@@ -114,7 +124,7 @@ def run():
             outline.set_spline_point_type(i, unreal.SplinePointType.LINEAR, False)
         outline.set_closed_loop(True, True)
         zone.refresh_houses()
-        report["zones"][b.get_actor_label()] = {"points": len(poly), "center": [round(cx), round(cy)]}
+        report["zones"][label] = {"points": len(poly), "center": [round(cx), round(cy)], "shape": how}
     yield 10
     for h in houses:
         h.apply_exclusion()

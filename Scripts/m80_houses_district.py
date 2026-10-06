@@ -2,8 +2,9 @@
 
 Creates /Game/Mazzarino80/Houses/Maps/L_M80_District_V2 as a copy of the town overview
 map, removes the old placeholder building volumes and spawns one AM80House per OSM lot
-within a radius. Hand-made landmark structures already in the map are kept: lots whose
-centre falls inside one of them are skipped.
+within a radius. Hand-made landmark structures already in the map are kept: lots inside the box of
+one of them are skipped when a wall or roof of it really stands there (m80_footprints.py), so the
+squares and sidewalks modelled with a landmark still get their houses around.
 
 Env: M80_DISTRICT_RADIUS_M (default 160; "all" takes every OSM lot), M80_DISTRICT_CENTER "x,y" in cm
      (default: centre of the 18 sample lots), M80_DISTRICT_REBUILD_MAP=1 recreates the map,
@@ -26,6 +27,7 @@ from pathlib import Path
 import unreal
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+import m80_footprints  # noqa: E402
 import m80_seq  # noqa: E402
 
 ROOT = Path(unreal.Paths.project_dir())
@@ -74,8 +76,21 @@ def landmark_boxes(world):
         origin, extent = actor.get_actor_bounds(False)
         if 300 < max(extent.x, extent.y) < 15000 and extent.z > 250:
             # Shrink a little: OSM outlines rarely match the modelled walls exactly.
-            boxes.append((origin.x - extent.x * 0.9, origin.y - extent.y * 0.9, origin.x + extent.x * 0.9, origin.y + extent.y * 0.9, actor.get_actor_label()))
+            boxes.append((origin.x - extent.x * 0.9, origin.y - extent.y * 0.9, origin.x + extent.x * 0.9, origin.y + extent.y * 0.9,
+                          actor.get_actor_label(), actor, origin.z + extent.z + 2000, origin.z - extent.z - 5000))
     return boxes
+
+
+def built_over(world, box, lot):
+    """The lot is taken by the landmark: its centre or most of its inner points hit a wall or roof."""
+    actor, top, bottom = box[5], box[6], box[7]
+    x, y = lot["center_cm"][0], lot["center_cm"][1]
+    if m80_footprints.structure_at(world, actor, x, y, top, bottom):
+        return True
+    ring = lot["ring_cm"]
+    inner = [(x + (p[0] - x) * 0.6, y + (p[1] - y) * 0.6) for p in ring]
+    hits = sum(m80_footprints.structure_at(world, actor, px, py, top, bottom) for px, py in inner)
+    return hits * 2 > len(inner)
 
 
 def prepare_map():
@@ -135,7 +150,7 @@ def run():
         if isinstance(tags, dict) and tags.get("building") in SKIP_TAGS:
             not_houses.append(lot["id"])
             continue
-        if any(b[0] < x < b[2] and b[1] < y < b[3] for b in boxes):
+        if any(b[0] < x < b[2] and b[1] < y < b[3] and built_over(world, b, lot) for b in boxes):
             skipped.append(lot["id"])
             continue
         if unreal.M80ExclusionZone.is_point_excluded(world, unreal.Vector(x, y, z)) and lot["id"] not in existing:

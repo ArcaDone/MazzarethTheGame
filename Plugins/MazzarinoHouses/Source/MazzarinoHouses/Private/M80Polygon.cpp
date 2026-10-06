@@ -172,7 +172,7 @@ TArray<FVector2D> OffsetEdges(const TArray<FVector2D>& P, const TArray<double>& 
 		const double T = (Delta.X * D1.Y - Delta.Y * D1.X) / Det;
 		Out[i] = A0 + D0 * T;
 		// Very sharp corners would spike far away: clamp to a sane miter.
-		const double MaxShift = 3.0 * FMath::Max(Distance[Prev], Distance[i]) + 1.0;
+		const double MaxShift = 3.0 * FMath::Max(FMath::Abs(Distance[Prev]), FMath::Abs(Distance[i])) + 1.0;
 		if (FVector2D::Distance(Out[i], P[i]) > MaxShift)
 		{
 			Out[i] = P[i] + (Out[i] - P[i]).GetSafeNormal() * MaxShift;

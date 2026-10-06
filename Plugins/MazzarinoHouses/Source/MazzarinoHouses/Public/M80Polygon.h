@@ -21,7 +21,7 @@ namespace M80Poly
 	/** Miter direction at vertex i: offsetting by Miter*d moves both adjacent edges outward by d. */
 	MAZZARINOHOUSES_API FVector2D Miter(const TArray<FVector2D>& P, int32 Vertex, double MaxScale = 3.0);
 
-	/** Offsets each edge outward by its own distance (0 keeps the edge in place). */
+	/** Offsets each edge outward by its own distance (0 keeps the edge in place, negative moves it inward). */
 	MAZZARINOHOUSES_API TArray<FVector2D> OffsetEdges(const TArray<FVector2D>& P, const TArray<double>& EdgeDistance);
 
 	/** Direction of the long axis of the minimum-area bounding rectangle. */

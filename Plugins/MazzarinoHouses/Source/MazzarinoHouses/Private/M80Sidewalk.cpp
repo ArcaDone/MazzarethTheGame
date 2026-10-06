@@ -225,7 +225,7 @@ double AM80Sidewalk::BuildFill(double Top)
 	FM80MeshBuffer Mesh;
 	const double Cell = 200.0;
 	const FBox2D Box(Outline);
-	const FVector3d Up(0, 0, 1);
+	const FVector3d FacingUp(0, 0, 1);
 	for (double X0 = FMath::FloorToDouble(Box.Min.X / Cell) * Cell; X0 < Box.Max.X; X0 += Cell)
 	{
 		const TArray<FVector2D> Column = M80Poly::ClipHalfPlane(M80Poly::ClipHalfPlane(Outline, FVector2D(1, 0), X0, true), FVector2D(1, 0), X0 + Cell, false);
@@ -254,7 +254,7 @@ double AM80Sidewalk::BuildFill(double Top)
 			for (int32 t = 0; t + 2 < Tris.Num(); t += 3)
 			{
 				const int32 A = Tris[t], B = Tris[t + 1], C = Tris[t + 2];
-				Mesh.Tri(0, V[A], V[B], V[C], FVector2f(Piece[A] / 100.0), FVector2f(Piece[B] / 100.0), FVector2f(Piece[C] / 100.0), Up);
+				Mesh.Tri(0, V[A], V[B], V[C], FVector2f(Piece[A] / 100.0), FVector2f(Piece[B] / 100.0), FVector2f(Piece[C] / 100.0), FacingUp);
 			}
 		}
 	}

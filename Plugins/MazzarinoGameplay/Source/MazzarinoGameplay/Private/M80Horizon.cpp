@@ -50,6 +50,9 @@ FVector3f FieldColour(double Pick, double Shade)
 
 AM80Horizon::AM80Horizon()
 {
+#if WITH_EDITORONLY_DATA
+	bIsSpatiallyLoaded = false;   // World Partition: sky and horizon are always loaded, whatever region is open
+#endif
 	PrimaryActorTick.bCanEverTick = false;
 	Land = CreateDefaultSubobject<UDynamicMeshComponent>(TEXT("Land"));
 	SetRootComponent(Land);

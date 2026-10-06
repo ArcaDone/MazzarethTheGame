@@ -50,6 +50,9 @@ FVector4 Lerp4(const FVector4& A, const FVector4& B, float T) { return A + (B - 
 
 AM80Atmosphere::AM80Atmosphere()
 {
+#if WITH_EDITORONLY_DATA
+	bIsSpatiallyLoaded = false;   // World Partition: sky and horizon are always loaded, whatever region is open
+#endif
 	PrimaryActorTick.bCanEverTick = true;
 	USceneComponent* Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	SetRootComponent(Root);

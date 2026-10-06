@@ -174,7 +174,7 @@ Fatto quando: si inizia da un menu, si salva e si ricarica la partita, l'HUD è 
 
 ## 9. Mondo più grande
 
-1. Estendere case e dettagli a tutto il paese (PIANO_CASE_V3.md).
+1. Estendere case e dettagli a tutto il paese (generatore descritto nel README).
 2. Campagna intorno: strade provinciali, uliveti, campi di grano, masserie, cave.
 3. Altri luoghi raggiungibili in auto (frazioni, lago, paesi vicini in versione ridotta).
 4. Prestazioni: World Partition con streaming, HLOD, Nanite per le case, LOD per auto e pedoni.

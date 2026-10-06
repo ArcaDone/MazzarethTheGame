@@ -6,6 +6,7 @@
 #include "Components/SkyLightComponent.h"
 #include "Components/VolumetricCloudComponent.h"
 #include "EngineUtils.h"
+#include "M80StreetLight.h"
 #include "Kismet/KismetMaterialLibrary.h"
 #include "Materials/MaterialParameterCollection.h"
 #include "Materials/MaterialInstanceDynamic.h"
@@ -301,10 +302,19 @@ void AM80Atmosphere::ApplyAt(float AtHour)
 	P.bOverride_AutoExposureMaxBrightness = true;
 	P.AutoExposureMaxBrightness = 16.f;
 
+	// Street lamps switch on just after sunset; only touched when the value changes.
+	const float Lamps = 1.f - FMath::SmoothStep(-3.f, 2.f, Elevation);
+	if (FMath::Abs(Lamps - StreetLights) > 0.01f || (Lamps > 0.f) != (StreetLights > 0.f))
+	{
+		StreetLights = Lamps;
+		AM80StreetLight::SetNightForAll(GetWorld(), Lamps);
+	}
+
 	// Rooms behind the windows: dark by day (as seen from a sunny street), lit at dusk and at night.
 	if (MaterialValues)
 	{
 		UKismetMaterialLibrary::SetScalarParameterValue(this, MaterialValues, TEXT("Finestre"), FMath::Lerp(0.12f, 1.f, FMath::Max(Night, 0.5f * Golden)));
 		UKismetMaterialLibrary::SetScalarParameterValue(this, MaterialValues, TEXT("Notte"), Night);
+		UKismetMaterialLibrary::SetScalarParameterValue(this, MaterialValues, TEXT("Lampioni"), Lamps);
 	}
 }

@@ -112,6 +112,10 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Atmosfera")
 	float GetSunElevation() const { return SunElevation; }
 
+	/** Street lamps: 0 by day, 1 from a little after sunset to a little before sunrise. */
+	UFUNCTION(BlueprintPure, Category = "Atmosfera")
+	float GetStreetLights() const { return StreetLights; }
+
 	/** The atmosphere actor of a world, if any. */
 	UFUNCTION(BlueprintPure, Category = "Atmosfera", meta = (WorldContext = "WorldContextObject"))
 	static AM80Atmosphere* Find(const UObject* WorldContextObject);
@@ -126,5 +130,6 @@ private:
 
 	float CurrentHour = 17.5f;
 	float SunElevation = 20.f;
+	float StreetLights = 0.f;
 	float SinceApply = 0.f;
 };

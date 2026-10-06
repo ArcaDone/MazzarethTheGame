@@ -19,7 +19,7 @@ $Jobs = @(
     @{  # Main Unreal project (history is on GitHub, so .git is skipped)
         Src = 'D:\UE5Projects\GameAnimationSample'
         Dst = "$Dest\GameAnimationSample"
-        XD  = @('.git', '.vs', 'Binaries', 'Intermediate', 'DerivedDataCache', 'Saved', '__pycache__')
+        XD  = @('.git', '.git_old', '.vs', 'Binaries', 'Intermediate', 'DerivedDataCache', 'Saved', '__pycache__')
         XF  = @('*.blend1', '*.tmp', '*.pyc')
     },
     @{  # Editor autosaves and Mazzarino80 work backups/reports

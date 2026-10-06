@@ -63,11 +63,6 @@ def run():
     cc = cam.get_editor_property("camera_component")
     cc.set_editor_property("constrain_aspect_ratio", False)
     report = {}
-    # Re-register the horizon: right after loading it can draw a stray grey band in the sky.
-    land = horizon.get_editor_property("land")
-    land.set_visibility(False)
-    yield 5
-    land.set_visibility(True)
     yield 300   # Nanite, distance fields and Lumen settle
     for name, hour, weather, eye, target, fov in shots(world, atmo, horizon):
         atmo.set_editor_property("weather", weather)

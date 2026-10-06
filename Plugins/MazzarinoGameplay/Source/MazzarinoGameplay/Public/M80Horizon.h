@@ -61,4 +61,8 @@ public:
 
 	UFUNCTION(CallInEditor, BlueprintCallable, Category = "Orizzonte", meta = (DisplayName = "Ricostruisci"))
 	void Rebuild();
+
+	/** World positions of the ring vertices (checks from scripts). */
+	UFUNCTION(BlueprintCallable, Category = "Orizzonte")
+	TArray<FVector> GetLandPoints() const;
 };

@@ -243,7 +243,12 @@ void AM80Atmosphere::ApplyAt(float AtHour)
 	Fog->SetSecondFogDensity(W.ValleyFogDensity);
 	Fog->SetSecondFogHeightFalloff(0.8f);
 	Fog->SetSecondFogHeightOffset(-9000.f);
-	Fog->SetFogInscatteringColor(FMath::Lerp(FLinearColor(0.012f, 0.016f, 0.03f), FLinearColor(0.5f, 0.47f, 0.42f), Day) * W.Tint);
+	// Haze colour: warm grey by day, deep blue in the blue hour (sun just below the horizon), dark at night.
+	const float Blue = 1.f - FMath::SmoothStep(-2.f, 3.f, Elevation);
+	const FLinearColor DayHaze = FMath::Lerp(FLinearColor(0.5f, 0.47f, 0.42f), FLinearColor(0.06f, 0.09f, 0.19f), Blue);
+	Fog->SetFogInscatteringColor(FMath::Lerp(DayHaze, FLinearColor(0.012f, 0.016f, 0.03f), Night) * W.Tint);
+	// Never fully opaque: the far hills and Etna stay readable as pale layers instead of cutting the clouds.
+	Fog->SetFogMaxOpacity(Weather == EM80Weather::Scirocco ? 0.97f : 0.88f);
 	Fog->SetDirectionalInscatteringColor(FMath::Lerp(FLinearColor(0.35f, 0.3f, 0.24f), FLinearColor(0.95f, 0.55f, 0.25f), Golden) * Day);
 	Fog->SetDirectionalInscatteringExponent(6.f);
 	Fog->SetDirectionalInscatteringStartDistance(4000.f);

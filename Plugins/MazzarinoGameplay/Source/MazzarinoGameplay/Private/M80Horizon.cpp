@@ -233,3 +233,17 @@ void AM80Horizon::Rebuild()
 	Land->ConfigureMaterialSet({Material ? Material.Get() : UMaterial::GetDefaultMaterial(MD_Surface)});
 	BuildInfo = FString::Printf(TEXT("%d triangoli, bordo mappa a %.0f m, Etna alto %.0f m a %.0f km"), Tris, BaseZ / 100.0, EtnaH / 100.0, EtnaDistanceKm);
 }
+
+TArray<FVector> AM80Horizon::GetLandPoints() const
+{
+	TArray<FVector> Points;
+	const FTransform T = Land->GetComponentTransform();
+	Land->ProcessMesh([&Points, &T](const FDynamicMesh3& Mesh)
+	{
+		for (int32 Vid : Mesh.VertexIndicesItr())
+		{
+			Points.Add(T.TransformPosition(Mesh.GetVertex(Vid)));
+		}
+	});
+	return Points;
+}

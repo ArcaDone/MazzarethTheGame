@@ -1,21 +1,23 @@
 # Mazzarino 80 – Piano per arrivare a un "GTA" completo
 
-Linea guida per i prossimi step (creato il 4 ottobre 2026, aggiornato la sera stessa). Ogni fase ha l'obiettivo, i passi e il criterio
-"fatto quando". Le fasi sono in ordine consigliato: ognuna si appoggia alle precedenti. Le case
-(PIANO_CASE_V3.md) proseguono in parallelo.
+Linea guida per i prossimi step (creato il 4 ottobre 2026, aggiornato il 7 ottobre). Ogni fase ha l'obiettivo, i passi e il criterio
+"fatto quando". Le fasi sono in ordine consigliato: ognuna si appoggia alle precedenti. Lo stato del
+progetto, gli strumenti, gli script e il backup sono descritti nel `README.md` del progetto.
 
 Regole che restano valide: commit atomici con push uno alla volta, solo percorsi espliciti in `git add`;
-mappa ufficiale e sorgente unica `L_M80_Paese`, mappa d'apertura `Main` (leggera); quota LFS: dopo il
-reset della storia del 4 ottobre si usano circa 4,9 GB su 10, ma ogni commit di `L_M80_Paese` costa
-100-200 MB finché non è "un file per attore" (vedi Punti aperti); ogni funzione nuova ha il suo test
-automatico in PIE (`Scripts/m80_*_test.py`) con foto.
+mappa ufficiale del paese `L_M80_Paese_WP` (World Partition, un file per attore: si versionano solo gli
+attori cambiati, non gli HLOD), mappa d'apertura `Main` (leggera); quota LFS circa 5,7 GB su 10; ogni
+funzione nuova ha il suo test automatico in PIE (`Scripts/m80_*_test.py`) con foto.
 
 ---
 
 ## 0. Stato attuale (fatto)
 
-- Paese `L_M80_Paese`: terreno reale, strade OSM dipinte, case procedurali e fatte a mano, marciapiedi,
-  cartelli, manifesti, palazzi neoclassici.
+- Paese `L_M80_Paese_WP` (World Partition, HLOD per le viste lontane): terreno reale, tutti i lotti
+  OSM con case procedurali cotte in Nanite, edifici fatti a mano, strade OSM dipinte, marciapiedi,
+  cartelli, manifesti, palazzi neoclassici, 941 lampioni a muro; strumento "Isolato da riempire".
+- Atmosfera: sole reale per Mazzarino, luna, nuvole, foschia, ora blu, notte con lampioni e finestre
+  accese, meteo (sereno, afa, scirocco, nuvoloso); orizzonte con colline ed Etna.
 - Marciapiedi a spline: aperti, ad anello (spline chiusa) o piazza riempita con cordolo.
 - Edificio delle Poste Italiane con traliccio (Nanite), importato da Blender.
 - Veicoli guidabili: Fiat 126, Ape, Fiat Panda, Fiat 127, Fiat Uno, Golf GTI e Vespa (sta in piedi e
@@ -206,21 +208,15 @@ d'auto con il guidatore, portiere, danni visibili) per chiudere il traguardo A e
 
 ## Punti aperti (tecnici, fuori dalla direzione di gioco)
 
-1. **Ricuocere il paese.** `L_M80_Paese` contiene il terreno ritoccato a mano il 4 ottobre e le case
-   ancora in anteprima live (mappa a circa 200 MB). Rilanciare il bake: `Scripts/m80_houses_bake.py`
-   con `M80_BAKE_MAP=/Game/Mazzarino80/Houses/Maps/L_M80_Paese` e `M80_BAKE_CAPTURE=0`
-   (o il passo in `Scripts/m80_town_finish.ps1`), controllare le case sui pendii modificati, poi
-   commit della mappa.
-2. **"Un file per attore" (One File Per Actor) su `L_M80_Paese`.** Oggi la mappa è un file unico e
-   ogni commit la ricarica tutta su LFS (100-200 MB). Con un file per attore ogni casa, marciapiede o
-   pezzo di terreno è un file piccolo e un commit salva solo ciò che è cambiato. Da fare a editor
-   chiuso, dopo il bake: funzione in `UM80EditorLibrary` che attiva gli attori esterni sul livello,
-   converte e salva; verificare che la mappa si apra uguale; il primo commit dopo la conversione è
-   grande (tutta la mappa in tanti file), i successivi piccoli.
-3. Mappe `DefaultLevel` e `PaintLandscapeMaterial`: risultavano modificate da una sessione
+Fatti il 6 ottobre: bake di tutto il paese e conversione a World Partition (`L_M80_Paese_WP`, la
+vecchia `L_M80_Paese` è stata cancellata), HLOD, Nanite sui dettagli, lampioni.
+
+1. Macchia nel cielo nelle viste aeree molto alte (difetto delle nuvole, non dell'orizzonte).
+2. Mappe `DefaultLevel` e `PaintLandscapeMaterial`: risultavano modificate da una sessione
    dell'editor e sono entrate così nel commit del 4 ottobre; controllare che vadano bene.
-4. `.git_old` (38 GB, fuori da git) contiene la vecchia storia di 95 commit: spostarlo su un altro
-   disco o cancellarlo quando non serve più. Il Cestino contiene le mappe tolte che non erano in git
-   (circa 1,5 GB).
-5. Poste: alcune lamelle della facciata sono storte come nel modello originale; sistemarle in Blender
-   se danno fastidio, poi reimportare con la pipeline.
+3. `.git_old` (38 GB, fuori da git) contiene la vecchia storia di 95 commit: spostarlo su un altro
+   disco o cancellarlo quando non serve più.
+4. Poste: alcune lamelle della facciata sono storte come nel modello originale; sistemarle in Blender,
+   poi reimportare con la pipeline.
+5. Zona delle Salesiane da riempire con "Isolato da riempire"; candelabri a tre luci da piazzare
+   nelle piazze.

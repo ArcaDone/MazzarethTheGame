@@ -20,7 +20,7 @@ import m80_seq  # noqa: E402
 from m80_town_views import corso_shot, ground, town_centre  # noqa: E402
 
 ROOT = Path(unreal.Paths.project_dir())
-MAP = os.environ.get("M80_ATMO_MAP", "/Game/Mazzarino80/Houses/Maps/L_M80_Paese")
+MAP = os.environ.get("M80_ATMO_MAP", m80_seq.TOWN_MAP)
 SKY = "/Game/Mazzarino80/Sky"
 OUT = ROOT / "Saved/Mazzarino80/Foto"
 REPORT = ROOT / "Saved/Mazzarino80/atmosphere_report.json"
@@ -131,6 +131,8 @@ def run():
         clouds = cloud_material(report)
         mpc = material_values()
     unreal.EditorLoadingAndSavingUtils.load_map(MAP)
+    # World Partition: the terrain (for the horizon edge) and, for the photos, the whole town.
+    m80_seq.load(m80_seq.actor_descs() if PHOTOS else m80_seq.actor_descs("LandscapeStreamingProxy"))
     yield 60
     world = m80_seq.editor_world()
     if not world.get_path_name().startswith(MAP):
@@ -164,7 +166,7 @@ def run():
         report["horizon"] = horizon.get_editor_property("build_info")
         atmo.apply()
         if SAVE:
-            unreal.EditorLoadingAndSavingUtils.save_current_level()
+            m80_seq.save_all()
     yield 30
     if not PHOTOS:
         REPORT.write_text(json.dumps(report, indent=1), encoding="utf-8")

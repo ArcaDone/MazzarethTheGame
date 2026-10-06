@@ -23,7 +23,7 @@ import m80_seq  # noqa: E402
 
 ROOT = Path(unreal.Paths.project_dir())
 BUILDINGS = "/Game/Mazzarino80/Buildings/"
-MAP = os.environ.get("M80_ZONES_MAP", "/Game/Mazzarino80/Houses/Maps/L_M80_Paese")
+MAP = os.environ.get("M80_ZONES_MAP", m80_seq.TOWN_MAP)
 MARGIN = float(os.environ.get("M80_ZONES_MARGIN_CM", "150"))
 OUT = ROOT / "Saved/Mazzarino80/zones_report.json"
 FOLDER = "Mazzarino80/Zone_escluse"
@@ -89,6 +89,8 @@ def run():
     world = m80_seq.editor_world()
     if not world.get_path_name().startswith(MAP):
         raise RuntimeError("Expected {} open".format(MAP))
+    # World Partition: everything but the houses (they apply their zones themselves when they load).
+    m80_seq.load([d for d in m80_seq.actor_descs() if not m80_seq.desc_class_is(d, "M80House", "MazzarinoRoadSpline", "DecalActor", "M80Sidewalk")])
     yield 30
     eas = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
     actors = eas.get_all_level_actors()
@@ -131,7 +133,7 @@ def run():
     after = {h.get_name(): h for h in houses if h.is_excluded()}
     report["newly_excluded_houses"] = sorted(set(after) - before)
     report["excluded_total"] = len(after)
-    unreal.EditorLoadingAndSavingUtils.save_current_level()
+    m80_seq.save_all()
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(report, indent=1), encoding="utf-8")
 

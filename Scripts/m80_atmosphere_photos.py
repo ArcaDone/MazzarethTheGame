@@ -18,7 +18,7 @@ import m80_seq  # noqa: E402
 import m80_town_views as setup  # noqa: E402
 
 ROOT = Path(unreal.Paths.project_dir())
-MAP = "/Game/Mazzarino80/Houses/Maps/L_M80_Paese"
+MAP = os.environ.get("M80_CINE_MAP", m80_seq.TOWN_MAP)
 OUT = ROOT / "Saved/Mazzarino80/Foto"
 SHOTS_DIR = ROOT / "Saved/Screenshots"
 ONLY = [n for n in os.environ.get("M80_CINE_ONLY", "").split(",") if n]
@@ -53,6 +53,7 @@ def shots(world, atmo, horizon):
 def run():
     OUT.mkdir(parents=True, exist_ok=True)
     unreal.EditorLoadingAndSavingUtils.load_map(MAP)
+    m80_seq.load(m80_seq.actor_descs())  # World Partition: the whole town, these views need it
     yield 120
     world = m80_seq.editor_world()
     eas = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)

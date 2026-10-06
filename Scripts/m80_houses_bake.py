@@ -1,7 +1,9 @@
 """Bakes every AM80House of a map into Nanite static meshes, saves, and captures views.
 
 Baked meshes go to /Game/Mazzarino80/Houses/Baked/<MapName> (derived data, gitignored).
-Env: M80_BAKE_MAP (default the 18-house test map), M80_BAKE_CAPTURE=0 skips captures,
+World Partition maps (the town, L_M80_Paese_WP) are baked tile by tile (300 m): each tile is loaded,
+its unbaked houses baked, the changed actor files saved and the tile unloaded, so memory stays low.
+Env: M80_BAKE_MAP (default the town map), M80_BAKE_CAPTURE=0 skips captures (always skipped on the town),
      M80_BAKE_LIMIT bakes at most N houses per run (the ones not baked yet; "remaining" in the report).
 """
 import json
@@ -17,7 +19,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import m80_seq  # noqa: E402
 
 ROOT = Path(unreal.Paths.project_dir())
-MAP = os.environ.get("M80_BAKE_MAP", "/Game/Mazzarino80/Houses/Maps/L_M80_Houses18_V2")
+MAP = os.environ.get("M80_BAKE_MAP", m80_seq.TOWN_MAP)
 MAP_NAME = MAP.rsplit("/", 1)[-1]
 FOLDER = "/Game/Mazzarino80/Houses/Baked/" + MAP_NAME
 OUT = ROOT / "Saved/Mazzarino80/HousesV2" / ("bake_" + MAP_NAME)
@@ -65,6 +67,38 @@ def street_view(world, house):
     return look_at(eye, (mx, my, z + 250))
 
 
+def bake_by_tiles(world, descs, report):
+    t0 = time.time()
+    baked, failed, remaining = 0, [], 0
+    for tile in m80_seq.tiles(descs):
+        if LIMIT and baked >= LIMIT:
+            remaining += len(tile)  # upper bound: not checked
+            continue
+        m80_seq.load(tile)
+        yield 5
+        houses = list(unreal.GameplayStatics.get_all_actors_of_class(world, unreal.M80House))  # only this tile is loaded
+        todo = [h for h in houses if not h.is_baked() and not h.is_excluded()]
+        for i, house in enumerate(todo):
+            if LIMIT and baked >= LIMIT:
+                remaining += len(todo) - i
+                break
+            if unreal.M80EditorLibrary.bake_house(house, FOLDER, True):
+                baked += 1
+            else:
+                failed.append(house.get_editor_property("lot_id"))
+            if i % 10 == 9:
+                yield 1
+        if todo:
+            unreal.EditorAssetLibrary.save_directory(FOLDER, only_if_is_dirty=True, recursive=True)
+            m80_seq.save_all()
+        m80_seq.unload(tile)
+        unreal.SystemLibrary.collect_garbage()
+        yield 2
+    report.update({"baked": baked, "failed": failed, "remaining": remaining, "bake_seconds": round(time.time() - t0, 1)})
+    OUT.mkdir(parents=True, exist_ok=True)
+    (OUT / "report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+
+
 def run():
     report = {"map": MAP, "folder": FOLDER}
     unreal.EditorLoadingAndSavingUtils.load_map(MAP)
@@ -72,6 +106,10 @@ def run():
     world = m80_seq.editor_world()
     if not world.get_path_name().startswith(MAP):
         raise RuntimeError("Wrong map open: " + world.get_path_name())
+    descs = m80_seq.actor_descs("M80House")
+    if descs:
+        yield from bake_by_tiles(world, descs, report)
+        return
     houses = list(unreal.GameplayStatics.get_all_actors_of_class(world, unreal.M80House))
     # Only houses that are not baked yet (or changed since); at most LIMIT per run: a few thousand Nanite
     # builds in one editor session run out of memory, so a whole town is baked by running until remaining = 0.

@@ -14,7 +14,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import m80_seq  # noqa: E402
 
 ROOT = Path(unreal.Paths.project_dir())
-MAP = os.environ.get("M80_AERIAL_MAP", "/Game/Mazzarino80/Houses/Maps/L_M80_Paese")
+MAP = os.environ.get("M80_AERIAL_MAP", m80_seq.TOWN_MAP)
 OUT = ROOT / "Saved/Mazzarino80/Foto"
 PLAN = ROOT / "Research/Mazzarino80/building_footprint_plan.json"
 
@@ -28,6 +28,7 @@ def look(cap, eye, target, name):
 def run():
     OUT.mkdir(parents=True, exist_ok=True)
     unreal.EditorLoadingAndSavingUtils.load_map(MAP)
+    m80_seq.load(m80_seq.actor_descs())  # World Partition: the whole town, these views need it
     yield 120
     lots = json.loads(PLAN.read_text(encoding="utf-8"))
     xs = sorted(l["center_cm"][0] for l in lots)

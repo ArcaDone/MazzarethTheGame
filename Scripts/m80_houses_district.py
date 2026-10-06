@@ -5,8 +5,15 @@ map, removes the old placeholder building volumes and spawns one AM80House per O
 within a radius. Hand-made landmark structures already in the map are kept: lots whose
 centre falls inside one of them are skipped.
 
-Env: M80_DISTRICT_RADIUS_M (default 160), M80_DISTRICT_CENTER "x,y" in cm
-     (default: centre of the 18 sample lots), M80_DISTRICT_REBUILD_MAP=1 recreates the map.
+Env: M80_DISTRICT_RADIUS_M (default 160; "all" takes every OSM lot), M80_DISTRICT_CENTER "x,y" in cm
+     (default: centre of the 18 sample lots), M80_DISTRICT_REBUILD_MAP=1 recreates the map,
+     M80_DISTRICT_KEEP_EXISTING=1 (default) leaves the houses already in the map as they are (hand edits
+     kept): only new lots are spawned, and existing houses next to them are rebuilt with their own
+     settings so shared walls are found. M80_DISTRICT_SKIP_TAGS: OSM building tags that are not houses
+     (default "roof,grandstand": canopies and stands).
+     M80_DISTRICT_BATCH=N spawns at most N new lots per run (nearest to the centre first) and
+     M80_DISTRICT_BAKE=1 bakes them to Nanite before saving: thousands of unbaked houses do not fit in
+     8 GB of video memory, so a whole town is added by running the script until "remaining" is 0.
 """
 import json
 import math
@@ -28,7 +35,14 @@ PLAN = ROOT / "Research/Mazzarino80/building_footprint_plan.json"
 SAMPLE = ROOT / "Research/Mazzarino80/PCG/Buildings_Test18.json"
 OUT = ROOT / "Saved/Mazzarino80/HousesV2/district_report.json"
 STYLE_DIR = "/Game/Mazzarino80/Houses/Styles/"
-RADIUS = float(os.environ.get("M80_DISTRICT_RADIUS_M", "160")) * 100
+_radius = os.environ.get("M80_DISTRICT_RADIUS_M", "160")
+RADIUS = float("inf") if _radius == "all" else float(_radius) * 100
+KEEP_EXISTING = os.environ.get("M80_DISTRICT_KEEP_EXISTING", "1") == "1"
+SKIP_TAGS = {t for t in os.environ.get("M80_DISTRICT_SKIP_TAGS", "roof,grandstand").split(",") if t}
+BATCH = int(os.environ.get("M80_DISTRICT_BATCH", "0"))
+BAKE = os.environ.get("M80_DISTRICT_BAKE", "0") == "1"
+BAKE_FOLDER = "/Game/Mazzarino80/Houses/Baked/" + MAP.rsplit("/", 1)[-1]
+NEIGHBOUR_CM = 4000   # existing houses this close to a new lot are rebuilt (shared walls)
 REBUILD_MAP = os.environ.get("M80_DISTRICT_REBUILD_MAP", "0") == "1"
 OLD_CLASSES = ("MazzarinoProceduralBuilding", "MazzarinoHistoricBuilding", "MazzarinoBuilding", "BP_ProceduralBuilding")
 OLD_MESHES = ("M80_Edifici_WorldYReflected",)
@@ -90,7 +104,7 @@ def remove_old(world):
 
 
 def run():
-    report = {"radius_m": RADIUS / 100}
+    report = {"radius_m": "all" if RADIUS == float("inf") else RADIUS / 100, "keep_existing": KEEP_EXISTING}
     prepare_map()
     yield 60
     world = m80_seq.editor_world()
@@ -106,17 +120,29 @@ def run():
     plan = json.loads(PLAN.read_text(encoding="utf-8"))
     existing = {a.get_editor_property("lot_id"): a for a in unreal.GameplayStatics.get_all_actors_of_class(world, unreal.M80House)}
 
-    houses, skipped = [], []
+    houses, skipped, kept, not_houses = [], [], [], []
+    remaining = 0
+    plan.sort(key=lambda l: math.hypot(l["center_cm"][0] - cx, l["center_cm"][1] - cy))
     t0 = time.time()
     for lot in plan:
         x, y, z = lot["center_cm"]
         if math.hypot(x - cx, y - cy) > RADIUS:
+            continue
+        if KEEP_EXISTING and lot["id"] in existing:
+            kept.append(existing[lot["id"]])
+            continue
+        tags = lot.get("tags") or {}
+        if isinstance(tags, dict) and tags.get("building") in SKIP_TAGS:
+            not_houses.append(lot["id"])
             continue
         if any(b[0] < x < b[2] and b[1] < y < b[3] for b in boxes):
             skipped.append(lot["id"])
             continue
         if unreal.M80ExclusionZone.is_point_excluded(world, unreal.Vector(x, y, z)) and lot["id"] not in existing:
             skipped.append(lot["id"])  # area reserved for hand-made buildings
+            continue
+        if BATCH and len(houses) >= BATCH and lot["id"] not in existing:
+            remaining += 1
             continue
         rng = random.Random(int(lot["id"]))
         actor = existing.get(lot["id"]) or unreal.get_editor_subsystem(unreal.EditorActorSubsystem).spawn_actor_from_class(
@@ -138,18 +164,52 @@ def run():
         actor.set_editor_property("house", params)
         houses.append(actor)
     report["spawn_seconds"] = round(time.time() - t0, 1)
+    report["kept_existing"] = len(kept)
+    report["remaining"] = remaining
+    report["skipped_not_houses"] = len(not_houses)
     yield 5
+
+    # Existing houses next to the new ones: rebuilt as they are, to see their new neighbours.
+    new_xy = [(a.get_actor_location().x, a.get_actor_location().y) for a in houses]
+    border = []
+    if KEEP_EXISTING and new_xy:
+        cell = NEIGHBOUR_CM
+        grid = {}
+        for x, y in new_xy:
+            grid.setdefault((int(x // cell), int(y // cell)), []).append((x, y))
+        for a in kept:
+            loc = a.get_actor_location()
+            gx, gy = int(loc.x // cell), int(loc.y // cell)
+            near = any(math.hypot(loc.x - x, loc.y - y) < cell
+                       for dx in (-1, 0, 1) for dy in (-1, 0, 1) for x, y in grid.get((gx + dx, gy + dy), []))
+            if near:
+                border.append(a)
+    report["existing_rebuilt_as_neighbours"] = len(border)
+    for actor in border:
+        actor.set_editor_property("live_rebuild", False)
 
     # Two passes: the second one sees every neighbour, so shared walls are found.
     t0 = time.time()
     for _ in range(2):
-        for i, actor in enumerate(houses):
+        for i, actor in enumerate(houses + border):
             actor.rebuild()
             if i % 40 == 39:
                 yield 1
     report["build_seconds_two_passes"] = round(time.time() - t0, 1)
-    for actor in houses:
+    for actor in houses + border:
         actor.set_editor_property("live_rebuild", True)
+    if BAKE:
+        t0 = time.time()
+        baked = 0
+        for i, actor in enumerate(houses + border):
+            if unreal.M80EditorLibrary.bake_house(actor, BAKE_FOLDER, True):
+                baked += 1
+            if i % 10 == 9:
+                unreal.SystemLibrary.collect_garbage()
+                yield 1
+        unreal.EditorAssetLibrary.save_directory(BAKE_FOLDER, only_if_is_dirty=True, recursive=True)
+        report["baked"] = baked
+        report["bake_seconds"] = round(time.time() - t0, 1)
     report["houses"] = len(houses)
     report["skipped_inside_landmarks"] = skipped
     report["units"] = sum(a.get_editor_property("unit_count") for a in houses)

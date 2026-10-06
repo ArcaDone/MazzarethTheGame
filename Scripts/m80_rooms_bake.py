@@ -21,6 +21,7 @@ import m80_seq  # noqa: E402
 
 ROOT = Path(unreal.Paths.project_dir())
 DIR = "/Game/Mazzarino80/Rooms"
+MPC = "/Game/Mazzarino80/Sky/MPC_M80_Atmosfera"
 STUDIO = DIR + "/L_M80_RoomStudio"
 STYLE_DIR = "/Game/Mazzarino80/Houses/Styles"
 REPORT = ROOT / "Saved/Mazzarino80/HousesV2/rooms_report.json"
@@ -163,6 +164,13 @@ def build_material(array, report):
     tex = g.node(unreal.MaterialExpressionTextureObjectParameter, -1200, 450, parameter_name="Rooms", texture=array,
                  sampler_type=unreal.MaterialSamplerType.SAMPLERTYPE_COLOR)
     exposure = g.node(unreal.MaterialExpressionScalarParameter, -1200, 600, parameter_name="Exposure", default_value=0.015)
+    # Brightness of the rooms follows the hour (the "Atmosfera" actor writes "Finestre": dim by day, lit at night).
+    if unreal.EditorAssetLibrary.does_asset_exist(MPC):
+        hour = g.node(unreal.MaterialExpressionCollectionParameter, -1200, 640, collection=unreal.load_asset(MPC), parameter_name="Finestre")
+        scaled = g.node(unreal.MaterialExpressionMultiply, -1000, 610)
+        g.link(exposure, "", scaled, "A")
+        g.link(hour, "", scaled, "B")
+        exposure = scaled
     nhome = g.node(unreal.MaterialExpressionConstant, -1200, 680, r=float(N_HOME))
     nshop = g.node(unreal.MaterialExpressionConstant, -1200, 740, r=float(N_SHOP))
     curtain = g.node(unreal.MaterialExpressionVectorParameter, -1200, 800, parameter_name="CurtainColor",

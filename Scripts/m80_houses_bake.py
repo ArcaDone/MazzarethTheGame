@@ -2,7 +2,7 @@
 
 Baked meshes go to /Game/Mazzarino80/Houses/Baked/<MapName> (derived data, gitignored).
 Env: M80_BAKE_MAP (default the 18-house test map), M80_BAKE_CAPTURE=0 skips captures,
-     M80_BAKE_LIMIT bakes only the first N houses (for quick tests).
+     M80_BAKE_LIMIT bakes at most N houses per run (the ones not baked yet; "remaining" in the report).
 """
 import json
 import math
@@ -73,20 +73,29 @@ def run():
     if not world.get_path_name().startswith(MAP):
         raise RuntimeError("Wrong map open: " + world.get_path_name())
     houses = list(unreal.GameplayStatics.get_all_actors_of_class(world, unreal.M80House))
-    if LIMIT:
-        houses = houses[:LIMIT]
+    # Only houses that are not baked yet (or changed since); at most LIMIT per run: a few thousand Nanite
+    # builds in one editor session run out of memory, so a whole town is baked by running until remaining = 0.
+    todo = [h for h in houses if not h.is_baked() and not h.is_excluded()]
     t0 = time.time()
     baked = 0
-    for i, house in enumerate(houses if os.environ.get("M80_BAKE_SKIP") != "1" else []):
+    for i, house in enumerate(todo if os.environ.get("M80_BAKE_SKIP") != "1" else []):
+        if LIMIT and baked >= LIMIT:
+            break
         if unreal.M80EditorLibrary.bake_house(house, FOLDER, True):
             baked += 1
         if i % 10 == 9:
             unreal.SystemLibrary.collect_garbage()
             yield 1
     report["baked"] = baked
+    report["remaining"] = max(0, len(todo) - baked)
     report["bake_seconds"] = round(time.time() - t0, 1)
-    unreal.EditorAssetLibrary.save_directory(FOLDER, only_if_is_dirty=False, recursive=True)
+    unreal.EditorAssetLibrary.save_directory(FOLDER, only_if_is_dirty=True, recursive=True)
     unreal.EditorLoadingAndSavingUtils.save_current_level()
+    # Report right after the save: a big town can exhaust the memory afterwards.
+    OUT.mkdir(parents=True, exist_ok=True)
+    (OUT / "report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+    if not CAPTURE:
+        return
     yield 60
     if CAPTURE:
         capture = m80_seq.ViewCapture()

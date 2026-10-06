@@ -1,7 +1,7 @@
 """Exclusion zones around the hand-made buildings placed in the town map (L_M80_Paese).
 
 Every blueprint actor whose class lives under /Game/Migrated (scuola, castello, chiese, Agip, ...),
-trees excepted, gets an "Zona senza case procedurali" shaped as the convex hull of its meshes plus a
+trees excepted, and every static mesh imported from Blender under /Game/Mazzarino80/Buildings, gets an "Zona senza case procedurali" shaped as the convex hull of its meshes plus a
 margin: the procedural houses under it disappear (they come back if the zone is switched off or
 deleted). Zones are named Zona_<building> in the folder Mazzarino80/Zone_escluse and are recreated on
 every run, so moving a building and re-running keeps them in sync; hand-drawn zones are not touched.
@@ -19,6 +19,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import m80_seq  # noqa: E402
 
 ROOT = Path(unreal.Paths.project_dir())
+BUILDINGS = "/Game/Mazzarino80/Buildings/"
 MAP = os.environ.get("M80_ZONES_MAP", "/Game/Mazzarino80/Houses/Maps/L_M80_Paese")
 MARGIN = float(os.environ.get("M80_ZONES_MARGIN_CM", "150"))
 OUT = ROOT / "Saved/Mazzarino80/zones_report.json"
@@ -56,6 +57,14 @@ def grow(poly, d):
     return out
 
 
+def is_imported_building(actor):
+    """Buildings modelled in Blender and imported with Scripts/m80_import_blender_assets.py (e.g. the Poste)."""
+    if not isinstance(actor, unreal.StaticMeshActor):
+        return False
+    mesh = actor.static_mesh_component.get_editor_property("static_mesh")
+    return bool(mesh) and mesh.get_path_name().startswith(BUILDINGS)
+
+
 def footprint_points(actor):
     pts = []
     for c in actor.get_components_by_class(unreal.StaticMeshComponent):
@@ -84,7 +93,8 @@ def run():
         if isinstance(a, unreal.M80ExclusionZone) and str(a.get_folder_path()) == FOLDER:
             a.destroy_actor()
     report = {"zones": {}}
-    buildings = [a for a in actors if a.get_class().get_path_name().startswith("/Game/Migrated/") and a.get_class().get_name() not in SKIP_CLASSES]
+    buildings = [a for a in actors if (a.get_class().get_path_name().startswith("/Game/Migrated/") and a.get_class().get_name() not in SKIP_CLASSES)
+                 or is_imported_building(a)]
     houses = [h for h in actors if isinstance(h, unreal.M80House)]
     before = {h.get_name() for h in houses if h.is_excluded()}
     for b in buildings:

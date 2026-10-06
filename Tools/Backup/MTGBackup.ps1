@@ -4,14 +4,22 @@
 # Regenerable folders (caches, build output) and Blender .blend1 files are skipped.
 # External drive: powershell -ExecutionPolicy Bypass -File Tools\Backup\MTGBackup.ps1 -Dest E:\MTGBackup
 # (the first run copies everything, the next ones only the differences).
-param([string]$Dest = 'C:\MTGBackup')
+#
+# -Transfer: a clean copy to move the project to another PC, in <Dest>\Trasferimento with the same
+# layout as D:\ (UE5Projects\GameAnimationSample, UE5Projects\Comune, Blender\AssetsMazzarethTheGame).
+# It mirrors D: exactly (files deleted on D: are deleted from the copy too, so removed World
+# Partition actors do not come back) and includes .git (with the LFS files) and the compiled
+# Binaries, so the project opens without Visual Studio on a PC with the same Unreal 5.5.
+# Caches, Intermediate and Saved are left out. Close the editor first.
+#   powershell -ExecutionPolicy Bypass -File Tools\Backup\MTGBackup.ps1 -Transfer -Dest E:\MTGBackup
+param([string]$Dest = 'C:\MTGBackup', [switch]$Transfer)
 
 $ErrorActionPreference = 'Stop'
 
 if (-not (Test-Path (Split-Path $Dest -Qualifier))) { throw "Drive not found: $Dest" }
 $LogDir = Join-Path $Dest '_logs'
 New-Item -ItemType Directory -Force -Path $LogDir | Out-Null
-$Log = Join-Path $LogDir ("backup_{0:yyyy-MM-dd_HHmm}.log" -f (Get-Date))
+$Log = Join-Path $LogDir ("{0}_{1:yyyy-MM-dd_HHmm}.log" -f $(if ($Transfer) { 'transfer' } else { 'backup' }), (Get-Date))
 
 $CommonArgs = @('/E', '/COPY:DAT', '/DCOPY:T', '/R:2', '/W:5', '/MT:8', '/NP', '/NDL', '/FFT', "/LOG+:$Log")
 
@@ -46,6 +54,33 @@ $Jobs = @(
     }
 )
 
+if ($Transfer) {
+    if (Get-Process UnrealEditor*, UnrealEditor-Cmd -ErrorAction SilentlyContinue) { throw 'Close Unreal Editor before the transfer copy.' }
+    $Root = Join-Path $Dest 'Trasferimento'
+    # /MIR deletes from the destination what is no longer on D:, only inside this folder.
+    $CommonArgs = @('/MIR', '/COPY:DAT', '/DCOPY:T', '/R:2', '/W:5', '/MT:8', '/NP', '/NDL', '/FFT', "/LOG+:$Log")
+    $Jobs = @(
+        @{
+            Src = 'D:\UE5Projects\GameAnimationSample'
+            Dst = "$Root\UE5Projects\GameAnimationSample"
+            XD  = @('.git_old', '.vs', 'Intermediate', 'DerivedDataCache', 'Saved', '__pycache__')
+            XF  = @('*.blend1', '*.tmp', '*.pyc')
+        },
+        @{
+            Src = 'D:\UE5Projects\Comune'
+            Dst = "$Root\UE5Projects\Comune"
+            XD  = @('Intermediate', 'DerivedDataCache', 'Saved')
+            XF  = @('*.tmp')
+        },
+        @{
+            Src = 'D:\Blender\AssetsMazzarethTheGame'
+            Dst = "$Root\Blender\AssetsMazzarethTheGame"
+            XD  = @()
+            XF  = @('*.blend1', '*.blend2')
+        }
+    )
+}
+
 $Failed = $false
 foreach ($Job in $Jobs) {
     if (-not (Test-Path $Job.Src)) {
@@ -66,6 +101,8 @@ foreach ($Job in $Jobs) {
 Add-Content $Log ("FINISHED {0:yyyy-MM-dd HH:mm} - {1}" -f (Get-Date), $(if ($Failed) { 'WITH ERRORS' } else { 'OK' }))
 
 # Keep the last 60 logs
-Get-ChildItem $LogDir -Filter 'backup_*.log' | Sort-Object Name -Descending | Select-Object -Skip 60 | Remove-Item -Force
+foreach ($Kind in 'backup', 'transfer') {
+    Get-ChildItem $LogDir -Filter "${Kind}_*.log" | Sort-Object Name -Descending | Select-Object -Skip 60 | Remove-Item -Force
+}
 
 if ($Failed) { exit 1 }

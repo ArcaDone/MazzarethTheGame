@@ -15,7 +15,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import m80_seq  # noqa: E402
 
 ROOT = Path(unreal.Paths.project_dir())
-MAP = "/Game/Mazzarino80/Houses/Maps/L_M80_Paese"
+MAP = "/Game/Mazzarino80/Houses/Maps/L_M80_Paese_WP"
 PLAN = ROOT / "Research/Mazzarino80/building_footprint_plan.json"
 OUT = ROOT / "Saved/Mazzarino80/Terrain/verify.json"
 

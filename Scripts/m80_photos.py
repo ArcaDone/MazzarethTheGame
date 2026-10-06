@@ -2,7 +2,7 @@
 
 Cameras follow the named OSM streets (Research/Mazzarino80/streets_world.json) where there are
 houses: eye-level views along the street, a few from a first-floor balcony and some over the roofs.
-The light and post-process changes are not saved. Env: M80_PHOTOS_MAP (default L_M80_Paese),
+The light and post-process changes are not saved. Env: M80_PHOTOS_MAP (default L_M80_Paese_WP),
 M80_PHOTOS_STREETS (comma separated names), M80_PHOTOS_MAX (default 14), M80_PHOTOS_SUN_PITCH (-11).
 Output: Saved/Mazzarino80/Foto/<n>_<street>.png at 2560x1440.
 """
@@ -18,7 +18,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import m80_seq  # noqa: E402
 
 ROOT = Path(unreal.Paths.project_dir())
-MAP = os.environ.get("M80_PHOTOS_MAP", "/Game/Mazzarino80/Houses/Maps/L_M80_Paese")
+MAP = os.environ.get("M80_PHOTOS_MAP", "/Game/Mazzarino80/Houses/Maps/L_M80_Paese_WP")
 OUT = ROOT / "Saved/Mazzarino80/Foto"
 STREETS = os.environ.get("M80_PHOTOS_STREETS", "Corso Vittorio Emanuele Secondo,Via Roma,Piazza Giuseppe Artale,Via Principe di Butera,"
                          "Via Concezione,Via Santa Lucia,Via Carini,Via San Giuseppe,Via Archimede,Via Bisenti").split(",")

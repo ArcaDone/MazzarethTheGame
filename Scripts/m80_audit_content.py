@@ -17,7 +17,7 @@ import m80_seq  # noqa: E402
 ROOT = Path(unreal.Paths.project_dir())
 OUT = ROOT / "Saved/Mazzarino80/Audit/content_audit.json"
 ROOTS = [
-    "/Game/Mazzarino80/Houses/Maps/L_M80_Paese",
+    "/Game/Mazzarino80/Houses/Maps/L_M80_Paese_WP",
     "/Game/Mazzarino80/Vehicles/L_M80_ProvaGuida",
     "/Game/Mazzarino80/Rooms/L_M80_RoomStudio",
     "/Game/Mazzarino80/Player/BP_M80_Giocatore",

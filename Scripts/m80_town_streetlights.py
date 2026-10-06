@@ -47,7 +47,6 @@ def spawn_lamp(eas, location, yaw, kind, label, rng):
     lamp.set_editor_property("broken", rng.random() < 0.05)
     lamp.set_actor_label(label)
     lamp.set_folder_path(FOLDER)
-    lamp.rerun_construction_scripts()
     return lamp
 
 

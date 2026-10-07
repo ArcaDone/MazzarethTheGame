@@ -6,5 +6,6 @@ public class MazzarinoHouses : ModuleRules
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
         PublicDependencyModuleNames.AddRange(new[] { "Core", "CoreUObject", "Engine", "GeometryCore", "GeometryFramework" });
+        PrivateDependencyModuleNames.Add("Landscape");
     }
 }

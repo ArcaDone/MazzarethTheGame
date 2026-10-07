@@ -8,6 +8,7 @@
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/World.h"
+#include "LandscapeProxy.h"
 #include "DynamicMesh/DynamicMesh3.h"
 #include "Materials/Material.h"
 #include "Materials/MaterialInterface.h"
@@ -61,6 +62,15 @@ double AM80Sidewalk::GroundZ(const FVector& World) const
 	const FCollisionObjectQueryParams Objects(ECC_WorldStatic);
 	TArray<FHitResult> Hits;
 	W->LineTraceMultiByObjectType(Hits, World + FVector(0, 0, 20000), World - FVector(0, 0, 20000), Objects, Params);
+	// The terrain wins: the trace starts 200 m up, so roofs, hand-made buildings or HLOD shells above a
+	// point under a house would otherwise lift the paving onto them like a tent.
+	for (const FHitResult& Hit : Hits)
+	{
+		if (Cast<ALandscapeProxy>(Hit.GetActor()))
+		{
+			return Hit.ImpactPoint.Z;
+		}
+	}
 	for (const FHitResult& Hit : Hits)
 	{
 		const AActor* A = Hit.GetActor();

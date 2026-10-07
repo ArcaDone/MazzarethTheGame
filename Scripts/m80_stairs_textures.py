@@ -175,6 +175,67 @@ def legno():
     save("Legno", col, height, rough, 5.0)
 
 
+def canna():
+    """Giant reed (Arundo) for reed fences: fibres along V, a node every 25-35 cm, dry yellow to grey-brown,
+    a few green-tinged canes. U runs round the cane (a cane is ~12 cm round, so U shows a slice)."""
+    u, v = grid(N)
+    fib = fbm(N, 6, 51, 3, aniso=(1.0, 25.0))
+    tone = fbm(N, 300, 52, 3)
+    dry = srgb_to_lin([176, 150, 96])
+    grey = srgb_to_lin([128, 118, 96])
+    green = srgb_to_lin([140, 140, 84])
+    col = dry[None, None, :] * (1 - tone[..., None]) + grey * tone[..., None]
+    g = np.clip(fbm(N, 500, 53, 2) * 2.5 - 1.4, 0, 1)
+    col = col * (1 - 0.5 * g[..., None]) + green * 0.5 * g[..., None]
+    col = col * (0.8 + 0.35 * fib[..., None])
+    # Nodes: dark rings with a swelling; 3 per metre, not evenly spaced.
+    nodes = np.zeros_like(v)
+    for c in (0.11, 0.42, 0.74):
+        d = np.abs(np.mod(v - c + 0.5, 1.0) - 0.5)
+        nodes = np.maximum(nodes, np.clip(1 - d / 0.008, 0, 1))
+    col = col * (1 - 0.55 * nodes[..., None])
+    stain = np.clip(fbm(N, 80, 54, 3) * 2 - 1.1, 0, 1)
+    col = col * (1 - 0.35 * stain[..., None])
+    height = 0.3 * fib + 0.6 * nodes
+    rough = 0.55 + 0.25 * fbm(N, 40, 55, 2)
+    save("Canna", col, height, rough, 4.0)
+
+
+CANDIDATES = os.path.join(ROOT, "Saved", "Mazzarino80", "Stairs", "Candidates")
+LAVICA_BOX = (640, 1060, 1480, 1900)   # the square of diagonal setts in the atlas of the hand-made lava road
+
+
+def seamless(a, feather=0.10):
+    """Makes a crop tile: blends it with a copy shifted by half, the copy filling a band along the edges."""
+    h, w = a.shape[:2]
+    s = np.roll(np.roll(a, h // 2, 0), w // 2, 1)
+    y = np.minimum(np.arange(h), h - 1 - np.arange(h)) / (h * feather)
+    x = np.minimum(np.arange(w), w - 1 - np.arange(w)) / (w * feather)
+    m = np.clip(np.minimum(y[:, None], x[None, :]), 0, 1)
+    m = (m * m * (3 - 2 * m))[..., None]
+    return a * m + s * (1 - m)
+
+
+def lavica():
+    """The user's lava setts (RoadSource/Migrated Test2_diffuse, Normal2, Test2_rough), cut out of the road
+    atlas and made seamless; exported by Saved/m80_export_candidates2.py."""
+    def load(name):
+        return np.asarray(Image.open(os.path.join(CANDIDATES, name + ".tga")).convert("RGB").crop(LAVICA_BOX)).astype(np.float64) / 255.0
+    d, n, r = load("Test2_diffuse"), load("Normal2"), load("Test2_rough")
+    d, n, r = seamless(d), seamless(n * 2 - 1), seamless(r)
+    n /= np.linalg.norm(n, axis=-1, keepdims=True)
+    lum = d.mean(-1)
+    ao = np.clip(0.55 + 0.45 * lum / max(lum.mean() * 1.4, 1e-3), 0.4, 1)
+    os.makedirs(OUT, exist_ok=True)
+
+    def out(arr, name):
+        Image.fromarray((np.clip(arr, 0, 1) * 255 + 0.5).astype(np.uint8)).resize((1024, 1024), Image.LANCZOS).save(os.path.join(OUT, name))
+    out(d, "T_M80_Lavica_D.png")
+    out(n * 0.5 + 0.5, "T_M80_Lavica_N.png")
+    out(np.stack([ao, r[..., 0], np.zeros_like(ao)], -1), "T_M80_Lavica_ORM.png")
+    print("ok Lavica")
+
+
 if __name__ == "__main__":
-    for fn in (pietra_lavica, basolato, muro_conci, cemento, legno):
+    for fn in (pietra_lavica, basolato, muro_conci, cemento, legno, lavica, canna):
         fn()

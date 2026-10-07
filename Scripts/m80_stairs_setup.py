@@ -25,14 +25,29 @@ EAS = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
 MEL = unreal.MaterialEditingLibrary
 TOOLS = unreal.AssetToolsHelpers.get_asset_tools()
 CUBE = "/Engine/BasicShapes/Cube"
-# Texture sets: metres per repeat (the meshes have one UV unit per metre).
-SETS = {"PietraLavica": 1.0, "Basolato": 1.2, "MuroConci": 2.0, "Cemento": 2.0, "Legno": 1.0}
-COLOURS = {"Ferro": ((0.035, 0.033, 0.03), 0.55, 0.6), "Canne": ((0.20, 0.15, 0.075), 0.7, 0.0)}
+# Own texture sets (m80_stairs_textures.py): metres per repeat (the meshes have one UV unit per metre).
+# Lavica = the setts of the hand-made lava road, made seamless.
+SETS = {"PietraLavica": 1.0, "Basolato": 1.2, "MuroConci": 2.0, "Cemento": 2.0, "Legno": 1.0, "Lavica": 1.4, "Canna": 1.0}
+# Kit materials: own set (master M_M80_KitPietra) or scanned Megascans surface (child of its instance):
+# name -> (source, tiling per metre, albedo tint, rotation in turns).
+MS = "/Game/Megascans/Surfaces/"
+KIT_MATERIALS = {
+    "Basolato": ("Lavica", None, None, 0.0),
+    "PietraLavica": (MS + "Hawaiian_Lava_Stone_tjnfdbkr/MI_Hawaiian_Lava_Stone_tjnfdbkr_2K", 0.8, (0.55, 0.55, 0.58), 0.0),
+    "MuroConci": (MS + "Roman_Stone_Wall_tf2kaa2n/MI_Roman_Stone_Wall_tf2kaa2n_4K", 0.7, (1.0, 0.95, 0.85), 0.0),
+    "Cemento": (MS + "Rough_Concrete_Wall_vh2ifg1/MI_Rough_Concrete_Wall_vh2ifg1_2K", 0.4, (1.0, 1.0, 1.0), 0.0),
+    # Grain along the posts and rails: the scans run across U, so they are turned a quarter.
+    "Legno": (MS + "Flaked_Paint_Wooden_Panel_tlsmbafdy/MI_Flaked_Paint_Wooden_Panel_tlsmbafdy_4K", 0.7, (1.0, 1.0, 1.0), 0.25),
+    "Ferro": (MS + "Rusty_Painted_Metal_Sheet_tj2xahsbw/MI_Rusty_Painted_Metal_Sheet_tj2xahsbw_2K", 1.5, (0.35, 0.35, 0.35), 0.0),
+    "Canne": ("Canna", None, None, 0.0),
+}
+COLOURS = {}
 
 
-def import_textures():
+def import_textures(names=("Lavica", "Canna")):
+    """Imports the texture sets in use (the generated stone/wood sets of the first version are kept)."""
     tasks = []
-    for name in SETS:
+    for name in names:
         for m in ("D", "N", "ORM"):
             t = unreal.AssetImportTask()
             t.filename = str(SRC / ("T_M80_%s_%s.png" % (name, m)))
@@ -42,7 +57,7 @@ def import_textures():
             t.save = False
             tasks.append(t)
     TOOLS.import_asset_tasks(tasks)
-    for name in SETS:
+    for name in names:
         n = unreal.load_asset("%s/Textures/T_M80_%s_N" % (KIT, name))
         n.set_editor_property("compression_settings", unreal.TextureCompressionSettings.TC_NORMALMAP)
         n.set_editor_property("srgb", False)
@@ -55,8 +70,11 @@ def import_textures():
 
 
 def new_material(path):
+    """Empty material at path (an existing one is cleared and rebuilt, so instances keep their parent)."""
     if unreal.EditorAssetLibrary.does_asset_exist(path):
-        unreal.EditorAssetLibrary.delete_asset(path)
+        m = unreal.load_asset(path)
+        MEL.delete_all_material_expressions(m)
+        return m
     return TOOLS.create_asset(path.rsplit("/", 1)[1], path.rsplit("/", 1)[0], unreal.Material, unreal.MaterialFactoryNew())
 
 
@@ -91,7 +109,7 @@ def stone_master():
     MEL.connect_material_property(samp["ORM"], "G", unreal.MaterialProperty.MP_ROUGHNESS)
     MEL.connect_material_property(samp["ORM"], "R", unreal.MaterialProperty.MP_AMBIENT_OCCLUSION)
     MEL.recompile_material(m)
-    unreal.EditorAssetLibrary.save_loaded_asset(m)
+    unreal.EditorAssetLibrary.save_loaded_asset(m, False)
     return m
 
 
@@ -104,33 +122,43 @@ def colour_master():
     MEL.connect_material_property(r, "", unreal.MaterialProperty.MP_ROUGHNESS)
     MEL.connect_material_property(mt, "", unreal.MaterialProperty.MP_METALLIC)
     MEL.recompile_material(m)
-    unreal.EditorAssetLibrary.save_loaded_asset(m)
+    unreal.EditorAssetLibrary.save_loaded_asset(m, False)
     return m
 
 
 def instance(name, parent):
+    """Kit material instance, kept (only re-parented) when it exists so placed actors keep their link."""
     path = "%s/MI_M80_%s" % (KIT, name)
     if unreal.EditorAssetLibrary.does_asset_exist(path):
-        unreal.EditorAssetLibrary.delete_asset(path)
-    mi = TOOLS.create_asset("MI_M80_" + name, KIT, unreal.MaterialInstanceConstant, unreal.MaterialInstanceConstantFactoryNew())
+        mi = unreal.load_asset(path)
+    else:
+        mi = TOOLS.create_asset("MI_M80_" + name, KIT, unreal.MaterialInstanceConstant, unreal.MaterialInstanceConstantFactoryNew())
     MEL.set_material_instance_parent(mi, parent)
+    MEL.clear_all_material_instance_parameters(mi)
     return mi
 
 
 def materials():
     stone, colour = stone_master(), colour_master()
-    for name, tile in SETS.items():
-        mi = instance(name, stone)
-        for k in ("D", "N", "ORM"):
-            MEL.set_material_instance_texture_parameter_value(mi, k, unreal.load_asset("%s/Textures/T_M80_%s_%s" % (KIT, name, k)))
-        MEL.set_material_instance_scalar_parameter_value(mi, "TileM", tile)
-        unreal.EditorAssetLibrary.save_loaded_asset(mi)
+    for name, (source, tiling, tint, turn) in KIT_MATERIALS.items():
+        if source in SETS:
+            mi = instance(name, stone)
+            for k in ("D", "N", "ORM"):
+                MEL.set_material_instance_texture_parameter_value(mi, k, unreal.load_asset("%s/Textures/T_M80_%s_%s" % (KIT, source, k)))
+            MEL.set_material_instance_scalar_parameter_value(mi, "TileM", SETS[source])
+        else:
+            mi = instance(name, unreal.load_asset(source))
+            MEL.set_material_instance_vector_parameter_value(mi, "Tiling/Offset", unreal.LinearColor(tiling, tiling, 0, 0))
+            MEL.set_material_instance_vector_parameter_value(mi, "Albedo Tint", unreal.LinearColor(*tint, 1))
+            if turn:
+                MEL.set_material_instance_scalar_parameter_value(mi, "Rotation Angle", turn)
+        unreal.EditorAssetLibrary.save_loaded_asset(mi, False)
     for name, (rgb, rough, metal) in COLOURS.items():
         mi = instance(name, colour)
         MEL.set_material_instance_vector_parameter_value(mi, "Colore", unreal.LinearColor(*rgb, 1))
         MEL.set_material_instance_scalar_parameter_value(mi, "Ruvidita", rough)
         MEL.set_material_instance_scalar_parameter_value(mi, "Metallo", metal)
-        unreal.EditorAssetLibrary.save_loaded_asset(mi)
+        unreal.EditorAssetLibrary.save_loaded_asset(mi, False)
 
 
 def box(label, loc, size, rot=(0, 0, 0), mat=None):
@@ -213,6 +241,12 @@ VIEWS = {
     "4_scala_soletta": ((2300, -300, 350), (2750, -1200, 80)),
     "5_muretti_staccionate": ((-2300, 1100, 380), (0, 2600, 60)),
     "panoramica": ((-2600, -3600, 2200), (900, 200, 0)),
+    "dettaglio_gradini": ((-420, -1330, 150), (-150, -1150, 160)),
+    "dettaglio_cordonata": ((-700, 380, 110), (-250, 650, 20)),
+    "dettaglio_curva_legno": ((2350, -250, 330), (1950, -500, 230)),
+    "dettaglio_tubolare": ((-300, 1500, 130), (300, 1850, 90)),
+    "dettaglio_canne": ((-200, 2350, 120), (300, 2650, 100)),
+    "dettaglio_muro_copertina": ((600, 3000, 130), (0, 3150, 100)),
 }
 
 
@@ -241,4 +275,11 @@ def steps():
         yield 2
 
 
-m80_seq.Sequencer(steps(), log_file=str(ROOT / "Saved/Mazzarino80/Stairs/setup_error.txt"))
+if os.environ.get("M80_STAIRS_ONLY_MATERIALS") == "1":
+    # Just (re)make the kit materials.
+    try:
+        materials()
+    finally:
+        unreal.SystemLibrary.quit_editor()
+else:
+    m80_seq.Sequencer(steps(), log_file=str(ROOT / "Saved/Mazzarino80/Stairs/setup_error.txt"))

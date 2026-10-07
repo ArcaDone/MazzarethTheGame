@@ -48,6 +48,35 @@ void FM80MeshBuffer::Tri(int32 Slot, const FVector3d& A, const FVector3d& B, con
 	MaterialIds.Add(Slot);
 }
 
+void FM80MeshBuffer::TriN(int32 Slot, const FVector3d& A, const FVector3d& B, const FVector3d& C,
+	const FVector2f& UA, const FVector2f& UB, const FVector2f& UC, const FVector3f& NA, const FVector3f& NB, const FVector3f& NC)
+{
+	const FVector3d Geo = FVector3d::CrossProduct(C - A, B - A);
+	if (Geo.SizeSquared() < 1e-8)
+	{
+		return;
+	}
+	const bool bFlip = FVector3d::DotProduct(Geo, FVector3d(NA + NB + NC)) < 0;
+	const FVector3d* V[3] = {&A, bFlip ? &C : &B, bFlip ? &B : &C};
+	const FVector2f* T[3] = {&UA, bFlip ? &UC : &UB, bFlip ? &UB : &UC};
+	const FVector3f* N[3] = {&NA, bFlip ? &NC : &NB, bFlip ? &NB : &NC};
+	for (int32 i = 0; i < 3; ++i)
+	{
+		const FVector3d& P = *V[i];
+		float Height = 1.f;
+		if (Ground)
+		{
+			Height = float(FMath::Clamp((P.Z - Ground(FVector2D(P.X, P.Y))) / 300.0, 0.0, 1.0));
+		}
+		Positions.Add(P);
+		Normals.Add(N[i]->GetSafeNormal());
+		UVs.Add(*T[i]);
+		Colors.Add(FVector4f(Height, FacadeMask, ElementRandom, 1.f));
+		UnitData.Add(CurrentUnit);
+	}
+	MaterialIds.Add(Slot);
+}
+
 void FM80MeshBuffer::Quad(int32 Slot, const FVector3d& A, const FVector3d& B, const FVector3d& C, const FVector3d& D,
 	const FVector2f& UA, const FVector2f& UB, const FVector2f& UC, const FVector2f& UD, const FVector3d& Facing)
 {

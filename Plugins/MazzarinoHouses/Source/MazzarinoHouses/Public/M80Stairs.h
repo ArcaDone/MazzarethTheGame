@@ -149,6 +149,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Staccionata", meta = (DisplayName = "Distanza montanti (cm)", ClampMin = "50", ClampMax = "400"))
 	float PostSpacingCm = 150.f;
 
+	/** How worn the stone, the walls and the fences are: 0 = new and square, 1 = old, hollowed and chipped. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (DisplayName = "Usura (0-1)", ClampMin = "0", ClampMax = "1"))
+	float Wear = 0.7f;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (DisplayName = "Collisione"))
 	bool bCollision = true;
 

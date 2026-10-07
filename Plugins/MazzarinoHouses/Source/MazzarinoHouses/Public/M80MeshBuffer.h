@@ -37,6 +37,10 @@ struct MAZZARINOHOUSES_API FM80MeshBuffer
 	void Tri(int32 Slot, const FVector3d& A, const FVector3d& B, const FVector3d& C,
 		const FVector2f& UA, const FVector2f& UB, const FVector2f& UC, const FVector3d& Facing);
 
+	/** Triangle with its own vertex normals (smooth shading); the winding follows the normals. */
+	void TriN(int32 Slot, const FVector3d& A, const FVector3d& B, const FVector3d& C,
+		const FVector2f& UA, const FVector2f& UB, const FVector2f& UC, const FVector3f& NA, const FVector3f& NB, const FVector3f& NC);
+
 	/** Planar quad A-B-C-D (perimeter order) with explicit UVs. */
 	void Quad(int32 Slot, const FVector3d& A, const FVector3d& B, const FVector3d& C, const FVector3d& D,
 		const FVector2f& UA, const FVector2f& UB, const FVector2f& UC, const FVector2f& UD, const FVector3d& Facing);

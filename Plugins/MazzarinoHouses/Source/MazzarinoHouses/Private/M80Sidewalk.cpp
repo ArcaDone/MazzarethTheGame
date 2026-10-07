@@ -53,12 +53,16 @@ void AM80Sidewalk::OnConstruction(const FTransform& Transform)
 
 double AM80Sidewalk::GroundZ(const FVector& World) const
 {
-	UWorld* W = GetWorld();
-	if (!W || !bSnapToGround)
+	return bSnapToGround ? TraceGroundZ(GetWorld(), this, World, World.Z) : World.Z;
+}
+
+double AM80Sidewalk::TraceGroundZ(const UWorld* W, const AActor* Ignore, const FVector& World, double Fallback)
+{
+	if (!W)
 	{
-		return World.Z;
+		return Fallback;
 	}
-	FCollisionQueryParams Params(SCENE_QUERY_STAT(M80SidewalkGround), true, this);
+	FCollisionQueryParams Params(SCENE_QUERY_STAT(M80SidewalkGround), true, Ignore);
 	const FCollisionObjectQueryParams Objects(ECC_WorldStatic);
 	TArray<FHitResult> Hits;
 	W->LineTraceMultiByObjectType(Hits, World + FVector(0, 0, 20000), World - FVector(0, 0, 20000), Objects, Params);
@@ -81,7 +85,7 @@ double AM80Sidewalk::GroundZ(const FVector& World) const
 		}
 		return Hit.ImpactPoint.Z;
 	}
-	return World.Z;
+	return Fallback;
 }
 
 TArray<AM80Sidewalk::FStation> AM80Sidewalk::Sample(double Step) const

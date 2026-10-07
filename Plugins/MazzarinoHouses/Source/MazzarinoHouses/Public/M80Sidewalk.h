@@ -90,6 +90,10 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, Category = "Marciapiede", meta = (DisplayName = "Ricostruisci"))
 	void Rebuild();
 
+	/** Ground under a point: the landscape first, else the first static surface that is not a house,
+	 *  a sidewalk/stair (tag M80IgnoreGround) or an instanced prop; Fallback when nothing is hit. */
+	static double TraceGroundZ(const UWorld* World, const AActor* Ignore, const FVector& Point, double Fallback);
+
 private:
 	struct FStation
 	{

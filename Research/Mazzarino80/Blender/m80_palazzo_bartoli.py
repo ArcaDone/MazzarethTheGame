@@ -49,6 +49,17 @@ def ground(x, y):
     return (h - OZ) / 100.0
 
 
+def inside(x, y, poly):
+    c = False
+    n = len(poly)
+    for i in range(n):
+        x1, y1 = poly[i]
+        x2, y2 = poly[(i + 1) % n]
+        if (y1 > y) != (y2 > y) and x < (x2 - x1) * (y - y1) / (y2 - y1) + x1:
+            c = not c
+    return c
+
+
 def poly_ground(poly, fn=min):
     xs = [p[0] for p in poly]
     ys = [p[1] for p in poly]
@@ -152,7 +163,7 @@ def hip_roof(name, poly, eave, axis, pitch_deg, mat, collection=None, overhang=0
     return mesh_object(name, bm, mat, collection)
 
 
-def terrain_mesh(mat):
+def terrain_mesh(mat, holes=()):
     nx, ny = G["nx"], G["ny"]
     bm = bmesh.new()
     vs = []
@@ -164,7 +175,12 @@ def terrain_mesh(mat):
         vs.append(row)
     for j in range(ny - 1):
         for i in range(nx - 1):
-            bm.faces.new((vs[j][i], vs[j][i + 1], vs[j + 1][i + 1], vs[j + 1][i]))
+            q = (vs[j][i], vs[j][i + 1], vs[j + 1][i + 1], vs[j + 1][i])
+            cx = sum(v.co.x for v in q) / 4
+            cy = sum(v.co.y for v in q) / 4
+            if any(inside(cx, cy, h) for h in holes):
+                continue
+            bm.faces.new(q)
     bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
     return mesh_object("Terreno", bm, mat)
 
@@ -196,8 +212,9 @@ def offset_line(a, b, d):
     return a + n * d, b + n * d
 
 
-def massing():
-    reset()
+def massing(skip=(), render_it=True):
+    if render_it:
+        reset()
     sc = bpy.context.scene
     terrain_mesh(material("Terreno", (0.42, 0.40, 0.33)))
     neighbours(material("Vicini", (0.62, 0.62, 0.62)))
@@ -225,9 +242,11 @@ def massing():
         for k in range(4):
             bm.faces.new((lo[k], lo[(k + 1) % 4], hi[(k + 1) % 4], hi[k]))
     mesh_object("B_muri_giardino_pensile", bm, m)
-    prism("B_giardino_pensile", b["poly"], b["floor_top"], b["floor_top"] + 0.05, material("Prato", (0.30, 0.45, 0.22)))
+    prism("B_giardino_pensile", b["poly"], b["floor_top"], b["floor_top"] + 0.05, material("Terra", (0.36, 0.28, 0.20)))
 
     for key in ("C_palazzo", "D_angolo", "E_ala_nord", "N_via_butera"):
+        if key in skip:
+            continue
         body = B[key]
         m = material(key, body["color"])
         for k, w in enumerate(body["wings"]):
@@ -265,10 +284,10 @@ def massing():
           lv["loggia"] + 4.2, lv["loggia"] + 5.0, stone)
 
     g = LAYOUT["giardino_alberi"]
-    prism("Giardino_alberi", g["poly"], poly_ground(g["poly"]) - 0.5, g["level"], material("Prato", (0.30, 0.45, 0.22)))
+    prism("Giardino_alberi", g["poly"], poly_ground(g["poly"]) - 0.5, g["level"], material("Terra", (0.36, 0.28, 0.20)))
     g2 = LAYOUT["giardino_nordest"]
     prism("Giardino_nordest", g2["poly"], poly_ground(g2["poly"]) - 0.5, poly_ground(g2["poly"], max) - 1.0,
-          material("Prato", (0.30, 0.45, 0.22)))
+          material("Terra", (0.36, 0.28, 0.20)))
     wall = material("Muro_cinta", (0.70, 0.58, 0.40))
     sw = g2["street_wall"]
     for k in range(len(sw) - 1):
@@ -287,6 +306,8 @@ def massing():
         bpy.context.object.data.materials.append(leaf)
         bpy.context.object.color = (*leaf.diffuse_color[:3], 1)
 
+    if not render_it:
+        return
     shots = {
         "aereo_sudest": ((75, -85, 62), (4, 0, 6), 35),
         "corso_palazzo": ((3.6, -46.0, 2.6), (-2.2, -29.0, 9.0), 70),
@@ -337,5 +358,484 @@ def render(shots, top=False):
     bpy.ops.wm.save_as_mainfile(filepath=os.path.join(SAVED, "bartoli_%s.blend" % STAGE))
 
 
+# ---------------------------------------------------------------------------------------------
+# Facade C: high-poly, retopology, UV, bake
+
+TEXTURES = os.path.join(HERE, "Textures", "Bartoli")
+
+
+def use_gpu():
+    try:
+        prefs = bpy.context.preferences.addons["cycles"].preferences
+        for kind in ("OPTIX", "CUDA"):
+            try:
+                prefs.compute_device_type = kind
+            except TypeError:
+                continue
+            prefs.get_devices()
+            if any(d.type == kind for d in prefs.devices):
+                for d in prefs.devices:
+                    d.use = d.type == kind
+                bpy.context.scene.cycles.device = "GPU"
+                return kind
+    except Exception as e:  # noqa: BLE001
+        print("GPU not available:", e)
+    return "CPU"
+
+
+def select_only(objs, active):
+    bpy.ops.object.select_all(action="DESELECT")
+    for o in objs:
+        o.select_set(True)
+    bpy.context.view_layer.objects.active = active
+
+
+def join_low(F):
+    objs = [o for o in F.low.objects if o.type == "MESH"]
+    select_only(objs, objs[0])
+    bpy.ops.object.join()
+    low = bpy.context.view_layer.objects.active
+    low.name = F.name + "_Low"
+    low.data.name = F.name + "_Low"
+    # Retopology clean-up: weld coincident vertices, no loose parts, triangulated n-gons stay as quads/tris.
+    bpy.ops.object.mode_set(mode="EDIT")
+    bpy.ops.mesh.select_all(action="SELECT")
+    bpy.ops.mesh.remove_doubles(threshold=0.0005)
+    bpy.ops.mesh.normals_make_consistent(inside=False)
+    # UV: islands by angle, packed with a margin; texel density is uniform because the scale is kept.
+    bpy.ops.uv.smart_project(angle_limit=math.radians(55), island_margin=0.004, area_weight=0.0, scale_to_bounds=False)
+    bpy.ops.uv.pack_islands(margin=0.004, rotate=True)
+    bpy.ops.object.mode_set(mode="OBJECT")
+    return low
+
+
+def bake_low(F, low, size):
+    import numpy as np
+    sc = bpy.context.scene
+    sc.render.engine = "CYCLES"
+    sc.cycles.samples = 96
+    sc.render.bake.margin = 12
+    sc.render.bake.use_selected_to_active = True
+    sc.render.bake.use_cage = False
+    sc.render.bake.cage_extrusion = 0.05
+    sc.render.bake.max_ray_distance = 0.14
+    mat = low.data.materials[0]
+    mat.use_nodes = True
+    nodes = mat.node_tree.nodes
+    images = {}
+    high = [o for o in F.high.objects if o.type == "MESH"]
+    for o in list(F.detail.objects):
+        o.hide_render = True   # fittings must not shadow the baked AO
+
+    def target(key, colour):
+        img = bpy.data.images.new("%s_%s" % (F.name, key), size, size, alpha=False)
+        img.colorspace_settings.name = "sRGB" if colour else "Non-Color"
+        n = nodes.get("BakeTarget") or nodes.new("ShaderNodeTexImage")
+        n.name = "BakeTarget"
+        n.image = img
+        nodes.active = n
+        images[key] = img
+
+    select_only(high + [low], low)
+    target("D", True)
+    bpy.ops.object.bake(type="DIFFUSE", pass_filter={"COLOR"}, use_clear=True)
+    target("N", False)
+    bpy.ops.object.bake(type="NORMAL", normal_space="TANGENT", use_clear=True)
+    target("R", False)
+    bpy.ops.object.bake(type="ROUGHNESS", use_clear=True)
+    target("AO", False)
+    bpy.ops.object.bake(type="AO", use_clear=True)
+    for o in list(F.detail.objects):
+        o.hide_render = False
+    px = {}
+    for k in ("AO", "R"):
+        arr = np.empty(size * size * 4, dtype=np.float32)
+        images[k].pixels.foreach_get(arr)
+        px[k] = arr
+    orm = bpy.data.images.new(F.name + "_ORM", size, size, alpha=False)
+    orm.colorspace_settings.name = "Non-Color"
+    packed = np.ones(size * size * 4, dtype=np.float32)
+    packed[0::4], packed[1::4], packed[2::4] = px["AO"][0::4], px["R"][0::4], 0.0
+    orm.pixels.foreach_set(packed)
+    os.makedirs(TEXTURES, exist_ok=True)
+    settings = sc.render.image_settings
+    settings.quality = 92
+    files = {}
+    for key, img, fmt, ext in (("D", images["D"], "JPEG", "jpg"), ("N", images["N"], "PNG", "png"), ("ORM", orm, "JPEG", "jpg")):
+        settings.file_format = fmt
+        settings.color_mode = "RGB"
+        path = os.path.join(TEXTURES, "T_Bartoli_%s_%s.%s" % (F.name, key, ext))
+        img.save_render(path, scene=sc)
+        files[key] = path
+    # The low-poly's own material: baked colour, normal map, AO x colour, roughness.
+    nt = mat.node_tree
+    nt.nodes.clear()
+    out = nt.nodes.new("ShaderNodeOutputMaterial")
+    bsdf = nt.nodes.new("ShaderNodeBsdfPrincipled")
+    nt.links.new(bsdf.outputs[0], out.inputs[0])
+    td = nt.nodes.new("ShaderNodeTexImage")
+    td.image = bpy.data.images.load(files["D"])
+    tn = nt.nodes.new("ShaderNodeTexImage")
+    tn.image = bpy.data.images.load(files["N"])
+    tn.image.colorspace_settings.name = "Non-Color"
+    to = nt.nodes.new("ShaderNodeTexImage")
+    to.image = bpy.data.images.load(files["ORM"])
+    to.image.colorspace_settings.name = "Non-Color"
+    sep = nt.nodes.new("ShaderNodeSeparateColor")
+    nt.links.new(to.outputs[0], sep.inputs[0])
+    mul = nt.nodes.new("ShaderNodeMix")
+    mul.data_type = "RGBA"
+    mul.blend_type = "MULTIPLY"
+    mul.inputs["Factor"].default_value = 0.8
+    nt.links.new(td.outputs[0], mul.inputs[6])
+    nt.links.new(sep.outputs[0], mul.inputs[7])
+    nt.links.new(mul.outputs[2], bsdf.inputs["Base Color"])
+    nt.links.new(sep.outputs[1], bsdf.inputs["Roughness"])
+    nm = nt.nodes.new("ShaderNodeNormalMap")
+    nt.links.new(tn.outputs[0], nm.inputs["Color"])
+    nt.links.new(nm.outputs[0], bsdf.inputs["Normal"])
+    return files
+
+
+def sky_and_sun(azimuth_deg=150, elevation_deg=38):
+    sc = bpy.context.scene
+    world = bpy.data.worlds.new("Cielo")
+    world.use_nodes = True
+    nt = world.node_tree
+    sky = nt.nodes.new("ShaderNodeTexSky")
+    sky.sky_type = "NISHITA"
+    sky.sun_elevation = math.radians(elevation_deg)
+    sky.sun_rotation = math.radians(azimuth_deg)
+    sky.sun_intensity = 0.6
+    nt.links.new(sky.outputs[0], nt.nodes["Background"].inputs[0])
+    nt.nodes["Background"].inputs["Strength"].default_value = 0.35
+    sc.world = world
+    sun = bpy.data.objects.new("Sole", bpy.data.lights.new("Sole", "SUN"))
+    sun.data.energy = 3.6
+    sun.data.angle = math.radians(0.6)
+    sun.rotation_euler = (math.radians(90 - elevation_deg), 0, math.radians(azimuth_deg + 90))
+    sc.collection.objects.link(sun)
+    sc.view_settings.view_transform = "AgX"
+    sc.view_settings.look = "AgX - Medium High Contrast"
+    sc.view_settings.exposure = -0.8
+
+
+def render_views(F, views, tag, show_high):
+    sc = bpy.context.scene
+    sc.render.engine = "CYCLES"
+    sc.cycles.samples = 96
+    sc.cycles.use_denoising = True
+    sc.render.resolution_x, sc.render.resolution_y = 1600, 900
+    sc.render.image_settings.file_format = "PNG"
+    for o in list(F.high.objects):
+        o.hide_render = not show_high
+    for o in list(F.low.objects):
+        o.hide_render = show_high
+    cam = bpy.data.objects.get("CamFacciata") or bpy.data.objects.new("CamFacciata", bpy.data.cameras.new("CamFacciata"))
+    if cam.name not in sc.collection.objects:
+        sc.collection.objects.link(cam)
+    sc.camera = cam
+    M = F.frame.matrix_world
+    for name, (eye, target, fov) in views.items():
+        e, t = M @ Vector(eye), M @ Vector(target)
+        cam.location = e
+        cam.rotation_euler = (t - e).to_track_quat("-Z", "Y").to_euler()
+        cam.data.lens_unit = "FOV"
+        cam.data.angle = math.radians(fov)
+        sc.render.filepath = os.path.join(PREVIEWS, "facciataC_%s_%s.png" % (name, tag))
+        bpy.ops.render.render(write_still=True)
+
+
+def facade_c():
+    import m80_bartoli_facades as BF
+    reset()
+    print("GPU:", use_gpu())
+    terrain_mesh(material("Terreno", (0.42, 0.40, 0.33)))
+    neighbours(material("Vicini", (0.62, 0.62, 0.62)))
+    F = BF.build_facade_c()
+    # Body behind the facade, so the openings show a dark interior and the roof closes the top.
+    roof = material("Coppi_massa", (0.50, 0.30, 0.22))
+    w = LAYOUT["bodies"]["C_palazzo"]["wings"][0]
+    poly = [list(p) for p in w["poly"]]
+    back = [(-0.35 * 0.283 + x, 0.35 * 0.959 + y) for x, y in poly[:2]]   # 35 cm behind the facade plane
+    inner = back + [tuple(p) for p in poly[2:]]
+    prism("C_massa", inner, 0.5, 0.9 + 12.0, material("Interno", (0.08, 0.07, 0.06)))
+    hip_roof("C_tetto", poly, 0.9 + 12.0 + 0.15, w["axis"], 22, roof, overhang=0.0)
+    sky_and_sun()
+    t0 = time.time()
+    low = join_low(F)
+    size = int(os.environ.get("M80_BAKE_SIZE", "4096"))
+    files = bake_low(F, low, size)
+    print("bake %.0f s" % (time.time() - t0), files)
+    views = {
+        "fronte": ((11.0, -21.0, 1.7), (11.0, 0.0, 6.2), 62),
+        "portale": ((15.3, -6.5, 1.8), (15.3, 0.0, 4.3), 62),
+        "radente": ((-4.0, -9.0, 1.7), (12.0, 0.0, 6.0), 55),
+    }
+    render_views(F, views, "alta", True)
+    render_views(F, views, "bassa", False)
+    stats = {}
+    for tag, col in (("alta", F.high), ("bassa", F.low), ("dettagli", F.detail)):
+        dg = bpy.context.evaluated_depsgraph_get()
+        tris = 0
+        for o in list(col.objects):
+            if o.type in ("MESH", "CURVE"):
+                me = o.evaluated_get(dg).to_mesh()
+                tris += sum(len(p.vertices) - 2 for p in me.polygons)
+                o.evaluated_get(dg).to_mesh_clear()
+        stats[tag] = tris
+    print("triangles", stats)
+    with open(os.path.join(PREVIEWS, "facciataC_stats.json"), "w") as f:
+        json.dump({"triangles": stats, "textures": {k: os.path.basename(v) for k, v in files.items()}, "size": size}, f, indent=1)
+    os.makedirs(SAVED, exist_ok=True)
+    bpy.ops.wm.save_as_mainfile(filepath=os.path.join(SAVED, "bartoli_facciataC.blend"))
+
+
+def preview_c():
+    """High-poly only (no bake, no retopology): views from where the reference photos were taken."""
+    import m80_bartoli_facades as BF
+    reset()
+    print("GPU:", use_gpu())
+    massing(skip=("C_palazzo",), render_it=False)
+    F = BF.build_facade_c()
+    w = LAYOUT["bodies"]["C_palazzo"]["wings"]
+    poly = [list(p) for p in w[0]["poly"]]
+    back = [(-0.35 * 0.283 + x, 0.35 * 0.959 + y) for x, y in poly[:2]]
+    prism("C_massa", back + [tuple(p) for p in poly[2:]], 0.5, 0.9 + 12.0, material("Interno", (0.08, 0.07, 0.06)))
+    hip_roof("C_tetto", poly, 0.9 + 12.0 + 0.15, w[0]["axis"], 22, material("Coppi_massa", (0.50, 0.30, 0.22)), overhang=0.0)
+    prism("C_ala_ovest", w[1]["poly"], 0.5, 0.9 + 12.0, material("C_palazzo", (0.62, 0.50, 0.34)))
+    hip_roof("C_tetto_ovest", w[1]["poly"], 0.9 + 12.0, w[1]["axis"], 22, material("Coppi_massa", (0.50, 0.30, 0.22)))
+    sky_and_sun()
+    views = {
+        "foto_frontale": ((11.0, -21.0, 1.7), (11.0, 0.0, 6.2), 62),
+        "foto_222_corso": ((17.5, -7.5, 1.6), (9.0, 0.0, 7.5), 92),
+        "foto_220_corso": ((5.0, -6.0, 1.6), (5.0, 0.0, 8.5), 100),
+        "foto_271_corso": ((25.0, -9.0, 1.6), (14.0, 0.0, 6.5), 92),
+        "portale_balcone": ((15.3, -5.0, 2.0), (15.3, 0.0, 4.8), 72),
+        "radente_ovest": ((-5.0, -7.0, 1.7), (12.0, 0.0, 6.0), 60),
+    }
+    sc = bpy.context.scene
+    sc.cycles.samples = 64
+    render_views(F, views, "anteprima", True)
+    os.makedirs(SAVED, exist_ok=True)
+    bpy.ops.wm.save_as_mainfile(filepath=os.path.join(SAVED, "bartoli_anteprimaC.blend"))
+
+
+# ---------------------------------------------------------------------------------------------
+# The whole block in high-poly (before retopology and bake)
+
+CINEMA_ID = "372573548"
+CINEMA = [(-53.3, 1.6), (-50.9, -7.4), (-50.8, -8.45), (-50.35, -9.15), (-49.6, -9.4), (-43.8, -9.75), (-44.0, -0.2),
+          (-36.6, 1.5), (-34.8, 7.0), (-38.4, 19.9), (-40.9, 18.8), (-43.0, 25.3), (-52.7, 22.1), (-50.8, 15.7), (-52.9, 15.0),
+          (-52.4, 11.9), (-49.7, 2.7), (-51.0, 2.3)]
+CREMA = [(-40.1, -9.1), (-29.6, -5.5), (-30.6, -2.6), (-27.6, -1.9), (-31.0, 8.0), (-34.8, 7.0), (-36.6, 1.5), (-42.0, -0.4)]
+D_NO_RUIN = [(3.55, -11.5), (8.2, -26.2), (42.73, -11.99), (38.4, -0.06),
+             (33.5, -1.8), (25.2, -3.5), (9.8, -4.9), (11.5, -7.9)]
+RUIN = [(38.4, -0.06), (37.0, 3.8), (34.0, 2.8), (34.7, 0.2), (33.5, -1.8)]
+
+
+def inset(poly, d):
+    poly = ccw(poly)
+    n = len(poly)
+    out = []
+    for i in range(n):
+        p0, p1, p2 = Vector(poly[i - 1]), Vector(poly[i]), Vector(poly[(i + 1) % n])
+        e0, e1 = (p1 - p0).normalized(), (p2 - p1).normalized()
+        n0, n1 = Vector((-e0.y, e0.x)), Vector((-e1.y, e1.x))
+        b = n0 + n1
+        b = b.normalized() / max(0.3, b.normalized().dot(n0)) if b.length > 1e-6 else n0
+        q = p1 + b * d
+        out.append((q.x, q.y))
+    return out
+
+
+def ring_wall(name, poly, z0, z1, d0, d1, mat):
+    """A wall ring between two insets of a footprint (inner faces of a garden parapet, etc.)."""
+    a, b = inset(poly, d0), inset(poly, d1)
+    bm = bmesh.new()
+    n = len(a)
+    A0 = [bm.verts.new((x, y, z0)) for x, y in a]
+    A1 = [bm.verts.new((x, y, z1)) for x, y in a]
+    B0 = [bm.verts.new((x, y, z0)) for x, y in b]
+    B1 = [bm.verts.new((x, y, z1)) for x, y in b]
+    for i in range(n):
+        j = (i + 1) % n
+        for f in ((A1[i], A1[j], B1[j], B1[i]), (B0[i], B0[j], B1[j], B1[i])):
+            try:
+                bm.faces.new(f)
+            except ValueError:
+                pass
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
+    return mesh_object(name, bm, mat)
+
+
+def bodies_massing(skip=()):
+    """Dark interiors 40 cm behind the facades, roofs on the cornices, flat roofs, the ruin."""
+    dark = material("Interno", (0.05, 0.045, 0.04))
+    roof = material("Coppi_tetto", (0.36, 0.17, 0.10))
+    B = LAYOUT["bodies"]
+    jobs = [("C0", B["C_palazzo"]["wings"][0]["poly"], 12.95, B["C_palazzo"]["wings"][0]["axis"]),
+            ("C1", B["C_palazzo"]["wings"][1]["poly"], 12.95, B["C_palazzo"]["wings"][1]["axis"]),
+            ("D", D_NO_RUIN, 16.95, B["D_angolo"]["wings"][0]["axis"]),
+            ("E", B["E_ala_nord"]["wings"][0]["poly"], 13.85, B["E_ala_nord"]["wings"][0]["axis"]),
+            ("N", B["N_via_butera"]["wings"][0]["poly"], 17.2, B["N_via_butera"]["wings"][0]["axis"]),
+            ("Cinema", CINEMA, 15.2, (0.08, 1.0))]
+    import m80_arch_roofs as R
+    th, tl = K.collection("Tetti_High"), K.collection("Tetti_Low")
+    low = bpy.data.materials.get("Cotto_facciata") or roof
+    for name, poly, eave, axis in jobs:
+        if name in ("C0", "C1") and "C" in skip:
+            # The piano nobile is carved out of the palace's interior volume.
+            prism("Massa_%s_basso" % name, inset(poly, 0.4), poly_ground(poly) - 0.5, 0.9 + 4.95, dark)
+            prism("Massa_%s_alto" % name, inset(poly, 0.4), 0.9 + 9.05, eave, dark)
+        elif name not in skip:
+            prism("Massa_" + name, inset(poly, 0.4), poly_ground(poly) - 0.5, eave, dark)
+        elif name == "Cinema":
+            prism("Massa_Cinema_base", inset(poly, 0.4), poly_ground(poly) - 0.5, 5.3, dark)
+        R.hip_roof("Tetto_" + name, poly, eave, axis, 21, th, tl, low)
+    # Cream house: flat roof terrace with a parapet; old body B: hanging garden floor and inner walls.
+    prism("Massa_Crema", inset(CREMA, 0.4), poly_ground(CREMA) - 0.5, 5.2 + 14.4, dark)
+    ring_wall("Crema_parapetto", CREMA, 5.2 + 14.4, 5.2 + 15.4, 0.05, 0.35, material("Intonaco_crema", (0.70, 0.62, 0.48)))
+    b = B["B_corpo_antico"]["poly"]
+    prism("Massa_B", inset(b, 0.4), poly_ground(b) - 0.5, 6.0, dark)
+    ring_wall("B_muri_pensile", b, 6.0, 10.4, 0.05, 0.55, material("Pietrame_interno", (0.40, 0.31, 0.20)))
+    # The ruin: rubble on the ground, stumps of the side walls, a fig tree.
+    prism("Rudere_macerie", RUIN, poly_ground(RUIN) - 0.3, poly_ground(RUIN) + 0.6, material("Macerie", (0.30, 0.24, 0.16)))
+
+
+def build_all(step):
+    import m80_arch_facade as A
+    import m80_bartoli_facades as BF
+    import m80_bartoli_site as S
+    reset()
+    print("GPU:", use_gpu())
+    holes = [[to_local(p[0], p[1]) for p in TERRAIN["footprint"]], CINEMA, CREMA, LAYOUT["cortile"]["poly"],
+             LAYOUT["giardino_alberi"]["poly"], LAYOUT["giardino_nordest"]["poly"]]
+    terrain_mesh(material("Terreno", (0.42, 0.40, 0.33)), holes)
+    vic = material("Vicini", (0.62, 0.62, 0.62))
+    col = bpy.data.collections.new("Vicini")
+    bpy.context.scene.collection.children.link(col)
+    for it in PLAN:
+        if it["id"] in (LOT, CINEMA_ID):
+            continue
+        cxl, cyl = to_local(it["center_cm"][0], it["center_cm"][1])
+        if abs(cxl) > 75 or abs(cyl) > 70:
+            continue
+        poly = [to_local(x, y) for x, y in it["ring_cm"]]
+        if len(poly) >= 3:
+            prism("Vicino_" + it["id"], poly, poly_ground(poly) - 0.3, poly_ground(poly, max) + max(6.5, min(12.0, it.get("height_m", 8.0))), vic, col)
+    t0 = time.time()
+    built = {}
+    for spec in BF.all_specs() + BF.secondary_specs(ground) + S.wall_specs(ground) + [S.facade_n(ground)]:
+        built[spec["name"]] = A.build(spec, step=step)
+        print("facade %s %.0f s" % (spec["name"], time.time() - t0))
+    for k in range(4):
+        F = built["Muro_cinta%d" % k]
+        p0, p1 = F.spec["p0"], F.spec["p1"]
+        d = Vector((p1[0] - p0[0], p1[1] - p0[1])).normalized()
+        n = Vector((-d.y, d.x)) * 0.5
+        top = max(t[1] for t in F.spec["top"]) + F.spec["z0"]
+        prism("Muro_cinta%d_spessore" % k, [p0, p1, (p1[0] + n.x, p1[1] + n.y), (p0[0] + n.x, p0[1] + n.y)], F.spec["z0"], top - 0.1,
+              material("Pietrame_interno", (0.40, 0.31, 0.20)))
+    S.staircase_loggia()
+    gate = built["D_Corso"].frame.matrix_world @ Vector((2.5, 0.65, 0.0))
+    court = built["Cortile_Sud"].frame.matrix_world @ Vector((7.7, 0.65, 0.0))
+    S.androne((gate.x, gate.y), (court.x, court.y))
+    S.ground_patch("Cortile", LAYOUT["cortile"]["poly"], LAYOUT["cortile"]["level"], "setts", K.collection("Cortile_High"), K.collection("Cortile_Low"))
+    S.gardens(LAYOUT, ground)
+    interni = os.environ.get("M80_INTERNI", "1") == "1"
+    bodies_massing(skip=("Cinema", "C") if interni else ())
+    if interni:
+        import m80_bartoli_interni as I
+        import m80_bartoli_pianonobile as PN
+        I.cinema()
+        PN.build(built["C_Corso"].frame)
+        # Openings that now look into rooms lose their dark plate.
+        for nm in ("C_F1", "C_F2", "C_F3", "C_F4", "C_F5", "CS_P1_2", "CS_P1_3", "CO_P1_0", "CO_P1_1"):
+            ob = bpy.data.objects.get(nm + "_buio")
+            if ob:
+                bpy.data.objects.remove(ob)
+    sky_and_sun()
+    print("built in %.0f s" % (time.time() - t0))
+    return built
+
+
+def photo_views():
+    """Cameras where the reference photos were taken (world coords: eye, target, horizontal fov)."""
+    g = lambda x, y, h=1.6: ground(x, y) + h  # noqa: E731
+    return {
+        "frontale_bartoli": ((-1.1, -46.5, g(-1.1, -46.5)), (-2.0, -29.4, 7.1), 62),
+        "corso_222": ((13.0, -38.0, g(13.0, -38.0)), (6.0, -24.0, 8.5), 95),
+        "corso_271": ((18.0, -33.0, g(18.0, -33.0)), (6.0, -26.0, 7.0), 95),
+        "angolo_farmacia": ((53.0, -25.0, g(53.0, -25.0)), (40.0, -11.5, 9.0), 100),
+        "corso_ovest_b": ((-36.0, -41.5, g(-36.0, -41.5)), (-14.0, -33.0, 5.5), 80),
+        "salita_teatro": ((-37.5, -31.0, g(-37.5, -31.0)), (-44.0, -9.0, 9.0), 90),
+        "cortile_scalone": ((5.5, -9.5, 2.7), (-2.6, 6.5, 6.0), 95),
+        "cortile_da_loggia": ((-2.6, 7.6, 7.4), (5.5, -10.0, 4.0), 95),
+        "giardino_loggia": ((-13.0, 12.0, 9.2), (-2.5, 6.5, 7.5), 85),
+        "via_butera": ((43.5, 37.0, g(43.5, 37.0)), (28.0, 33.5, 9.5), 85),
+        "salone": ("PN", (9.8, 6.3, 6.6), (16.0, 1.0, 6.4), 90),
+        "pranzo": ("PN", (5.4, 6.3, 6.6), (8.6, 1.2, 6.0), 90),
+        "biblioteca": ("PN", (15.6, 9.2, 6.6), (20.5, 13.6, 6.6), 90),
+        "anticamera_dal_ballatoio": ("PN", (13.5, 20.05, 6.6), (9.2, 19.0, 6.2), 85),
+        "cinema_platea": ((-45.2, 2.2, 8.2), (-45.2, 16.0, 7.6), 85),
+        "cinema_galleria": ((-46.0, -4.6, 13.2), (-45.0, 16.0, 7.5), 80),
+        "cinema_foyer": ((-45.0, -8.6, 8.0), (-48.5, -3.0, 7.4), 90),
+        "aereo_sudest": ((70.0, -75.0, 55.0), (0.0, -5.0, 6.0), 50),
+        "aereo_nordovest": ((-60.0, 60.0, 50.0), (-5.0, -5.0, 6.0), 50),
+    }
+
+
+def render_world(views, tag, samples=64):
+    sc = bpy.context.scene
+    sc.render.engine = "CYCLES"
+    sc.cycles.samples = samples
+    sc.cycles.use_denoising = True
+    sc.render.resolution_x, sc.render.resolution_y = 1600, 900
+    sc.render.image_settings.file_format = "PNG"
+    for c in bpy.data.collections:
+        if c.name.endswith("_Low"):
+            for o in list(c.objects):
+                o.hide_render = True
+    cam = bpy.data.objects.get("CamMondo") or bpy.data.objects.new("CamMondo", bpy.data.cameras.new("CamMondo"))
+    if cam.name not in sc.collection.objects:
+        sc.collection.objects.link(cam)
+    sc.camera = cam
+    for name, view in views.items():
+        if view[0] == "PN":
+            # Piano nobile views are given in the Corso facade frame (u, w, v).
+            fr = bpy.data.objects.get("PianoNobile_Frame")
+            if not fr:
+                continue
+            _, eye, target, fov = view
+            eye, target = fr.matrix_world @ Vector(eye), fr.matrix_world @ Vector(target)
+        else:
+            eye, target, fov = view
+        cam.location = eye
+        cam.rotation_euler = (Vector(target) - Vector(eye)).to_track_quat("-Z", "Y").to_euler()
+        cam.data.lens_unit = "FOV"
+        cam.data.angle = math.radians(fov)
+        sc.render.filepath = os.path.join(PREVIEWS, "%s_%s.png" % (tag, name))
+        bpy.ops.render.render(write_still=True)
+        print("render", name)
+
+
 if STAGE == "massing":
     massing()
+elif STAGE == "alta":
+    import time
+    sys.path.append(HERE)
+    import m80_arch_kit as K
+    build_all(float(os.environ.get("M80_WALL_STEP", "0.03")))
+    os.makedirs(SAVED, exist_ok=True)
+    bpy.ops.wm.save_as_mainfile(filepath=os.path.join(SAVED, "bartoli_alta.blend"))
+    only = [v for v in os.environ.get("M80_VIEWS", "").split(",") if v]
+    views = {k: v for k, v in photo_views().items() if not only or k in only}
+    render_world(views, "alta", int(os.environ.get("M80_SAMPLES", "64")))
+elif STAGE == "anteprima_c":
+    sys.path.append(HERE)
+    preview_c()
+elif STAGE == "facciata_c":
+    import time
+    sys.path.append(HERE)
+    facade_c()

@@ -328,7 +328,7 @@ void AM80Stairs::BuildTreads(FM80MeshBuffer& B) const
 	const double Rise = RealRiserCm;
 	const double Use = FMath::Clamp(double(Wear), 0.0, 1.0);
 	const int32 Seed = int32(GetTypeHash(GetName()) % 9973);
-	const FVector3d Up(0, 0, 1);
+	const FVector3d UpZ(0, 0, 1);
 	auto Local = [&T](const FVector& V) { return FVector3d(T.InverseTransformVectorNoScale(V)); };
 	auto Ground = [this](double D, double Lat) { return GroundAt(Path->GetComponentTransform().TransformPosition(PointAt(D, Lat, 0.0))) - 25.0; };
 	auto Soffit = [&](double D) { return EdgeLineZ(D) - Rise - double(SlabCm); };
@@ -363,7 +363,7 @@ void AM80Stairs::BuildTreads(FM80MeshBuffer& B) const
 		{
 			for (int32 i = 0; i + 1 < C.Num(); ++i)
 			{
-				B.QuadProjected(M80St::Wall, PointAt(C[i], -HalfW, Soffit(C[i])), PointAt(C[i], HalfW, Soffit(C[i])), PointAt(C[i + 1], HalfW, Soffit(C[i + 1])), PointAt(C[i + 1], -HalfW, Soffit(C[i + 1])), -Up);
+				B.QuadProjected(M80St::Wall, PointAt(C[i], -HalfW, Soffit(C[i])), PointAt(C[i], HalfW, Soffit(C[i])), PointAt(C[i + 1], HalfW, Soffit(C[i + 1])), PointAt(C[i + 1], -HalfW, Soffit(C[i + 1])), -UpZ);
 			}
 		}
 	};
@@ -477,7 +477,7 @@ void AM80Stairs::BuildTreads(FM80MeshBuffer& B) const
 		// Bedding behind the joints, so they read as dark gaps.
 		const double TopE = TreadZ(S, Edge);
 		Across(M80St::Lava, Edge + Dir * 1.2, ZBelow - 1.0, TopE - 1.6, -Dir);
-		B.QuadProjected(M80St::Lava, PointAt(Edge, -HalfW, TopE - 1.4), PointAt(Edge, HalfW, TopE - 1.4), PointAt(Edge + Dir * Band, HalfW, TopE - 1.4), PointAt(Edge + Dir * Band, -HalfW, TopE - 1.4), Up);
+		B.QuadProjected(M80St::Lava, PointAt(Edge, -HalfW, TopE - 1.4), PointAt(Edge, HalfW, TopE - 1.4), PointAt(Edge + Dir * Band, HalfW, TopE - 1.4), PointAt(Edge + Dir * Band, -HalfW, TopE - 1.4), UpZ);
 		// Sides below the stones.
 		const double DA = FMath::Min(Edge, Edge + Dir * Band), DB = FMath::Max(Edge, Edge + Dir * Band);
 		Sides(DA, DB, [&](double, double) { return ZBelow - 1.0; });

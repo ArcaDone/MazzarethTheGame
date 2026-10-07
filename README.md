@@ -170,7 +170,10 @@ Script: `Tools/Backup/MTGBackup.ps1`.
   - il progetto, senza `.git`, cache, `Binaries` e `Intermediate`;
   - `Saved/Autosaves` e `Saved/Mazzarino80` (report, foto, copie delle mappe);
   - il progetto `D:\UE5Projects\Comune`;
-  - i sorgenti Blender in `D:\Blender\AssetsMazzarethTheGame`.
+  - i sorgenti Blender in `D:\Blender\AssetsMazzarethTheGame`;
+  - le foto di riferimento e i lavori Blender in `D:\BlenderTest`, più le immagini ricevute in chat (in `Saved/Mazzarino80/Riferimenti`);
+  - `D:\HDRI` e `D:\Audio_Music`;
+  - gli appunti di Claude Code sul progetto (in `ClaudeMemory`, da rimettere in `C:\Users\<utente>\.claude\projects\D--UE5Projects-GameAnimationSample\memory`).
 - Lanciarlo a mano (meglio con l'editor chiuso):
   ```
   schtasks /Run /TN MTGBackup

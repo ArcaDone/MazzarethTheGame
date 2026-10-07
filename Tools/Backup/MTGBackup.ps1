@@ -6,7 +6,8 @@
 # (the first run copies everything, the next ones only the differences).
 #
 # -Transfer: a clean copy to move the project to another PC, in <Dest>\Trasferimento with the same
-# layout as D:\ (UE5Projects\GameAnimationSample, UE5Projects\Comune, Blender\AssetsMazzarethTheGame).
+# layout as D:\ (UE5Projects\GameAnimationSample, UE5Projects\Comune, Blender\AssetsMazzarethTheGame,
+# BlenderTest, HDRI, Audio_Music), plus ClaudeMemory (Claude Code's notes, from the user profile).
 # It mirrors D: exactly (files deleted on D: are deleted from the copy too, so removed World
 # Partition actors do not come back) and includes .git (with the LFS files) and the compiled
 # Binaries, so the project opens without Visual Studio on a PC with the same Unreal 5.5.
@@ -51,6 +52,27 @@ $Jobs = @(
         Dst = "$Dest\Blender_AssetsMazzarethTheGame"
         XD  = @()
         XF  = @('*.blend1', '*.blend2')
+    },
+    @{  # Reference photos and Blender work files (Palazzo Bartoli, Chiesa dell'Olmo, San Giuseppe...)
+        Src = 'D:\BlenderTest'
+        Dst = "$Dest\BlenderTest"
+        XD  = @()
+        XF  = @('*.blend1', '*.blend2')
+    },
+    @{  # HDRI skies and music sources
+        Src = 'D:\HDRI'
+        Dst = "$Dest\HDRI"
+        XD  = @(); XF = @()
+    },
+    @{
+        Src = 'D:\Audio_Music'
+        Dst = "$Dest\Audio_Music"
+        XD  = @(); XF = @()
+    },
+    @{  # Claude Code's notes on this project (decisions, pitfalls, where the work stands)
+        Src = "$env:USERPROFILE\.claude\projects\D--UE5Projects-GameAnimationSample\memory"
+        Dst = "$Dest\ClaudeMemory"
+        XD  = @(); XF = @()
     }
 )
 
@@ -77,6 +99,27 @@ if ($Transfer) {
             Dst = "$Root\Blender\AssetsMazzarethTheGame"
             XD  = @()
             XF  = @('*.blend1', '*.blend2')
+        },
+        @{
+            Src = 'D:\BlenderTest'
+            Dst = "$Root\BlenderTest"
+            XD  = @()
+            XF  = @('*.blend1', '*.blend2')
+        },
+        @{
+            Src = 'D:\HDRI'
+            Dst = "$Root\HDRI"
+            XD  = @(); XF = @()
+        },
+        @{
+            Src = 'D:\Audio_Music'
+            Dst = "$Root\Audio_Music"
+            XD  = @(); XF = @()
+        },
+        @{  # Goes back to <user profile>\.claude\projects\D--UE5Projects-GameAnimationSample\memory
+            Src = "$env:USERPROFILE\.claude\projects\D--UE5Projects-GameAnimationSample\memory"
+            Dst = "$Root\ClaudeMemory"
+            XD  = @(); XF = @()
         }
     )
 }

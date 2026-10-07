@@ -1,0 +1,40 @@
+{
+ "name": "Palazzo Bartoli (OSM: Palazzo Branciforti), lot 1249067196",
+ "frame": "local metres: x east, y north from the lot centre (world cm 73249.29, 4252.71); z metres above world z 16900 cm. Blender x = local x, Blender y = local y.",
+ "origin_world_cm": [73249.29, 4252.71, 16900.0],
+ "levels": {"corso": 0.9, "cortile": 1.0, "loggia": 6.5, "giardino_pensile": 6.5, "giardino_alberi": 7.5},
+ "bodies": {
+  "B_corpo_antico": {
+   "note": "Corso W end and Salita Teatro: 2 levels in rubble stone; ground floor with big wooden door and portal with mascaron; the upper level is the wall of a hanging garden (box-hedge parterre) with arched openings and railings",
+   "poly": [[-31.0, -36.8], [-27.9, -36.1], [-12.5, -32.3], [-20.4, -5.5], [-28.4, -8.8], [-29.6, -5.5], [-40.1, -9.1], [-36.6, -19.7]],
+   "floor_top": 6.5, "parapet_top": 11.5, "color": [0.80, 0.62, 0.42]},
+  "C_palazzo": {
+   "note": "Palazzo Bartoli: 3 storeys, 5 bays on the Corso, pilasters, stone portal with coat of arms, central balcony; west wing along the courtyard",
+   "wings": [
+    {"poly": [[-12.5, -32.3], [8.2, -26.2], [3.55, -11.5], [-2.6, -14.3], [-17.1, -16.7]], "eave": 15.9, "axis": [0.959, 0.283]},
+    {"poly": [[-17.1, -16.7], [-2.6, -14.3], [-7.6, -0.9], [-9.7, -1.6], [-14.0, -3.0], [-20.4, -5.5]], "eave": 15.9, "axis": [-0.35, 0.94]}],
+   "color": [0.86, 0.74, 0.52]},
+  "D_angolo": {
+   "note": "4 storeys in sandstone ashlar wrapping the corner Corso / Piazza Monterosso (now Bar 900 and pharmacy), balconies on carved brackets; the north end on the piazza is a ruin with ivy",
+   "wings": [
+    {"poly": [[3.55, -11.5], [8.2, -26.2], [13.7, -24.2], [19.5, -22.1], [24.9, -19.8], [41.5, -12.5], [42.7, -11.9], [37.0, 3.8], [34.0, 2.8], [34.7, 0.2], [25.2, -3.5], [9.8, -4.9], [11.5, -7.9]], "eave": 18.5, "axis": [0.92, 0.39]}],
+   "color": [0.83, 0.68, 0.45]},
+  "E_ala_nord": {
+   "note": "wing from the courtyard up to Via Principe di Butera, pitched roofs; courtyard facades with balcony gallery on brackets",
+   "wings": [
+    {"poly": [[9.8, -4.9], [25.2, -3.5], [21.3, 4.4], [8.2, 30.9], [13.8, 32.5], [18.6, 33.4], [15.5, 42.9], [11.0, 41.6], [1.5, 38.75], [-4.5, 20.7], [1.3, 8.6], [2.3, 9.0]], "eave": 14.0, "axis": [-0.25, 0.97]}],
+   "color": [0.88, 0.80, 0.64]},
+  "N_via_butera": {
+   "note": "strip along Via Principe di Butera, 2 storeys on the street",
+   "wings": [
+    {"poly": [[-38.3, 26.8], [1.5, 38.75], [-4.5, 20.7], [-15.4, 14.6], [-17.3, 23.1], [-21.2, 22.0], [-32.0, 19.0], [-35.8, 18.2]], "eave": 16.5, "axis": [0.958, 0.287]}],
+   "color": [0.78, 0.70, 0.58]}
+ },
+ "cortile": {"poly": [[-2.6, -14.3], [3.55, -11.5], [11.5, -7.9], [9.8, -4.9], [2.3, 9.0], [1.3, 8.6], [1.4, 8.6], [-6.9, 5.9], [-7.6, -0.9]], "level": 1.0},
+ "scalone_loggia": {"note": "double flight staircase from the courtyard to a loggia of 3 arches covered in wisteria, the garden behind", "front": [[-6.9, 5.9], [1.4, 8.6]], "depth_stairs": 5.0, "depth_loggia": 3.5},
+ "giardino_alberi": {"note": "garden with trees (today there is a pool, not in the 1980s)",
+   "poly": [[1.4, 8.6], [-4.5, 20.7], [-15.4, 14.6], [-17.3, 23.1], [-21.2, 22.0], [-32.0, 19.0], [-31.0, -1.0], [-20.4, -5.5], [-14.0, -3.0], [-9.7, -1.6], [-7.6, -0.9], [-6.9, 5.9]], "level": 7.5},
+ "giardino_nordest": {"note": "walled garden with trees on Via Principe di Butera / Piazza Monterosso: wall with gate (yellow pilasters) and curved corner",
+   "poly": [[21.3, 4.4], [8.2, 30.9], [13.8, 32.5], [18.6, 33.4], [27.2, 35.0], [38.5, 31.0], [36.1, 7.6], [37.0, 3.8], [34.0, 2.8], [34.7, 0.2], [25.2, -3.5]],
+   "street_wall": [[18.6, 33.4], [27.2, 35.0], [38.5, 31.0], [36.1, 7.6], [37.0, 3.8]], "wall_height": 4.0}
+}

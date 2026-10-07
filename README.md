@@ -62,6 +62,7 @@ Altre mappe:
 | **Zona senza case procedurali** | Perimetro a spline: le case con il centro dentro spariscono, per lasciare posto agli edifici fatti a mano (Matrice, Comune, Poste…). Spegnendo o spostando la zona le case tornano. |
 | **Strada Mazzarino (spline)** | Strade OSM (1016): larghezza, quote, pavimentazione. Sul landscape le strade sono dipinte (layer "Strada"); le spline servono da guida a case, marciapiedi e lampioni. |
 | **Marciapiede** | Spline con lastra e cordolo in pietra lavica: aperto, ad anello o piazza piena. |
+| **Scalinata** | Spline per gradini, cordonate e scalinate (anche in curva, in salita o in discesa) in pietra lavica e basolato, piene fino a terra o a soletta, con pianerottoli, muri laterali e staccionate (ferro battuto, tubolare, legno, canne). Prova: `L_M80_ProvaScalinate` (`Scripts/m80_stairs_setup.py`). |
 | **Fili tra le case** | Cavi elettrici che attraversano la strada tra case vicine. |
 | **Lampione (Mazzarino)** | Tipo *Muro* (lanterna esagonale a braccio) o *Palo* (candelabro in ghisa a tre luci). Modellati in Blender dalle foto dei lampioni veri. Si accendono da soli al tramonto. Opzioni *Spento (guasto)* e *Modello* per cambiare mesh. |
 | **Atmosfera (Mazzarino)** | Sole nella posizione reale per Mazzarino (latitudine, giorno dell'anno, ora), luna, cielo, nuvole, foschia nelle valli, ora blu, notte. Meteo: Sereno, Afa estiva, Scirocco, Nuvoloso. In gioco l'ora avanza. |

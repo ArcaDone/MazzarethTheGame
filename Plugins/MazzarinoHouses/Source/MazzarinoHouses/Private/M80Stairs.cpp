@@ -428,6 +428,8 @@ void AM80Stairs::BuildTreads(FM80MeshBuffer& B) const
 			const double L0 = Blocks[b].X + (b ? Gap : 0.0), L1 = Blocks[b].Y - (b + 1 < Blocks.Num() ? Gap : 0.0);
 			const double Lift = Rnd.FRandRange(-0.45, 0.45) * Use, Tilt = Rnd.FRandRange(-0.35, 0.35) * Use;
 			const double R0 = Rnd.FRandRange(1.0, 2.2), Lean = Rnd.FRandRange(-0.4, 0.4);
+			// Each stone shows its own piece of the texture, sometimes mirrored, so no two steps look alike.
+			const float ShiftU = Rnd.FRandRange(0.f, 20.f), ShiftV = Rnd.FRandRange(0.f, 20.f), FlipU = Rnd.FRand() < 0.5f ? -1.f : 1.f;
 			const double Mid = (L0 + L1) * 0.5;
 			const TArray<double> Ls = M80St::Cuts(L0, L1, 8.0);
 			TArray<TArray<FVector3d>> P;
@@ -463,7 +465,7 @@ void AM80Stairs::BuildTreads(FM80MeshBuffer& B) const
 				{
 					Run += j ? (Prof[j] - Prof[j - 1]).Size() : 0.0;
 					Row.Add(PointAt(Edge + Dir * Prof[j].X, L, Prof[j].Y));
-					URow.Add(FVector2f(float(L / 100.0), float(Run / 100.0)));
+					URow.Add(FVector2f(FlipU * float(L / 100.0) + ShiftU, float(Run / 100.0) + ShiftV));
 				}
 				In.Add(PointAt(Edge + Dir * Band * 0.5, L, (ZBelow + Top) * 0.5));
 			}
@@ -602,7 +604,7 @@ void AM80Stairs::BuildWall(FM80MeshBuffer& B, double Side) const
 			{
 				Pts.Add(PointAt(D, Centre + Twist * (D - D0 - Len * 0.5) / Len, TopZ(D) + Cop * 0.5 + Lift));
 			}
-			M80St::Sweep(B, M80St::Lava, Pts, Slab, true);
+			M80St::Sweep(B, M80St::Lava, Pts, Slab, true, true, Rnd.FRandRange(0.f, 20.f));
 			D0 += Len;
 		}
 	}
@@ -645,7 +647,7 @@ void AM80Stairs::BuildFence(FM80MeshBuffer& B, double Side, bool bOnWall) const
 		for (int32 i = 0; i <= Posts; ++i)
 		{
 			const double D = PostD(i);
-			M80St::Sweep(B, M80St::Iron, {P(D, Base(D) - 3.0), P(D, Line(D) + H - 1.0)}, PostS, false);
+			M80St::Sweep(B, M80St::Iron, {P(D, Base(D) - 3.0), P(D, Line(D) + H - 1.0)}, PostS, false, true, Rnd.FRandRange(0.f, 20.f));
 			M80St::Sweep(B, M80St::Iron, {P(D, Line(D) + H + 1.0), P(D, Line(D) + H + 4.5)}, M80St::Round(2.2, 8), false);
 		}
 		const int32 Bars = FMath::Max(1, FMath::FloorToInt(Length / 12.0));
@@ -653,7 +655,7 @@ void AM80Stairs::BuildFence(FM80MeshBuffer& B, double Side, bool bOnWall) const
 		{
 			const double D = Length * i / Bars;
 			const double Bend = Rnd.FRandRange(-0.5, 0.5) * Use;
-			M80St::Sweep(B, M80St::Iron, {P(D, Line(D) + 9.0), P(D + Bend, Line(D) + H * 0.5, Bend * 0.5), P(D, Line(D) + H - 1.0)}, BarS, false);
+			M80St::Sweep(B, M80St::Iron, {P(D, Line(D) + 9.0), P(D + Bend, Line(D) + H * 0.5, Bend * 0.5), P(D, Line(D) + H - 1.0)}, BarS, false, true, Rnd.FRandRange(0.f, 20.f));
 		}
 		break;
 	}
@@ -667,7 +669,7 @@ void AM80Stairs::BuildFence(FM80MeshBuffer& B, double Side, bool bOnWall) const
 			Pts.Append(RailPts(DA, DB, H));
 			Pts.Add(P(DB, Base(DB) - 4.0));
 			TArray<FVector3d> Bent = M80St::RoundCorners(Pts, 9.0);
-			M80St::Sweep(B, M80St::Iron, Bent, M80St::Round(2.4, 12), false);
+			M80St::Sweep(B, M80St::Iron, Bent, M80St::Round(2.4, 12), false, true, Rnd.FRandRange(0.f, 20.f));
 		}
 		break;
 	}
@@ -681,7 +683,7 @@ void AM80Stairs::BuildFence(FM80MeshBuffer& B, double Side, bool bOnWall) const
 			PostSize.Add(Sz);
 			const FVector3d Lean = Local(RightAt(D) * Rnd.FRandRange(-1.5, 1.5) * Use) + FVector3d(Rnd.FRandRange(-1.5, 1.5) * Use, 0, 0);
 			M80St::Sweep(B, M80St::Wood, {P(D, Base(D) - (bOnWall ? 0.0 : 20.0)), P(D, Line(D) + H + Rnd.FRandRange(3.0, 9.0)) + Lean},
-				M80St::RoundRect(Sz, Sz * Rnd.FRandRange(0.85, 1.0), 1.0 + 1.5 * Use, 2), false);
+				M80St::RoundRect(Sz, Sz * Rnd.FRandRange(0.85, 1.0), 1.0 + 1.5 * Use, 2), false, true, Rnd.FRandRange(0.f, 20.f));
 		}
 		for (int32 i = 0; i < Posts; ++i)
 		{
@@ -693,7 +695,7 @@ void AM80Stairs::BuildFence(FM80MeshBuffer& B, double Side, bool bOnWall) const
 				{
 					Pts[j].Z -= Sag * FMath::Sin(PI * j / FMath::Max(1, Pts.Num() - 1));
 				}
-				M80St::Sweep(B, M80St::Wood, Pts, M80St::RoundRect(4.5, Rnd.FRandRange(10.0, 13.0), 0.8 + Use, 2), true);
+				M80St::Sweep(B, M80St::Wood, Pts, M80St::RoundRect(4.5, Rnd.FRandRange(10.0, 13.0), 0.8 + Use, 2), true, true, Rnd.FRandRange(0.f, 20.f));
 			}
 		}
 		break;
@@ -704,7 +706,7 @@ void AM80Stairs::BuildFence(FM80MeshBuffer& B, double Side, bool bOnWall) const
 		for (int32 i = 0; i <= Posts; ++i)
 		{
 			const double D = PostD(i);
-			M80St::Sweep(B, M80St::Wood, {P(D, Base(D) - 20.0), P(D, Line(D) + H - 5.0)}, M80St::RoundRect(7.0, 7.0, 1.5, 2), false);
+			M80St::Sweep(B, M80St::Wood, {P(D, Base(D) - 20.0), P(D, Line(D) + H - 5.0)}, M80St::RoundRect(7.0, 7.0, 1.5, 2), false, true, Rnd.FRandRange(0.f, 20.f));
 		}
 		const int32 Canes = FMath::Max(1, FMath::FloorToInt(Length / 4.4));
 		for (int32 i = 0; i <= Canes; ++i)

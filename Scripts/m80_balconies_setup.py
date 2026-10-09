@@ -4,7 +4,9 @@
   textures: colour, normal, ORM; one instance of the baked master M_M80_Lamp each) and the straight and
   goose-breast railings at 180/240/300 cm (rusty painted iron of the stairs kit, MI_M80_Ferro).
 - The house builder composes them ("Balcone signorile" in the facade rules); M80_Balconi.json has the sizes.
+Collision: slabs a box (to stand on), railings their own bars, consoles and carved panels none (under the slab).
 Report: Saved/Mazzarino80/balconies_report.json (bounds of every mesh, to check pivots and orientation).
+Env M80_BALCONIES_SETTINGS_ONLY=1: no import, only materials, Nanite and collision of the meshes already there.
 
 powershell -File Scripts/run_editor_script.ps1 -Script Scripts/m80_balconies_setup.py
 """
@@ -24,6 +26,7 @@ KIT = "/Game/Mazzarino80/Kit/Balconi"
 MASTER = "/Game/Mazzarino80/Kit/Lamps/M_M80_Lamp"          # baked colour / normal / ORM master
 IRON = "/Game/Mazzarino80/Kit/Stairs/MI_M80_Ferro"
 REPORT = ROOT / "Saved/Mazzarino80/balconies_report.json"
+SETTINGS_ONLY = os.environ.get("M80_BALCONIES_SETTINGS_ONLY", "") == "1"
 MEL = unreal.MaterialEditingLibrary
 TOOLS = unreal.AssetToolsHelpers.get_asset_tools()
 EAL = unreal.EditorAssetLibrary
@@ -54,9 +57,10 @@ def run():
     fbx.set_editor_property("import_as_skeletal", False)
     fbx.static_mesh_import_data.set_editor_property("combine_meshes", False)
     fbx.static_mesh_import_data.set_editor_property("generate_lightmap_u_vs", False)
-    import_files([SRC / "M80_Balconi.fbx"], fbx)
-    import_files(sorted((SRC / "Textures/Balconi").glob("T_M80_Balcone_*")))
-    yield 10
+    if not SETTINGS_ONLY:
+        import_files([SRC / "M80_Balconi.fbx"], fbx)
+        import_files(sorted((SRC / "Textures/Balconi").glob("T_M80_Balcone_*")))
+        yield 10
     master = unreal.load_asset(MASTER)
     iron = unreal.load_asset(IRON)
     sub = unreal.get_editor_subsystem(unreal.StaticMeshEditorSubsystem)
@@ -92,9 +96,15 @@ def run():
         settings = mesh.get_editor_property("nanite_settings")
         settings.set_editor_property("enabled", True)
         sub.set_nanite_settings(mesh, settings, apply_changes=True)
-        # Simple collision: a box is enough to stand on a slab or bump into a railing.
+        # A box to stand on the slab; the railing's own bars (a box would fill the balcony); nothing on
+        # the carved parts under the slab.
         sub.remove_collisions(mesh)
-        sub.add_simple_collisions(mesh, unreal.ScriptCollisionShapeType.BOX)
+        body = mesh.get_editor_property("body_setup")
+        if "_Lastra_" in name:
+            sub.add_simple_collisions(mesh, unreal.ScriptCollisionShapeType.BOX)
+        if body:
+            body.set_editor_property("collision_trace_flag", unreal.CollisionTraceFlag.CTF_USE_COMPLEX_AS_SIMPLE
+                                     if name in rails else unreal.CollisionTraceFlag.CTF_USE_DEFAULT)
         EAL.save_loaded_asset(mesh, False)
         box = mesh.get_bounding_box()
         report[name] = {"min": [round(box.min.x, 1), round(box.min.y, 1), round(box.min.z, 1)],

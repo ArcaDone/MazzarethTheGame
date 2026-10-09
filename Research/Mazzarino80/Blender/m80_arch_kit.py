@@ -262,7 +262,7 @@ def value_noise(u, v, scale, seed=0, octaves=3):
     return out / tot
 
 
-def rubble(u, v, cell=(0.21, 0.14), seed=7):
+def rubble(u, v, cell=(0.21, 0.14), seed=7, mortar=0.016):
     """Irregular stones in thick mortar. Returns (height m, stone random 0-1, edge distance m)."""
     cu, cv = cell
     # Roughly coursed: every row of cells is shifted a little.
@@ -284,7 +284,7 @@ def rubble(u, v, cell=(0.21, 0.14), seed=7):
             sid = np.where(closer, _hash(i, j, seed + 2), sid)
             f1 = np.minimum(f1, dist)
     edge = f2 - f1
-    mortar = 0.016 + 0.010 * value_noise(u, v, 0.4, seed + 5, 2)
+    mortar = mortar + 0.010 * value_noise(u, v, 0.4, seed + 5, 2)
     dome = np.clip((edge - mortar) / 0.035, 0, 1) ** 0.35
     fine = value_noise(u, v, 0.025, seed + 9, 3)
     chip = value_noise(u, v, 0.07, seed + 13, 2)
@@ -293,10 +293,11 @@ def rubble(u, v, cell=(0.21, 0.14), seed=7):
     return h, sid, edge - mortar
 
 
-# Stone colours (linear): warm limestone and sandstone of the Mazzarino area, a few grey stones.
-STONE = np.array([[0.50, 0.37, 0.19], [0.56, 0.42, 0.21], [0.60, 0.50, 0.33], [0.46, 0.34, 0.18],
-                  [0.40, 0.37, 0.32], [0.54, 0.43, 0.26]])
-MORTAR = np.array([0.52, 0.45, 0.34])
+# Stone colours (linear): warm limestone and sandstone of the Mazzarino area, a few grey stones;
+# golden but sandy, less orange than the first cut, as in the street photos.
+STONE = np.array([[0.52, 0.39, 0.205], [0.57, 0.445, 0.24], [0.60, 0.51, 0.35], [0.47, 0.36, 0.205],
+                  [0.41, 0.38, 0.325], [0.55, 0.445, 0.285]])
+MORTAR = np.array([0.58, 0.49, 0.35])
 
 
 def rubble_albedo(u, v, h, sid, edge, seed=7):

@@ -43,10 +43,11 @@ def facade_c():
          "frame": {"w": 0.30, "proj": 0.08, "mat": "portal"}, "keystone": True},
         {"id": "C_G5", "u0": 18.9, "u1": 20.4, "v0": 0.0, "v1": 3.0, "kind": "door", "fit": "door"},
     ]
-    bal = [{"u0": B[0] - 1.55, "u1": B[0] + 1.55, "v": 5.0, "d": 0.72, "railing": "bombe"},
-           {"u0": B[1] - 1.5, "u1": B[1] + 1.5, "v": 5.0, "d": 0.72},
-           {"u0": B[2] - 1.52, "u1": B[2] + 1.52, "v": 5.0, "d": 0.72, "railing": "bombe"},
-           {"u0": B[3] - 1.6, "u1": B[3] + 1.6, "v": 5.0, "d": 0.88, "brackets": "rich", "n": 4, "mat": "portal"}]
+    # Piano nobile: bellied railings on carved consoles (the central one richer, in the portal's stone).
+    bal = [{"u0": B[0] - 1.55, "u1": B[0] + 1.55, "v": 5.0, "d": 0.75, "railing": "bombe", "brackets": "rich", "n": 3, "bracket_h": 0.55},
+           {"u0": B[1] - 1.5, "u1": B[1] + 1.5, "v": 5.0, "d": 0.75, "railing": "bombe", "brackets": "rich", "n": 3, "bracket_h": 0.55},
+           {"u0": B[2] - 1.52, "u1": B[2] + 1.52, "v": 5.0, "d": 0.75, "railing": "bombe", "brackets": "rich", "n": 3, "bracket_h": 0.55},
+           {"u0": B[3] - 1.6, "u1": B[3] + 1.6, "v": 5.0, "d": 0.88, "railing": "bombe", "brackets": "rich", "n": 4, "mat": "portal"}]
 
     def extra(F, ops):
         import bmesh
@@ -113,7 +114,8 @@ def facade_c():
 
     return {
         "name": "C_Corso", "p0": [-12.5, -32.3], "p1": [8.2, -26.2], "z0": Z_CORSO, "height": 12.0,
-        "wall": {"type": "rubble", "seed": 7},
+        # Small stones in plenty of mortar.
+        "wall": {"type": "rubble", "seed": 7, "cell": (0.16, 0.11), "mortar": 0.02},
         "openings": o, "balconies": bal,
         "pilasters": [[0.0, 1.21, 0.07, "quoin"], [9.04, 9.29, 0.04, ""], [13.23, 13.57, 0.05, ""], [17.03, 17.8, 0.06, ""], [21.23, 21.6, 0.06, ""]],
         "bands": [{"v": 11.15, "profile": "string", "u0": 0.0, "u1": 21.6}],
@@ -143,7 +145,7 @@ def _d_upper(prefix, B, o, bal, f3_balcony=True):
         o.append(ow("%s_P1_%d" % (prefix, k), uc, 1.15, *D_FLOORS["f1"], kind="french", fit="shutters_open" if k % 3 == 1 else "shutters"))
         o.append(ow("%s_P2_%d" % (prefix, k), uc, 1.05, *D_FLOORS["f2"], kind="french", fit="shutters"))
         o.append(ow("%s_P3_%d" % (prefix, k), uc, 0.95, *D_FLOORS["f3"], kind="french", fit="shutters" if k % 2 else "glazed"))
-        bal.append({"u0": uc - 1.25, "u1": uc + 1.25, "v": 5.0, "d": 0.85, "brackets": "rich", "n": 4, "railing": "bombe" if k % 2 == 0 else "straight"})
+        bal.append({"u0": uc - 1.25, "u1": uc + 1.25, "v": 5.0, "d": 0.85, "brackets": "rich", "n": 4, "railing": "bombe"})
         bal.append({"u0": uc - 0.95, "u1": uc + 0.95, "v": 9.0, "d": 0.70, "brackets": "rich", "n": 3, "bracket_h": 0.5})
         if f3_balcony:
             bal.append({"u0": uc - 0.8, "u1": uc + 0.8, "v": 12.5, "d": 0.55, "n": 3, "bracket_h": 0.4})
@@ -170,10 +172,11 @@ def facade_d_corso():
     return {
         "name": "D_Corso", "p0": [8.2, -26.2], "p1": [42.73, -11.99], "z0": Z_CORSO, "height": 16.0,
         "wall": {"type": "ashlar", "course": 0.34, "length": 0.66, "seed": 4},
+        "grime": 1.8,  # the corner palace is darkened by the weather all over
         "openings": o, "balconies": bal,
         "pilasters": [[0.0, 0.55, 0.05, ""], [36.72, 37.34, 0.07, "quoin"]],
         "bands": [{"v": 4.55, "profile": "string"}, {"v": 0.0, "profile": "plinth", "h": 0.55}],
-        "cornice": {"v": 15.48, "tiles": True},
+        "cornice": {"v": 15.48, "tiles": True, "modillions": 0.75},
         "anchors": [[B[k] + 2.2, 8.55] for k in range(0, 7, 2)],
         "signs": [{"u0": B[7] - 1.3, "u1": B[7] + 1.3, "v": 3.95, "text": "FARMACIA", "bg": (0.01, 0.10, 0.04), "fg": (0.85, 0.85, 0.8),
                    "flag": {"u": B[7] + 1.6, "v": 4.9, "shape": "cross", "color": (0.05, 0.6, 0.12), "glow": 4.0}},
@@ -197,6 +200,7 @@ def facade_d_piazza():
     return {
         "name": "D_Piazza", "p0": [42.73, -11.99], "p1": [37.0, 3.8], "z0": 1.04, "height": 16.0,
         "wall": {"type": "ashlar", "course": 0.34, "length": 0.66, "seed": 5},
+        "grime": 1.8,  # the corner palace is darkened by the weather all over
         "openings": o, "balconies": bal,
         "pilasters": [[0.0, 0.6, 0.07, "quoin"]],
         "bands": [{"v": 4.55, "profile": "string", "u1": 12.6}, {"v": 0.0, "profile": "plinth", "h": 0.55, "u1": 12.6}],
@@ -213,6 +217,7 @@ def _d_piazza_cornice(F, ops):
     path = [(-0.06, 15.48), (12.6, 15.48)]
     K.sweep("D_Piazza_cornicione_hi", path, K.cornice_profile(10), F.high, F.frame, M["stone"], smooth=True)
     K.sweep("D_Piazza_cornicione", path, K.cornice_profile(2), F.low, F.frame, M["low"])
+    A.modillions(F, "D_Piazza", 0.0, 12.6, 15.48, M["stone"], 0.75)
     A.coppi_eave(F, "D_Piazza_coppi", -0.05, 12.6, 16.02, 0.50)
 
 
@@ -323,7 +328,7 @@ def facade_cortile_sud():
         o.append(ow("CS_P2_%d" % k, uc, 0.95, 8.6, 10.2, fit="glazed" if k % 2 else "shutters", sill=True))
     return {
         "name": "Cortile_Sud", "p0": [11.5, -7.9], "p1": [-2.6, -14.3], "z0": 1.0, "height": 11.6,
-        "wall": {"type": "plaster", "color": (0.66, 0.58, 0.44), "peel": 0.45, "seed": 31},
+        "wall": {"type": "plaster", "color": (0.74, 0.63, 0.42), "peel": 0.25, "seed": 31},
         "openings": o,
         "balconies": [{"u0": 0.6, "u1": L - 0.6, "v": 4.9, "d": 0.95, "n": 8, "railing": "straight"}],
         "cornice": {"v": 11.1, "tiles": True, "profile": "string"},
@@ -339,7 +344,7 @@ def facade_cortile_ovest():
         o.append(ow("CO_P2_%d" % k, uc, 0.95, 8.6, 10.2, fit="shutters", sill=True))
     return {
         "name": "Cortile_Ovest", "p0": [-2.6, -14.3], "p1": [-7.6, -0.9], "z0": 1.0, "height": 11.6,
-        "wall": {"type": "plaster", "color": (0.68, 0.60, 0.46), "peel": 0.4, "seed": 32},
+        "wall": {"type": "plaster", "color": (0.75, 0.64, 0.43), "peel": 0.22, "seed": 32},
         "openings": o,
         "balconies": [{"u0": 0.6, "u1": 13.6, "v": 4.9, "d": 0.95, "n": 7}],
         "cornice": {"v": 11.1, "tiles": True, "profile": "string"},
@@ -358,7 +363,7 @@ def facade_cortile_est():
         o.append(ow("CE_P2_%d" % k, uc, 0.95, 8.6, 10.2, fit="shutters", sill=True))
     return {
         "name": "Cortile_Est", "p0": [2.3, 9.0], "p1": [9.8, -4.9], "z0": 1.0, "height": 12.8,
-        "wall": {"type": "plaster", "color": (0.66, 0.58, 0.45), "peel": 0.5, "seed": 33},
+        "wall": {"type": "plaster", "color": (0.73, 0.62, 0.41), "peel": 0.28, "seed": 33},
         "openings": o,
         "balconies": [{"u0": 0.8, "u1": 12.0, "v": 4.9, "d": 0.95, "n": 6}],
         "cornice": {"v": 12.3, "tiles": True, "profile": "string"},

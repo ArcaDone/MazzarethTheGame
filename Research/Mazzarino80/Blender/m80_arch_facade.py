@@ -154,9 +154,13 @@ def ashlar(U, V, course=0.33, length=0.62, seed=3):
     joint = 0.006 + 0.003 * K.value_noise(U, V, 0.3, seed + 2, 2)
     face = np.clip((edge - joint) / 0.035, 0, 1) ** 0.5
     fine = K.value_noise(U, V, 0.02, seed + 4, 3)
-    h = np.where(edge < joint, 0.0, 0.006 + 0.004 * face + 0.003 * rnd + 0.002 * fine * face)
+    # Alveolar erosion of the sandstone: pitted, darker patches eaten into some blocks.
+    erosion = np.clip((K.value_noise(U, V, 0.45, seed + 7, 3) - 0.6) * 4.0, 0, 1) * face
+    pits = K.value_noise(U, V, 0.012, seed + 8, 2)
+    h = np.where(edge < joint, 0.0, 0.006 + 0.004 * face + 0.003 * rnd + 0.002 * fine * face - 0.005 * erosion * pits)
     base = np.array([0.46, 0.36, 0.20])
     col_ = base * (0.80 + 0.32 * rnd)[..., None] * (0.85 + 0.22 * K.value_noise(U, V, 0.08, seed + 5, 3))[..., None]
+    col_ = col_ * (1 - 0.28 * erosion * (0.6 + 0.4 * pits))[..., None]
     mortar = np.array([0.52, 0.44, 0.31])
     alb = np.where((edge < joint)[..., None], mortar, col_)
     return h, alb
@@ -169,7 +173,7 @@ def plaster(U, V, color, peel=0.3, seed=5):
     # Stains and grime.
     alb = alb * (1 - 0.18 * np.clip(K.value_noise(U, V, 2.5, seed + 2, 3) - 0.45, 0, 1)[..., None] * 2)
     if peel > 0:
-        mask = (K.value_noise(U, V, 0.9, seed + 3, 4) + 0.25 * np.clip(1 - V / 2.0, 0, 1)) > (0.78 - 0.25 * peel)
+        mask = (K.value_noise(U, V, 1.5, seed + 3, 4) + 0.25 * np.clip(1 - V / 2.0, 0, 1)) > (0.78 - 0.25 * peel)
         rh, sid, edge = K.rubble(U, V, seed=seed + 9)
         ralb = K.rubble_albedo(U, V, rh, sid, edge, seed=seed + 9)
         h = np.where(mask, rh * 0.8, h)
@@ -184,7 +188,7 @@ def surface(spec, U, V):
         return ashlar(U, V, w.get("course", 0.33), w.get("length", 0.62), w.get("seed", 3))
     if t == "plaster":
         return plaster(U, V, w.get("color", (0.62, 0.55, 0.42)), w.get("peel", 0.3), w.get("seed", 5))
-    h, sid, edge = K.rubble(U, V, seed=w.get("seed", 7))
+    h, sid, edge = K.rubble(U, V, cell=tuple(w.get("cell", (0.21, 0.14))), seed=w.get("seed", 7), mortar=w.get("mortar", 0.016))
     return h, K.rubble_albedo(U, V, h, sid, edge, seed=w.get("seed", 7))
 
 
@@ -202,18 +206,34 @@ def extrude_outline(bm, outline, u0, u1, v_top):
 
 
 def bracket_outline(depth, height, rich):
-    pts = [(0.0, 0.0), (depth, 0.0), (depth, -0.07)]
-    n = 12
-    for k in range(1, n + 1):
-        t = k / n
-        out = depth * (1 - t) ** 1.4 + 0.04
-        down = -0.07 - (height - 0.07) * (math.sin(t * math.pi / 2) ** 1.2)
-        pts.append((out, down))
-    if rich:
-        # A volute curling at the foot, and a leaf on the front.
-        for k in range(1, 9):
-            a = math.radians(270 - 40 * k)
-            pts.append((0.11 + 0.07 * math.cos(a), -height + 0.07 + 0.07 * math.sin(a)))
+    """Side outline (out, down) of a console, from the wall along the underside of the slab it carries."""
+    if not rich:
+        pts = [(0.0, 0.0), (depth, 0.0), (depth, -0.07)]
+        n = 12
+        for k in range(1, n + 1):
+            t = k / n
+            out = depth * (1 - t) ** 1.4 + 0.04
+            down = -0.07 - (height - 0.07) * (math.sin(t * math.pi / 2) ** 1.2)
+            pts.append((out, down))
+        pts.append((0.0, -height))
+        return pts
+    # Baroque console: a roll under the front of the slab, an S (cyma) curving back to the wall and a
+    # smaller roll at the foot.
+    r = min(0.075, height * 0.14)
+    rf = r * 0.7
+    pts = [(0.0, 0.0)]
+    for k in range(13):
+        a = math.radians(90 - 180 * k / 12)
+        pts.append((depth - r + r * math.cos(a), -r + r * math.sin(a)))
+    x0, z0 = depth - r, -2 * r
+    x1, z1 = rf + 0.03, -height + 2 * rf
+    for k in range(1, 15):
+        t = k / 14
+        c = 0.5 - 0.5 * math.cos(math.pi * t)
+        pts.append((x0 + (x1 - x0) * c, z0 + (z1 - z0) * t))
+    for k in range(1, 13):
+        a = math.radians(90 - 180 * k / 12)
+        pts.append((x1 + rf * math.cos(a), z1 - rf + rf * math.sin(a)))
     pts.append((0.0, -height))
     return pts
 
@@ -239,11 +259,43 @@ def balcony(F, name, b):
         for coll, mat, outline, sfx in ((F.high, M[b.get("mat", "stone")], bracket_outline(bd, bh, rich), "_hi"),
                                         (F.low, M["low"], bracket_outline(bd, bh, False)[::3] + [(0.0, -bh)], "")):
             bm = bmesh.new()
-            extrude_outline(bm, outline, uc - 0.08, uc + 0.08, v_top - thick)
+            half = 0.09 if rich else 0.08
+            extrude_outline(bm, outline, uc - half, uc + half, v_top - thick)
             bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
-            K.bm_object("%s_mensola%d%s" % (name, k, sfx), bm, coll, F.frame, mat)
+            ob = K.bm_object("%s_mensola%d%s" % (name, k, sfx), bm, coll, F.frame, mat)
+            if rich and sfx:
+                carve(ob)
     railing(F, name + "_ringhiera", u0 + 0.05, u1 - 0.05, -d + 0.05, v_top, b.get("rail_h", 1.0),
             b.get("railing", "straight"))
+
+
+def carve(ob, strength=0.018):
+    """Carved stone (consoles, modillions): rounded edges and a chiselled, worn relief."""
+    K.add_bevel(ob, 0.02, 3)
+    s = ob.modifiers.new("Sub", "SUBSURF")
+    s.levels = s.render_levels = 2
+    tex = bpy.data.textures.get("M80_Intaglio") or bpy.data.textures.new("M80_Intaglio", "STUCCI")
+    tex.noise_scale = 0.04
+    d = ob.modifiers.new("Scolpito", "DISPLACE")
+    d.texture = tex
+    d.strength = strength
+    d.texture_coords = "GLOBAL"
+
+
+def modillions(F, name, u0, u1, v, mat, step):
+    """Consoles under the corona of a cornice (cornice_profile laid at height v), one every step metres."""
+    M = mats()
+    n = max(1, int((u1 - u0) / step))
+    for k in range(n):
+        uc = u0 + (k + 0.5) * (u1 - u0) / n
+        for coll, m, outline, sfx in ((F.high, mat, bracket_outline(0.36, 0.25, True), "_hi"),
+                                      (F.low, M["low"], bracket_outline(0.36, 0.25, False)[::3] + [(0.0, -0.25)], "")):
+            bm = bmesh.new()
+            extrude_outline(bm, outline, uc - 0.07, uc + 0.07, v + 0.29)
+            bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
+            ob = K.bm_object("%s_modiglione%d%s" % (name, k, sfx), bm, coll, F.frame, m)
+            if sfx:
+                carve(ob, 0.012)
 
 
 def railing(F, name, u0, u1, y_front, v0, h, style="straight", sides=True):
@@ -253,7 +305,8 @@ def railing(F, name, u0, u1, y_front, v0, h, style="straight", sides=True):
     cu.dimensions = "3D"
     cu.bevel_depth = 0.008
     cu.bevel_resolution = 0
-    bulge = 0.16 if style == "bombe" else 0.0
+    # "bombe": the goose-breast railing of Sicilian balconies, bellied out in its lower half.
+    bulge = 0.24 if style == "bombe" else 0.0
 
     def bar(pts, depth=None):
         sp = cu.splines.new("POLY")
@@ -280,24 +333,39 @@ def railing(F, name, u0, u1, y_front, v0, h, style="straight", sides=True):
                 bar([(u, y, v0 + 0.03), (u, y, v0 + h)])
             for z in (v0 + 0.03, v0 + h):
                 bar([(u, 0.0, z), (u, front_y(z), z)])
-    # Scroll band.
-    n2 = max(2, int((u1 - u0) / 0.23))
-    for k in range(n2):
-        uc = u0 + (u1 - u0) * (k + 0.5) / n2
-        pts = []
-        for j in range(17):
-            a = math.radians(-90 + j * 22.5)
-            r = 0.085 * (1 - j / 26)
-            z = v0 + 0.125 + r * math.sin(a)
-            pts.append((uc + r * math.cos(a) * (1 if k % 2 else -1), front_y(z), z))
-        bar(pts)
+    # Scroll bands: C-scrolls facing each other; the bellied railing has a second, smaller band at the top.
+    bands = [(v0 + 0.125, 0.085)] + ([(v0 + h - 0.13, 0.06)] if bulge else [])
+    for zc, r0 in bands:
+        n2 = max(2, int((u1 - u0) / (r0 * 2.7)))
+        if bulge:
+            zb = zc - r0 - 0.012
+            bar([(u0, front_y(zb), zb), (u1, front_y(zb), zb)])
+        for k in range(n2):
+            uc = u0 + (u1 - u0) * (k + 0.5) / n2
+            pts = []
+            for j in range(17):
+                a = math.radians(-90 + j * 22.5)
+                r = r0 * (1 - j / 26)
+                z = zc + r * math.sin(a)
+                pts.append((uc + r * math.cos(a) * (1 if k % 2 else -1), front_y(z), z))
+            bar(pts)
     cu.materials.append(M["iron"])
     ob = bpy.data.objects.new(name, cu)
     K.link(ob, F.detail, F.frame)
-    # The top rail is a flat bar.
-    bm = bmesh.new()
-    K.box_bm(bm, u0 - 0.01, u1 + 0.01, front_y(v0 + h) - 0.02, front_y(v0 + h) + 0.02, v0 + h - 0.006, v0 + h + 0.012)
-    K.bm_object(name + "_corrimano", bm, F.detail, F.frame, M["iron"])
+    # Handrail: a rounded bar on top.
+    hr = bpy.data.curves.new(name + "_corrimano", "CURVE")
+    hr.dimensions = "3D"
+    hr.bevel_depth = 0.02
+    hr.bevel_resolution = 3
+    sp = hr.splines.new("POLY")
+    pts = [(u0 - 0.01, front_y(v0 + h), v0 + h + 0.012), (u1 + 0.01, front_y(v0 + h), v0 + h + 0.012)]
+    if sides:
+        pts = [(u0 - 0.01, 0.0, v0 + h + 0.012)] + pts + [(u1 + 0.01, 0.0, v0 + h + 0.012)]
+    sp.points.add(len(pts) - 1)
+    for p, c in zip(sp.points, pts):
+        p.co = (*c, 1)
+    hr.materials.append(M["iron"])
+    K.link(bpy.data.objects.new(name + "_corrimano", hr), F.detail, F.frame)
     return ob
 
 
@@ -682,7 +750,16 @@ def build(spec, px_per_m=110, step=0.022):
         side = np.clip(np.minimum(us - u0, u1 - us) / 0.25, 0, 1)
         dark = strength * fall * side * (0.25 + 0.75 * lines)
         alb[m] *= (1 - dark[m])[:, None]
-    damp = np.clip(1 - vs / 1.3, 0, 1)[..., None] * 0.25
+    # Grime: long run-off streaks from the top, a patchy patina, dirt and damp along the street.
+    grime = spec.get("grime", 1.0)
+    streak = np.clip((K.value_noise(us, vs * 0.025, 0.05, 31, 3) - 0.5) * 2.2, 0, 1)
+    from_top = 0.35 + 0.65 * np.clip(1 - (H - vs) / 5.0, 0, 1)
+    alb = alb * (1 - grime * 0.24 * streak * from_top)[..., None]
+    # Warm dirt, not grey: the stone stays golden under it.
+    patina = grime * 0.14 * np.clip((K.value_noise(us, vs, 2.2, 33, 3) - 0.35) * 1.6, 0, 1)
+    alb = alb * (1 - patina)[..., None] + np.array([0.16, 0.12, 0.07]) * patina[..., None]
+    base_h = 1.3 + 0.6 * K.value_noise(us, np.zeros_like(us), 0.8, 35, 2)
+    damp = np.clip(1 - vs / base_h, 0, 1)[..., None] * (0.25 + 0.15 * grime)
     alb = alb * (1 - damp)
     img = K.image_from_array(spec["name"] + "_albedo", (np.clip(alb, 0, 1) * 0.9).astype(np.float32))
     wall_mat = bpy.data.materials.new(spec["name"] + "_muro_hi")
@@ -776,6 +853,8 @@ def build(spec, px_per_m=110, step=0.022):
         K.sweep(spec["name"] + "_cornicione_hi", path, prof, F.high, F.frame, M[c.get("mat", "stone")], smooth=True)
         K.sweep(spec["name"] + "_cornicione", path, K.cornice_profile(2) if c.get("profile", "cornice") == "cornice" else K.frame_profile(0.25, 0.18, 1),
                 F.low, F.frame, M["low"])
+        if c.get("modillions"):
+            modillions(F, spec["name"], 0.0, W, c["v"], M[c.get("mat", "stone")], c["modillions"])
         if c.get("tiles", True):
             coppi_eave(F, spec["name"] + "_coppi", -0.05, W + 0.05, c["v"] + 0.54, 0.50)
     for k, b in enumerate(spec.get("balconies", [])):

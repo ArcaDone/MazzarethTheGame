@@ -5,6 +5,11 @@
   (skeleton Root + Wheel_FL/FR/RL/RR), physics asset of two boxes (UM80EditorLibrary), 3 LODs.
 - Vespa: drivable too, skeletal mesh /Game/Mazzarino80/Vehicles/Vespa/SK_M80_Vespa (Root + Wheel_F/Wheel_R).
 - Poste: static meshes /Game/Mazzarino80/Buildings/Poste/SM_M80_Poste and SM_M80_Poste_Antenna (Nanite).
+- Town buildings: /Game/Mazzarino80/Buildings/<Key>/SM_M80_<Key> (+ pieces) for Comune, ChiesaComune (stand-ins
+  for the Comune), Matrice (+ _Interno), Castello, Madonna (every part a mesh of its own); collision = the mesh
+  itself, so they can be walked on and entered. Their textures are shared in /Game/Mazzarino80/Buildings/Textures
+  (the same Poly Haven stone or marble used by several buildings is imported once).
+- Street furniture: /Game/Mazzarino80/Kit/Arredo/SM_M80_Cassonetto and SM_M80_Tombino (box collision).
 - Materials: one instance per Blender material on three masters in /Game/Mazzarino80/Vehicles/Materials:
   M_M80_Vernice (car paint, clear coat), M_M80_Veicolo (generic: colour x texture, normal map, emission),
   M_M80_Vetro (glass, translucent). Textures at most 2K, colour ones stored as JPEG.
@@ -32,6 +37,13 @@ MASTERS = "/Game/Mazzarino80/Vehicles/Materials"
 CARS = ["Panda", "Fiat127", "FiatUno", "Golf", "Vespa"]   # drivable (the Vespa too: two wheels)
 DEST = {k: "/Game/Mazzarino80/Vehicles/" + k for k in CARS}
 DEST["Poste"] = "/Game/Mazzarino80/Buildings/Poste"
+BUILDINGS = ["Comune", "ChiesaComune", "Matrice", "Castello", "Madonna"]
+PROPS = ["Cassonetto", "Tombino"]
+for k in BUILDINGS:
+    DEST[k] = "/Game/Mazzarino80/Buildings/" + k
+for k in PROPS:
+    DEST[k] = "/Game/Mazzarino80/Kit/Arredo"
+BUILDING_TEXTURES = "/Game/Mazzarino80/Buildings/Textures"
 ONLY = [k for k in os.environ.get("M80_IMPORT_ONLY", "").split(",") if k]
 PHYSICS_ONLY = os.environ.get("M80_PHYSICS_ONLY", "") == "1"
 
@@ -162,7 +174,7 @@ def shared_texture(file, normal, folder):
 
 def make_instances(key, info, mats):
     folder = DEST[key] + "/Materials"
-    texfolder = SHARED_TEXTURES if key in CARS else DEST[key] + "/Textures"
+    texfolder = SHARED_TEXTURES if key in CARS else (BUILDING_TEXTURES if key in BUILDINGS else DEST[key] + "/Textures")
     out = {}
     cache = {}
     for blender_name, d in info["materials"].items():
@@ -273,12 +285,24 @@ def physics(key, mesh, info):
     return ok
 
 
+def collision(key, mesh):
+    """Buildings collide with their own triangles (walk on the steps, go inside); furniture with a box."""
+    if key in BUILDINGS:
+        body = mesh.get_editor_property("body_setup")
+        if body:
+            body.set_editor_property("collision_trace_flag", unreal.CollisionTraceFlag.CTF_USE_COMPLEX_AS_SIMPLE)
+    elif key in PROPS:
+        sub = unreal.get_editor_subsystem(unreal.StaticMeshEditorSubsystem)
+        sub.remove_collisions(mesh)
+        sub.add_simple_collisions(mesh, unreal.ScriptCollisionShapeType.BOX)
+
+
 def run():
     report = {}
     mats = None if PHYSICS_ONLY else masters()
     yield 5
     sk = unreal.get_editor_subsystem(unreal.SkeletalMeshEditorSubsystem)
-    for key in CARS + ["Poste"]:
+    for key in CARS + ["Poste"] + BUILDINGS + PROPS:
         if ONLY and key not in ONLY:
             continue
         jf = SRC / (key + ".json")
@@ -314,7 +338,9 @@ def run():
                     r[n] = "import failed"
                     continue
                 r[n] = {"missing_materials": assign(mesh, mis, False)}
+                collision(key, mesh)
                 EAL.save_loaded_asset(mesh)
+                yield 1
             if info.get("pieces"):
                 r["pieces_offset_cm"] = {k: v["offset_cm"] for k, v in info["pieces"].items()}
         report[key] = r

@@ -2,6 +2,25 @@
 #include "M80Polygon.h"
 #include "Algo/Reverse.h"
 
+const TCHAR* const M80NobleKit::Paths[M80NobleKit::Count] = {
+	TEXT("/Game/Mazzarino80/Kit/Balconi/SM_M80_Balcone_Lastra_Volute.SM_M80_Balcone_Lastra_Volute"),
+	TEXT("/Game/Mazzarino80/Kit/Balconi/SM_M80_Balcone_Lastra_Mascheroni.SM_M80_Balcone_Lastra_Mascheroni"),
+	TEXT("/Game/Mazzarino80/Kit/Balconi/SM_M80_Balcone_Lastra_Acanto.SM_M80_Balcone_Lastra_Acanto"),
+	TEXT("/Game/Mazzarino80/Kit/Balconi/SM_M80_Balcone_Mensola_Volute.SM_M80_Balcone_Mensola_Volute"),
+	TEXT("/Game/Mazzarino80/Kit/Balconi/SM_M80_Balcone_Mensola_Leone.SM_M80_Balcone_Mensola_Leone"),
+	TEXT("/Game/Mazzarino80/Kit/Balconi/SM_M80_Balcone_Mensola_Cane.SM_M80_Balcone_Mensola_Cane"),
+	TEXT("/Game/Mazzarino80/Kit/Balconi/SM_M80_Balcone_Mensola_Acanto.SM_M80_Balcone_Mensola_Acanto"),
+	TEXT("/Game/Mazzarino80/Kit/Balconi/SM_M80_Balcone_Decoro_Riquadro.SM_M80_Balcone_Decoro_Riquadro"),
+	TEXT("/Game/Mazzarino80/Kit/Balconi/SM_M80_Balcone_Decoro_Giglio.SM_M80_Balcone_Decoro_Giglio"),
+	TEXT("/Game/Mazzarino80/Kit/Balconi/SM_M80_Balcone_Decoro_Rosone.SM_M80_Balcone_Decoro_Rosone"),
+	TEXT("/Game/Mazzarino80/Kit/Balconi/SM_M80_Balcone_Ringhiera_Dritta_180.SM_M80_Balcone_Ringhiera_Dritta_180"),
+	TEXT("/Game/Mazzarino80/Kit/Balconi/SM_M80_Balcone_Ringhiera_Dritta_240.SM_M80_Balcone_Ringhiera_Dritta_240"),
+	TEXT("/Game/Mazzarino80/Kit/Balconi/SM_M80_Balcone_Ringhiera_Dritta_300.SM_M80_Balcone_Ringhiera_Dritta_300"),
+	TEXT("/Game/Mazzarino80/Kit/Balconi/SM_M80_Balcone_Ringhiera_PettoOca_180.SM_M80_Balcone_Ringhiera_PettoOca_180"),
+	TEXT("/Game/Mazzarino80/Kit/Balconi/SM_M80_Balcone_Ringhiera_PettoOca_240.SM_M80_Balcone_Ringhiera_PettoOca_240"),
+	TEXT("/Game/Mazzarino80/Kit/Balconi/SM_M80_Balcone_Ringhiera_PettoOca_300.SM_M80_Balcone_Ringhiera_PettoOca_300"),
+};
+
 namespace
 {
 using FVec = FVector3d;
@@ -70,6 +89,7 @@ public:
 
 	void Run()
 	{
+		ChooseNobleBalcony();
 		Setup();
 		PlanOpenings();
 		PlanStair();
@@ -125,6 +145,11 @@ private:
 	TArray<FEdge> E;
 	TArray<FOpening> Openings;
 	TArray<FVector2D> AntennaSpots;
+
+	/** Noble balconies: chosen once per house from their own stream, so the other houses do not change. */
+	bool bNoble = false;
+	bool bNoblePetto = false;
+	EM80NobleBalcony NobleKind = EM80NobleBalcony::Volute;
 
 	/** Outside stair: runs along edge Edge from XStart (ground) to the landing at the first-floor door. */
 	struct FStair
@@ -1346,6 +1371,63 @@ private:
 		return MakeCCW({{0, 0}, {Dp * .8, 0}, {Dp * .8, -5}, {Dp * .66, -8}, {Dp * .5, -12}, {Dp * .36, -19}, {Dp * .22, -28}, {Dp * .1, -34}, {0, -37}});
 	}
 
+	void ChooseNobleBalcony()
+	{
+		FRandomStream NobleRng(H.Seed * 977 + 13);
+		const float Chance = H.NobleBalconyOverride >= 0 ? H.NobleBalconyOverride : R.NobleBalconyChance;
+		bNoble = In.NobleFirst >= 0 && !In.bAbandoned && !In.bUnfinished && NobleRng.FRand() < Chance;
+		NobleKind = H.NobleBalconyKind != EM80NobleBalcony::Random ? H.NobleBalconyKind
+			: EM80NobleBalcony(1 + NobleRng.RandRange(0, 2));
+		bNoblePetto = H.NobleRailing == EM80NobleRailing::Style ? NobleRng.FRand() < R.PettoOcaChance : H.NobleRailing == EM80NobleRailing::Bombe;
+	}
+
+	/** A kit mesh placed on facade e: kit X along the wall (mirrored, the pieces are symmetric), Y out, Z up. */
+	void AddKit(int32 Piece, int32 e, double X, double Z, const FVector& Scale)
+	{
+		FM80PropPlacement Prop;
+		Prop.Prop = In.NobleFirst + Piece;
+		const FQuat Q = FRotationMatrix::MakeFromXZ(-E[e].U3(), Up).ToQuat();
+		Prop.Transform = FTransform(Q, W(e, X, Z, 0), Scale);
+		Prop.bArchitecture = true;
+		Out.Props.Add(Prop);
+	}
+
+	/** Carved stone balcony of the palazzi: kit slab with its back plate, consoles to the edge of the slab,
+	 *  carved panels between them, straight or goose-breast railing. Kit sizes: slab 240 x 80 cm. */
+	void EmitNobleBalcony(const FOpening& O, double BW, double BD)
+	{
+		struct FSet { int32 Slab, ConsoleA, ConsoleB, Decor; double Thick; };
+		static const FSet Sets[3] = {
+			{M80NobleKit::SlabVolute, M80NobleKit::ConsoleVolute, M80NobleKit::ConsoleVolute, M80NobleKit::DecorPanel, 20.0},
+			{M80NobleKit::SlabMascheroni, M80NobleKit::ConsoleLion, M80NobleKit::ConsoleDog, M80NobleKit::DecorFleur, 13.0},
+			{M80NobleKit::SlabAcanto, M80NobleKit::ConsoleAcanto, M80NobleKit::ConsoleAcanto, M80NobleKit::DecorRosette, 17.0}};
+		const FSet& Set = Sets[FMath::Clamp(int32(NobleKind) - 1, 0, 2)];
+		const int32 e = O.Edge;
+		const double Z = O.Z0, Xm = O.Mid();
+		const double Sy = BD / 80.0;
+		AddKit(Set.Slab, e, Xm, Z, FVector(BW / 240.0, Sy, 1.0));
+		// Consoles from end to end of the back plate, about every 70 cm; panels in the bays between them.
+		const int32 Count = FMath::Max(2, FMath::RoundToInt(BW / 70.0));
+		const double X0 = Xm - BW * 0.5 + 18, Step = (BW - 36) / (Count - 1);
+		for (int32 j = 0; j < Count; ++j)
+		{
+			AddKit(j % 2 ? Set.ConsoleB : Set.ConsoleA, e, X0 + j * Step, Z - Set.Thick, FVector(Sy));
+			if (j + 1 < Count && Step > 45)
+			{
+				AddKit(Set.Decor, e, X0 + (j + 0.5) * Step, Z - Set.Thick, FVector(FMath::Min(Sy, (Step - 22) / 42.0), Sy, Sy));
+			}
+		}
+		// Railing: the kit width nearest to the balcony, stretched to it.
+		static const double Widths[3] = {180.0, 240.0, 300.0};
+		int32 Wi = 0;
+		for (int32 i = 1; i < 3; ++i)
+		{
+			Wi = FMath::Abs(BW - Widths[i]) < FMath::Abs(BW - Widths[Wi]) ? i : Wi;
+		}
+		AddKit((bNoblePetto ? M80NobleKit::RailBombe180 : M80NobleKit::RailStraight180) + Wi, e, Xm, Z,
+			FVector(BW / Widths[Wi], Sy, R.RailingHeight / 100.0));
+	}
+
 	void EmitBalcony(const FOpening& O)
 	{
 		const int32 e = O.Edge;
@@ -1353,6 +1435,12 @@ private:
 		const double Z = O.Z0, BD = R.BalconyDepth, S = R.BalconySlab;
 		const double BW = O.Width() + 2 * R.FrameWidth + 50;
 		const double Xm = O.Mid();
+		if (bNoble)
+		{
+			EmitNobleBalcony(O, BW, BD);
+			EmitBalconyDetails(O, BW, BD);
+			return;
+		}
 		M.ElementRandom = Rng.FRand();
 		M.WallBox(M80Slot::Trim, W(e, Xm, Z - S * 0.5, -BD * 0.5), U3, N3, FVec(BW * 0.5, BD * 0.5, S * 0.5));
 		M.WallBox(M80Slot::Trim, W(e, Xm, Z - S - 2.5, -(BD - 5) * 0.5), U3, N3, FVec(BW * 0.5 - 4, (BD - 5) * 0.5, 2.5));
@@ -1432,7 +1520,14 @@ private:
 			M.QuadProjected(M80Slot::Majolica, W(e, Xm - BW * 0.5, Z - S + 1, -BD - 0.3), W(e, Xm + BW * 0.5, Z - S + 1, -BD - 0.3),
 				W(e, Xm + BW * 0.5, Z - 1, -BD - 0.3), W(e, Xm - BW * 0.5, Z - 1, -BD - 0.3), -N3);
 		}
-		// Pots, Moor's heads and the basket on its rope.
+		EmitBalconyDetails(O, BW, BD);
+	}
+
+	/** Pots, Moor's heads and the basket on its rope. */
+	void EmitBalconyDetails(const FOpening& O, double BW, double BD)
+	{
+		const int32 e = O.Edge;
+		const double Z = O.Z0, Xm = O.Mid(), RH = R.RailingHeight;
 		const double Sc = Sicily();
 		if (In.CatCount[M80Cat::Balcony] > 0 && Rng.FRand() < 0.85 * Sc)
 		{

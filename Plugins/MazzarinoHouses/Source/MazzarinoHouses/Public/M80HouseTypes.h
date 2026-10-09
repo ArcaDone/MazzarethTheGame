@@ -24,6 +24,24 @@ enum class EM80WallFinish : uint8
 	PlasterWorn UMETA(DisplayName = "Intonaco rovinato"),
 };
 
+/** Carved stone balcony of the palazzi (kit /Game/Mazzarino80/Kit/Balconi). */
+UENUM(BlueprintType)
+enum class EM80NobleBalcony : uint8
+{
+	Random     UMETA(DisplayName = "Casuale"),
+	Volute     UMETA(DisplayName = "Mensole a volute"),
+	Mascheroni UMETA(DisplayName = "Mascheroni (leoni e cani)"),
+	Acanto     UMETA(DisplayName = "Acanto e mascherone"),
+};
+
+UENUM(BlueprintType)
+enum class EM80NobleRailing : uint8
+{
+	Style    UMETA(DisplayName = "Secondo lo stile (petto d'oca)"),
+	Straight UMETA(DisplayName = "Dritta"),
+	Bombe    UMETA(DisplayName = "A petto d'oca"),
+};
+
 UENUM(BlueprintType)
 enum class EM80CornerStyle : uint8
 {
@@ -121,6 +139,10 @@ struct MAZZARINOHOUSES_API FM80FacadeRules
 	float RailingHeight = 100.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Balconi", meta = (DisplayName = "Mensole decorate"))
 	bool bOrnateCorbels = false;
+	/** Share of houses whose balconies are the carved stone ones of the palazzi (moulded slab on volute, beast or
+	 *  acanthus consoles, carved panels between them); the railing is goose-breast with "Probabilita balconi a petto d'oca". */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Balconi", meta = (DisplayName = "Probabilita balcone signorile", ClampMin = "0", ClampMax = "1"))
+	float NobleBalconyChance = 0.f;
 
 	/** Arab-Norman pointed arches on the arched doorways. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sicilia", meta = (DisplayName = "Probabilita archi a sesto acuto", ClampMin = "0", ClampMax = "1"))
@@ -294,6 +316,13 @@ struct MAZZARINOHOUSES_API FM80HouseParams
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dettagli", meta = (DisplayName = "Balconi (-1 = stile)"))
 	float BalconyChanceOverride = -1.f;
+	/** 1 = this house has the carved stone balconies of the palazzi, 0 = never; -1 = the style's chance. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dettagli", meta = (DisplayName = "Balcone signorile (-1 = stile)", ClampMin = "-1", ClampMax = "1"))
+	float NobleBalconyOverride = -1.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dettagli", meta = (DisplayName = "Tipo balcone signorile"))
+	EM80NobleBalcony NobleBalconyKind = EM80NobleBalcony::Random;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dettagli", meta = (DisplayName = "Ringhiera balcone signorile"))
+	EM80NobleRailing NobleRailing = EM80NobleRailing::Style;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dettagli", meta = (DisplayName = "Persiane aperte (-1 = stile)"))
 	float ShutterOpenOverride = -1.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dettagli", meta = (DisplayName = "Pluviali"))

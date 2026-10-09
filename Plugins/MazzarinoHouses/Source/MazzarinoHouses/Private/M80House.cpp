@@ -790,9 +790,10 @@ void AM80House::RefreshProps()
 			C->SetStaticMesh(Prop.Mesh);
 			// Small details: no collision or navigation (thousands of instances in a town slow loading
 			// down), and they disappear with distance like foliage; plants reach a little further.
-			C->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			// Noble balconies are part of the building: they collide (slab and railings) and stay.
+			C->SetCollisionEnabled(Prop.bArchitecture ? ECollisionEnabled::QueryAndPhysics : ECollisionEnabled::NoCollision);
 			C->SetCanEverAffectNavigation(false);
-			C->SetCullDistances(0, Prop.bPlant ? 9000 : 6000);
+			C->SetCullDistances(0, Prop.bArchitecture ? 0 : Prop.bPlant ? 9000 : 6000);
 			C->RegisterComponent();
 			PropComponents.Add(C);
 		}
@@ -826,6 +827,19 @@ void AM80House::Rebuild()
 		return;
 	}
 	UM80HouseStyle* MainStyle = House.Style;
+	// Noble balcony kit (carved stone slabs, consoles, panels, railings), used only when it is all there.
+	TArray<UStaticMesh*> NobleKit;
+	for (const TCHAR* Path : M80NobleKit::Paths)
+	{
+		if (UStaticMesh* KitMesh = LoadObject<UStaticMesh>(nullptr, Path))
+		{
+			NobleKit.Add(KitMesh);
+		}
+	}
+	if (NobleKit.Num() != M80NobleKit::Count)
+	{
+		NobleKit.Reset();
+	}
 	TArray<EM80EdgeKind> Kinds;
 	int32 Front = 0;
 	ResolveEdges(Local, Kinds, Front);
@@ -892,6 +906,7 @@ void AM80House::Rebuild()
 				In.CatCount[c] = Lists[c]->Num();
 				First += Lists[c]->Num();
 			}
+			In.NobleFirst = NobleKit.Num() == M80NobleKit::Count ? First : -1;
 		}
 
 		EM80WallFinish Finish = (House.bUseStyleFinish && Style) ? Style->DefaultFinish : House.Finish;
@@ -1079,6 +1094,7 @@ void AM80House::Rebuild()
 		{
 			PropMeshes.Append(*List);
 		}
+		PropMeshes.Append(NobleKit);
 	}
 	SavedProps.Reset();
 	for (const FM80PropPlacement& Prop : Props)
@@ -1116,7 +1132,8 @@ void AM80House::Rebuild()
 				// Mirror every other copy so the stack does not read as a repeated tile.
 				Saved.Transform.SetScale3D(PropT.GetScale3D() * FVector(c % 2 ? -1 : 1, 1, 1));
 			}
-			Saved.bPlant = Prop.Prop >= FirstPlant;
+			Saved.bPlant = Prop.Prop >= FirstPlant && !Prop.bArchitecture;
+			Saved.bArchitecture = Prop.bArchitecture;
 		}
 	}
 	RefreshProps();

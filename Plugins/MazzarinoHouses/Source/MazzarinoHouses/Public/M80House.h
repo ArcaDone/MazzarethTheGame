@@ -22,6 +22,9 @@ struct FM80SavedProp
 	FTransform Transform;
 	UPROPERTY()
 	bool bPlant = false;
+	/** Part of the building (noble balcony): collides and is not culled with distance. */
+	UPROPERTY()
+	bool bArchitecture = false;
 };
 
 /** One house of a row, cut from the lot footprint. */

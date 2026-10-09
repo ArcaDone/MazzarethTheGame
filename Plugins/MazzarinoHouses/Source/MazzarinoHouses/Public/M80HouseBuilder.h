@@ -25,6 +25,8 @@ struct MAZZARINOHOUSES_API FM80BuildInput
 	/** Sicilian prop categories (M80Cat) in the actor's mesh list. */
 	int32 CatFirst[M80Cat::Count] = {};
 	int32 CatCount[M80Cat::Count] = {};
+	/** First of the 16 meshes of the noble balcony kit in the actor's mesh list (order: M80NobleKit), -1 = missing. */
+	int32 NobleFirst = -1;
 	float WallPropYaw = 0.f;
 	/** Material slot of the facade walls (depends on the finish). */
 	int32 WallSlot = M80Slot::WallAshlar;
@@ -48,7 +50,25 @@ struct MAZZARINOHOUSES_API FM80PropPlacement
 	float TargetHeight = 0.f;
 	/** Reach TargetHeight by stacking copies near their real size instead of stretching one (ivy strands). */
 	bool bStack = false;
+	/** Part of the building (noble balcony): collides and never fades out with distance. */
+	bool bArchitecture = false;
 };
+
+/** Meshes of the noble balcony kit, in the order the builder indexes them from FM80BuildInput::NobleFirst. */
+namespace M80NobleKit
+{
+	enum : int32
+	{
+		SlabVolute, SlabMascheroni, SlabAcanto,
+		ConsoleVolute, ConsoleLion, ConsoleDog, ConsoleAcanto,
+		DecorPanel, DecorFleur, DecorRosette,
+		RailStraight180, RailStraight240, RailStraight300,
+		RailBombe180, RailBombe240, RailBombe300,
+		Count
+	};
+	/** Asset paths, in the order above. */
+	MAZZARINOHOUSES_API extern const TCHAR* const Paths[Count];
+}
 
 struct MAZZARINOHOUSES_API FM80BuildOutput
 {

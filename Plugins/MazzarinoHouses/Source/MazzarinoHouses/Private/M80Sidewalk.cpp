@@ -90,24 +90,21 @@ double AM80Sidewalk::TraceGroundZ(const UWorld* W, const AActor* Ignore, const F
 	return Fallback;
 }
 
-void AM80Sidewalk::SnapToHouses(double W)
+TArray<TArray<FVector2D>> AM80Sidewalk::NearbyHouses(double Reach) const
 {
-	SnappedPoints = 0;
+	TArray<TArray<FVector2D>> Houses;
 	UWorld* World = GetWorld();
-	const int32 N = Path->GetNumberOfSplinePoints();
+	const int32 N = Path ? Path->GetNumberOfSplinePoints() : 0;
 	if (!World || N < 1)
 	{
-		return;
+		return Houses;
 	}
-	// Footprints (made CCW) of the houses near the spline.
-	const double Reach = SnapDistanceCm + W;
 	FBox Area(ForceInit);
 	for (int32 i = 0; i < N; ++i)
 	{
 		Area += Path->GetLocationAtSplinePoint(i, ESplineCoordinateSpace::World);
 	}
 	Area = Area.ExpandBy(FVector(Reach, Reach, 1e6));
-	TArray<TArray<FVector2D>> Houses;
 	for (TActorIterator<AM80House> It(World); It; ++It)
 	{
 		if (It->IsExcluded() || !It->Footprint || !Area.Intersect(It->Footprint->Bounds.GetBox()))
@@ -125,8 +122,24 @@ void AM80Sidewalk::SnapToHouses(double W)
 		}
 		Houses.Add(MoveTemp(P));
 	}
+	return Houses;
+}
+
+void AM80Sidewalk::SnapToHouses(double W)
+{
+	SnappedPoints = 0;
+	SnapStatus.Reset();
+	UWorld* World = GetWorld();
+	const int32 N = Path->GetNumberOfSplinePoints();
+	if (!World || N < 1)
+	{
+		return;
+	}
+	const double Reach = SnapDistanceCm + W;
+	const TArray<TArray<FVector2D>> Houses = NearbyHouses(Reach);
 	if (Houses.IsEmpty())
 	{
+		SnapStatus = FString::Printf(TEXT("Nessuna casa procedurale entro %.0f cm"), Reach);
 		return;
 	}
 	auto InsideAny = [&Houses](const FVector2D& Q)
@@ -141,19 +154,19 @@ void AM80Sidewalk::SnapToHouses(double W)
 		return false;
 	};
 	const double Half = W * 0.5 + FMath::Max(0.f, WallGapCm);
-	int32 Moved = 0;
-	for (int32 i = 0; i < N; ++i)
+
+	// Facade nearest to Q running along Dir (within ~30 degrees), on its line also a little past its corners;
+	// out: the line of the sidewalk's centre (point and direction) and the distance from Q to the facade.
+	struct FLine
 	{
-		const FVector Loc = Path->GetLocationAtSplinePoint(i, ESplineCoordinateSpace::World);
-		const FVector2D Q(Loc.X, Loc.Y);
-		const bool bInside = InsideAny(Q);
-		// Direction from the neighbouring points (a linear spline has no tangent at its last point).
-		const bool bLoop = Path->IsClosedLoop();
-		const int32 Prev = i > 0 ? i - 1 : (bLoop ? N - 1 : i), NextI = i + 1 < N ? i + 1 : (bLoop ? 0 : i);
-		const FVector Dir3 = Path->GetLocationAtSplinePoint(NextI, ESplineCoordinateSpace::World) - Path->GetLocationAtSplinePoint(Prev, ESplineCoordinateSpace::World);
-		const FVector2D Dir = FVector2D(Dir3.X, Dir3.Y).GetSafeNormal();
-		double Best = TNumericLimits<double>::Max();
-		FVector2D Target(Q);
+		FVector2D Point, Dir;
+		double Dist = TNumericLimits<double>::Max();
+		const TArray<FVector2D>* House = nullptr;
+		int32 Edge = -1;
+	};
+	auto Facade = [&](const FVector2D& Q, const FVector2D& Dir, bool bInside)
+	{
+		FLine Best;
 		for (const TArray<FVector2D>& P : Houses)
 		{
 			for (int32 e = 0; e < P.Num(); ++e)
@@ -165,13 +178,11 @@ void AM80Sidewalk::SnapToHouses(double W)
 				{
 					continue;
 				}
-				// Only facades running along the sidewalk (within ~30 degrees): never the side wall at a corner.
 				const FVector2D U = AB / FMath::Sqrt(L2);
 				if (!Dir.IsNearlyZero() && FMath::Abs(FVector2D::CrossProduct(Dir, U)) > 0.5)
 				{
 					continue;
 				}
-				// On the facade's line, also a little past its corners (the sidewalk goes on straight).
 				const double Len = FMath::Sqrt(L2), Along = FVector2D::DotProduct(Q - A, U);
 				if (Along < -SnapDistanceCm || Along > Len + SnapDistanceCm)
 				{
@@ -179,7 +190,7 @@ void AM80Sidewalk::SnapToHouses(double W)
 				}
 				const FVector2D C = A + U * Along;
 				const double D = FVector2D::Distance(Q, C);
-				if (D >= Best || (!bInside && D > SnapDistanceCm))
+				if (D >= Best.Dist || (!bInside && D > SnapDistanceCm))
 				{
 					continue;
 				}
@@ -189,23 +200,73 @@ void AM80Sidewalk::SnapToHouses(double W)
 				{
 					continue;
 				}
-				Best = D;
-				Target = T;
+				Best.Point = T;
+				Best.Dir = U;
+				Best.Dist = D;
+				Best.House = &P;
+				Best.Edge = e;
 			}
 		}
-		if (Best < TNumericLimits<double>::Max())
+		return Best;
+	};
+
+	TArray<FVector> Orig;
+	for (int32 i = 0; i < N; ++i)
+	{
+		Orig.Add(Path->GetLocationAtSplinePoint(i, ESplineCoordinateSpace::World));
+	}
+	const bool bLoop = Path->IsClosedLoop();
+	TArray<int32> Left;
+	int32 Moved = 0;
+	for (int32 i = 0; i < N; ++i)
+	{
+		const FVector2D Q(Orig[i].X, Orig[i].Y);
+		const bool bInside = InsideAny(Q);
+		// The segments arriving at and leaving the point: at a corner of the sidewalk each one follows its own
+		// facade and the point goes where the two lines meet (the corner of the house, half a width out).
+		const int32 Prev = i > 0 ? i - 1 : (bLoop ? N - 1 : -1), NextI = i + 1 < N ? i + 1 : (bLoop ? 0 : -1);
+		const FVector2D DirIn = Prev >= 0 ? FVector2D(Q - FVector2D(Orig[Prev].X, Orig[Prev].Y)).GetSafeNormal() : FVector2D::ZeroVector;
+		const FVector2D DirOut = NextI >= 0 ? FVector2D(FVector2D(Orig[NextI].X, Orig[NextI].Y) - Q).GetSafeNormal() : FVector2D::ZeroVector;
+		const FLine In = DirIn.IsNearlyZero() ? FLine() : Facade(Q, DirIn, bInside);
+		const FLine Out = DirOut.IsNearlyZero() ? FLine() : Facade(Q, DirOut, bInside);
+		const bool bIn = In.Edge >= 0, bOut = Out.Edge >= 0;
+		if (!bIn && !bOut)
 		{
-			++SnappedPoints;
-			if (FVector2D::Distance(Q, Target) > 0.5)
+			Left.Add(i);
+			continue;
+		}
+		FVector2D Target = !bOut || (bIn && In.Dist <= Out.Dist) ? In.Point : Out.Point;
+		const double Cross = FVector2D::CrossProduct(In.Dir, Out.Dir);
+		if (bIn && bOut && (In.House != Out.House || In.Edge != Out.Edge) && FMath::Abs(Cross) > 0.3)
+		{
+			// Intersection of the two offset lines.
+			const double T = FVector2D::CrossProduct(Out.Point - In.Point, Out.Dir) / Cross;
+			const FVector2D Corner = In.Point + In.Dir * T;
+			if (FVector2D::Distance(Corner, Q) <= SnapDistanceCm + Half && !InsideAny(Corner))
 			{
-				Path->SetLocationAtSplinePoint(i, FVector(Target.X, Target.Y, Loc.Z), ESplineCoordinateSpace::World, false);
-				++Moved;
+				Target = Corner;
 			}
+		}
+		++SnappedPoints;
+		if (FVector2D::Distance(Q, Target) > 0.5)
+		{
+			Path->SetLocationAtSplinePoint(i, FVector(Target.X, Target.Y, Orig[i].Z), ESplineCoordinateSpace::World, false);
+			++Moved;
 		}
 	}
 	if (Moved)
 	{
 		Path->UpdateSpline();
+	}
+	SnapStatus = FString::Printf(TEXT("%d punti su %d agganciati"), SnappedPoints, N);
+	if (Left.Num())
+	{
+		TArray<FString> Ids;
+		for (int32 i : Left)
+		{
+			Ids.Add(FString::FromInt(i));
+		}
+		SnapStatus += FString::Printf(TEXT("; liberi i punti %s: nessuna facciata parallela entro %.0f cm"), *FString::Join(Ids, TEXT(", ")), SnapDistanceCm);
 	}
 }
 
@@ -255,7 +316,7 @@ TArray<AM80Sidewalk::FStation> AM80Sidewalk::Sample(double Step) const
 	return Out;
 }
 
-void AM80Sidewalk::AddStrip(UStaticMesh* Mesh, UMaterialInterface* Material, const TArray<FStation>& St, double Lateral, double Width, double Top, double Depth)
+void AM80Sidewalk::AddStrip(UStaticMesh* Mesh, UMaterialInterface* Material, const TArray<FStation>& St, double Lateral, double Width, double Top, double Depth, bool bWrap)
 {
 	if (!Mesh || St.Num() < 2 || Width <= 1.0)
 	{
@@ -273,7 +334,7 @@ void AM80Sidewalk::AddStrip(UStaticMesh* Mesh, UMaterialInterface* Material, con
 	const FVector2D Offset(-Box.GetCenter().Y * SY, Top - Box.Max.Z * SZ);
 	const FTransform& T = Path->GetComponentTransform();
 	// A closed spline samples its first point again at the end: tangents wrap around.
-	const bool bLoop = Path->IsClosedLoop() && St.Num() > 2;
+	const bool bLoop = bWrap && Path->IsClosedLoop() && St.Num() > 2;
 
 	TArray<FVector> P;
 	P.Reserve(St.Num());
@@ -458,6 +519,7 @@ void AM80Sidewalk::Rebuild()
 	else
 	{
 		SnappedPoints = 0;
+		SnapStatus = bSnapToHouses ? TEXT("Spento per le piazze (Riempi l'interno)") : TEXT("");
 	}
 	const int32 Curbs = CurbSide == EM80CurbSide::None ? 0 : (CurbSide == EM80CurbSide::Both ? 2 : 1);
 	const double CW = Curbs ? FMath::Min<double>(CurbWidthCm, W / (Curbs + 1)) : 0.0;
@@ -477,17 +539,71 @@ void AM80Sidewalk::Rebuild()
 		return;
 	}
 
-	// Slab between the curbs (with a little overlap under them).
+	// Magnet: no curb against a wall. Stations whose edge on a side touches a house (or lies in one) are
+	// "against the house" on that side; a single curb drawn on the house side moves to the street side.
+	TArray<TArray<FVector2D>> Walls;
+	if (bSnapToHouses && SnappedPoints > 0)
+	{
+		Walls = NearbyHouses(W + 200.0);
+	}
+	const double Edge = W / 2 + FMath::Max(0.f, WallGapCm) + 2.0;
+	auto AgainstHouse = [&Walls, Edge](const FStation& S, double Side)
+	{
+		const FVector P = S.Pos + S.Right * Side * Edge;
+		const FVector2D Q(P.X, P.Y);
+		for (const TArray<FVector2D>& H : Walls)
+		{
+			if (M80Poly::Contains(H, Q))
+			{
+				return true;
+			}
+			for (int32 e = 0; e < H.Num(); ++e)
+			{
+				if (M80Poly::SegmentDistance(Q, H[e], H[(e + 1) % H.Num()]) < 20.0)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	};
+	bool bCurbRight = CurbSide == EM80CurbSide::Right || CurbSide == EM80CurbSide::Both;
+	bool bCurbLeft = CurbSide == EM80CurbSide::Left || CurbSide == EM80CurbSide::Both;
+	bool bHouseRight = false, bHouseLeft = false;
+	const TArray<FStation> Slab = Sample(SlabPieceCm);
+	if (Walls.Num())
+	{
+		int32 Right = 0, Left = 0;
+		for (const FStation& S : Slab)
+		{
+			Right += AgainstHouse(S, 1.0);
+			Left += AgainstHouse(S, -1.0);
+		}
+		bHouseRight = Right > 0 && Right >= Left;
+		bHouseLeft = Left > 0 && Left > Right;
+		if (CurbSide == EM80CurbSide::Right && bHouseRight)
+		{
+			bCurbRight = false;
+			bCurbLeft = true;
+		}
+		else if (CurbSide == EM80CurbSide::Left && bHouseLeft)
+		{
+			bCurbLeft = false;
+			bCurbRight = true;
+		}
+	}
+
+	// Slab between the curbs (with a little overlap under them); up to the wall on the house side.
 	double SlabMin = -W / 2, SlabMax = W / 2;
-	if (CurbSide == EM80CurbSide::Right || CurbSide == EM80CurbSide::Both)
+	if (bCurbRight && !bHouseRight)
 	{
 		SlabMax -= CW * 0.8;
 	}
-	if (CurbSide == EM80CurbSide::Left || CurbSide == EM80CurbSide::Both)
+	if (bCurbLeft && !bHouseLeft)
 	{
 		SlabMin += CW * 0.8;
 	}
-	AddStrip(SlabMesh, SlabMaterial, Sample(SlabPieceCm), (SlabMin + SlabMax) / 2, SlabMax - SlabMin, Top, 30.0);
+	AddStrip(SlabMesh, SlabMaterial, Slab, (SlabMin + SlabMax) / 2, SlabMax - SlabMin, Top, 30.0);
 
 	if (CurbMesh && Curbs)
 	{
@@ -496,13 +612,29 @@ void AM80Sidewalk::Rebuild()
 		// Keep the stones' proportions: piece length = mesh length at the curb's scale.
 		const double Piece = FMath::Clamp((CB.Max.X - CB.Min.X) * CW / CurbW, 60.0, 400.0);
 		const TArray<FStation> St = Sample(Piece);
-		if (CurbSide == EM80CurbSide::Right || CurbSide == EM80CurbSide::Both)
+		for (const double Side : {1.0, -1.0})
 		{
-			AddStrip(CurbMesh, CurbMaterial, St, W / 2 - CW / 2, CW, Top + 2.0, 25.0 + Top);
-		}
-		if (CurbSide == EM80CurbSide::Left || CurbSide == EM80CurbSide::Both)
-		{
-			AddStrip(CurbMesh, CurbMaterial, St, -W / 2 + CW / 2, CW, Top + 2.0, 25.0 + Top);
+			if (!(Side > 0 ? bCurbRight : bCurbLeft))
+			{
+				continue;
+			}
+			// Only the runs of stations away from the walls.
+			TArray<FStation> Run;
+			for (int32 k = 0; k <= St.Num(); ++k)
+			{
+				const bool bFree = k < St.Num() && (Walls.IsEmpty() || !AgainstHouse(St[k], Side));
+				if (bFree)
+				{
+					Run.Add(St[k]);
+					continue;
+				}
+				if (Run.Num() >= 2)
+				{
+					// A piece of a closed ring is an open strip: no wrapping tangents.
+					AddStrip(CurbMesh, CurbMaterial, Run, Side * (W / 2 - CW / 2), CW, Top + 2.0, 25.0 + Top, Run.Num() == St.Num());
+				}
+				Run.Reset();
+			}
 		}
 	}
 }

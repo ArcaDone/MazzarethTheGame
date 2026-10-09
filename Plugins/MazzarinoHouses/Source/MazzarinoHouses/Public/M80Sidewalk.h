@@ -74,7 +74,8 @@ public:
 
 	/** Magnet: points closer than "Distanza di aggancio" to a house facade running along the sidewalk (or inside a
 	 *  house) move so that the side of the sidewalk towards the house lies on the facade; past the corners the
-	 *  sidewalk keeps the facade's line. Moving or reshaping a house re-attaches it. */
+	 *  sidewalk keeps the facade's line. Moving or reshaping a house re-attaches it. Where the sidewalk touches a
+	 *  wall there is no curb on that side: a single curb drawn on the house side moves to the street side. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Case", meta = (DisplayName = "Attacca alle facciate"))
 	bool bSnapToHouses = false;
 
@@ -88,6 +89,10 @@ public:
 	/** Points attached to a facade in the last build. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Case", meta = (DisplayName = "Punti agganciati"))
 	int32 SnappedPoints = 0;
+
+	/** What the magnet did in the last build, and why points were left where they are. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Case", meta = (DisplayName = "Stato aggancio"))
+	FString SnapStatus;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Marciapiede", meta = (DisplayName = "Lunghezza pezzi lastra (cm)", ClampMin = "50", ClampMax = "2000"))
 	float SlabPieceCm = 300.f;
@@ -126,8 +131,10 @@ private:
 	TArray<FStation> Sample(double Step) const;
 	/** Moves the spline points near house facades (magnet); W = sidewalk width. */
 	void SnapToHouses(double W);
+	/** Footprints (CCW, world) of the procedural houses within Reach of the spline points. */
+	TArray<TArray<FVector2D>> NearbyHouses(double Reach) const;
 	double GroundZ(const FVector& World) const;
-	void AddStrip(UStaticMesh* Mesh, UMaterialInterface* Material, const TArray<FStation>& St, double Lateral, double Width, double Top, double Depth);
+	void AddStrip(UStaticMesh* Mesh, UMaterialInterface* Material, const TArray<FStation>& St, double Lateral, double Width, double Top, double Depth, bool bWrap = true);
 	/** Paves the inside of the closed spline; returns +1/-1, the side ("Right" sign) where the inside lies. */
 	double BuildFill(double Top);
 };

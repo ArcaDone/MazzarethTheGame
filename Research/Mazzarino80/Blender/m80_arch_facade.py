@@ -31,6 +31,8 @@ import m80_arch_kit as K
 # Materials (linear colours)
 
 _M = {}
+# Wall albedo exponent (sRGB image); M80_WALL_GAMMA=1 gives back the darker walls of the first previews.
+WALL_GAMMA = float(os.environ.get("M80_WALL_GAMMA", str(1 / 1.8)))
 
 
 def principled(name, color, rough=0.85, metal=0.0):
@@ -761,7 +763,10 @@ def build(spec, px_per_m=110, step=0.022):
     base_h = 1.3 + 0.6 * K.value_noise(us, np.zeros_like(us), 0.8, 35, 2)
     damp = np.clip(1 - vs / base_h, 0, 1)[..., None] * (0.25 + 0.15 * grime)
     alb = alb * (1 - damp)
-    img = K.image_from_array(spec["name"] + "_albedo", (np.clip(alb, 0, 1) * 0.9).astype(np.float32))
+    # The image is stored as sRGB: the exponent lifts the walls to the lightness of the town's Unreal materials
+    # (colour check m80_bartoli_palette.py / Scripts/m80_bartoli_colour_compare.py: without it the stone came out
+    # 15-20 L darker and more orange than the ashlar and rubble of the procedural houses).
+    img = K.image_from_array(spec["name"] + "_albedo", ((np.clip(alb, 0, 1) * 0.9) ** WALL_GAMMA).astype(np.float32))
     wall_mat = bpy.data.materials.new(spec["name"] + "_muro_hi")
     wall_mat.use_nodes = True
     t = wall_mat.node_tree.nodes.new("ShaderNodeTexImage")

@@ -231,7 +231,6 @@ Sull'altro PC:
 ## 7. Punti aperti
 
 - **Macchia nel cielo** nelle viste aeree molto alte: sembra un difetto delle nuvole, non dell'orizzonte. Ancora da capire.
-- **Poste**: alcune lamelle della facciata sono storte già nel modello originale. Vanno sistemate a mano in Blender e reimportate.
 - **Zona delle Salesiane**: OSM non ha case nel triangolo. Si riempie a mano con *Isolato da riempire*.
 - **Candelabri a tre luci**: da piazzare a mano nelle piazze.
 - Due "case" OSM (lotti 1249067262 e 1249081252) sono triangoli di 0,6 m²: errori dei dati, non generano nulla.

@@ -4,7 +4,8 @@
 - Cars (Panda, Fiat127, FiatUno, Golf) and the Vespa: skeletal mesh /Game/Mazzarino80/Vehicles/<Key>/SK_M80_<Key>
   (skeleton Root + Wheel_FL/FR/RL/RR), physics asset of two boxes (UM80EditorLibrary), 3 LODs.
 - Vespa: drivable too, skeletal mesh /Game/Mazzarino80/Vehicles/Vespa/SK_M80_Vespa (Root + Wheel_F/Wheel_R).
-- Poste: static meshes /Game/Mazzarino80/Buildings/Poste/SM_M80_Poste and SM_M80_Poste_Antenna (Nanite).
+- Poste: static meshes /Game/Mazzarino80/Buildings/Poste/SM_M80_Poste and SM_M80_Poste_Antenna, without Nanite
+  (it turns the thin round slats of the facade into crooked wedges) and with 3 LODs instead.
 - Town buildings: /Game/Mazzarino80/Buildings/<Key>/SM_M80_<Key> (+ pieces) for Comune, ChiesaComune (stand-ins
   for the Comune), Matrice (+ _Interno), Castello, Madonna (every part a mesh of its own); collision = the mesh
   itself, so they can be walked on and entered. Their textures are shared in /Game/Mazzarino80/Buildings/Textures
@@ -44,6 +45,7 @@ for k in BUILDINGS:
 for k in PROPS:
     DEST[k] = "/Game/Mazzarino80/Kit/Arredo"
 BUILDING_TEXTURES = "/Game/Mazzarino80/Buildings/Textures"
+NO_NANITE = ["Poste"]   # thin slats and lattices that Nanite's simplification bends
 ONLY = [k for k in os.environ.get("M80_IMPORT_ONLY", "").split(",") if k]
 PHYSICS_ONLY = os.environ.get("M80_PHYSICS_ONLY", "") == "1"
 
@@ -285,6 +287,18 @@ def physics(key, mesh, info):
     return ok
 
 
+def no_nanite(mesh):
+    """Classic mesh with 3 LODs (100 / 50 / 25 % of the triangles)."""
+    sub = unreal.get_editor_subsystem(unreal.StaticMeshEditorSubsystem)
+    st = mesh.get_editor_property("nanite_settings")
+    st.set_editor_property("enabled", False)
+    sub.set_nanite_settings(mesh, st, apply_changes=True)
+    opts = unreal.StaticMeshReductionOptions()
+    opts.set_editor_property("auto_compute_lod_screen_size", True)
+    opts.set_editor_property("reduction_settings", [unreal.StaticMeshReductionSettings(p, 0.0) for p in (1.0, 0.5, 0.25)])
+    sub.set_lods(mesh, opts)
+
+
 def collision(key, mesh):
     """Buildings collide with their own triangles (walk on the steps, go inside); furniture with a box."""
     if key in BUILDINGS:
@@ -339,6 +353,8 @@ def run():
                     continue
                 r[n] = {"missing_materials": assign(mesh, mis, False)}
                 collision(key, mesh)
+                if key in NO_NANITE:
+                    no_nanite(mesh)
                 EAL.save_loaded_asset(mesh)
                 yield 1
             if info.get("pieces"):

@@ -5,6 +5,7 @@
   M_M80_LampGlass whose glow follows the "Lampioni" value of MPC_M80_Atmosfera (set by the Atmosfera:
   0 by day, 1 at night).
 Report: Saved/Mazzarino80/lamps_report.json.
+Env M80_LAMP_MASTER_ONLY=1: only rebuilds the baked master M_M80_Lamp (report lamp_master_report.json).
 """
 import json
 import os
@@ -52,15 +53,36 @@ def fresh_material(name):
 
 
 def lamp_master():
+    """Baked colour / normal / ORM master (lamps, noble balconies, Palazzo Bartoli).
+
+    Every texture parameter needs a default texture of its own sampler type: with the engine's colour default on
+    the normal and mask samplers the material does not compile and every instance falls back to the grey default
+    material. An existing master is only repaired (its nodes get those defaults): the houses load the balcony kit
+    at start-up, so the master is rooted and clearing or deleting it crashes the editor.
+    """
+    path = KIT + "/M_M80_Lamp"
+    if EAL.does_asset_exist(path):
+        m = unreal.load_asset(path)
+        nrm = MEL.get_material_property_input_node(m, unreal.MaterialProperty.MP_NORMAL)
+        orm = MEL.get_material_property_input_node(m, unreal.MaterialProperty.MP_AMBIENT_OCCLUSION)
+        nrm.set_editor_property("texture", unreal.load_asset("/Engine/EngineMaterials/DefaultNormal"))
+        orm.set_editor_property("texture", unreal.load_asset(KIT + "/T_M80_Lampione_Muro_ORM"))
+        MEL.recompile_material(m)
+        EAL.save_loaded_asset(m)
+        return m
     m = fresh_material("M_M80_Lamp")
+    m.set_editor_property("used_with_nanite", True)
     col = MEL.create_material_expression(m, unreal.MaterialExpressionTextureSampleParameter2D, -600, -200)
     col.set_editor_property("parameter_name", "Colore")
+    col.set_editor_property("texture", unreal.load_asset("/Engine/EngineResources/DefaultTexture"))
     nrm = MEL.create_material_expression(m, unreal.MaterialExpressionTextureSampleParameter2D, -600, 100)
     nrm.set_editor_property("parameter_name", "Normali")
     nrm.set_editor_property("sampler_type", unreal.MaterialSamplerType.SAMPLERTYPE_NORMAL)
+    nrm.set_editor_property("texture", unreal.load_asset("/Engine/EngineMaterials/DefaultNormal"))
     orm = MEL.create_material_expression(m, unreal.MaterialExpressionTextureSampleParameter2D, -600, 400)
     orm.set_editor_property("parameter_name", "ORM")
     orm.set_editor_property("sampler_type", unreal.MaterialSamplerType.SAMPLERTYPE_MASKS)
+    orm.set_editor_property("texture", unreal.load_asset(KIT + "/T_M80_Lampione_Muro_ORM"))
     MEL.connect_material_property(col, "RGB", unreal.MaterialProperty.MP_BASE_COLOR)
     MEL.connect_material_property(nrm, "RGB", unreal.MaterialProperty.MP_NORMAL)
     MEL.connect_material_property(orm, "R", unreal.MaterialProperty.MP_AMBIENT_OCCLUSION)
@@ -164,4 +186,23 @@ def run():
     REPORT.write_text(json.dumps(report, indent=1), encoding="utf-8")
 
 
-m80_seq.Sequencer(run(), log_file=str(REPORT.with_suffix(".error.txt")))
+def master_only():
+    """M80_LAMP_MASTER_ONLY=1: only rebuilds M_M80_Lamp, and reports what its instances use."""
+    lamp_master()
+    yield 30
+    rep = {}
+    for data in unreal.AssetRegistryHelpers.get_asset_registry().get_assets_by_path("/Game/Mazzarino80", True):
+        if str(data.asset_class_path.asset_name) != "MaterialInstanceConstant":
+            continue
+        mi = unreal.load_asset(str(data.package_name))
+        parent = mi.get_editor_property("parent")
+        if parent and parent.get_path_name().startswith(KIT + "/M_M80_Lamp."):
+            rep[str(data.package_name)] = {str(n): (lambda t: t.get_path_name().split(".")[0] if t else None)(
+                MEL.get_material_instance_texture_parameter_value(mi, n)) for n in ("Colore", "Normali", "ORM")}
+    REPORT.with_name("lamp_master_report.json").write_text(json.dumps(rep, indent=1), encoding="utf-8")
+
+
+if os.environ.get("M80_LAMP_MASTER_ONLY", "") == "1":
+    m80_seq.Sequencer(master_only(), log_file=str(REPORT.with_suffix(".error.txt")))
+else:
+    m80_seq.Sequencer(run(), log_file=str(REPORT.with_suffix(".error.txt")))

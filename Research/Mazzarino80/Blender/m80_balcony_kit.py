@@ -36,7 +36,7 @@ V_TOP = 4.2
 VARIANTS = {
     "volute": {"width": 2.4, "depth": 0.80, "thick": 0.20, "slab": "moulded", "console": "volute", "n": 4, "h": 0.62,
                "panel": "recessed", "railing": "straight", "posts": True, "stone": "grey"},
-    "mascheroni": {"width": 2.6, "depth": 0.72, "thick": 0.13, "slab": "plain", "console": "beast", "n": 5, "h": 0.50,
+    "mascheroni": {"width": 2.6, "depth": 0.80, "thick": 0.13, "slab": "plain", "console": "beast", "n": 5, "h": 0.62,
                    "panel": "fleur", "railing": "straight", "posts": False, "stone": "gold"},
     "acanto": {"width": 2.4, "depth": 0.85, "thick": 0.17, "slab": "moulded", "console": "acanthus", "n": 4, "h": 0.95,
                "panel": "rosette", "railing": "bombe", "posts": False, "stone": "pale"},
@@ -263,15 +263,19 @@ def acanthus(F, name, uc, half, v, depth, height, mat, seed=1):
     K.weather(ob, wear=0.25, bevel=0.0, subdiv=0)
 
 
-def beast(bm, cut, uc, v, kind="lion", seed=1, size=1.0):
-    """A console carved as a beast's head jutting from the wall under the slab (top at v)."""
+def beast(bm, cut, uc, v, kind="lion", seed=1, size=1.0, out=0.0, neck=True):
+    """A beast's head under the slab (top at v), jutting from the wall or, with out, from the front of a
+    console whose body comes from console_body() (out = how far forward the head is moved, metres)."""
     rnd = random.Random(seed)
 
     def E(c, rad, rot=0.0, target=bm):
-        ellipsoid(target, Vector((uc + c[0] * size, -c[1] * size, v + c[2] * size)), [x * size for x in rad], rot)
+        ellipsoid(target, Vector((uc + c[0] * size, -(c[1] * size + out), v + c[2] * size)), [x * size for x in rad], rot)
     long_ = 1.0 if kind == "lion" else 1.35
-    E((0, 0.14, -0.20), (0.13, 0.17, 0.19))                    # neck block against the wall
-    E((0, 0.08, -0.06), (0.17, 0.10, 0.07))                    # shoulder under the slab
+    if neck:
+        E((0, 0.14, -0.20), (0.13, 0.17, 0.19))                # neck block against the wall
+        E((0, 0.08, -0.06), (0.17, 0.10, 0.07))                # shoulder under the slab
+    else:
+        E((0, 0.22, -0.20), (0.12, 0.12, 0.16))                # neck growing out of the console
     E((0, 0.32, -0.21), (0.15, 0.14, 0.15))                    # skull
     E((0, 0.40 + 0.06 * (long_ - 1), -0.13), (0.12, 0.06, 0.045))  # brow
     E((0, 0.46 + 0.08 * (long_ - 1), -0.26), (0.085, 0.09 * long_, 0.07))   # muzzle
@@ -401,7 +405,7 @@ def balcony(name, x0, spec):
     K.densify(ob, 0.06)
     K.weather(ob, wear=1.4, bevel=0.01, subdiv=2)
     n = spec["n"]
-    half = 0.11 if spec["console"] != "beast" else 0.13
+    half = 0.11 if spec["console"] != "beast" else 0.095
     xs = [u0 + 0.22 + (W - 0.44) * k / (n - 1) for k in range(n)]
     bm = bmesh.new()
     for a, b in zip(xs[:-1], xs[1:]):
@@ -437,8 +441,13 @@ def balcony(name, x0, spec):
             pendant(bm, uc, -(x1 + rf * 0.4), top - h)
             solid(F, nm, bm, stone, cut=cut, wear=0.9)
         elif spec["console"] == "beast":
-            beast(bm, cut, uc, top, kind="lion" if k % 2 == 0 else "dog", seed=k + 3, size=h / 0.5)
-            solid(F, nm, bm, stone, cut=cut, voxel=0.007, smooth=14, wear=0.7)
+            # A console like the others, reaching the edge of the slab, with the beast's head at its front.
+            console_body(bm, uc, half, top, cd, h)
+            # The head is wider than the console and juts past its front, as in the photo.
+            size = 0.88
+            beast(bm, cut, uc, top + 0.03, kind="lion" if k % 2 == 0 else "dog", seed=k + 3, size=size,
+                  out=cd - 0.47 * size, neck=False)
+            solid(F, nm, bm, stone, cut=cut, voxel=0.006, smooth=10, wear=0.7)
         else:
             body_h = h * 0.62
             console_body(bm, uc, half, top, cd, body_h)

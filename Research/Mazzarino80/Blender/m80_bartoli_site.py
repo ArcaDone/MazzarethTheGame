@@ -85,16 +85,53 @@ def staircase_loggia():
         K.weather(hi, wear=1.0, bevel=0.0, subdiv=1)
     both(F, "Loggia_trabeazione", lambda bm: K.box_bm(bm, 0.4, W - 0.4, -0.05, 0.6, land + 2.9 + (piers[1] - piers[0] - 0.55) / 2 + 0.35,
                                                        land + 2.9 + (piers[1] - piers[0] - 0.55) / 2 + 0.75), M["white"], 0.9)
-    # Iron balustrades and urns.
+    # Stone balustrades along the central flight, starting from two pillars with urns; iron on the side
+    # flights and the loggia.
     for u in (c0, c1):
-        _rail_slope(F, "Scalone_ringhiera_c%.0f" % u, u, -8.4, -5.2, 0.0, mid)
+        _balustrade_slope(F, "Scalone_balaustra_c%.0f" % u, u, -8.4, -5.2, 0.0, mid)
+        both(F, "Scalone_pilastrino_c%.0f" % u, lambda bm, u=u: K.box_bm(bm, u - 0.19, u + 0.19, -8.62, -8.24, -0.3, 1.15), M["stone"], 0.6)
+        urn(F, "Scalone_vaso_%.1f_pilastrino" % u, u, -8.43, 1.15, h=0.6)
     for u in (0.5, 2.0, W - 2.0, W - 0.5):
         _rail_slope(F, "Scalone_ringhiera_l%.1f" % u, u, -4.0, 0.0, mid, land)
     A.railing(F, "Loggia_ringhiera", 2.0, W - 2.0, -0.4, land, 1.0, "straight", sides=False)
-    for (u, y, z) in ((c0, -8.4, 0.0), (c1, -8.4, 0.0), (0.6, -5.1, mid), (W - 0.6, -5.1, mid), (W / 2, -0.6, mid)):
+    for (u, y, z) in ((0.6, -5.1, mid), (W - 0.6, -5.1, mid), (W / 2, -0.6, mid)):
         urn(F, "Scalone_vaso_%.1f_%.1f" % (u, y), u, y, z)
     wisteria(F, "Loggia_glicine", piers[0], piers[-1] + 0.55, land + 2.4, land + 5.3)
     return F
+
+
+def _slope_prism(bm, u0, u1, y0, y1, za0, za1, zb0, zb1):
+    """Prism between y0 and y1 whose bottom (za) and top (zb) follow the flight."""
+    v = [bm.verts.new(c) for c in ((u0, y0, za0), (u1, y0, za0), (u1, y0, zb0), (u0, y0, zb0),
+                                    (u0, y1, za1), (u1, y1, za1), (u1, y1, zb1), (u0, y1, zb1))]
+    for f in ((0, 1, 2, 3), (7, 6, 5, 4), (0, 4, 5, 1), (3, 2, 6, 7), (0, 3, 7, 4), (1, 5, 6, 2)):
+        bm.faces.new([v[i] for i in f])
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
+
+
+def _balustrade_slope(F, name, u, y0, y1, z0, z1, h=0.95):
+    """Stone balustrade along a flight: sloping plinth and coping, turned balusters (kept as real geometry)."""
+    M = A.mats()
+    plinth, coping = 0.16, 0.11
+    both(F, name + "_zoccolo", lambda bm: _slope_prism(bm, u - 0.12, u + 0.12, y0, y1, z0 - 0.3, z1 - 0.3, z0 + plinth, z1 + plinth), M["stone"], 0.6)
+    both(F, name + "_copertina", lambda bm: _slope_prism(bm, u - 0.15, u + 0.15, y0, y1, z0 + h - coping, z1 + h - coping, z0 + h, z1 + h),
+         M["stone"], 0.8)
+    # Baluster: base, belly low (a vase), neck, cap; heights as fractions of the free height.
+    prof = [(0.075, 0.0), (0.075, 0.07), (0.055, 0.10), (0.06, 0.14), (0.085, 0.30), (0.08, 0.42), (0.05, 0.60),
+            (0.035, 0.74), (0.05, 0.80), (0.045, 0.86), (0.07, 0.90), (0.07, 1.0)]
+    free = h - plinth - coping
+    bm = bmesh.new()
+    seg = 12
+    n = max(2, int(abs(y1 - y0) / 0.24))
+    for k in range(n):
+        t = (k + 0.5) / n
+        y, zb = y0 + (y1 - y0) * t, z0 + (z1 - z0) * t + plinth
+        rings = [[bm.verts.new((u + r * math.cos(2 * math.pi * j / seg), y + r * math.sin(2 * math.pi * j / seg), zb + f * free))
+                  for j in range(seg)] for r, f in prof]
+        for a, b in zip(rings[:-1], rings[1:]):
+            for j in range(seg):
+                bm.faces.new((a[j], a[(j + 1) % seg], b[(j + 1) % seg], b[j]))
+    K.bm_object(name + "_colonnine", bm, F.detail, F.frame, M["stone"], smooth=True)
 
 
 def _rail_slope(F, name, u, y0, y1, z0, z1, h=0.95):

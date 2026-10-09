@@ -1,7 +1,8 @@
 """Test level for the sidewalk magnet ("Attacca alle facciate"): /Game/Mazzarino80/Kit/Sidewalk/L_M80_ProvaMarciapiedi.
 
 Two houses in a row (shared wall) and a third one turned by 20 degrees; sidewalks drawn roughly: one 1 m
-inside the row, one 2 m off the turned house (within reach), one 6 m away (out of reach, stays where it is).
+inside the row, one 2 m off the turned house (within reach), one 6 m away (out of reach, stays where it is),
+one turning round the back corner of the row (drawn with its curb on the house side: it moves to the street).
 Then the turned house moves 1.5 m away from its sidewalk, which must follow it.
 Report and renders: Saved/Mazzarino80/Sidewalks/Magnet/.
 
@@ -89,8 +90,11 @@ def build_level():
     b = sidewalk("Marciapiede_vicino", [rot(x, y) for x, y in ((3100, -275), (4900, -275))])
     # 6 m away: stays.
     c = sidewalk("Marciapiede_lontano", [(-300, -700), (2500, -700)])
-    for s in (a, b, c):
-        rep[s.get_actor_label()] = {"agganciati": s.get_editor_property("snapped_points"), "punti": points(s)}
+    # Round the back corner of the row: the corner point goes to the corner of the house, half a width out.
+    d = sidewalk("Marciapiede_angolo", [(1500, 1000), (2320, 1000), (2320, 300)])
+    for s in (a, b, c, d):
+        rep[s.get_actor_label()] = {"agganciati": s.get_editor_property("snapped_points"), "stato": s.get_editor_property("snap_status"),
+                                    "punti": points(s)}
     # The turned house moves 1.5 m away from its sidewalk (north, perpendicular to its front).
     d = unreal.Vector(-150 * math.sin(TURN), 150 * math.cos(TURN), 0)
     turned.set_actor_location(turned.get_actor_location() + d, False, False)
@@ -105,6 +109,8 @@ VIEWS = {
     "dall_alto": ((2300, -2600, 3200), (2300, 0, 0)),
     "fila": ((-600, -1400, 260), (1200, 0, 60)),
     "ruotata": ((2600, -2400, 500), (4000, -300, 50)),
+    "angolo": ((2900, 1700, 260), (2275, 900, 20)),
+    "fila_cordolo": ((500, -650, 160), (1100, -60, 10)),
 }
 
 

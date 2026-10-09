@@ -12,7 +12,8 @@ Each balcony is built in its own facade frame (X along the wall, -Y out of it, Z
 V_TOP) in front of a stretch of wall with a French window, and rendered from below, from the side and close
 up on one console.
 Run: blender -b --factory-startup --python m80_balcony_kit.py            (previews)
-     blender -b --factory-startup --python m80_balcony_kit.py -- moduli  (modules for Unreal)
+     blender -b --factory-startup --python m80_balcony_kit.py -- moduli [Lastra Mensola Decoro]
+                                            (modules for Unreal; listing groups re-bakes only those)
 Out: Previews/Balconi/<variant>_<view>.png, Saved/Mazzarino80/Balconi/balconi_alta.blend;
      modules: M80_Balconi.fbx + M80_Balconi.json (sizes and pivots), Textures/Balconi/T_M80_Balcone_*_{D,N,ORM}.
 Modules: slabs (with their back plate) Volute / Mascheroni / Acanto; consoles Volute / Leone / Cane / Acanto;
@@ -584,7 +585,7 @@ def views(frames):
 
 
 # ---------------------------------------------------------------------------------------------
-# Modules for Unreal: high-poly -> low-poly (decimated: carved, organic stone) -> UV -> bake -> FBX
+# Modules for Unreal: high-poly -> low-poly (slabs built clean, carved stone decimated) -> UV -> bake -> FBX
 
 # Reference sizes (metres). The house builder scales the slab to the balcony and spaces the consoles.
 MOD_DEPTH = 0.80
@@ -640,6 +641,88 @@ def low_from_high(F, name, target_tris, attach):
     bpy.ops.uv.pack_islands(margin=0.006, rotate=True)
     bpy.ops.object.mode_set(mode="OBJECT")
     low["attach"] = list(attach)
+    return low
+
+
+def slab_profile(th, kind):
+    """Edge of a slab, (out, z) from the top down: the moulding of build_slab with few arc segments, or plain."""
+    if kind != "moulded":
+        return [(0.0, 0.0), (0.0, -th)]
+    pts = K.profile_resample([(0.0, 0.0), (0.0, -0.025), (0.035, -0.025), ("arc", 0.035, -0.06, 0.035, 90, -90),
+                              (0.02, -0.095), (0.02, -0.11), (0.0, -th + 0.01), (0.0, -th)], 4)
+    out = []
+    for q in pts:
+        if not out or (Vector(q) - Vector(out[-1])).length > 1e-5:
+            out.append(q)
+    return out
+
+
+def slab_low(F, name, u0, u1, d, th, kind, plate_h):
+    """Clean low poly of a slab with its back plate, built rather than decimated: top and bottom faces, the
+    edge profile swept along the three free sides (one UV strip per side, mitred at the corners) and the
+    plate (front, bottom, ends). Faces hidden against the wall or under the slab are left out."""
+    bm = bmesh.new()
+    uv = bm.loops.layers.uv.new("UVMap")
+
+    def face(pts, uvs, hint):
+        f = bm.faces.new([bm.verts.new(p) for p in pts])
+        for loop, t in zip(f.loops, uvs):
+            loop[uv].uv = t
+        f.normal_update()
+        if f.normal.dot(Vector(hint)) < 0:
+            f.normal_flip()
+
+    # Top and bottom.
+    face([(u0, 0, 0), (u1, 0, 0), (u1, -d, 0), (u0, -d, 0)], [(u0, 0), (u1, 0), (u1, -d), (u0, -d)], (0, 0, 1))
+    face([(u0, 0, -th), (u1, 0, -th), (u1, -d, -th), (u0, -d, -th)],
+         [(u0, 0), (u1, 0), (u1, d), (u0, d)], (0, 0, -1))
+    # Edge profile along the sides: left (wall -> front), front, right (front -> wall).
+    prof = slab_profile(th, kind)
+    lens = [0.0]
+    for a, b in zip(prof[:-1], prof[1:]):
+        lens.append(lens[-1] + (Vector(b) - Vector(a)).length)
+    corner = Vector((-1, -1)).normalized() * math.sqrt(2), Vector((1, -1)).normalized() * math.sqrt(2)
+    sides = (((u0, 0), (u0, -d), Vector((-1, 0)), Vector((-1, 0)), corner[0]),
+             ((u0, -d), (u1, -d), Vector((0, -1)), corner[0], corner[1]),
+             ((u1, -d), (u1, 0), Vector((1, 0)), corner[1], Vector((1, 0))))
+    for a, b, nrm, oa, ob in sides:
+        a, b = Vector(a), Vector(b)
+        along = (b - a).normalized()
+        for (o0, z0), (o1, z1), l0, l1 in zip(prof[:-1], prof[1:], lens[:-1], lens[1:]):
+            pa0, pb0 = a + oa * o0, b + ob * o0
+            pa1, pb1 = a + oa * o1, b + ob * o1
+            pts = [(pa0.x, pa0.y, z0), (pb0.x, pb0.y, z0), (pb1.x, pb1.y, z1), (pa1.x, pa1.y, z1)]
+            uvs = [(pa0.dot(along), -l0), (pb0.dot(along), -l0), (pb1.dot(along), -l1), (pa1.dot(along), -l1)]
+            # Outward normal of this band: the profile's normal turned into the side's direction.
+            t = Vector((o1 - o0, z1 - z0)).normalized()
+            hint = (nrm.x * -t.y, nrm.y * -t.y, t.x)
+            if abs(t.y) < 1e-6 and abs(t.x) < 1e-6:
+                continue
+            face(pts, uvs, hint)
+    # Back plate (frieze) under the slab.
+    p0, p1, z1, z0 = u0 + 0.06, u1 - 0.06, -th, -th - plate_h
+    face([(p0, -0.07, z0), (p1, -0.07, z0), (p1, -0.07, z1), (p0, -0.07, z1)],
+         [(p0, z0), (p1, z0), (p1, z1), (p0, z1)], (0, -1, 0))
+    face([(p0, 0, z0), (p1, 0, z0), (p1, -0.07, z0), (p0, -0.07, z0)],
+         [(p0, 0), (p1, 0), (p1, -0.07), (p0, -0.07)], (0, 0, -1))
+    for x, s in ((p0, -1), (p1, 1)):
+        face([(x, 0, z0), (x, -0.07, z0), (x, -0.07, z1), (x, 0, z1)],
+             [(0, z0), (-0.07, z0), (-0.07, z1), (0, z1)], (s, 0, 0))
+    me = bpy.data.meshes.new(name)
+    bm.to_mesh(me)
+    bm.free()
+    me.shade_smooth()
+    me.set_sharp_from_angle(angle=math.radians(50))
+    low = bpy.data.objects.new(name, me)
+    K.link(low, F.low, F.frame)
+    me.materials.append(bpy.data.materials.new("M_" + name))
+    select_only([low], low)
+    bpy.ops.object.mode_set(mode="EDIT")
+    bpy.ops.mesh.select_all(action="SELECT")
+    bpy.ops.uv.select_all(action="SELECT")
+    bpy.ops.uv.pack_islands(margin=0.004, rotate=True)
+    bpy.ops.object.mode_set(mode="OBJECT")
+    low["attach"] = [(u0 + u1) / 2, 0.0, 0.0]
     return low
 
 
@@ -724,6 +807,12 @@ def railing_mesh(F, name, attach):
     return low
 
 
+def wants_bake(group):
+    """`-- moduli Lastra Mensola` re-bakes only those groups (the others keep their textures: same UVs)."""
+    args = sys.argv[sys.argv.index("--") + 2:] if "--" in sys.argv else []
+    return not args or group in args
+
+
 def modules():
     import json
     bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -739,8 +828,9 @@ def modules():
         plate_h = plate_height(spec["h"])
         build_slab(F, F.name, stone, 0.0, MOD_WIDTH, MOD_DEPTH, th, 0.0, kind)
         build_plate(F, F.name, stone, 0.0, MOD_WIDTH, -th, plate_h)
-        low = low_from_high(F, "SM_M80_Balcone_Lastra_" + key, 5000, (MOD_WIDTH / 2, 0.0, 0.0))
-        bake(F, low, TEX_SIZE["Lastra"])
+        low = slab_low(F, "SM_M80_Balcone_Lastra_" + key, 0.0, MOD_WIDTH, MOD_DEPTH, th, kind, plate_h)
+        if wants_bake("Lastra"):
+            bake(F, low, TEX_SIZE["Lastra"])
         lows.append(low)
         manifest["slabs"][key] = {"mesh": low.name, "width": MOD_WIDTH * 100, "depth": MOD_DEPTH * 100,
                                   "thickness": th * 100, "plate_height": plate_h * 100,
@@ -752,7 +842,8 @@ def modules():
         th = SLABS[{"volute": "Volute", "mascheroni": "Mascheroni", "acanto": "Acanto"}[variant]][1]
         build_console(F, F.name, kind, 0.0, CONSOLE_HALF[kind], 0.0, MOD_DEPTH - 0.05, spec["h"], S[spec["stone"]], k)
         low = low_from_high(F, "SM_M80_Balcone_Mensola_" + key, 7000, (0.0, 0.0, 0.0))
-        bake(F, low, TEX_SIZE["Mensola"])
+        if wants_bake("Mensola"):
+            bake(F, low, TEX_SIZE["Mensola"])
         lows.append(low)
         manifest["consoles"][key] = {"mesh": low.name, "height": spec["h"] * 100, "depth": (MOD_DEPTH - 0.05) * 100,
                                      "width": CONSOLE_HALF[kind] * 200, "slab": variant, "slab_thickness": th * 100,
@@ -766,7 +857,8 @@ def modules():
         decor(bm, kind, 0.0, -plate_h / 2, DECOR_BAY, plate_h)
         build_decor(F, F.name, S[spec["stone"]], bm)
         low = low_from_high(F, "SM_M80_Balcone_Decoro_" + key, 2500, (0.0, 0.0, 0.0))
-        bake(F, low, TEX_SIZE["Decoro"])
+        if wants_bake("Decoro"):
+            bake(F, low, TEX_SIZE["Decoro"])
         lows.append(low)
         manifest["decors"][key] = {"mesh": low.name, "bay": DECOR_BAY * 100, "plate_height": plate_h * 100,
                                    "note": "pivot on the wall at the centre of the bay, top of the plate (under the slab)"}

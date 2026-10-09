@@ -1,0 +1,132 @@
+{
+ "units": "cm",
+ "axes": "X along the wall, Y out of the wall, Z up; pivot = attach point",
+ "slabs": {
+  "Volute": {
+   "mesh": "SM_M80_Balcone_Lastra_Volute",
+   "width": 240.0,
+   "depth": 80.0,
+   "thickness": 20.0,
+   "plate_height": 50.839999999999996,
+   "note": "pivot at the wall, centre of the width, top of the slab; scale X and Y to the balcony"
+  },
+  "Mascheroni": {
+   "mesh": "SM_M80_Balcone_Lastra_Mascheroni",
+   "width": 240.0,
+   "depth": 80.0,
+   "thickness": 13.0,
+   "plate_height": 50.839999999999996,
+   "note": "pivot at the wall, centre of the width, top of the slab; scale X and Y to the balcony"
+  },
+  "Acanto": {
+   "mesh": "SM_M80_Balcone_Lastra_Acanto",
+   "width": 240.0,
+   "depth": 80.0,
+   "thickness": 17.0,
+   "plate_height": 62.0,
+   "note": "pivot at the wall, centre of the width, top of the slab; scale X and Y to the balcony"
+  }
+ },
+ "consoles": {
+  "Volute": {
+   "mesh": "SM_M80_Balcone_Mensola_Volute",
+   "height": 62.0,
+   "depth": 75.0,
+   "width": 22.0,
+   "slab": "volute",
+   "slab_thickness": 20.0,
+   "note": "pivot at the wall, centre of the console, under the slab"
+  },
+  "Leone": {
+   "mesh": "SM_M80_Balcone_Mensola_Leone",
+   "height": 62.0,
+   "depth": 75.0,
+   "width": 19.0,
+   "slab": "mascheroni",
+   "slab_thickness": 13.0,
+   "note": "pivot at the wall, centre of the console, under the slab"
+  },
+  "Cane": {
+   "mesh": "SM_M80_Balcone_Mensola_Cane",
+   "height": 62.0,
+   "depth": 75.0,
+   "width": 19.0,
+   "slab": "mascheroni",
+   "slab_thickness": 13.0,
+   "note": "pivot at the wall, centre of the console, under the slab"
+  },
+  "Acanto": {
+   "mesh": "SM_M80_Balcone_Mensola_Acanto",
+   "height": 95.0,
+   "depth": 75.0,
+   "width": 22.0,
+   "slab": "acanto",
+   "slab_thickness": 17.0,
+   "note": "pivot at the wall, centre of the console, under the slab"
+  }
+ },
+ "decors": {
+  "Riquadro": {
+   "mesh": "SM_M80_Balcone_Decoro_Riquadro",
+   "bay": 42.0,
+   "plate_height": 50.839999999999996,
+   "note": "pivot on the wall at the centre of the bay, top of the plate (under the slab)"
+  },
+  "Giglio": {
+   "mesh": "SM_M80_Balcone_Decoro_Giglio",
+   "bay": 42.0,
+   "plate_height": 50.839999999999996,
+   "note": "pivot on the wall at the centre of the bay, top of the plate (under the slab)"
+  },
+  "Rosone": {
+   "mesh": "SM_M80_Balcone_Decoro_Rosone",
+   "bay": 42.0,
+   "plate_height": 62.0,
+   "note": "pivot on the wall at the centre of the bay, top of the plate (under the slab)"
+  }
+ },
+ "railings": {
+  "Dritta_180": {
+   "mesh": "SM_M80_Balcone_Ringhiera_Dritta_180",
+   "width": 180.0,
+   "depth": 80.0,
+   "style": "Dritta",
+   "note": "pivot at the wall, centre, top of the slab"
+  },
+  "Dritta_240": {
+   "mesh": "SM_M80_Balcone_Ringhiera_Dritta_240",
+   "width": 240.0,
+   "depth": 80.0,
+   "style": "Dritta",
+   "note": "pivot at the wall, centre, top of the slab"
+  },
+  "Dritta_300": {
+   "mesh": "SM_M80_Balcone_Ringhiera_Dritta_300",
+   "width": 300.0,
+   "depth": 80.0,
+   "style": "Dritta",
+   "note": "pivot at the wall, centre, top of the slab"
+  },
+  "PettoOca_180": {
+   "mesh": "SM_M80_Balcone_Ringhiera_PettoOca_180",
+   "width": 180.0,
+   "depth": 80.0,
+   "style": "PettoOca",
+   "note": "pivot at the wall, centre, top of the slab"
+  },
+  "PettoOca_240": {
+   "mesh": "SM_M80_Balcone_Ringhiera_PettoOca_240",
+   "width": 240.0,
+   "depth": 80.0,
+   "style": "PettoOca",
+   "note": "pivot at the wall, centre, top of the slab"
+  },
+  "PettoOca_300": {
+   "mesh": "SM_M80_Balcone_Ringhiera_PettoOca_300",
+   "width": 300.0,
+   "depth": 80.0,
+   "style": "PettoOca",
+   "note": "pivot at the wall, centre, top of the slab"
+  }
+ }
+}

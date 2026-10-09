@@ -409,11 +409,37 @@ def join_low(F):
     return low
 
 
+def merged_high(high, name):
+    """The high-poly pieces as one temporary mesh (modifiers applied, materials and UV layers kept). The selected-to-
+    active bake renders, and re-syncs the whole scene, once per selected object: a facade of ~250 pieces cost ~250
+    syncs of 3.5 s per pass with the GPU idle. Object-space noise of the stone now runs in lot space, without seams
+    between pieces. M80_BAKE_MERGE=0 bakes the pieces as they are."""
+    dg = bpy.context.evaluated_depsgraph_get()
+    parts = []
+    for o in high:
+        me = bpy.data.meshes.new_from_object(o.evaluated_get(dg), preserve_all_data_layers=True, depsgraph=dg)
+        if not me.polygons:
+            bpy.data.meshes.remove(me)
+            continue
+        me.transform(o.matrix_world)
+        if o.matrix_world.determinant() < 0:
+            me.flip_normals()
+        ob = bpy.data.objects.new(o.name + "_bake", me)
+        bpy.context.scene.collection.objects.link(ob)
+        parts.append(ob)
+    select_only(parts, parts[0])
+    if len(parts) > 1:
+        bpy.ops.object.join()
+    ob = bpy.context.view_layer.objects.active
+    ob.name = ob.data.name = name
+    return ob
+
+
 def bake_low(F, low, size):
     import numpy as np
     sc = bpy.context.scene
     sc.render.engine = "CYCLES"
-    sc.cycles.samples = 96
+    sc.cycles.samples = int(os.environ.get("M80_SAMPLES", "48"))
     sc.render.bake.margin = 12
     sc.render.bake.use_selected_to_active = True
     sc.render.bake.use_cage = False
@@ -423,9 +449,15 @@ def bake_low(F, low, size):
     mat.use_nodes = True
     nodes = mat.node_tree.nodes
     images = {}
-    high = [o for o in F.high.objects if o.type == "MESH"]
+    high = [o for o in F.high.objects if o.type == "MESH" and not o.hide_render]
     for o in list(F.detail.objects):
         o.hide_render = True   # fittings must not shadow the baked AO
+    merged = None
+    if os.environ.get("M80_BAKE_MERGE", "1") != "0" and len(high) > 1:
+        merged = merged_high(high, F.name + "_HighBake")
+        for o in high:
+            o.hide_render = True   # no twin surfaces in the occlusion
+        high, pieces = [merged], high
 
     def target(key, colour):
         img = bpy.data.images.new("%s_%s" % (F.name, key), size, size, alpha=False)
@@ -437,16 +469,27 @@ def bake_low(F, low, size):
         images[key] = img
 
     select_only(high + [low], low)
+    # Colour, normal and roughness only need a few samples (anti-aliasing); the occlusion needs more.
+    ao_samples = sc.cycles.samples
+    sc.cycles.samples = 4
     target("D", True)
     bpy.ops.object.bake(type="DIFFUSE", pass_filter={"COLOR"}, use_clear=True)
     target("N", False)
     bpy.ops.object.bake(type="NORMAL", normal_space="TANGENT", use_clear=True)
+    sc.cycles.samples = 1
     target("R", False)
     bpy.ops.object.bake(type="ROUGHNESS", use_clear=True)
+    sc.cycles.samples = ao_samples
     target("AO", False)
     bpy.ops.object.bake(type="AO", use_clear=True)
     for o in list(F.detail.objects):
         o.hide_render = False
+    if merged:
+        for o in pieces:
+            o.hide_render = False
+        me = merged.data
+        bpy.data.objects.remove(merged)
+        bpy.data.meshes.remove(me)
     px = {}
     for k in ("AO", "R"):
         arr = np.empty(size * size * 4, dtype=np.float32)
@@ -467,6 +510,10 @@ def bake_low(F, low, size):
         path = os.path.join(TEXTURES, "T_Bartoli_%s_%s.%s" % (F.name, key, ext))
         img.save_render(path, scene=sc)
         files[key] = path
+    # The bake targets are on disk now: free them (a whole block of 4K and 2K targets grew Blender to 16 GB).
+    nodes["BakeTarget"].image = None
+    for img in list(images.values()) + [orm]:
+        bpy.data.images.remove(img)
     # The low-poly's own material: baked colour, normal map, AO x colour, roughness.
     nt = mat.node_tree
     nt.nodes.clear()

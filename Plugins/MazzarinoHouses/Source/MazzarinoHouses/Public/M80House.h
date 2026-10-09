@@ -154,6 +154,8 @@ private:
 		double Step = 100;
 		int32 NX = 0, NY = 0;
 		TArray<double> Z;
+		/** Samples where no ground was found (filled from the nearest found ones). */
+		int32 Missing = 0;
 		double Sample(const FVector2D& World) const;
 	};
 

@@ -15,6 +15,7 @@
 #include "MaterialDomain.h"
 #include "HAL/PlatformTime.h"
 #include "Engine/CollisionProfile.h"
+#include "LandscapeProxy.h"
 #include "Algo/Reverse.h"
 
 AM80House::AM80House()
@@ -314,9 +315,23 @@ AM80House::FGroundGrid AM80House::SampleGround(const TArray<FVector2D>& World2D)
 
 	UWorld* World = GetWorld();
 	const bool bTrace = World && House.bFollowTerrain;
+	// With a landscape in the map only the landscape (and meshes tagged M80Ground) is ground: hand-made
+	// buildings, old reference meshes or roofs overlapping the lot would lift or sink the walls. Maps without
+	// a landscape (test levels on a plain box) keep using the first static surface that is not a house.
+	bool bLandscapeOnly = false;
+	if (bTrace)
+	{
+		for (TActorIterator<ALandscapeProxy> It(World); It; ++It)
+		{
+			bLandscapeOnly = true;
+			break;
+		}
+	}
 	FCollisionQueryParams Params(SCENE_QUERY_STAT(M80HouseGround), true, this);
 	const FCollisionObjectQueryParams Objects(ECC_WorldStatic);
 	TArray<FHitResult> Hits;
+	TArray<bool> Found;
+	Found.Init(true, Grid.NX * Grid.NY);
 	for (int32 Y = 0; Y < Grid.NY; ++Y)
 	{
 		for (int32 X = 0; X < Grid.NX; ++X)
@@ -327,21 +342,87 @@ AM80House::FGroundGrid AM80House::SampleGround(const TArray<FVector2D>& World2D)
 				const FVector2D Q = Grid.Origin + FVector2D(X, Y) * Grid.Step;
 				Hits.Reset();
 				World->LineTraceMultiByObjectType(Hits, FVector(Q.X, Q.Y, ActorZ + 30000), FVector(Q.X, Q.Y, ActorZ - 30000), Objects, Params);
+				bool bHit = false;
 				for (const FHitResult& Hit : Hits)
 				{
 					const AActor* HitActor = Hit.GetActor();
 					const UPrimitiveComponent* Comp = Hit.GetComponent();
+					if (bLandscapeOnly)
+					{
+						if (!Cast<ALandscapeProxy>(HitActor) && !(HitActor && HitActor->ActorHasTag(TEXT("M80Ground"))) &&
+							!(Comp && Comp->ComponentHasTag(TEXT("M80Ground"))))
+						{
+							continue;
+						}
+					}
 					// Houses, scattered props and anything tagged out never count as ground.
-					if ((HitActor && (HitActor->IsA<AM80House>() || HitActor->ActorHasTag(TEXT("M80IgnoreGround")))) ||
+					else if ((HitActor && (HitActor->IsA<AM80House>() || HitActor->ActorHasTag(TEXT("M80IgnoreGround")))) ||
 						(Comp && Comp->IsA<UInstancedStaticMeshComponent>()))
 					{
 						continue;
 					}
 					Height = Hit.ImpactPoint.Z;
+					bHit = true;
 					break;
 				}
+				Found[Y * Grid.NX + X] = bHit;
+				Grid.Missing += !bHit;
 			}
 			Grid.Z[Y * Grid.NX + X] = Height;
+		}
+	}
+	// Where nothing was hit (landscape not loaded yet, a hole): grow the found heights into the gaps
+	// instead of dropping the walls to the actor's height.
+	if (Grid.Missing && Grid.Missing < Grid.Z.Num())
+	{
+		TArray<int32> Gaps;
+		for (int32 i = 0; i < Found.Num(); ++i)
+		{
+			if (!Found[i])
+			{
+				Gaps.Add(i);
+			}
+		}
+		while (Gaps.Num())
+		{
+			TArray<int32> Still;
+			TArray<TPair<int32, double>> Filled;
+			for (int32 i : Gaps)
+			{
+				const int32 X = i % Grid.NX, Y = i / Grid.NX;
+				double Sum = 0;
+				int32 Count = 0;
+				for (int32 DY = -1; DY <= 1; ++DY)
+				{
+					for (int32 DX = -1; DX <= 1; ++DX)
+					{
+						const int32 NXi = X + DX, NYi = Y + DY;
+						if ((DX || DY) && NXi >= 0 && NYi >= 0 && NXi < Grid.NX && NYi < Grid.NY && Found[NYi * Grid.NX + NXi])
+						{
+							Sum += Grid.Z[NYi * Grid.NX + NXi];
+							++Count;
+						}
+					}
+				}
+				if (Count)
+				{
+					Filled.Emplace(i, Sum / Count);
+				}
+				else
+				{
+					Still.Add(i);
+				}
+			}
+			for (const TPair<int32, double>& F : Filled)
+			{
+				Grid.Z[F.Key] = F.Value;
+				Found[F.Key] = true;
+			}
+			if (Filled.IsEmpty())
+			{
+				break;
+			}
+			Gaps = MoveTemp(Still);
 		}
 	}
 	return Grid;
@@ -817,6 +898,29 @@ void AM80House::Rebuild()
 		BuildInfo = bDisabled ? TEXT("Disattivata") : TEXT("Esclusa da una zona senza case procedurali");
 		return;
 	}
+	TArray<FVector2D> Local = LocalFootprint();
+	M80Poly::Clean(Local);
+	if (Local.Num() < 3 || FMath::Abs(M80Poly::SignedArea(Local)) < 1e4)
+	{
+		BuildInfo = TEXT("Perimetro non valido: servono almeno 3 punti e 1 m2");
+		return;
+	}
+	TArray<FVector2D> World2D;
+	const FTransform T = GetActorTransform();
+	for (const FVector2D& Q : Local)
+	{
+		const FVector W = T.TransformPosition(FVector(Q.X, Q.Y, 0));
+		World2D.Add(FVector2D(W.X, W.Y));
+	}
+	// Ground first: with most of it missing (World Partition region not loaded) the house would be built
+	// on guesses, so it stays as it is (baked or not) until the area is loaded.
+	const FGroundGrid Grid = SampleGround(World2D);
+	if (Grid.Missing * 2 > Grid.Z.Num())
+	{
+		BuildInfo = FString::Printf(TEXT("Terreno non caricato sotto la casa (%d punti su %d): carica la zona in World Partition e rigenera. La casa resta com'era."),
+			Grid.Missing, Grid.Z.Num());
+		return;
+	}
 	if (IsBaked())
 	{
 		// Any change makes the baked asset stale: go back to the live preview.
@@ -825,13 +929,6 @@ void AM80House::Rebuild()
 	}
 	Shell->SetVisibility(true);
 	Shell->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	TArray<FVector2D> Local = LocalFootprint();
-	M80Poly::Clean(Local);
-	if (Local.Num() < 3 || FMath::Abs(M80Poly::SignedArea(Local)) < 1e4)
-	{
-		BuildInfo = TEXT("Perimetro non valido: servono almeno 3 punti e 1 m2");
-		return;
-	}
 	UM80HouseStyle* MainStyle = House.Style;
 	// Noble balcony kit (carved stone slabs, consoles, panels, railings), used only when it is all there.
 	TArray<UStaticMesh*> NobleKit;
@@ -852,14 +949,6 @@ void AM80House::Rebuild()
 	ResolvedEdgeKinds = Kinds;
 	ResolvedFrontEdge = Front;
 
-	TArray<FVector2D> World2D;
-	const FTransform T = GetActorTransform();
-	for (const FVector2D& Q : Local)
-	{
-		const FVector W = T.TransformPosition(FVector(Q.X, Q.Y, 0));
-		World2D.Add(FVector2D(W.X, W.Y));
-	}
-	const FGroundGrid Grid = SampleGround(World2D);
 	const double ActorZ = GetActorLocation().Z;
 	auto Ground = [&Grid, &T, ActorZ](const FVector2D& Q)
 	{
@@ -1152,6 +1241,10 @@ void AM80House::Rebuild()
 	BuildInfo = FString::Printf(TEXT("%d case, %d triangoli, %d aperture, %d balconi, %d muri in comune col vicinato, piano terra da %.0f a %.0f cm, %.1f ms"),
 		Units.Num(), Triangles, Openings, Balconies, Party, Floor0Min, Floor0Max, (FPlatformTime::Seconds() - Start) * 1000.0);
 	BuildInfo += FString::Printf(TEXT(", %d cortili, %d scale esterne, %d piani arretrati o non finiti, %d abbandonate"), Courtyards, Stairs, SplitTops, Abandoned);
+	if (Grid.Missing)
+	{
+		BuildInfo += FString::Printf(TEXT(", terreno non trovato in %d punti su %d (ricavato dai vicini)"), Grid.Missing, Grid.Z.Num());
+	}
 	SetExcludedVisuals(false);
 }
 

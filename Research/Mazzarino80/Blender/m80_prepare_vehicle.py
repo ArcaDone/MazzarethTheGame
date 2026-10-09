@@ -1,7 +1,8 @@
 """Blender 4.3: clean, optimise and export one asset of D:/Blender/AssetsMazzarethTheGame for Unreal.
 
 Run: blender -b <file.blend> --python m80_prepare_vehicle.py -- <key> <out_dir>
-key: Panda | Fiat127 | FiatUno | Golf | Vespa | Poste (see ASSETS)
+key: Panda | Fiat127 | FiatUno | Golf | Vespa | Poste | Comune | ChiesaComune | Matrice | Castello | Madonna |
+     Cassonetto | Tombino (see ASSETS)
 
 What it does (the source .blend is never saved):
 - keeps only what is visible and rendered; drops lights, cameras, hidden variants, ground planes and
@@ -12,7 +13,9 @@ What it does (the source .blend is never saved):
   ground (z = 0), centre between the axles at the origin, and builds the skeleton Root + Wheel_FL/FR/
   RL/RR (FL = front left) like the drivable Fiat 126; body and wheels are reduced to a triangle budget;
 - bike: same as a car with two wheels (Root + Wheel_F/Wheel_R); building: one static mesh (parts in
-  "split" as meshes of their own);
+  "split" as meshes of their own: by object name, by collection, or "*" = every object); only the
+  "collections" listed when given; objects denser than "density" triangles per m2 (gates, statues, bells
+  modelled for close-ups) are decimated one by one, the architecture is left as it is;
 - images: only the used ones, at most 2048 px, duplicates merged, saved as PNG;
 - materials: base colour (or texture), metallic, roughness, glass, emission, normal map -> JSON, so the
   Unreal import script rebuilds them on a few master materials (no baking of the procedural ones).
@@ -40,9 +43,23 @@ ASSETS = {
     "Golf": {"kind": "car", "length": 3.705},
     "Vespa": {"kind": "bike", "length": 1.77},
     "Poste": {"kind": "building", "scale": 1.0, "split": ["Antenna"]},   # the radio mast is its own mesh
+    # Town buildings (Comune and its church are stand-ins until the user rebuilds the Comune).
+    "Comune": {"kind": "building", "density": 1500, "budget": 0},
+    "ChiesaComune": {"kind": "building", "density": 1500, "budget": 0},
+    "Matrice": {"kind": "building", "density": 1500, "budget": 0, "collections": ["Export", "Export2", "Interno"],
+                "split_collections": {"Interno": "Interno"}},
+    "Castello": {"kind": "building", "density": 1500, "budget": 0},
+    # Every part on its own, to be arranged in Unreal; the church is the main mesh ("main").
+    "Madonna": {"kind": "building", "density": 1500, "budget": 0, "split": "*", "main": "ChiesaMadonna", "exclude": ["CreepingBentgrass"],
+                "names": {"VIllaPvimento": "VillaPavimento", "ErbaGscatter_001": "Prato", "Villa_006": "VillaAnnesso",
+                          "MurettoMadonna_001": "MurettoMadonnaPilastro", "gateway": "Cancello1", "gateway_001": "Cancello2",
+                          "gateway_002": "Cancello3", "Bells": "Campane"}},
+    # Street furniture modelled ~4.4x and 10x too big: a 1100 l bin (137 cm wide) and a 60 cm manhole cover.
+    "Cassonetto": {"kind": "building", "scale": 0.225},
+    "Tombino": {"kind": "building", "scale": 0.1},
 }
 CFG = ASSETS[KEY]
-BODY_BUDGET = 70000 if CFG["kind"] == "car" else (50000 if CFG["kind"] == "bike" else 600000)
+BODY_BUDGET = 70000 if CFG["kind"] == "car" else (50000 if CFG["kind"] == "bike" else CFG.get("budget", 600000))
 WHEEL_BUDGET = 5000
 MAX_TEX = 2048
 MAX_NORMAL_TEX = 1024   # normal maps of small details (lights, leather): 1K is plenty
@@ -68,7 +85,7 @@ def world_bbox(o):
 
 
 # Images linked from another disk (the old E:\BitBucket copy): look for them on D: or by name.
-IMAGE_ROOTS = [r"D:\BitBucket\mazzareththegame\Assets", r"D:\Blender\AssetsMazzarethTheGame"]
+IMAGE_ROOTS = [r"D:\BitBucket\mazzareththegame\Assets", r"D:\Blender\AssetsMazzarethTheGame", r"D:\Blender"]
 
 
 def relink_images():
@@ -105,6 +122,17 @@ def relink_images():
 # ---------------------------------------------------------------------------------------------
 # 1) Keep what is visible, as plain meshes
 
+SOURCE_COLLECTIONS = {}
+
+
+def cap_density(o, per_m2):
+    """Decimate an object modelled far denser than its size needs (at most per_m2 triangles per m2 of surface)."""
+    area = sum(p.area for p in o.data.polygons)
+    budget = max(5000, int(area * per_m2))
+    if tri_count(o) > budget:
+        decimate(o, budget)
+
+
 def collect():
     scene = bpy.context.scene
     view = bpy.context.view_layer
@@ -116,6 +144,9 @@ def collect():
             view.objects.active = o
             bpy.ops.object.duplicates_make_real()
     keep = [o for o in scene.objects if o.type in ("MESH", "CURVE", "FONT", "SURFACE", "META") and o.visible_get() and not o.hide_render]
+    if CFG.get("collections"):
+        keep = [o for o in keep if any(c.name in CFG["collections"] for c in o.users_collection)]
+    keep = [o for o in keep if not any(o.name.startswith(x) for x in CFG.get("exclude", []))]
     for o in keep:
         if o.type != "MESH":
             continue
@@ -143,6 +174,9 @@ def collect():
         a.data.foreach_set("value", [len(meshes)] * len(me.polygons))
         n = bpy.data.objects.new("M80_" + o.name, me)
         bpy.context.scene.collection.objects.link(n)
+        SOURCE_COLLECTIONS[n.name] = [c.name for c in o.users_collection]
+        if CFG.get("density"):
+            cap_density(n, CFG["density"])
         meshes.append(n)
     keep_names = {o.name for o in meshes}
     for o in list(bpy.data.objects):
@@ -669,8 +703,24 @@ def main():
     else:
         # Parts listed in "split" become meshes of their own (placed relative to the main one).
         pieces = {}
-        for part in CFG.get("split", []):
+        if CFG.get("split") == "*":
+            # Every object its own mesh; the main mesh is "main", else the biggest one.
+            main = next((o for o in meshes if o.name == "M80_" + CFG.get("main", "")), None)
+            main = main or max(meshes, key=lambda o: float(np.prod(np.maximum(world_bbox(o)[1] - world_bbox(o)[0], 0.01))))
+            for o in [o for o in meshes if o is not main]:
+                part = clean(o.name[4:])
+                part = CFG.get("names", {}).get(part, part)
+                while part in pieces:
+                    part += "_b"
+                pieces[part] = join([o], KEY + "_" + part)
+            meshes = [main]
+        for part in CFG.get("split", []) if CFG.get("split") != "*" else []:
             sel = [o for o in meshes if o.name.startswith("M80_" + part)]
+            if sel:
+                pieces[part] = join(sel, KEY + "_" + part)
+                meshes = [o for o in meshes if o not in sel]
+        for coll, part in CFG.get("split_collections", {}).items():
+            sel = [o for o in meshes if coll in SOURCE_COLLECTIONS.get(o.name, [])]
             if sel:
                 pieces[part] = join(sel, KEY + "_" + part)
                 meshes = [o for o in meshes if o not in sel]
@@ -679,8 +729,11 @@ def main():
         mid = Vector(((lo[0] + hi[0]) / 2, (lo[1] + hi[1]) / 2, lo[2]))
         sc = CFG.get("scale", 1.0)
         body.data.transform(Matrix.Scale(sc, 4) @ Matrix.Translation(-mid))
-        decimate(body, BODY_BUDGET)
+        if BODY_BUDGET:
+            decimate(body, BODY_BUDGET)
         lo, hi = world_bbox(body)
+        # Height of Blender's z = 0 (the street level the model was made on) above the pivot (its lowest point).
+        REPORT["blender_zero_cm"] = round(float(-mid.z) * 100 * sc, 1)
         REPORT["box_cm"] = [round(float(x) * 100, 1) for x in list(lo) + list(hi)]
         mats = export_materials([body] + list(pieces.values()))
         REPORT["materials"] = mats

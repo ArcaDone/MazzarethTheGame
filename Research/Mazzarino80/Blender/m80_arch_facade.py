@@ -35,6 +35,11 @@ _M = {}
 # the first previews) and saturation (M80_WALL_SAT, 1 = as generated).
 WALL_GAMMA = float(os.environ.get("M80_WALL_GAMMA", str(1 / 2.2)))
 WALL_SAT = float(os.environ.get("M80_WALL_SAT", "0.75"))
+# Game version (m80_bartoli_gioco.py): no displaced high-poly wall; the wall is the flat one with a tiling texture
+# (surface(..., period)) and the facade keeps only its dirt (run-off under sills and balconies, streaks, patina, damp
+# along the street) as a low-resolution multiplier, F.dirt, laid over the whole facade.
+GIOCO = os.environ.get("M80_GIOCO", "0") == "1"
+DIRT_PX_M = 24
 
 
 def principled(name, color, rough=0.85, metal=0.0):
@@ -147,53 +152,62 @@ def mats():
 # ---------------------------------------------------------------------------------------------
 # Wall surfaces: height (m, outward) and linear albedo
 
-def ashlar(U, V, course=0.33, length=0.62, seed=3):
+def ashlar(U, V, course=0.33, length=0.62, seed=3, period=None):
+    """period=(pu, pv): tiling texture (whole courses and blocks in the tile, see K.value_noise)."""
+    if period:
+        nr, course = K.cells(period[1], course)
+        nc, length = K.cells(period[0], length)
     row = np.floor(V / course).astype(np.int64)
+    lv = V - row * course
+    if period:
+        row = row % nr
     off = K._hash(row, row * 0 + 7, seed) * length
     col = np.floor((U + off) / length).astype(np.int64)
     lu = (U + off) - col * length
-    lv = V - row * course
     edge = np.minimum(np.minimum(lu, length - lu), np.minimum(lv, course - lv))
-    rnd = K._hash(col, row, seed + 1)
-    joint = 0.006 + 0.003 * K.value_noise(U, V, 0.3, seed + 2, 2)
+    rnd = K._hash(col % nc if period else col, row, seed + 1)
+    joint = 0.006 + 0.003 * K.value_noise(U, V, 0.3, seed + 2, 2, period)
     face = np.clip((edge - joint) / 0.035, 0, 1) ** 0.5
-    fine = K.value_noise(U, V, 0.02, seed + 4, 3)
+    fine = K.value_noise(U, V, 0.02, seed + 4, 3, period)
     # Alveolar erosion of the sandstone: pitted, darker patches eaten into some blocks.
-    erosion = np.clip((K.value_noise(U, V, 0.45, seed + 7, 3) - 0.6) * 4.0, 0, 1) * face
-    pits = K.value_noise(U, V, 0.012, seed + 8, 2)
+    erosion = np.clip((K.value_noise(U, V, 0.45, seed + 7, 3, period) - 0.6) * 4.0, 0, 1) * face
+    pits = K.value_noise(U, V, 0.012, seed + 8, 2, period)
     h = np.where(edge < joint, 0.0, 0.006 + 0.004 * face + 0.003 * rnd + 0.002 * fine * face - 0.005 * erosion * pits)
     base = np.array([0.46, 0.36, 0.20])
-    col_ = base * (0.80 + 0.32 * rnd)[..., None] * (0.85 + 0.22 * K.value_noise(U, V, 0.08, seed + 5, 3))[..., None]
+    col_ = base * (0.80 + 0.32 * rnd)[..., None] * (0.85 + 0.22 * K.value_noise(U, V, 0.08, seed + 5, 3, period))[..., None]
     col_ = col_ * (1 - 0.28 * erosion * (0.6 + 0.4 * pits))[..., None]
     mortar = np.array([0.52, 0.44, 0.31])
     alb = np.where((edge < joint)[..., None], mortar, col_)
     return h, alb
 
 
-def plaster(U, V, color, peel=0.3, seed=5):
-    n = K.value_noise(U, V, 0.5, seed, 4)
+def plaster(U, V, color, peel=0.3, seed=5, period=None):
+    """period: tiling texture (the peeling that grows towards the street is left to the facade's dirt)."""
+    n = K.value_noise(U, V, 0.5, seed, 4, period)
     h = 0.014 + 0.003 * n
-    alb = np.array(color) * (0.86 + 0.2 * K.value_noise(U, V, 0.9, seed + 1, 4))[..., None]
+    alb = np.array(color) * (0.86 + 0.2 * K.value_noise(U, V, 0.9, seed + 1, 4, period))[..., None]
     # Stains and grime.
-    alb = alb * (1 - 0.18 * np.clip(K.value_noise(U, V, 2.5, seed + 2, 3) - 0.45, 0, 1)[..., None] * 2)
+    alb = alb * (1 - 0.18 * np.clip(K.value_noise(U, V, 2.5, seed + 2, 3, period) - 0.45, 0, 1)[..., None] * 2)
     if peel > 0:
-        mask = (K.value_noise(U, V, 1.5, seed + 3, 4) + 0.25 * np.clip(1 - V / 2.0, 0, 1)) > (0.78 - 0.25 * peel)
-        rh, sid, edge = K.rubble(U, V, seed=seed + 9)
-        ralb = K.rubble_albedo(U, V, rh, sid, edge, seed=seed + 9)
+        low = 0.0 if period else 0.25 * np.clip(1 - V / 2.0, 0, 1)
+        mask = (K.value_noise(U, V, 1.5, seed + 3, 4, period) + low) > (0.78 - 0.25 * peel)
+        rh, sid, edge = K.rubble(U, V, seed=seed + 9, period=period)
+        ralb = K.rubble_albedo(U, V, rh, sid, edge, seed=seed + 9, period=period)
         h = np.where(mask, rh * 0.8, h)
         alb = np.where(mask[..., None], ralb, alb)
     return h, alb
 
 
-def surface(spec, U, V):
+def surface(spec, U, V, period=None):
+    """Height (m, outward) and linear albedo of the facade's wall; period=(pu, pv) makes a tiling texture of it."""
     w = spec.get("wall", {"type": "rubble"})
     t = w.get("type", "rubble")
     if t == "ashlar":
-        return ashlar(U, V, w.get("course", 0.33), w.get("length", 0.62), w.get("seed", 3))
+        return ashlar(U, V, w.get("course", 0.33), w.get("length", 0.62), w.get("seed", 3), period)
     if t == "plaster":
-        return plaster(U, V, w.get("color", (0.62, 0.55, 0.42)), w.get("peel", 0.3), w.get("seed", 5))
-    h, sid, edge = K.rubble(U, V, cell=tuple(w.get("cell", (0.21, 0.14))), seed=w.get("seed", 7), mortar=w.get("mortar", 0.016))
-    return h, K.rubble_albedo(U, V, h, sid, edge, seed=w.get("seed", 7))
+        return plaster(U, V, w.get("color", (0.62, 0.55, 0.42)), w.get("peel", 0.3), w.get("seed", 5), period)
+    h, sid, edge = K.rubble(U, V, cell=tuple(w.get("cell", (0.21, 0.14))), seed=w.get("seed", 7), mortar=w.get("mortar", 0.016), period=period)
+    return h, K.rubble_albedo(U, V, h, sid, edge, seed=w.get("seed", 7), period=period)
 
 
 # ---------------------------------------------------------------------------------------------
@@ -277,7 +291,7 @@ def carve(ob, strength=0.018):
     """Carved stone (consoles, modillions): rounded edges and a chiselled, worn relief."""
     K.add_bevel(ob, 0.02, 3)
     s = ob.modifiers.new("Sub", "SUBSURF")
-    s.levels = s.render_levels = 2
+    s.levels = s.render_levels = 1 if K.LIGHT else 2
     tex = bpy.data.textures.get("M80_Intaglio") or bpy.data.textures.new("M80_Intaglio", "STUCCI")
     tex.noise_scale = 0.04
     d = ob.modifiers.new("Scolpito", "DISPLACE")
@@ -734,9 +748,14 @@ def build(spec, px_per_m=110, step=0.022):
             keep &= ~o.contains(U, V)
         return keep
 
+    if GIOCO:
+        px_per_m = DIRT_PX_M
     nu, nv = int(W * px_per_m), int(H * px_per_m)
     us, vs = np.meshgrid(np.linspace(0, W, nu), np.linspace(0, H, nv))
-    h, alb = surface(spec, us, vs)
+    if GIOCO:
+        alb = np.ones(us.shape + (3,))
+    else:
+        h, alb = surface(spec, us, vs)
     regions = []
     for _, o, d in ops:
         if o.kind in ("window", "french"):
@@ -761,10 +780,13 @@ def build(spec, px_per_m=110, step=0.022):
     alb = alb * (1 - grime * 0.24 * streak * from_top)[..., None]
     # Warm dirt, not grey: the stone stays golden under it.
     patina = grime * 0.14 * np.clip((K.value_noise(us, vs, 2.2, 33, 3) - 0.35) * 1.6, 0, 1)
-    alb = alb * (1 - patina)[..., None] + np.array([0.16, 0.12, 0.07]) * patina[..., None]
+    # (As a dirt multiplier the warm tint is taken against a mid stone of 0.45.)
+    alb = alb * (1 - patina)[..., None] + np.array([0.16, 0.12, 0.07]) / (0.45 if GIOCO else 1.0) * patina[..., None]
     base_h = 1.3 + 0.6 * K.value_noise(us, np.zeros_like(us), 0.8, 35, 2)
     damp = np.clip(1 - vs / base_h, 0, 1)[..., None] * (0.25 + 0.15 * grime)
     alb = alb * (1 - damp)
+    if GIOCO:
+        F.dirt = K.image_from_array(spec["name"] + "_sporco", np.clip(alb, 0, 1).astype(np.float32), "Non-Color")
     # The image is stored as sRGB: encoded, the walls reach the lightness of the town's Unreal materials (colour check
     # m80_bartoli_palette.py / Scripts/m80_bartoli_colour_compare.py: unencoded the stone came out 15-20 L darker and
     # more orange than the ashlar and rubble of the procedural houses); with 1/1.8 the baked Corso fronts in the town
@@ -772,14 +794,15 @@ def build(spec, px_per_m=110, step=0.022):
     alb = np.clip(alb, 0, 1)
     lum = (alb[..., :3] * np.array([0.2126, 0.7152, 0.0722])).sum(-1, keepdims=True)
     alb[..., :3] = lum + (alb[..., :3] - lum) * WALL_SAT
-    img = K.image_from_array(spec["name"] + "_albedo", (np.clip(alb, 0, 1) ** WALL_GAMMA).astype(np.float32))
-    wall_mat = bpy.data.materials.new(spec["name"] + "_muro_hi")
-    wall_mat.use_nodes = True
-    t = wall_mat.node_tree.nodes.new("ShaderNodeTexImage")
-    t.image = img
-    wall_mat.node_tree.links.new(t.outputs[0], wall_mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"])
-    wall_mat.node_tree.nodes["Principled BSDF"].inputs["Roughness"].default_value = 0.92
-    K.grid_mesh(spec["name"] + "_muro_hi", W, H, step, height_fn, keep_fn, F.high, F.frame, wall_mat)
+    if not GIOCO:
+        img = K.image_from_array(spec["name"] + "_albedo", (np.clip(alb, 0, 1) ** WALL_GAMMA).astype(np.float32))
+        wall_mat = bpy.data.materials.new(spec["name"] + "_muro_hi")
+        wall_mat.use_nodes = True
+        t = wall_mat.node_tree.nodes.new("ShaderNodeTexImage")
+        t.image = img
+        wall_mat.node_tree.links.new(t.outputs[0], wall_mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"])
+        wall_mat.node_tree.nodes["Principled BSDF"].inputs["Roughness"].default_value = 0.92
+        K.grid_mesh(spec["name"] + "_muro_hi", W, H, step, height_fn, keep_fn, F.high, F.frame, wall_mat)
     outline = None
     if ruin or prof:
         us_ = np.linspace(0, W, int(W / 0.25) + 1)

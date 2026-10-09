@@ -14,6 +14,7 @@ Details that keep their own geometry and material in the game (glass, shutters, 
 go to "<Facade>_Detail".
 """
 import math
+import os
 import random
 
 import bmesh
@@ -73,9 +74,16 @@ def apply_modifiers(ob):
         bpy.ops.object.modifier_apply(modifier=m.name)
 
 
+# Game version (M80_GIOCO=1, m80_bartoli_gioco.py): the weathered stone keeps its shape with one subdivision level less
+# and half the densifying: the full high-poly made the block 11 million triangles.
+LIGHT = os.environ.get("M80_GIOCO", "0") == "1"
+
+
 def weather(ob, wear=1.0, bevel=0.012, subdiv=2):
     """Centuries of weather on a stone element (high-poly only): irregular rounded edges, erosion at two
     scales and chipped edges. Displacements use global coordinates, so no two pieces wear alike."""
+    if LIGHT:
+        subdiv = max(0, subdiv - 1)
     if bevel:
         add_bevel(ob, bevel, 2)
     s = ob.modifiers.new("Subdiv", "SUBSURF")
@@ -116,6 +124,8 @@ def weather(ob, wear=1.0, bevel=0.012, subdiv=2):
 
 def densify(ob, step):
     """Split every edge longer than step (grid-filled), so displacement has vertices to move."""
+    if LIGHT:
+        step *= 2
     bm = bmesh.new()
     bm.from_mesh(ob.data)
     groups = {}
@@ -245,26 +255,50 @@ def _hash(i, j, s=0):
     return ((h ^ (h >> 16)) & 0xFFFFFF) / float(0xFFFFFF)
 
 
-def value_noise(u, v, scale, seed=0, octaves=3):
+def cells(period, size):
+    """Whole number of cells of about `size` in `period` metres, and the cell size that fits them exactly."""
+    n = max(1, int(round(period / size)))
+    return n, period / n
+
+
+def value_noise(u, v, scale, seed=0, octaves=3, period=None):
+    """period=(pu, pv) metres: the noise repeats every pu along u and pv along v, for tiling textures (the lattice is
+    stretched a little so a whole number of cells fits the tile)."""
     out = np.zeros_like(u)
     amp, tot = 1.0, 0.0
+    su = sv = scale
+    if period:
+        nu, su = cells(period[0], scale)
+        nv, sv = cells(period[1], scale)
     for o in range(octaves):
-        x, y = u / scale, v / scale
+        x, y = u / su, v / sv
         i, j = np.floor(x).astype(np.int64), np.floor(y).astype(np.int64)
         fx, fy = x - i, y - j
         fx, fy = fx * fx * (3 - 2 * fx), fy * fy * (3 - 2 * fy)
-        a, b = _hash(i, j, seed + o), _hash(i + 1, j, seed + o)
-        c, d = _hash(i, j + 1, seed + o), _hash(i + 1, j + 1, seed + o)
+        i1, j1 = i + 1, j + 1
+        if period:
+            mu, mv = nu << o, nv << o
+            i, i1, j, j1 = i % mu, i1 % mu, j % mv, j1 % mv
+        a, b = _hash(i, j, seed + o), _hash(i1, j, seed + o)
+        c, d = _hash(i, j1, seed + o), _hash(i1, j1, seed + o)
         out += amp * ((a * (1 - fx) + b * fx) * (1 - fy) + (c * (1 - fx) + d * fx) * fy)
         tot += amp
         amp *= 0.5
-        scale *= 0.5
+        su *= 0.5
+        sv *= 0.5
     return out / tot
 
 
-def rubble(u, v, cell=(0.21, 0.14), seed=7, mortar=0.016):
-    """Irregular stones in thick mortar. Returns (height m, stone random 0-1, edge distance m)."""
+def rubble(u, v, cell=(0.21, 0.14), seed=7, mortar=0.016, period=None):
+    """Irregular stones in thick mortar. Returns (height m, stone random 0-1, edge distance m).
+    period=(pu, pv): tiling (see value_noise)."""
     cu, cv = cell
+    if period:
+        ni, cu = cells(period[0], cu)
+        nj, cv = cells(period[1], cv)
+
+    def h_(i, j, s):
+        return _hash(i % ni, j % nj, s) if period else _hash(i, j, s)
     # Roughly coursed: every row of cells is shifted a little.
     i0 = np.floor(u / cu).astype(np.int64)
     j0 = np.floor(v / cv).astype(np.int64)
@@ -274,20 +308,20 @@ def rubble(u, v, cell=(0.21, 0.14), seed=7, mortar=0.016):
     for di in (-1, 0, 1):
         for dj in (-1, 0, 1):
             i, j = i0 + di, j0 + dj
-            px = (i + 0.15 + 0.7 * _hash(i, j, seed)) * cu
-            py = (j + 0.15 + 0.7 * _hash(i, j, seed + 1)) * cv
+            px = (i + 0.15 + 0.7 * h_(i, j, seed)) * cu
+            py = (j + 0.15 + 0.7 * h_(i, j, seed + 1)) * cv
             # Half euclidean, half chebyshev: angular, roughly squared stones rather than pebbles.
             dx, dy = np.abs(u - px) / 1.15, np.abs(v - py)
             dist = 0.5 * np.sqrt(dx * dx + dy * dy) + 0.5 * np.maximum(dx, dy)
             closer = dist < f1
             f2 = np.where(closer, f1, np.minimum(f2, dist))
-            sid = np.where(closer, _hash(i, j, seed + 2), sid)
+            sid = np.where(closer, h_(i, j, seed + 2), sid)
             f1 = np.minimum(f1, dist)
     edge = f2 - f1
-    mortar = mortar + 0.010 * value_noise(u, v, 0.4, seed + 5, 2)
+    mortar = mortar + 0.010 * value_noise(u, v, 0.4, seed + 5, 2, period)
     dome = np.clip((edge - mortar) / 0.035, 0, 1) ** 0.35
-    fine = value_noise(u, v, 0.025, seed + 9, 3)
-    chip = value_noise(u, v, 0.07, seed + 13, 2)
+    fine = value_noise(u, v, 0.025, seed + 9, 3, period)
+    chip = value_noise(u, v, 0.07, seed + 13, 2, period)
     h = np.where(edge < mortar, 0.002 * fine,
                  0.010 + 0.016 * dome + 0.010 * sid + 0.006 * (fine - 0.5) * dome - 0.006 * (chip > 0.68) * dome)
     return h, sid, edge - mortar
@@ -300,20 +334,22 @@ STONE = np.array([[0.52, 0.39, 0.205], [0.57, 0.445, 0.24], [0.60, 0.51, 0.35], 
 MORTAR = np.array([0.58, 0.49, 0.35])
 
 
-def rubble_albedo(u, v, h, sid, edge, seed=7):
+def rubble_albedo(u, v, h, sid, edge, seed=7, period=None):
+    """period: tiling (see value_noise); the rising damp, which depends on the height, is left to the facade's dirt."""
     idx = np.minimum((sid * len(STONE) * 1.6).astype(int) % len(STONE), len(STONE) - 1)
     rare = sid > 0.93
     idx = np.where(rare, 4, idx)
     col = STONE[idx]
-    tint = (0.78 + 0.30 * value_noise(u, v, 0.05, seed + 11, 3))[..., None]
+    tint = (0.78 + 0.30 * value_noise(u, v, 0.05, seed + 11, 3, period))[..., None]
     col = col * tint
     # Mortar darkens in the joints (dirt) and lightens on the flush parts.
     m = (edge < 0)[..., None]
     joint = np.clip(-edge / 0.02, 0, 1)[..., None]
-    col = np.where(m, MORTAR * (0.85 + 0.12 * value_noise(u, v, 0.02, seed + 3, 2))[..., None] * (1 - 0.35 * joint), col)
-    # Rising damp and grime near the street, sun-bleached top.
-    damp = np.clip(1 - v / 1.2, 0, 1)[..., None] * 0.22
-    col = col * (1 - damp)
+    col = np.where(m, MORTAR * (0.85 + 0.12 * value_noise(u, v, 0.02, seed + 3, 2, period))[..., None] * (1 - 0.35 * joint), col)
+    if not period:
+        # Rising damp and grime near the street, sun-bleached top.
+        damp = np.clip(1 - v / 1.2, 0, 1)[..., None] * 0.22
+        col = col * (1 - damp)
     return np.clip(col, 0, 1)
 
 

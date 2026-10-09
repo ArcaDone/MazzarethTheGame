@@ -874,7 +874,9 @@ def build(spec, px_per_m=110, step=0.022):
         anchor_y(F, "%s_capochiave%d" % (spec["name"], k), u, v)
     for k, q in enumerate(spec.get("plaques", [])):
         plaque(F, "%s_lapide%d" % (spec["name"], k), q)
-    for k, d in enumerate(spec.get("signs", [])):
+    # Shop signs and their symbols (pharmacy cross, tobacconist's T) are off: too plain for the 1980s (M80_INSEGNE=1
+    # brings them back).
+    for k, d in enumerate(spec.get("signs", []) if os.environ.get("M80_INSEGNE", "0") == "1" else []):
         sign(F, "%s_insegna%d" % (spec["name"], k), d)
     for k, r in enumerate(spec.get("ivy", [])):
         ivy(F, "%s_edera%d" % (spec["name"], k), r, seed=k + 3)

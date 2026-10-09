@@ -137,32 +137,31 @@ def bpy_tex(name, kind, scale):
 # ---------------------------------------------------------------------------------------------
 # D - corner palace on the Corso and Piazza Monterosso (sandstone ashlar, 4 storeys)
 
-D_FLOORS = {"g": (0.0, 3.0, 0.75), "f1": (5.0, 7.9), "f2": (9.0, 11.6), "f3": (12.5, 14.8)}
+# Ground floor of arches, two floors of balconies on carved brackets, a string course and an attic of small
+# windows under the cornice (Street View, Corso Vittorio Emanuele 222: four bays on the Corso).
+D_FLOORS = {"g": (0.0, 3.0, 0.75), "f1": (5.0, 7.9), "f2": (9.0, 11.6), "attic": (12.9, 14.1)}
+D_CORDOLO = 12.35
 
 
-def _d_upper(prefix, B, o, bal, f3_balcony=True):
+def _d_upper(prefix, B, o, bal):
     for k, uc in enumerate(B):
         o.append(ow("%s_P1_%d" % (prefix, k), uc, 1.15, *D_FLOORS["f1"], kind="french", fit="shutters_open" if k % 3 == 1 else "shutters"))
         o.append(ow("%s_P2_%d" % (prefix, k), uc, 1.05, *D_FLOORS["f2"], kind="french", fit="shutters"))
-        o.append(ow("%s_P3_%d" % (prefix, k), uc, 0.95, *D_FLOORS["f3"], kind="french", fit="shutters" if k % 2 else "glazed"))
+        o.append(ow("%s_P3_%d" % (prefix, k), uc, 0.75, *D_FLOORS["attic"], fit="glazed", sill=True))
         bal.append({"u0": uc - 1.25, "u1": uc + 1.25, "v": 5.0, "d": 0.85, "brackets": "rich", "n": 4, "railing": "bombe"})
         bal.append({"u0": uc - 0.95, "u1": uc + 0.95, "v": 9.0, "d": 0.70, "brackets": "rich", "n": 3, "bracket_h": 0.5})
-        if f3_balcony:
-            bal.append({"u0": uc - 0.8, "u1": uc + 0.8, "v": 12.5, "d": 0.55, "n": 3, "bracket_h": 0.4})
+
+
+D_CORSO_P0 = [24.9, -19.8]   # where the corner palace meets the lower house of the carriage gate (lot vertex)
 
 
 def facade_d_corso():
-    B = bays(2.5, 4.45, 8)
+    """The corner palace on the Corso: four bays, four arched doors (the pharmacy among them)."""
+    L = math.dist(D_CORSO_P0, [42.73, -11.99])
+    B = bays(3.1, 4.4, 4)
     o, bal = [], []
-    # Ground floor in the 1980s: the carriage gate to the courtyard (green doors, fan light), a green
-    # door, shops, the bar, the pharmacy near the corner.
-    o.append({"id": "D_Androne", "u0": B[0] - 1.05, "u1": B[0] + 1.05, "v0": 0.0, "v1": 3.3, "arch": 1.05, "kind": "portal",
-              "fit": "portal", "door_mat": "green", "lunette": True, "keystone": True, "depth": 0.6,
-              "frame": {"w": 0.32, "proj": 0.09, "mat": "stone"}})
-    kinds = [None, ("door", "door", "green"), ("shop", "shop", None), ("shop", "shop", None), ("shop", "shop", None),
-             ("door", "door", "wood"), ("shop", "shop", None), ("shop", "shop", None)]
-    for k in range(1, 8):
-        kind, fit, mat = kinds[k]
+    fits = [("door", "green"), ("shop", None), ("door", "green"), ("shop", None)]
+    for k, (fit, mat) in enumerate(fits):
         d = {"id": "D_T%d" % k, "u0": B[k] - 0.85, "u1": B[k] + 0.85, "v0": 0.0, "v1": 3.0, "arch": 0.85,
              "kind": "arch_door", "fit": fit, "frame": {"w": 0.22, "proj": 0.07, "mat": "stone"}}
         if mat:
@@ -170,20 +169,44 @@ def facade_d_corso():
         o.append(d)
     _d_upper("D_C", B, o, bal)
     return {
-        "name": "D_Corso", "p0": [8.2, -26.2], "p1": [42.73, -11.99], "z0": Z_CORSO, "height": 16.0,
+        "name": "D_Corso", "p0": D_CORSO_P0, "p1": [42.73, -11.99], "z0": Z_CORSO, "height": 16.0,
         "wall": {"type": "ashlar", "course": 0.34, "length": 0.66, "seed": 4},
         "grime": 1.8,  # the corner palace is darkened by the weather all over
         "openings": o, "balconies": bal,
-        "pilasters": [[0.0, 0.55, 0.05, ""], [36.72, 37.34, 0.07, "quoin"]],
-        "bands": [{"v": 4.55, "profile": "string"}, {"v": 0.0, "profile": "plinth", "h": 0.55}],
+        "pilasters": [[0.0, 0.55, 0.05, ""], [L - 0.62, L, 0.07, "quoin"]],
+        "bands": [{"v": 4.55, "profile": "string"}, {"v": D_CORDOLO, "profile": "string"}, {"v": 0.0, "profile": "plinth", "h": 0.55}],
         "cornice": {"v": 15.48, "tiles": True, "modillions": 0.75},
-        "anchors": [[B[k] + 2.2, 8.55] for k in range(0, 7, 2)],
-        "signs": [{"u0": B[7] - 1.3, "u1": B[7] + 1.3, "v": 3.95, "text": "FARMACIA", "bg": (0.01, 0.10, 0.04), "fg": (0.85, 0.85, 0.8),
-                   "flag": {"u": B[7] + 1.6, "v": 4.9, "shape": "cross", "color": (0.05, 0.6, 0.12), "glow": 4.0}},
-                  {"u0": B[4] - 1.2, "u1": B[4] + 1.2, "v": 3.95, "text": "BAR", "bg": (0.30, 0.02, 0.02), "fg": (0.95, 0.85, 0.5)},
-                  {"u0": B[3] - 1.2, "u1": B[3] + 1.2, "v": 3.95, "text": "TABACCHI", "bg": (0.02, 0.04, 0.18), "fg": (0.9, 0.9, 0.9),
-                   "flag": {"u": B[3] + 1.5, "v": 4.9, "shape": "T", "color": (0.02, 0.05, 0.30)}},
-                  {"u0": B[6] - 1.2, "u1": B[6] + 1.2, "v": 3.95, "text": "TESSUTI", "bg": (0.12, 0.10, 0.06), "fg": (0.85, 0.75, 0.45)}],
+    }
+
+
+def facade_d_corso_ovest():
+    """The lower house between Palazzo Bartoli and the corner palace (Street View, Corso 222, left): rubble with
+    sandstone frames, three levels - the carriage gate to the courtyard, a floor of balconies (the one over the gate on
+    rich brackets), small barred windows under the eaves - and the iron Y anchors of its tie rods."""
+    B = bays(2.5, 4.3, 4)
+    o, bal = [], []
+    o.append({"id": "D_Androne", "u0": B[0] - 1.05, "u1": B[0] + 1.05, "v0": 0.0, "v1": 3.3, "arch": 1.05, "kind": "portal",
+              "fit": "portal", "door_mat": "wood", "lunette": True, "keystone": True, "depth": 0.6,
+              "frame": {"w": 0.32, "proj": 0.09, "mat": "stone"}})
+    for k, (fit, mat) in enumerate((("door", "green"), ("shop", None), ("door", "wood")), start=1):
+        d = ow("DO_T%d" % k, B[k], 1.2, 0.0, 2.7, kind="door", fit=fit, frame={"w": 0.2, "proj": 0.06, "mat": "stone"})
+        if mat:
+            d["door_mat"] = mat
+        o.append(d)
+    for k, uc in enumerate(B):
+        o.append(ow("DO_P1_%d" % k, uc, 1.1, 5.0, 7.5, kind="french", fit="shutters_open" if k == 2 else "shutters",
+                    frame={"w": 0.2, "proj": 0.06, "mat": "stone"}))
+        o.append(ow("DO_P2_%d" % k, uc, 0.85, 9.5, 10.8, fit="grille", sill=True, frame={"w": 0.16, "proj": 0.05, "mat": "stone"}))
+        if k == 0:
+            bal.append({"u0": uc - 1.3, "u1": uc + 1.3, "v": 5.0, "d": 0.85, "brackets": "rich", "n": 4})
+        else:
+            bal.append({"u0": uc - 0.9, "u1": uc + 0.9, "v": 5.0, "d": 0.6, "n": 3, "bracket_h": 0.42})
+    return {
+        "name": "D_Corso_ovest", "p0": [8.2, -26.2], "p1": D_CORSO_P0, "z0": Z_CORSO, "height": 13.0,
+        "wall": {"type": "rubble", "seed": 9, "cell": (0.17, 0.12), "mortar": 0.018},
+        "openings": o, "balconies": bal,
+        "cornice": {"v": 12.45, "tiles": True, "profile": "string"},
+        "anchors": [[(B[k] + B[k + 1]) / 2, 8.6] for k in range(3)],
     }
 
 
@@ -203,7 +226,8 @@ def facade_d_piazza():
         "grime": 1.8,  # the corner palace is darkened by the weather all over
         "openings": o, "balconies": bal,
         "pilasters": [[0.0, 0.6, 0.07, "quoin"]],
-        "bands": [{"v": 4.55, "profile": "string", "u1": 12.6}, {"v": 0.0, "profile": "plinth", "h": 0.55, "u1": 12.6}],
+        "bands": [{"v": 4.55, "profile": "string", "u1": 12.6}, {"v": D_CORDOLO, "profile": "string", "u1": 12.6},
+                  {"v": 0.0, "profile": "plinth", "h": 0.55, "u1": 12.6}],
         "cornice": None,
         "ruin": {"u0": 12.6, "u1": 16.8, "top": 9.0},
         "ivy": [[11.8, 16.7, 0.4, 10.4]],
@@ -376,6 +400,13 @@ def facade_cortile_est():
 # Cinema (Cine-Teatro Bartolotta): red plaster, portico of four white pillars, three wooden doors,
 # steps in lava stone, a band of three windows, white frieze; the corner on the left is curved.
 
+# The front closes the top of Salita Teatro: square to the street, its right end against the north corner of the
+# cream house (Street View, 3 Salita Teatro), the curved corner on the left. (It used to stand 9 m further south on the
+# OSM outline, turned with the Corso and apart from the house, with a triangle of ground in between.)
+CINEMA_FRONT = [[-47.67, -1.64], [-42.0, -0.4]]
+CINEMA_ARC = [(-47.67, -1.64), (-48.46, -1.6), (-49.08, -1.05), (-49.46, -0.07)]
+
+
 def facade_cinema():
     o = []
     for k, uc in enumerate((1.12, 2.92, 4.72)):
@@ -383,7 +414,7 @@ def facade_cinema():
     for k, uc in enumerate((1.12, 2.92, 4.72)):
         o.append(ow("CI_F%d" % k, uc, 1.4, 6.3, 7.8, fit="glazed", frame={"w": 0.10, "proj": 0.04, "mat": "white"}))
     return {
-        "name": "Cinema_Fronte", "p0": [-49.6, -9.4], "p1": [-43.8, -9.75], "z0": 5.4, "height": 9.8,
+        "name": "Cinema_Fronte", "p0": CINEMA_FRONT[0], "p1": CINEMA_FRONT[1], "z0": 5.4, "height": 9.8,
         "wall": {"type": "plaster", "color": (0.44, 0.11, 0.08), "peel": 0.1, "seed": 41},
         "openings": o,
         "bands": [{"v": 0.0, "profile": "plinth", "h": 0.95, "mat": "lava"}, {"v": 5.6, "profile": "string", "mat": "white"}],
@@ -415,7 +446,7 @@ def _cinema_portico(F, ops):
 # ---------------------------------------------------------------------------------------------
 
 def all_specs():
-    return [facade_c(), facade_d_corso(), facade_d_piazza(), facade_b_corso(), facade_b_salita(),
+    return [facade_c(), facade_d_corso_ovest(), facade_d_corso(), facade_d_piazza(), facade_b_corso(), facade_b_salita(),
             facade_crema(), facade_crema_sud(), facade_cortile_sud(), facade_cortile_ovest(), facade_cortile_est(),
             facade_cinema()]
 
@@ -466,7 +497,7 @@ def secondary_specs(ground):
         plain("Cinema_Est", (-34.8, 7.0), (-38.4, 19.9), 7.5, 7.7, plaster(red, 79), [(2.6, 4.2)], every=4.5, w=0.9, fit="glazed"),
         plain("Cinema_Ovest1", (-52.7, 22.1), (-52.4, 11.9), zmin((-52.7, 22.1), (-52.4, 11.9)), 15.2 - zmin((-52.7, 22.1), (-52.4, 11.9)),
               plaster(red, 80), [(0.0, 2.4)], every=5.0, w=1.4, fit="door", cornice=False),
-        plain("Cinema_Ovest2", (-52.4, 11.9), (-50.9, -7.4), zmin((-52.4, 11.9), (-50.9, -7.4)), 15.2 - zmin((-52.4, 11.9), (-50.9, -7.4)),
+        plain("Cinema_Ovest2", (-52.4, 11.9), CINEMA_ARC[-1], zmin((-52.4, 11.9), CINEMA_ARC[-1]), 15.2 - zmin((-52.4, 11.9), CINEMA_ARC[-1]),
               plaster(red, 81), [(6.8, 8.0)], every=4.6, w=0.8, fit="glazed", cornice=False),
         plain("Cinema_Nord", (-43.0, 25.3), (-52.7, 22.1), zmin((-43.0, 25.3), (-52.7, 22.1)), 15.2 - zmin((-43.0, 25.3), (-52.7, 22.1)),
               plaster(red, 82), [(0.0, 2.4)], every=6.0, w=1.4, fit="door", cornice=False),
@@ -476,7 +507,7 @@ def secondary_specs(ground):
                   "wall": plaster((0.62, 0.55, 0.42), 86), "openings": [ow("CNO_T1", 3.4, 1.1, 0.0, 2.4, kind="door", fit="door", door_mat="green")],
                   "balconies": [{"u0": 0.0, "u1": 6.84, "v": 4.9, "d": 0.95, "n": 4}],
                   "cornice": {"v": 7.1, "tiles": False, "profile": "string"}})
-    arc = [(-49.6, -9.4), (-50.35, -9.15), (-50.8, -8.45), (-50.9, -7.4)]
+    arc = CINEMA_ARC
     for k in range(3):
         specs.append({"name": "Cinema_Curva%d" % k, "p0": list(arc[k]), "p1": list(arc[k + 1]), "z0": 5.4, "height": 9.8,
                       "wall": plaster(red, 83 + k), "openings": [],

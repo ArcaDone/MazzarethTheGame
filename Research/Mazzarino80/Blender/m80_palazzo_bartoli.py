@@ -672,12 +672,16 @@ def preview_c():
 # The whole block in high-poly (before retopology and bake)
 
 CINEMA_ID = "372573548"
-CINEMA = [(-53.3, 1.6), (-50.9, -7.4), (-50.8, -8.45), (-50.35, -9.15), (-49.6, -9.4), (-43.8, -9.75), (-44.0, -0.2),
+# OSM outline, except the south end: the front closes the top of Salita Teatro against the cream house's corner
+# (m80_bartoli_facades.CINEMA_FRONT), not 9 m further south on the street.
+CINEMA = [(-49.46, -0.07), (-49.08, -1.05), (-48.46, -1.6), (-47.67, -1.64), (-42.0, -0.4),
           (-36.6, 1.5), (-34.8, 7.0), (-38.4, 19.9), (-40.9, 18.8), (-43.0, 25.3), (-52.7, 22.1), (-50.8, 15.7), (-52.9, 15.0),
-          (-52.4, 11.9), (-49.7, 2.7), (-51.0, 2.3)]
+          (-52.4, 11.9)]
 CREMA = [(-40.1, -9.1), (-29.6, -5.5), (-30.6, -2.6), (-27.6, -1.9), (-31.0, 8.0), (-34.8, 7.0), (-36.6, 1.5), (-42.0, -0.4)]
-D_NO_RUIN = [(3.55, -11.5), (8.2, -26.2), (42.73, -11.99), (38.4, -0.06),
-             (33.5, -1.8), (25.2, -3.5), (9.8, -4.9), (11.5, -7.9)]
+# D is two buildings on the Corso: the lower house of the carriage gate (west) and the corner palace (east), split at
+# the lot vertex where their fronts meet (m80_bartoli_facades.D_CORSO_P0).
+D_OVEST = [(3.55, -11.5), (8.2, -26.2), (24.9, -19.8), (25.2, -3.5), (9.8, -4.9), (11.5, -7.9)]
+D_ANGOLO = [(24.9, -19.8), (42.73, -11.99), (38.4, -0.06), (33.5, -1.8), (25.2, -3.5)]
 RUIN = [(38.4, -0.06), (37.0, 3.8), (34.0, 2.8), (34.7, 0.2), (33.5, -1.8)]
 
 
@@ -723,7 +727,8 @@ def bodies_massing(skip=()):
     B = LAYOUT["bodies"]
     jobs = [("C0", B["C_palazzo"]["wings"][0]["poly"], 12.95, B["C_palazzo"]["wings"][0]["axis"]),
             ("C1", B["C_palazzo"]["wings"][1]["poly"], 12.95, B["C_palazzo"]["wings"][1]["axis"]),
-            ("D", D_NO_RUIN, 16.95, B["D_angolo"]["wings"][0]["axis"]),
+            ("D_ovest", D_OVEST, 13.95, B["D_angolo"]["wings"][0]["axis"]),
+            ("D", D_ANGOLO, 16.95, B["D_angolo"]["wings"][0]["axis"]),
             ("E", B["E_ala_nord"]["wings"][0]["poly"], 13.85, B["E_ala_nord"]["wings"][0]["axis"]),
             ("N", B["N_via_butera"]["wings"][0]["poly"], 17.2, B["N_via_butera"]["wings"][0]["axis"]),
             ("Cinema", CINEMA, 15.2, (0.08, 1.0))]
@@ -785,7 +790,7 @@ def build_all(step):
         prism("Muro_cinta%d_spessore" % k, [p0, p1, (p1[0] + n.x, p1[1] + n.y), (p0[0] + n.x, p0[1] + n.y)], F.spec["z0"], top - 0.1,
               material("Pietrame_interno", (0.40, 0.31, 0.20)))
     S.staircase_loggia()
-    gate = built["D_Corso"].frame.matrix_world @ Vector((2.5, 0.65, 0.0))
+    gate = built["D_Corso_ovest"].frame.matrix_world @ Vector((2.5, 0.65, 0.0))
     court = built["Cortile_Sud"].frame.matrix_world @ Vector((7.7, 0.65, 0.0))
     S.androne((gate.x, gate.y), (court.x, court.y))
     S.ground_patch("Cortile", LAYOUT["cortile"]["poly"], LAYOUT["cortile"]["level"], "setts", K.collection("Cortile_High"), K.collection("Cortile_Low"))

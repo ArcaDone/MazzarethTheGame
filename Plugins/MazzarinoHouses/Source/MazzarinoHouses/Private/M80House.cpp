@@ -2,6 +2,7 @@
 #include "M80HouseBuilder.h"
 #include "M80Polygon.h"
 #include "M80ExclusionZone.h"
+#include "M80Sidewalk.h"
 #include "Components/SplineComponent.h"
 #include "Components/DynamicMeshComponent.h"
 #include "Components/InstancedStaticMeshComponent.h"
@@ -129,6 +130,11 @@ void AM80House::OnConstruction(const FTransform& Transform)
 	if (bLiveRebuild && !IsExcluded() && (ComputeInputHash() != LastInputHash || NeedsRebuild()))
 	{
 		Rebuild();
+		// Sidewalks with the magnet follow the facades of the house just changed.
+		if (Footprint)
+		{
+			AM80Sidewalk::RefreshSnappedNear(GetWorld(), Footprint->Bounds.GetBox());
+		}
 	}
 	else if (PropComponents.IsEmpty() && SavedProps.Num())
 	{

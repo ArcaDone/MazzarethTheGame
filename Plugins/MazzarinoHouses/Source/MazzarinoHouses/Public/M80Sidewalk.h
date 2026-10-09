@@ -26,6 +26,8 @@ enum class EM80CurbSide : uint8
  * "Destra" is the right-hand side walking along the spline from the first point.
  * With "Spline chiusa" the path becomes a ring (e.g. around a block); with "Riempi l'interno" the whole
  * inside is paved (a piazza), draped on the ground, and the curb runs along the outline on the inside.
+ * With "Attacca alle facciate" every point near a procedural house is moved so the edge of the paving
+ * runs along the facade (magnet): the spline can be drawn roughly, even inside the houses.
  */
 UCLASS(meta = (DisplayName = "Marciapiede (Mazzarino)"))
 class MAZZARINOHOUSES_API AM80Sidewalk : public AActor
@@ -70,6 +72,23 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Marciapiede", meta = (DisplayName = "Collisione"))
 	bool bCollision = true;
 
+	/** Magnet: points closer than "Distanza di aggancio" to a house facade running along the sidewalk (or inside a
+	 *  house) move so that the side of the sidewalk towards the house lies on the facade; past the corners the
+	 *  sidewalk keeps the facade's line. Moving or reshaping a house re-attaches it. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Case", meta = (DisplayName = "Attacca alle facciate"))
+	bool bSnapToHouses = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Case", meta = (DisplayName = "Distanza di aggancio (cm)", ClampMin = "10", ClampMax = "2000", EditCondition = "bSnapToHouses"))
+	float SnapDistanceCm = 300.f;
+
+	/** Gap left between the paving and the wall (0 = touching). */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Case", meta = (DisplayName = "Distanza dal muro (cm)", ClampMin = "0", ClampMax = "100", EditCondition = "bSnapToHouses"))
+	float WallGapCm = 0.f;
+
+	/** Points attached to a facade in the last build. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Case", meta = (DisplayName = "Punti agganciati"))
+	int32 SnappedPoints = 0;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Marciapiede", meta = (DisplayName = "Lunghezza pezzi lastra (cm)", ClampMin = "50", ClampMax = "2000"))
 	float SlabPieceCm = 300.f;
 
@@ -94,6 +113,9 @@ public:
 	 *  a sidewalk/stair (tag M80IgnoreGround) or an instanced prop; Fallback when nothing is hit. */
 	static double TraceGroundZ(const UWorld* World, const AActor* Ignore, const FVector& Point, double Fallback);
 
+	/** Rebuilds the sidewalks with the magnet on that touch Area (after a house changed). */
+	static void RefreshSnappedNear(UWorld* World, const FBox& Area);
+
 private:
 	struct FStation
 	{
@@ -102,6 +124,8 @@ private:
 	};
 
 	TArray<FStation> Sample(double Step) const;
+	/** Moves the spline points near house facades (magnet); W = sidewalk width. */
+	void SnapToHouses(double W);
 	double GroundZ(const FVector& World) const;
 	void AddStrip(UStaticMesh* Mesh, UMaterialInterface* Material, const TArray<FStation>& St, double Lateral, double Width, double Top, double Depth);
 	/** Paves the inside of the closed spline; returns +1/-1, the side ("Right" sign) where the inside lies. */

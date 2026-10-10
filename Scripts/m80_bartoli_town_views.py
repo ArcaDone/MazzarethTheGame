@@ -1,6 +1,6 @@
 """Palazzo Bartoli in the town, nothing saved: loads L_M80_Paese_WP around the lot, takes the reference-photo views with
 the procedural houses as they are ("prima"), then hides the houses standing on the block, places the imported
-pieces (m80_bartoli_import.py) at origin_world_cm and takes the same views ("dopo"), so the palace is seen next to the
+pieces (m80_bartoli_import_gioco.py) at origin_world_cm and takes the same views ("dopo"), so the palace is seen next to the
 town materials under the same light. The map is closed without saving (temporary daylight, hidden houses).
 
 powershell -File Scripts/run_editor_script.ps1 -Script Scripts/m80_bartoli_town_views.py
@@ -105,7 +105,9 @@ def steps():
     m80_seq.console("r.TextureStreaming 0")
     yield 60
     world = m80_seq.editor_world()
-    m80_seq.load(m80_seq.near(m80_seq.actor_descs(), ox, oy, 15000))
+    # The landscape whole: sidewalks and stairs drape their paving on it when they rebuild at load; a tile left unloaded
+    # (centres are far apart) puts them on the HLOD shells of the houses instead, metres up.
+    m80_seq.load(m80_seq.near(m80_seq.actor_descs(), ox, oy, 15000) + m80_seq.actor_descs("LandscapeStreamingProxy"))
     yield 200
     daylight()
     yield 300
@@ -125,8 +127,8 @@ def steps():
             for comp in h.get_components_by_class(unreal.PrimitiveComponent):
                 comp.set_visibility(False)
             hidden.append([h.get_actor_label(), round(share, 2)])
-    for name in sorted(set([g["mesh"] for g in m["groups"].values()] + [d["mesh"] for d in m["details"].values()] +
-                           [m[k][f] for k, f in (("roofs", "mesh"), ("roofs", "ridges"), ("volumes", "mesh")) if k in m and m[k].get(f)])):
+    gioco = ROOT / "Saved/Mazzarino80/Bartoli/Gioco/M80_Bartoli_Gioco.json"
+    for name in sorted(json.loads(gioco.read_text(encoding="utf-8"))["meshes"]):
         mesh = unreal.load_asset("%s/%s" % (DEST, name))
         if mesh:
             EAS.spawn_actor_from_object(mesh, unreal.Vector(ox, oy, oz))

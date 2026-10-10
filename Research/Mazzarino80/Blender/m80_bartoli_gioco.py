@@ -618,7 +618,15 @@ def main():
     for o in bpy.context.scene.collection.objects:
         if o.type in ("MESH", "CURVE", "FONT") and not o.name.startswith("Terreno") and o.name not in ("Terreno",):
             o.hide_render = o.hide_viewport = True
-    tris = {o.name: sum(len(p.vertices) - 2 for p in o.data.polygons) for o in exported}
+    for o in exported:
+        # Triangles decided here: Unreal fans out the n-gons it gets, and on a concave face (the caps of the volumes, the
+        # profiles' ends) a fan can cross outside the outline.
+        bm = bmesh.new()
+        bm.from_mesh(o.data)
+        bmesh.ops.triangulate(bm, faces=bm.faces[:], quad_method="BEAUTY", ngon_method="BEAUTY")
+        bm.to_mesh(o.data)
+        bm.free()
+    tris = {o.name: len(o.data.polygons) for o in exported}
     manifest = {"units": "cm", "origin_world_cm": P.LAYOUT["origin_world_cm"],
                 "note": "every mesh has its pivot at origin_world_cm: place them all there with no rotation",
                 "meshes": {o.name: {"triangles": tris[o.name], "slots": [m.name for m in o.data.materials if m]} for o in exported},

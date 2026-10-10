@@ -34,7 +34,7 @@
  "scalone_loggia": {"note": "double flight staircase from the courtyard to a loggia of 3 arches covered in wisteria, the garden behind", "front": [[-6.9, 5.9], [1.4, 8.6]], "depth_stairs": 5.0, "depth_loggia": 3.5},
  "giardino_alberi": {"note": "garden with trees (today there is a pool, not in the 1980s)",
    "poly": [[1.4, 8.6], [-4.5, 20.7], [-15.4, 14.6], [-17.3, 23.1], [-21.2, 22.0], [-32.0, 19.0], [-31.0, -1.0], [-20.4, -5.5], [-14.0, -3.0], [-9.7, -1.6], [-7.6, -0.9], [-6.9, 5.9]], "level": 7.5},
- "giardino_nordest": {"note": "walled garden with trees on Via Principe di Butera / Piazza Monterosso: wall with gate (yellow pilasters) and curved corner",
-   "poly": [[21.3, 4.4], [8.2, 30.9], [13.8, 32.5], [18.6, 33.4], [27.2, 35.0], [38.5, 31.0], [36.1, 7.6], [37.0, 3.8], [34.0, 2.8], [34.7, 0.2], [25.2, -3.5]],
-   "street_wall": [[18.6, 33.4], [27.2, 35.0], [38.5, 31.0], [36.1, 7.6], [37.0, 3.8]], "wall_height": 4.0}
+ "giardino_nordest": {"note": "walled garden with trees on Via Principe di Butera / Piazza Monterosso: wall straight on from the line of D on the piazza to the corner on Via Principe di Butera",
+   "poly": [[21.3, 4.4], [8.2, 30.9], [13.8, 32.5], [18.6, 33.4], [25.8, 34.7], [37.0, 3.8], [34.0, 2.8], [34.7, 0.2], [25.2, -3.5]],
+   "street_wall": [[18.6, 33.4], [25.8, 34.7], [37.0, 3.8]], "wall_height": 4.0}
 }

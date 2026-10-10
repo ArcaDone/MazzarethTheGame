@@ -481,7 +481,7 @@ def gardens(layout, ground_fn):
     g2 = layout["giardino_nordest"]["poly"]
     zs = [ground_fn(x, y) for x, y in g2]
     ground_patch("GiardinoNE_prato", g2, min(zs) + 0.4, "lawn", col_hi, col_lo, step=0.08)
-    for k, (x, y, h, c) in enumerate(((27.5, 26.0, 10.0, 6.5), (24.0, 16.0, 8.0, 5.0), (31.0, 14.5, 9.0, 5.5), (30.0, 6.5, 6.0, 4.0))):
+    for k, (x, y, h, c) in enumerate(((25.0, 26.0, 10.0, 6.5), (24.0, 16.0, 8.0, 5.0), (29.5, 13.0, 9.0, 5.5), (31.0, 6.5, 6.0, 4.0))):
         tree("Albero_ne_%d" % k, x, y, ground_fn(x, y), h, c, col_d, "broad", seed=20 + k)
 
 
@@ -490,7 +490,8 @@ def gardens(layout, ground_fn):
 
 def wall_specs(ground_fn):
     specs = []
-    pts = [(37.0, 3.8), (36.1, 7.6), (38.5, 31.0), (27.2, 35.0), (18.6, 33.4)]
+    # Straight on from the facade of D on the piazza to the corner on Via Principe di Butera, then to the house.
+    pts = [(37.0, 3.8), (25.8, 34.7), (18.6, 33.4)]
     for k in range(len(pts) - 1):
         p0, p1 = pts[k], pts[k + 1]
         L = math.dist(p0, p1)
@@ -499,11 +500,6 @@ def wall_specs(ground_fn):
         top = [[L * t, gg - z0 + 3.8] for t, gg in zip(np.linspace(0, 1, 9), g)]
         spec = {"name": "Muro_cinta%d" % k, "p0": list(p0), "p1": list(p1), "z0": z0, "height": max(t[1] for t in top) + 0.1,
                 "wall": {"type": "rubble", "seed": 50 + k}, "openings": [], "top": top}
-        if k == 2:
-            # Gate with yellow plastered pillars on Via Principe di Butera.
-            gl = g[4] - z0
-            spec["openings"].append({"id": "Cancello", "u0": L / 2 - 1.6, "u1": L / 2 + 1.6, "v0": gl, "v1": gl + 3.2, "kind": "portal",
-                                     "fit": "door", "door_mat": "roll", "frame": {"w": 0.45, "proj": 0.12, "mat": "yellow"}, "dark": False})
         specs.append(spec)
     return specs
 

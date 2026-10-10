@@ -300,7 +300,7 @@ def massing(skip=(), render_it=True):
     # Trees as simple spheres for scale.
     leaf = material("Alberi", (0.18, 0.32, 0.14))
     for (x, y), poly, lvl in (((-12, 12), g["poly"], g["level"]), ((-20, 16), g["poly"], g["level"]), ((-6, 15), g["poly"], g["level"]),
-                              ((28, 25), g2["poly"], None), ((25, 14), g2["poly"], None), ((31, 18), g2["poly"], None)):
+                              ((25, 25), g2["poly"], None), ((25, 14), g2["poly"], None), ((29, 16), g2["poly"], None)):
         z = lvl if lvl is not None else ground(x, y)
         bpy.ops.mesh.primitive_uv_sphere_add(radius=3.0, location=(x, y, z + 4.5))
         bpy.context.object.data.materials.append(leaf)
@@ -781,7 +781,7 @@ def build_all(step):
     for spec in BF.all_specs() + BF.secondary_specs(ground) + S.wall_specs(ground) + [S.facade_n(ground)]:
         built[spec["name"]] = A.build(spec, step=step)
         print("facade %s %.0f s" % (spec["name"], time.time() - t0))
-    for k in range(4):
+    for k in range(len([n for n in built if n.startswith("Muro_cinta")])):
         F = built["Muro_cinta%d" % k]
         p0, p1 = F.spec["p0"], F.spec["p1"]
         d = Vector((p1[0] - p0[0], p1[1] - p0[1])).normalized()

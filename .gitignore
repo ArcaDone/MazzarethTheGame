@@ -45,6 +45,8 @@
 # Precompiled Assets
 SourceArt/**/*.png
 SourceArt/**/*.tga
+# Blender preview renders (not committed)
+Research/Mazzarino80/Blender/Previews/
 
 # Binary Files
 Binaries/*

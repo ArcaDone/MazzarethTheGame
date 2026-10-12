@@ -184,6 +184,10 @@ def settings(mesh, nanite):
     st = mesh.get_editor_property("nanite_settings")
     st.set_editor_property("enabled", nanite)
     SUB.set_nanite_settings(mesh, st, apply_changes=True)
+    # Facades without interiors: a one-sided distance field is "inside" behind them and Lumen blackens the walls.
+    b = SUB.get_lod_build_settings(mesh, 0)
+    b.set_editor_property("generate_distance_field_as_if_two_sided", True)
+    SUB.set_lod_build_settings(mesh, 0, b)
     if not nanite:
         opts = unreal.StaticMeshReductionOptions()
         opts.set_editor_property("auto_compute_lod_screen_size", True)

@@ -45,6 +45,10 @@ def capture():
         if not asset:
             continue
         actor = EAS.spawn_actor_from_object(asset, SPOT)
+        # All parts in the steel: wood in the sun comes out brighter than the dark steel and the grips would be white blocks.
+        smc = actor.get_component_by_class(unreal.StaticMeshComponent)
+        for i in range(smc.get_num_materials()):
+            smc.set_material(i, unreal.load_asset("/Game/Mazzarino80/Weapons/M_M80_Arma_Metallo"))
         yield 20
         o, e = actor.get_actor_bounds(False)
         # The barrel lies along +X: seen from -Y, muzzle to the right.

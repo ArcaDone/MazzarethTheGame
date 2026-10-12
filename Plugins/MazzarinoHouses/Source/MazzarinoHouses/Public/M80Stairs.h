@@ -96,46 +96,46 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (DisplayName = "Tipo"))
 	EM80StairsKind Kind = EM80StairsKind::Steps;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (DisplayName = "Larghezza (cm)", ClampMin = "40", ClampMax = "2000"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (EditCondition = "Kind != EM80StairsKind::WallFromSpline", EditConditionHides, DisplayName = "Larghezza (cm)", ClampMin = "40", ClampMax = "2000"))
 	float WidthCm = 200.f;
 
 	/** Rise of each step. A stair spreads its steps evenly over the spline: the real rise is shown below. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (DisplayName = "Altezza gradino (cm)", ClampMin = "4", ClampMax = "40"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (EditCondition = "Kind != EM80StairsKind::FenceOnly && Kind != EM80StairsKind::WallFromSpline", EditConditionHides, DisplayName = "Altezza gradino (cm)", ClampMin = "4", ClampMax = "40"))
 	float RiserCm = 16.f;
 
 	/** Depth of the steps of a stair. When the spline is longer than the steps need, the extra length
 	 *  becomes landings spread along the flight. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (DisplayName = "Pedata scalinata (cm)", ClampMin = "22", ClampMax = "80", EditCondition = "Kind == EM80StairsKind::Steps"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (EditCondition = "Kind == EM80StairsKind::Steps", EditConditionHides, DisplayName = "Pedata scalinata (cm)", ClampMin = "22", ClampMax = "80"))
 	float StepTreadCm = 33.f;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Scalinata", meta = (DisplayName = "Pianerottoli (calcolati)"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Scalinata", meta = (EditCondition = "Kind != EM80StairsKind::FenceOnly && Kind != EM80StairsKind::WallFromSpline", EditConditionHides, DisplayName = "Pianerottoli (calcolati)"))
 	int32 LandingCount = 0;
 
 	/** Depth of each step of a "cordonata"; the slope left over between the steps tilts the treads. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (DisplayName = "Profondità gradino cordonata (cm)", ClampMin = "40", ClampMax = "1000", EditCondition = "Kind == EM80StairsKind::SteppedPath"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (EditCondition = "Kind == EM80StairsKind::SteppedPath", EditConditionHides, DisplayName = "Profondità gradino cordonata (cm)", ClampMin = "40", ClampMax = "1000"))
 	float TreadCm = 150.f;
 
 	/** Lava-stone band along the edge of each tread (the rest is the tread finish). */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (DisplayName = "Bordo in pietra lavica (cm)", ClampMin = "0", ClampMax = "100"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (EditCondition = "Kind != EM80StairsKind::FenceOnly && Kind != EM80StairsKind::WallFromSpline", EditConditionHides, DisplayName = "Bordo in pietra lavica (cm)", ClampMin = "0", ClampMax = "100"))
 	float NosingCm = 30.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (DisplayName = "Finitura pedata"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (EditCondition = "Kind != EM80StairsKind::FenceOnly && Kind != EM80StairsKind::WallFromSpline", EditConditionHides, DisplayName = "Finitura pedata"))
 	EM80TreadFinish TreadFinish = EM80TreadFinish::Setts;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (DisplayName = "Inizio sul terreno"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (EditCondition = "Kind != EM80StairsKind::FenceOnly && Kind != EM80StairsKind::WallFromSpline", EditConditionHides, DisplayName = "Inizio sul terreno"))
 	bool bStartOnGround = true;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (DisplayName = "Fine sul terreno"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (EditCondition = "Kind != EM80StairsKind::FenceOnly && Kind != EM80StairsKind::WallFromSpline", EditConditionHides, DisplayName = "Fine sul terreno"))
 	bool bEndOnGround = true;
 
 	/** Solid steps down to the terrain; off = a slab stair (a flight on a wall or over a void). */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (DisplayName = "Pieno fino a terra"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (EditCondition = "Kind != EM80StairsKind::FenceOnly && Kind != EM80StairsKind::WallFromSpline", EditConditionHides, DisplayName = "Pieno fino a terra"))
 	bool bFillToGround = true;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (DisplayName = "Spessore soletta (cm)", ClampMin = "8", ClampMax = "60", EditCondition = "!bFillToGround"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (EditCondition = "Kind != EM80StairsKind::FenceOnly && Kind != EM80StairsKind::WallFromSpline && !bFillToGround", EditConditionHides, DisplayName = "Spessore soletta (cm)", ClampMin = "8", ClampMax = "60"))
 	float SlabCm = 20.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Muri", meta = (DisplayName = "Muri laterali"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Muri", meta = (EditCondition = "Kind != EM80StairsKind::WallFromSpline", EditConditionHides, DisplayName = "Muri laterali"))
 	EM80StairsSide WallSides = EM80StairsSide::None;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Muri", meta = (DisplayName = "Finitura muro"))
@@ -155,7 +155,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Staccionata", meta = (DisplayName = "Tipo staccionata"))
 	EM80FenceKind FenceKind = EM80FenceKind::None;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Staccionata", meta = (DisplayName = "Lato staccionata"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Staccionata", meta = (EditCondition = "Kind != EM80StairsKind::WallFromSpline", EditConditionHides, DisplayName = "Lato staccionata"))
 	EM80StairsSide FenceSides = EM80StairsSide::Both;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Staccionata", meta = (DisplayName = "Altezza staccionata (cm)", ClampMin = "40", ClampMax = "250"))
@@ -171,13 +171,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (DisplayName = "Collisione"))
 	bool bCollision = true;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Scalinata", meta = (DisplayName = "Gradini (calcolati)"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Scalinata", meta = (EditCondition = "Kind != EM80StairsKind::FenceOnly && Kind != EM80StairsKind::WallFromSpline", EditConditionHides, DisplayName = "Gradini (calcolati)"))
 	int32 StepCount = 0;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Scalinata", meta = (DisplayName = "Alzata reale (cm)"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Scalinata", meta = (EditCondition = "Kind != EM80StairsKind::FenceOnly && Kind != EM80StairsKind::WallFromSpline", EditConditionHides, DisplayName = "Alzata reale (cm)"))
 	float RealRiserCm = 0.f;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Scalinata", meta = (DisplayName = "Pedata reale (cm)"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Scalinata", meta = (EditCondition = "Kind != EM80StairsKind::FenceOnly && Kind != EM80StairsKind::WallFromSpline", EditConditionHides, DisplayName = "Pedata reale (cm)"))
 	float RealTreadCm = 0.f;
 
 	/** Optional overrides of the kit materials. */

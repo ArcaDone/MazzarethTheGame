@@ -212,6 +212,61 @@ def run():
             yield s
     pc.set_view_target_with_blend(pawn, 0.0)
     report["punch_steps"] = steps
+
+    # Human targets: lock on one and shoot it down; punch another one down; it gets up.
+    dummies = list(unreal.GameplayStatics.get_all_actors_of_class(world, unreal.M80TargetDummy))
+    report["targets"] = len(dummies)
+    if len(dummies) >= 2:
+        a, b = dummies[0], dummies[1]
+        la = a.get_actor_location()
+        d = la - pawn.get_actor_location()
+        stand = la - d * (600.0 / max(d.length(), 1.0))
+        pawn.set_actor_location(unreal.Vector(stand.x, stand.y, la.z), False, True)
+        yaw = math.degrees(math.atan2(la.y - stand.y, la.x - stand.x))
+        pawn.set_actor_rotation(unreal.Rotator(0, 0, yaw), False)
+        pc.set_control_rotation(unreal.Rotator(0, -3, yaw))
+        inv.select_weapon(W.BERETTA)
+        pc.set_aim_held(True)
+        pc.hold_lock(True)
+        for s in wait(world, 0.6):
+            yield s
+        report["locked"] = pc.lock_on() and pc.get_lock_target() == a
+        for s in wait(world, 0.4):
+            yield s
+        for s in shot(world, "10_aggancio", report):
+            yield s
+        pc.set_fire(True)
+        for s in wait(world, 1.5):
+            yield s
+        pc.set_fire(False)
+        report["target_a"] = {"down": a.is_down(), "health": round(a.get_editor_property("Vitals").get_editor_property("Health"))}
+        for s in shot(world, "11_bersaglio_colpito", report):
+            yield s
+        pc.hold_lock(False)
+        pc.set_aim_held(False)
+        # Punches on b.
+        lb = b.get_actor_location()
+        d = lb - pawn.get_actor_location()
+        stand = lb - d * (95.0 / max(d.length(), 1.0))
+        pawn.set_actor_location(unreal.Vector(stand.x, stand.y, lb.z), False, True)
+        yaw = math.degrees(math.atan2(lb.y - stand.y, lb.x - stand.x))
+        pawn.set_actor_rotation(unreal.Rotator(0, 0, yaw), False)
+        pc.set_control_rotation(unreal.Rotator(0, -10, yaw))
+        inv.select_slot(0)
+        for s in wait(world, 0.4):
+            yield s
+        for k in range(3):
+            inv.try_fire(lb + unreal.Vector(0, 0, 50))
+            for s in wait(world, 0.5):
+                yield s
+        report["target_b_after_punches"] = {"down": b.is_down(), "health": round(b.get_editor_property("Vitals").get_editor_property("Health"))}
+        for s in side(world, pc, pawn, "12_steso_dai_pugni", report):
+            yield s
+        for s in wait(world, 3.2):
+            yield s
+        report["target_b_later"] = {"down": b.is_down()}
+        for s in side(world, pc, pawn, "13_si_rialza", report):
+            yield s
     (OUT / "combattimento.json").write_text(json.dumps(report, indent=1), encoding="utf-8")
     unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).editor_request_end_play()
     yield 30

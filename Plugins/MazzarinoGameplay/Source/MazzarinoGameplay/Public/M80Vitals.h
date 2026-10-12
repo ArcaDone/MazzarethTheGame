@@ -41,6 +41,10 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Mazzarino")
 	bool IsDead() const { return bDead; }
 
+	/** Back to full health (a target that comes back, a respawn). */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
+	void Revive() { bDead = false; Health = MaxHealth; }
+
 	/** Seconds since the last hit (HUD red flash). */
 	float SinceHit() const { return SinceLastHit; }
 

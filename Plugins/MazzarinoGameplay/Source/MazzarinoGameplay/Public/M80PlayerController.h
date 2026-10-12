@@ -117,6 +117,18 @@ public:
 	/** Weapon category of each wheel sector, clockwise from the top. */
 	static int32 WheelCategory(int32 Sector);
 
+	/** Person locked by the gamepad aim (left trigger), or null. */
+	UFUNCTION(BlueprintPure, Category = "Mazzarino")
+	ACharacter* GetLockTarget() const { return LockTarget.Get(); }
+
+	/** Locks the nearest living person in front (what the gamepad aim does; tests). */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
+	bool LockOn();
+
+	/** Keeps the lock while the aim is held (tests: no gamepad). */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
+	void HoldLock(bool bHold) { bLockHeld = bHold; if (!bHold) { LockTarget.Reset(); } }
+
 	/** Holds the aim as the right mouse button does (tests, gamepad left trigger). */
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
 	void SetAimHeld(bool bHeld) { bAimHeld = bHeld; }
@@ -236,6 +248,10 @@ private:
 	bool bAimingNow = false;
 	bool bAimHeld = false;
 	bool bWheelOpen = false;
+	TWeakObjectPtr<ACharacter> LockTarget;
+	bool bPadAimWas = false;
+	bool bLockHeld = false;
+	void UpdateLockOn(float DeltaTime);
 	int32 WheelSector = -1;
 	FVector2D WheelCursor = FVector2D::ZeroVector;
 	void UpdateWheel();

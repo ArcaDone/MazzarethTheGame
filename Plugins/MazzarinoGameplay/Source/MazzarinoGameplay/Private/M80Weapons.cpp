@@ -505,6 +505,14 @@ void UM80WeaponInventory::Impact(const FHitResult& Hit, const FVector& Dir, cons
 	if (S.bMelee)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, LoadPath<USoundBase>(TEXT("/Game/Mazzarino80/Audio/M80_Colpo.M80_Colpo")), Hit.ImpactPoint);
+		// The knife and the bat draw blood from people (fists do not).
+		if (A && A->IsA<ACharacter>() && S.Pose == EM80WeaponPose::Melee)
+		{
+			if (UParticleSystem* Fx = LoadPath<UParticleSystem>(HitBlood))
+			{
+				UGameplayStatics::SpawnEmitterAtLocation(this, Fx, Hit.ImpactPoint, (-Dir).Rotation(), FVector(0.35f));
+			}
+		}
 		return;
 	}
 	// Impact effects: blood on people, sparks on vehicles and metal, dust and a hole elsewhere.

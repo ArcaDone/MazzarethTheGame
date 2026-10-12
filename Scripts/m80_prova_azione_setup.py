@@ -183,6 +183,14 @@ def steps():
         b.tags = ["M80ProvaArrampicata"]
         blocks.append([name, x, y, h])
     placed["blocks"] = blocks
+    # People to fight (no pedestrians yet): human targets in the streets near the start, facing it.
+    targets = []
+    for (x, y) in open_spots(rings, RADIUS * 0.7, 200, 12, 500)[6:10]:
+        t = EAS.spawn_actor_from_class(unreal.M80TargetDummy, V(x, y, 92))
+        t.set_actor_rotation(unreal.Rotator(0, 0, math.degrees(math.atan2(sy - y, sx - x))), False)
+        t.set_folder_path("Bersagli")
+        targets.append([x, y])
+    placed["targets"] = targets
     # A camera the automatic tests move around (Python cannot spawn actors in Play In Editor).
     cam = EAS.spawn_actor_from_class(unreal.CameraActor, V(sx, sy, 400))
     cam.set_actor_label("CameraTest")

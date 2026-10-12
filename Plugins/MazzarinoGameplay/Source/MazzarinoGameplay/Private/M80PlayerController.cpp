@@ -2,6 +2,8 @@
 #include "M80PlayerCamera.h"
 #include "Kismet/GameplayStatics.h"
 #include "M80Climb.h"
+#include "M80TargetDummy.h"
+#include "EngineUtils.h"
 #include "M80Car.h"
 #include "M80Vitals.h"
 #include "M80Weapons.h"
@@ -173,6 +175,12 @@ void AM80PlayerController::SetFire(bool bDown)
 
 FVector AM80PlayerController::GetAimPoint() const
 {
+	// Locked on a person (gamepad): the shot goes to the chest.
+	if (const ACharacter* T = LockTarget.Get())
+	{
+		const AM80TargetDummy* D = Cast<AM80TargetDummy>(T);
+		return D ? D->AimPoint() : T->GetActorLocation() + FVector(0.f, 0.f, 45.f);
+	}
 	FVector Eye;
 	FRotator Rot;
 	GetPlayerViewPoint(Eye, Rot);
@@ -293,6 +301,86 @@ void AM80PlayerController::UpdateWheel()
 		const float Deg = FMath::RadiansToDegrees(FMath::Atan2(WheelCursor.X, WheelCursor.Y));
 		WheelSector = FMath::FloorToInt(FMath::Fmod(Deg + 360.f + 22.5f, 360.f) / 45.f) % M80WeaponCategories;
 	}
+}
+
+bool AM80PlayerController::LockOn()
+{
+	ACharacter* W = Walker.Get();
+	if (!W)
+	{
+		return false;
+	}
+	FVector Eye;
+	FRotator Rot;
+	GetPlayerViewPoint(Eye, Rot);
+	const FVector Fwd = Rot.Vector();
+	ACharacter* Best = nullptr;
+	float BestScore = 0.f;
+	FCollisionQueryParams Q(SCENE_QUERY_STAT(M80LockOn), false, W);
+	for (TActorIterator<ACharacter> It(GetWorld()); It; ++It)
+	{
+		ACharacter* C = *It;
+		if (C == W)
+		{
+			continue;
+		}
+		const UM80VitalsComponent* V = C->FindComponentByClass<UM80VitalsComponent>();
+		if (!V || V->IsDead())
+		{
+			continue;
+		}
+		const FVector To = C->GetActorLocation() + FVector(0.f, 0.f, 45.f) - Eye;
+		const float Dist = To.Size();
+		const float Cos = FVector::DotProduct(To / FMath::Max(Dist, 1.f), Fwd);
+		if (Dist > 3500.f || Cos < FMath::Cos(FMath::DegreesToRadians(30.f)))
+		{
+			continue;
+		}
+		// In sight.
+		FHitResult Hit;
+		Q.ClearIgnoredSourceObjects();
+		Q.AddIgnoredActor(W);
+		if (GetWorld()->LineTraceSingleByChannel(Hit, Eye, Eye + To, ECC_Visibility, Q) && Hit.GetActor() != C)
+		{
+			continue;
+		}
+		// Nearer and more central first.
+		const float Score = Cos * 2.f - Dist / 3500.f;
+		if (!Best || Score > BestScore)
+		{
+			Best = C;
+			BestScore = Score;
+		}
+	}
+	LockTarget = Best;
+	return Best != nullptr;
+}
+
+void AM80PlayerController::UpdateLockOn(float DeltaTime)
+{
+	// The gamepad aim (left trigger) locks on as it is pulled and keeps the person while it is held.
+	const bool bPad = GetInputAnalogKeyState(EKeys::Gamepad_LeftTriggerAxis) > 0.3f;
+	if (bPad && !bPadAimWas)
+	{
+		LockOn();
+	}
+	bPadAimWas = bPad;
+	ACharacter* T = LockTarget.Get();
+	const UM80VitalsComponent* V = T ? T->FindComponentByClass<UM80VitalsComponent>() : nullptr;
+	if (!T || !V || V->IsDead() || (!bPad && !bLockHeld) || !bAimingNow)
+	{
+		if (!bLockHeld)
+		{
+			LockTarget.Reset();
+		}
+		return;
+	}
+	// The camera follows the target.
+	FVector Eye;
+	FRotator Rot;
+	GetPlayerViewPoint(Eye, Rot);
+	const FRotator Want = (GetAimPoint() - Eye).Rotation();
+	SetControlRotation(FMath::RInterpTo(GetControlRotation(), FRotator(Want.Pitch, Want.Yaw, 0.f), DeltaTime, 10.f));
 }
 
 void AM80PlayerController::UpdateClimbInput()
@@ -976,6 +1064,7 @@ void AM80PlayerController::PlayerTick(float DeltaTime)
 	UpdateWeapons(DeltaTime);
 	UpdateClimbInput();
 	UpdateWheel();
+	UpdateLockOn(DeltaTime);
 
 	StreetTimer -= DeltaTime;
 	if (StreetTimer <= 0.f)

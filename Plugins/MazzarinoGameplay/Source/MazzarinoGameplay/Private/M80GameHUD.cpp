@@ -162,8 +162,26 @@ void AM80GameHUD::DrawWeapon(float S)
 		const FLinearColor Col = (Slot.InClip == 0 && Slot.Reserve == 0) ? FLinearColor(0.9f, 0.25f, 0.2f) : GoldCol;
 		Text(Ammo, X + W / 2, Y + 66.f * S, Col, 0.85f * S, false, true, true);
 	}
+	// Locked person: a red diamond on the chest.
+	if (const ACharacter* T = PC->GetLockTarget(); T && PC->IsAiming())
+	{
+		FVector2D P;
+		if (PlayerOwner->ProjectWorldLocationToScreen(PC->GetAimPoint(), P))
+		{
+			P *= Canvas->ClipX / FMath::Max(1.f, float(Canvas->ClipX));
+			const float R = 12.f * S;
+			const FVector2D D[4] = {FVector2D(0, -R), FVector2D(R, 0), FVector2D(0, R), FVector2D(-R, 0)};
+			for (int32 k = 0; k < 4; ++k)
+			{
+				FCanvasLineItem L(P + D[k], P + D[(k + 1) % 4]);
+				L.LineThickness = 3.f * S;
+				L.SetColor(FLinearColor(0.95f, 0.15f, 0.12f, 0.95f));
+				Canvas->DrawItem(L);
+			}
+		}
+	}
 	// Crosshair while aiming a gun: four short lines that open with the spread.
-	if (PC->IsAiming())
+	if (PC->IsAiming() && !PC->GetLockTarget())
 	{
 		const float CX = Canvas->ClipX / 2, CY = Canvas->ClipY / 2;
 		const float Gap = (6.f + Spec.SpreadDeg * 4.f) * S, Len = 9.f * S;

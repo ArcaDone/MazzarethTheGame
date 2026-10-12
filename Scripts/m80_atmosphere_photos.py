@@ -47,19 +47,32 @@ def shots(world, atmo, horizon):
         eye, target = street
         out.insert(1, ("cine_2_mattina_corso", 9.3, W.CLEAR, eye, target, 60))
         out.append(("cine_8_notte_corso", 22.6, W.CLEAR, eye, target, 60))
+        # The player's look at the default weather, late afternoon (when the game starts).
+        out.append(("cine_10_corso_pomeriggio", 17.75, W.HAZY, eye, target, 60))
     return [s for s in out if not ONLY or s[0] in ONLY]
 
 
 def run():
     OUT.mkdir(parents=True, exist_ok=True)
     unreal.EditorLoadingAndSavingUtils.load_map(MAP)
-    m80_seq.load(m80_seq.actor_descs())  # World Partition: the whole town, these views need it
+    # World Partition: the whole town (these views need it), or only M80_CINE_RAGGIO metres around the Corso when
+    # the whole town does not fit in memory.
+    descs = m80_seq.actor_descs()
+    radius = float(os.environ.get("M80_CINE_RAGGIO", "0")) * 100.0
+    if radius > 0:
+        c = setup.town_centre()
+        descs = m80_seq.near(descs, c.x, c.y, radius)
+    m80_seq.load(descs)
     yield 120
     world = m80_seq.editor_world()
     eas = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
     actors = eas.get_all_level_actors()
     atmo = next(a for a in actors if isinstance(a, unreal.M80Atmosphere))
     horizon = next(a for a in actors if isinstance(a, unreal.M80Horizon))
+    # Checks: M80_CINE_SENZA=nuvole,nebbia hides the clouds / the fog.
+    hide = os.environ.get("M80_CINE_SENZA", "")
+    atmo.get_editor_property("clouds").set_visibility("nuvole" not in hide)
+    atmo.get_editor_property("fog").set_visibility("nebbia" not in hide)
     cam = eas.spawn_actor_from_class(unreal.CameraActor, unreal.Vector(0, 0, 0))
     cc = cam.get_editor_property("camera_component")
     cc.set_editor_property("constrain_aspect_ratio", False)
@@ -89,6 +102,9 @@ def run():
     cam.destroy_actor()
     atmo.set_editor_property("weather", unreal.M80Weather.HAZY)
     atmo.apply()
+    for name in report:
+        if report[name] == "ok" and os.environ.get("M80_CINE_TAG"):
+            shutil.copyfile(OUT / (name + ".png"), OUT / ("%s_%s.png" % (name, os.environ["M80_CINE_TAG"])))
     REPORT.write_text(json.dumps(report, indent=1), encoding="utf-8")
 
 

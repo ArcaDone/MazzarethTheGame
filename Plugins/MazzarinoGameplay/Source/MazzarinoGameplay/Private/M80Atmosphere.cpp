@@ -33,7 +33,7 @@ FWeatherLook LookFor(EM80Weather Weather)
 	switch (Weather)
 	{
 	case EM80Weather::Clear:
-		return {0.003f, FLinearColor(0.44f, 0.44f, 0.44f), 0.0012f, 0.004f, 1.f, 0.25f, FLinearColor::White, 1.f};
+		return {0.003f, FLinearColor(0.44f, 0.44f, 0.44f), 0.0005f, 0.003f, 1.f, 0.05f, FLinearColor(1.f, 0.98f, 0.95f), 1.f};
 	case EM80Weather::Scirocco:
 		// Sahara dust: yellow-brown sky, flat light, distant hills gone.
 		return {0.02f, FLinearColor(0.1f, 0.3f, 0.75f), 0.008f, 0.012f, 3.f, 0.35f, FLinearColor(1.f, 0.93f, 0.8f), 0.7f};
@@ -41,8 +41,9 @@ FWeatherLook LookFor(EM80Weather Weather)
 		return {0.006f, FLinearColor(0.44f, 0.44f, 0.44f), 0.003f, 0.008f, 1.5f, 0.8f, FLinearColor(0.96f, 0.98f, 1.f), 0.55f};
 	case EM80Weather::Hazy:
 	default:
-		// Sicilian summer: milky horizon, warm haze in the valleys.
-		return {0.007f, FLinearColor(0.3f, 0.36f, 0.5f), 0.002f, 0.007f, 1.5f, 0.4f, FLinearColor(1.f, 0.98f, 0.94f), 1.f};
+		// Sicilian summer of the '80s: blue sky with a few fair weather clouds, warm sandy haze on the horizon
+		// and in the valleys, everything a little orange.
+		return {0.006f, FLinearColor(0.25f, 0.34f, 0.5f), 0.0007f, 0.005f, 1.3f, 0.07f, FLinearColor(1.f, 0.96f, 0.9f), 1.f};
 	}
 }
 
@@ -197,7 +198,7 @@ void AM80Atmosphere::ApplyAt(float AtHour)
 	const float SunYaw = NorthYaw + Azimuth;
 	Sun->SetWorldRotation(FRotator(-Elevation, SunYaw + 180.f, 0.f));
 	Sun->SetIntensity(SunLux * W.SunScale * FMath::SmoothStep(-4.f, 3.f, Elevation));
-	Sun->SetTemperature(FMath::Lerp(5900.f, 4600.f, Golden));
+	Sun->SetTemperature(FMath::Lerp(5400.f, 3900.f, Golden));
 	Sun->SetCastShadows(Elevation > -4.f);
 
 	// Moon: high in the opposite part of the sky, cold and dim.
@@ -236,6 +237,8 @@ void AM80Atmosphere::ApplyAt(float AtHour)
 	if (SkyLight)
 	{
 		SkyLight->SetIntensity(FMath::Lerp(1.25f, 0.8f, Night));
+		// By day the shade is lit by warm stone and dust as much as by the blue sky: no cold, sad shadows.
+		SkyLight->SetLightColor(FMath::Lerp(FLinearColor(1.f, 0.93f, 0.84f), FLinearColor::White, Night));
 		SkyLight->SetLowerHemisphereColor(FMath::Lerp(FLinearColor(0.09f, 0.075f, 0.055f), FLinearColor(0.005f, 0.006f, 0.01f), Night));
 	}
 
@@ -249,10 +252,11 @@ void AM80Atmosphere::ApplyAt(float AtHour)
 	Fog->SetSecondFogHeightOffset(-9000.f);
 	// Haze colour: warm grey by day, deep blue in the blue hour (sun just below the horizon), dark at night.
 	const float Blue = 1.f - FMath::SmoothStep(-2.f, 3.f, Elevation);
-	const FLinearColor DayHaze = FMath::Lerp(FLinearColor(0.5f, 0.47f, 0.42f), FLinearColor(0.06f, 0.09f, 0.19f), Blue);
+	const FLinearColor DayHaze = FMath::Lerp(FLinearColor(0.6f, 0.56f, 0.5f), FLinearColor(0.06f, 0.09f, 0.19f), Blue);
 	Fog->SetFogInscatteringColor(FMath::Lerp(DayHaze, FLinearColor(0.012f, 0.016f, 0.03f), Night) * W.Tint);
-	// Never fully opaque: the far hills and Etna stay readable as pale layers instead of cutting the clouds.
-	Fog->SetFogMaxOpacity(Weather == EM80Weather::Scirocco ? 0.97f : 0.88f);
+	// Never fully opaque: the far hills and Etna stay readable as pale layers, and above them the sky stays blue
+	// (an opaque fog paints the low sky in its own colour: a white, overcast look).
+	Fog->SetFogMaxOpacity(Weather == EM80Weather::Scirocco ? 0.97f : (Weather == EM80Weather::Cloudy ? 0.88f : 0.6f));
 	Fog->SetDirectionalInscatteringColor(FMath::Lerp(FLinearColor(0.35f, 0.3f, 0.24f), FLinearColor(0.95f, 0.55f, 0.25f), Golden) * Day);
 	Fog->SetDirectionalInscatteringExponent(6.f);
 	Fog->SetDirectionalInscatteringStartDistance(4000.f);
@@ -261,24 +265,27 @@ void AM80Atmosphere::ApplyAt(float AtHour)
 	Fog->SetVolumetricFogExtinctionScale(0.3f);
 	Fog->SetVolumetricFogScatteringDistribution(0.6f);
 
-	// Colour grade: warm highlights, slightly cool shadows, soft contrast, film grain.
+	// Colour grade: a hot summer on film: orange highlights and midtones, warm shadows (cool only at night), richer
+	// colours, soft contrast, film grain.
 	FPostProcessSettings& P = Look->Settings;
 	const FVector4 One(1, 1, 1, 1);
 	const FVector4 Zero(0, 0, 0, 0);
 	P.bOverride_WhiteTemp = true;
-	P.WhiteTemp = 6500.f + K * (450.f + 900.f * Golden - 1600.f * Night);
+	P.WhiteTemp = 6500.f + K * (700.f + 900.f * Golden - 1800.f * Night);
 	P.bOverride_SceneColorTint = true;
 	P.SceneColorTint = FMath::Lerp(FLinearColor::White, W.Tint, FMath::Min(K, 1.f));
 	P.bOverride_ColorSaturation = true;
-	P.ColorSaturation = Lerp4(One, FVector4(1.04f, 1.03f, 1.0f, 1.0f - 0.25f * Night), K);
+	P.ColorSaturation = Lerp4(One, FVector4(1.08f, 1.05f, 0.98f, 1.1f - 0.35f * Night), K);
 	P.bOverride_ColorContrast = true;
 	P.ColorContrast = Lerp4(One, FVector4(1.06f, 1.06f, 1.06f, 1.f), K);
 	P.bOverride_ColorGainHighlights = true;
-	P.ColorGainHighlights = Lerp4(One, FVector4(1.05f + 0.04f * Golden, 1.0f, 0.92f - 0.05f * Golden, 1.f), K);
+	P.ColorGainHighlights = Lerp4(One, FVector4(1.08f + 0.04f * Golden, 1.01f, 0.88f - 0.05f * Golden, 1.f), K);
+	P.bOverride_ColorGainMidtones = true;
+	P.ColorGainMidtones = Lerp4(One, FVector4(1.02f, 1.0f, 0.97f, 1.f), K * Day);
 	P.bOverride_ColorSaturationHighlights = true;
 	P.ColorSaturationHighlights = Lerp4(One, FVector4(1.f, 1.f, 1.f, 0.94f), K);
 	P.bOverride_ColorOffsetShadows = true;
-	P.ColorOffsetShadows = Lerp4(Zero, FVector4(-0.002f, 0.0f, 0.006f + 0.006f * Night, 0.f), K);
+	P.ColorOffsetShadows = Lerp4(Zero, FVector4(0.003f * Day - 0.002f * Night, 0.001f * Day, -0.002f * Day + 0.012f * Night, 0.f), K);
 	P.bOverride_FilmToe = true;
 	P.FilmToe = FMath::Lerp(0.55f, 0.6f, FMath::Min(K, 1.f));
 	P.bOverride_BloomIntensity = true;

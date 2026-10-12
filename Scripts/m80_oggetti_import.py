@@ -3,7 +3,7 @@
 own triangles, the materials and textures Unreal builds from the FBX (textures cut to 1024 px in Blender; colour and
 mask sources stored as JPEG, normals lossless); assets of the folder the mesh does not use are deleted. Not placed in
 the town: where they stand is still to decide.
-Env M80_OGGETTI=Key1,Key2 (default: all). Report: Saved/Mazzarino80/Oggetti/import_report.json
+Env M80_OGGETTI=Key1,Key2 (default: all); M80_OGGETTI_TIENI=1 keeps the unused assets and only lists them. Report: Saved/Mazzarino80/Oggetti/import_report.json
 
 powershell -File Scripts/run_editor_script.ps1 -Script Scripts/m80_oggetti_import.py
 """
@@ -95,9 +95,13 @@ def run():
         unreal.EditorLoadingAndSavingUtils.save_dirty_packages(False, True)
         yield 5
         # What the folder holds and the mesh no longer uses (left out parts, an older import's materials) goes.
-        rep["deleted"] = unused(dest, "%s/SM_M80_%s" % (dest, key))
-        for path in rep["deleted"]:
-            EAL.delete_asset(path)
+        # M80_OGGETTI_TIENI=1 only lists them (rep["unused"]), to be deleted after asking.
+        if os.environ.get("M80_OGGETTI_TIENI") == "1":
+            rep["unused"] = unused(dest, "%s/SM_M80_%s" % (dest, key))
+        else:
+            rep["deleted"] = unused(dest, "%s/SM_M80_%s" % (dest, key))
+            for path in rep["deleted"]:
+                EAL.delete_asset(path)
         report[key] = rep
         yield 5
     (SRC / "import_report.json").write_text(json.dumps(report, indent=1), encoding="utf-8")

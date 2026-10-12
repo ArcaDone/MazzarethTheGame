@@ -1,4 +1,7 @@
 #include "M80OverlayAnim.h"
+#include "Animation/AnimSequence.h"
+#include "Animation/AnimationPoseData.h"
+#include "Animation/AttributesRuntime.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/SkeletalMesh.h"
 #include "GameFramework/Character.h"
@@ -79,6 +82,14 @@ void FM80OverlayProxy::Initialize(UAnimInstance* InAnimInstance)
 	{
 		Grip = M80GripInHand(Comp->GetSkeletalMeshAsset(), false);
 	}
+	auto Load = [](const TCHAR* Name)
+	{
+		return LoadObject<UAnimSequence>(nullptr, *FString::Printf(TEXT("/Game/Mazzarino80/Player/Anim/%s.%s"), Name, Name), nullptr, LOAD_NoWarn);
+	};
+	PistolAim = Load(TEXT("A_M80_Pistola_Mira_Sweep"));
+	PistolHold = Load(TEXT("A_M80_Pistola_Pose"));
+	RifleAim = Load(TEXT("A_M80_Fucile_Mira_Sweep"));
+	RifleHold = Load(TEXT("A_M80_Fucile_Pose"));
 }
 
 void FM80OverlayProxy::PreUpdate(UAnimInstance* InAnimInstance, float DeltaSeconds)
@@ -97,6 +108,17 @@ void FM80OverlayProxy::PreUpdate(UAnimInstance* InAnimInstance, float DeltaSecon
 	ArmsWeight = I->BlendArms;
 	bAimPoint = I->bAiming;
 	AimCS = Comp->GetComponentTransform().InverseTransformPosition(I->AimPoint);
+	if (bAimPoint)
+	{
+		// From the chest (about 1.45 m above the feet), in the mannequin's frame (+Y forward, +X left).
+		const FVector D = AimCS - FVector(0.f, 0.f, 145.f);
+		AimPitch = FMath::RadiansToDegrees(FMath::Atan2(D.Z, FVector2D(D.X, D.Y).Size()));
+		AimYaw = FMath::RadiansToDegrees(FMath::Atan2(D.X, D.Y));
+	}
+	else
+	{
+		AimPitch = AimYaw = 0.f;
+	}
 	Recoil = (bGun && I->bEnabled) ? FMath::Clamp(1.f - I->SinceFire / 0.15f, 0.f, 1.f) : 0.f;
 	const float Duration = Pose == EM80WeaponPose::Melee ? 0.5f : 0.35f;
 	Swing = (!bGun && I->bEnabled && I->SinceFire < Duration) ? I->SinceFire / Duration : -1.f;
@@ -113,10 +135,24 @@ void FM80OverlayProxy::CacheBones()
 	}
 	const FReferenceSkeleton& Ref = BC.GetReferenceSkeleton();
 	Bones.Reset();
+	Upper.Reset();
+	const int32 Spine = Ref.FindBoneIndex(TEXT("spine_01"));
 	for (int32 i = 0; i < BC.GetCompactPoseNumBones(); ++i)
 	{
 		const FCompactPoseBoneIndex CI(i);
-		Bones.Add(Ref.GetBoneName(BC.MakeMeshPoseIndex(CI).GetInt()), CI);
+		const int32 Mesh = BC.MakeMeshPoseIndex(CI).GetInt();
+		const FName Name = Ref.GetBoneName(Mesh);
+		Bones.Add(Name, CI);
+		// Under spine_01: the lower spine follows the walk half way, the rest is the weapon pose's.
+		for (int32 P = Mesh; P != INDEX_NONE && Spine != INDEX_NONE; P = Ref.GetParentIndex(P))
+		{
+			if (P == Spine)
+			{
+				const FString S = Name.ToString();
+				Upper.Add({CI, (S == TEXT("spine_01") || S == TEXT("spine_02")) ? 0.5f : 1.f});
+				break;
+			}
+		}
 	}
 }
 
@@ -222,6 +258,40 @@ void FM80OverlayProxy::AimArms(FPoseContext& Output)
 	FCSPose<FCompactPose>::ConvertComponentPosesToLocalPoses(MoveTemp(CS), Output.Pose);
 }
 
+bool FM80OverlayProxy::UpperBodyPose(FPoseContext& Output)
+{
+	const bool bRifle = Pose == EM80WeaponPose::Rifle;
+	UAnimSequence* Seq = bAimPoint ? (bRifle ? RifleAim : PistolAim) : (bRifle ? RifleHold : PistolHold);
+	if (!Seq || Upper.Num() == 0)
+	{
+		return false;
+	}
+	// The aim sweep goes from straight up (start) to straight down (end); the hold pose is its first frame.
+	const double Len = Seq->GetPlayLength();
+	const double T = bAimPoint ? Len * FMath::Clamp(0.5 - AimPitch / 180.0, 0.0, 1.0) : 0.0;
+	FCompactPose P;
+	P.SetBoneContainer(&Output.Pose.GetBoneContainer());
+	FBlendedCurve Curve;
+	Curve.InitFrom(Output.Curve);
+	UE::Anim::FStackAttributeContainer Attributes;
+	FAnimationPoseData Data(P, Curve, Attributes);
+	Seq->GetAnimationPose(Data, FAnimExtractContext(T, false));
+	for (const TPair<FCompactPoseBoneIndex, float>& B : Upper)
+	{
+		const float W = ArmsWeight * B.Value;
+		FTransform& Local = Output.Pose[B.Key];
+		Local.SetRotation(FQuat::Slerp(Local.GetRotation(), P[B.Key].GetRotation(), W).GetNormalized());
+	}
+	// What is left to the crosshair sideways: the chest turns (the body follows the camera anyway).
+	const float Yaw = FMath::Clamp(AimYaw, -60.f, 60.f) * ArmsWeight;
+	Rotate(Output, TEXT("spine_03"), CSUp, Yaw * 0.5f);
+	Rotate(Output, TEXT("spine_05"), CSUp, Yaw * 0.5f);
+	// Recoil: the forearm and the hand kick up.
+	Rotate(Output, TEXT("lowerarm_r"), CSLeft, -12.f * Recoil);
+	Rotate(Output, TEXT("hand_r"), CSLeft, -10.f * Recoil);
+	return true;
+}
+
 bool FM80OverlayProxy::Evaluate(FPoseContext& Output)
 {
 	FMemMark Mark(FMemStack::Get());
@@ -230,7 +300,7 @@ bool FM80OverlayProxy::Evaluate(FPoseContext& Output)
 	{
 		return true;
 	}
-	if (ArmsWeight > 0.01f)
+	if (ArmsWeight > 0.01f && !UpperBodyPose(Output))
 	{
 		AimArms(Output);
 	}

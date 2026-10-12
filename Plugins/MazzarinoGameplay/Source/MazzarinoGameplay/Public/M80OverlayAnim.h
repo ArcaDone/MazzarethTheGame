@@ -8,13 +8,15 @@
 #include "M80OverlayAnim.generated.h"
 
 class ACharacter;
+class UAnimSequence;
 
 /**
  * Upper body overlay for the sample character, all in code (the sample's animation blueprint stays
- * untouched): a hidden copy of the animation mesh copies its pose every frame and moves the arms with
- * two-bone IK so the gun points exactly at the crosshair (right hand on the grip, left hand holding
- * under it, or on the fore-end of the lupara), held low when not aiming; recoil after a shot; punches
- * and blows. The MetaHuman body retargets from this copy instead of the original.
+ * untouched): a hidden copy of the animation mesh copies its pose every frame and lays the upper body of a
+ * weapon pose over it (ALS's two-handed pistol and rifle poses, retargeted): held low when not aiming, the
+ * aim sweep sampled at the aim's pitch when aiming, the chest turned for what is left to the crosshair;
+ * recoil after a shot; punches and blows. Without those clips the arms are placed by two-bone IK.
+ * The MetaHuman body retargets from this copy instead of the original.
  */
 USTRUCT()
 struct FM80OverlayProxy : public FAnimInstanceProxy
@@ -43,9 +45,22 @@ struct FM80OverlayProxy : public FAnimInstanceProxy
 	bool bPunch = false;
 	FTransform Grip = FTransform::Identity;  // weapon frame in the hand bone's space (UEFN hand)
 
+	// Weapon poses (loaded on the game thread in Initialize).
+	UAnimSequence* PistolAim = nullptr;
+	UAnimSequence* PistolHold = nullptr;
+	UAnimSequence* RifleAim = nullptr;
+	UAnimSequence* RifleHold = nullptr;
+	float AimPitch = 0.f;   // degrees, up positive
+	float AimYaw = 0.f;     // degrees left of straight ahead (what the body has not turned yet)
+
 private:
 	void Rotate(FPoseContext& Output, FName Bone, const FVector& CSAxis, float Degrees);
 	void AimArms(FPoseContext& Output);
+	/** Lays the upper body of the weapon pose over the copied pose; false without the clips. */
+	bool UpperBodyPose(FPoseContext& Output);
+
+	/** Upper body bones (spine_01 and everything under it) with their blend weights. */
+	TArray<TPair<FCompactPoseBoneIndex, float>> Upper;
 
 	TMap<FName, FCompactPoseBoneIndex> Bones;
 };

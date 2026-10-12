@@ -20,14 +20,14 @@ public:
 
 	/** Camera while aiming, from the shoulder pivot in the control frame: back (-X), right (+Y), up (+Z). */
 	UPROPERTY(EditAnywhere, Category = "Mira")
-	FVector ShoulderOffset = FVector(-125.f, 48.f, 8.f);
+	FVector ShoulderOffset = FVector(-165.f, 72.f, 22.f);
 
 	/** Height of the shoulder pivot above the capsule centre. */
 	UPROPERTY(EditAnywhere, Category = "Mira")
 	float PivotHeight = 58.f;
 
 	UPROPERTY(EditAnywhere, Category = "Mira")
-	float AimFOV = 60.f;
+	float AimFOV = 64.f;
 
 	/** How fast the camera goes to the shoulder and back. */
 	UPROPERTY(EditAnywhere, Category = "Mira")

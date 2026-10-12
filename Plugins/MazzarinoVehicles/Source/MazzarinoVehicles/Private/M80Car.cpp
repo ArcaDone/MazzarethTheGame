@@ -168,6 +168,10 @@ void AM80Car::BeginPlay()
 	Health = MaxHealth;
 	USkeletalMeshComponent* Body = GetMesh();
 	Body->OnComponentHit.AddUniqueDynamic(this, &AM80Car::OnBodyHit);
+	if (bCart)
+	{
+		return;   // no lights, no engine
+	}
 	// Parked cars: some are locked (stable per car, not random each time).
 	if (!GetController() && LockedChance > 0.f)
 	{
@@ -237,14 +241,17 @@ void AM80Car::OnBodyHit(UPrimitiveComponent* HitComp, AActor* Other, UPrimitiveC
 		return;
 	}
 	HitCooldown = 0.25f;
-	Health = FMath::Max(0.f, Health - (DeltaV - 500.f) * 0.06f);
+	if (!bCart)
+	{
+		Health = FMath::Max(0.f, Health - (DeltaV - 500.f) * 0.06f);
+	}
 	UGameplayStatics::PlaySoundAtLocation(this, LoadPath<USoundBase>(CrashSound), Hit.ImpactPoint, FMath::Clamp(DeltaV / 1500.f, 0.3f, 1.5f), 0.6f);
 }
 
 void AM80Car::UpdateDamage(float DeltaSeconds)
 {
 	HitCooldown -= DeltaSeconds;
-	if (bWrecked)
+	if (bWrecked || bCart)
 	{
 		return;
 	}
@@ -299,7 +306,7 @@ void AM80Car::UpdateDamage(float DeltaSeconds)
 
 void AM80Car::Explode()
 {
-	if (bWrecked)
+	if (bWrecked || bCart)
 	{
 		return;
 	}
@@ -344,7 +351,7 @@ void AM80Car::Explode()
 
 void AM80Car::Horn()
 {
-	if (!bWrecked)
+	if (!bWrecked && !bCart)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, LoadPath<USoundBase>(HornSound), GetActorLocation());
 		// Let the town hear it (pedestrians will step aside later).
@@ -483,6 +490,105 @@ void AM80Car::SetupImported(const TCHAR* MeshPath, TSubclassOf<UChaosVehicleWhee
 	}
 }
 
+void AM80Car::SetupCart(const TCHAR* MeshPath, const TCHAR* PosePath, const TArray<TPair<FName, TSubclassOf<UChaosVehicleWheel>>>& Wheels, float InWheelbaseCm)
+{
+	ConstructorHelpers::FObjectFinderOptional<USkeletalMesh> MeshAsset(MeshPath);
+	GetMesh()->SetSkeletalMesh(MeshAsset.Get());
+	GetMesh()->SetAnimInstanceClass(UM80WheelAnimInstance::StaticClass());
+	RidePose = TSoftObjectPtr<UAnimSequenceBase>(FSoftObjectPath(PosePath));
+	if (UChaosWheeledVehicleMovementComponent* M = Movement(this))
+	{
+		M->WheelSetups.SetNum(Wheels.Num());
+		for (int32 i = 0; i < Wheels.Num(); ++i)
+		{
+			M->WheelSetups[i].BoneName = Wheels[i].Key;
+			M->WheelSetups[i].WheelClass = Wheels[i].Value;
+		}
+		// Chaos puts a vehicle to sleep when nobody presses throttle or brake: a cart has neither (it is pushed, or
+		// it rolls downhill), so only the physics' own sleep (still and on the flat) is kept. Nor does it brake by
+		// itself when standing still without throttle (Chaos' "auto brake"): the push could not start it.
+		M->SleepThreshold = 0.f;
+		if (FFloatProperty* Stop = FindFProperty<FFloatProperty>(UChaosVehicleMovementComponent::StaticClass(), TEXT("StopThreshold")))
+		{
+			Stop->SetPropertyValue_InContainer(M, 0.f);   // protected in Chaos, set through its property
+		}
+	}
+	// A few kilos of wood and the rider (not simulated: the weight is in the mass). No engine: the push and the
+	// slopes move it (UpdateCart); Chaos keeps the wheels, the steering and the brakes.
+	FCarSpec S;
+	S.MassKg = 80.f;
+	S.CenterOfMass = FVector(-10.f, 0.f, 5.f);
+	S.DragCoefficient = 0.f;   // air and bearings in UpdateCart
+	S.ChassisWidth = 50.f;
+	S.ChassisHeight = 40.f;
+	S.MaxTorqueNm = 0.5f;
+	S.MaxRPM = 3000.f;
+	S.IdleRPM = 500.f;
+	S.PeakTorqueRPM = 1500.f;
+	S.EngineBrake = 0.f;
+	S.Gears = {1.f};
+	S.ReverseGear = 1.f;
+	S.FinalRatio = 1.f;
+	S.ChangeUpRPM = 2900.f;
+	S.ChangeDownRPM = 100.f;
+	S.SteerAt30Mph = 0.55f;   // ~48 km/h downhill: still some lock, the bearings slide anyway
+	S.SteerAt60Mph = 0.4f;
+	S.SteerRise = 3.f;
+	S.SteerFall = 5.f;
+	S.WheelbaseCm = InWheelbaseCm;
+	S.GripG = 0.6f;
+	ApplySpec(S);
+}
+
+void AM80Car::UpdateCart(float DeltaSeconds)
+{
+	UChaosWheeledVehicleMovementComponent* M = Movement(this);
+	USkeletalMeshComponent* Body = GetMesh();
+	if (!bCart || !M || !Body->IsSimulatingPhysics())
+	{
+		return;
+	}
+	const float Kmh = GetSpeedKmh();
+	// S: the feet brake while it rolls forward; once stopped they shuffle it back.
+	const bool bBack = CartBrake > 0.05f && Kmh < 1.5f;
+	M->SetThrottleInput(0.f);
+	M->SetBrakeInput(bBack ? 0.f : CartBrake);
+	int32 OnGround = 0;
+	for (int32 i = 0; i < M->Wheels.Num(); ++i)
+	{
+		OnGround += M->GetWheelState(i).bInContact ? 1 : 0;
+	}
+	if (OnGround < 2)
+	{
+		return;
+	}
+	float Push = 0.f;
+	if (CartPush > 0.05f)
+	{
+		Push = CartPush * PushAccel * FMath::Clamp((PushTopKmh - Kmh) / 3.f, 0.f, 1.f);
+	}
+	else if (bBack)
+	{
+		Push = -CartBrake * PushAccel * 0.5f * FMath::Clamp((4.f + Kmh) / 2.f, 0.f, 1.f);
+	}
+	if (Push != 0.f)
+	{
+		M->SetSleeping(false);
+	}
+	// Steel bearings on stone and the rider in the wind: on the flat it slows down by itself, downhill it
+	// runs up to where the slope and the drag even out (about 45 km/h on a 10% street).
+	const FVector V = Body->GetPhysicsLinearVelocity();
+	const float Speed = V.Size();
+	FVector Resist = FVector::ZeroVector;
+	if (Speed > 1.f)
+	{
+		const float Roll = RollingResistance * 981.f * FMath::Clamp(Speed / 50.f, 0.f, 1.f);
+		const float Air = AirDrag * Speed * Speed / 100.f;
+		Resist = -V / Speed * (Roll + Air);
+	}
+	Body->AddForce(GetActorForwardVector() * Push + Resist, NAME_None, true);
+}
+
 void AM80Car::KeepUpright(float DeltaSeconds)
 {
 	// Two wheels: Chaos would let it fall over. A spring-damper on the roll holds it up and leans it
@@ -554,6 +660,7 @@ void AM80Car::Tick(float DeltaSeconds)
 		}
 	}
 
+	UpdateCart(DeltaSeconds);
 	StabilityAssist(DeltaSeconds);
 	KeepUpright(DeltaSeconds);
 	UpdateDamage(DeltaSeconds);
@@ -754,6 +861,7 @@ void AM80Car::NotifyControllerChanged()
 		M->SetThrottleInput(0.f);
 		M->SetBrakeInput(0.f);
 		M->SetSteeringInput(0.f);
+		CartPush = CartBrake = 0.f;
 		bCoasting = FMath::Abs(GetSpeedKmh()) > 8.f;
 		M->SetHandbrakeInput(!bCoasting);
 		SteerTarget = 0.f;
@@ -766,6 +874,15 @@ void AM80Car::OnThrottle(const FInputActionValue& Value)
 	{
 		return;
 	}
+	if (bCart)
+	{
+		CartPush = FMath::Clamp(Value.Get<float>(), 0.f, 1.f);
+		if (UChaosWheeledVehicleMovementComponent* M = Movement(this))
+		{
+			M->SetHandbrakeInput(false);
+		}
+		return;
+	}
 	if (UChaosWheeledVehicleMovementComponent* M = Movement(this))
 	{
 		M->SetThrottleInput(FMath::Clamp(Value.Get<float>(), 0.f, 1.f));
@@ -775,6 +892,11 @@ void AM80Car::OnThrottle(const FInputActionValue& Value)
 
 void AM80Car::OnBrake(const FInputActionValue& Value)
 {
+	if (bCart)
+	{
+		CartBrake = FMath::Clamp(Value.Get<float>(), 0.f, 1.f);
+		return;
+	}
 	if (UChaosWheeledVehicleMovementComponent* M = Movement(this))
 	{
 		M->SetBrakeInput(FMath::Clamp(Value.Get<float>(), 0.f, 1.f));
@@ -1070,4 +1192,89 @@ AM80CarVespa::AM80CarVespa()
 	S.GripG = 0.8f;
 	S.MaxLeanDeg = 25.f;
 	ApplySpec(S);
+}
+
+// ---------------------------------------------------------------------------------------------
+// Soapbox carts (D:/BlenderTest/carretti, Research/Mazzarino80/Blender/m80_carretti_gioco.py)
+
+UM80WheelCuscinetto::UM80WheelCuscinetto()
+{
+	Size(3.6f, 3.2f, false);
+}
+
+void UM80WheelCuscinetto::Size(float RadiusCm, float WidthCm, bool bSteer)
+{
+	// Steel on stone: little grip, no suspension to speak of. The feet brake (mostly at the back), the handbrake is
+	// the heels dragging behind.
+	SetupWheel(this, bSteer ? EAxleType::Front : EAxleType::Rear, RadiusCm, WidthCm, bSteer ? 26.f : 0.f, bSteer ? 4.f : 8.f,
+		bSteer ? 0.f : 14.f, false, 40.f, 12.f, 0.6f, 1.5f, 1.5f, 1.6f);
+	WheelMass = 1.5f;
+}
+
+UM80WheelCuscinetti36Sterzo::UM80WheelCuscinetti36Sterzo() { Size(3.6f, 3.2f, true); }
+UM80WheelCuscinetti36::UM80WheelCuscinetti36() { Size(3.6f, 3.2f, false); }
+UM80WheelCuscinetti42Sterzo::UM80WheelCuscinetti42Sterzo() { Size(4.21f, 3.74f, true); }
+UM80WheelCuscinetti42::UM80WheelCuscinetti42() { Size(4.21f, 3.74f, false); }
+UM80WheelCuscinetti29Sterzo::UM80WheelCuscinetti29Sterzo() { Size(2.88f, 2.56f, true); }
+UM80WheelCuscinetti47::UM80WheelCuscinetti47() { Size(4.68f, 4.16f, false); }
+UM80WheelCuscinetti30::UM80WheelCuscinetti30() { Size(2.95f, 2.62f, false); }
+UM80WheelCuscinetti41Sterzo::UM80WheelCuscinetti41Sterzo() { Size(4.14f, 3.68f, true); }
+
+namespace
+{
+FString CartMesh(const TCHAR* Key)
+{
+	return FString::Printf(TEXT("/Game/Mazzarino80/Vehicles/Carretti/%s/SK_M80_%s.SK_M80_%s"), Key, Key, Key);
+}
+
+FString CartPose(const TCHAR* Key)
+{
+	return FString::Printf(TEXT("/Game/Mazzarino80/Player/Anim/A_M80_Carretto_%s.A_M80_Carretto_%s"), Key, Key);
+}
+}
+
+AM80Carretto::AM80Carretto()
+{
+	bCart = true;
+	LockedChance = 0.f;
+	MaxHealth = 1000.f;
+	ChaseDistance = 330.f;
+	CloseDistance = 210.f;
+	SpringArm->SetRelativeLocation(FVector(0.f, 0.f, 70.f));
+}
+
+AM80CarrettoCuscinetti::AM80CarrettoCuscinetti()
+{
+	DisplayName = NSLOCTEXT("M80", "CarrettoCuscinetti", "carretto a cuscinetti");
+	SetupCart(*CartMesh(TEXT("CarrettoCuscinetti")), *CartPose(TEXT("Cuscinetti")),
+		{{TEXT("Wheel_FL"), UM80WheelCuscinetti36Sterzo::StaticClass()}, {TEXT("Wheel_FR"), UM80WheelCuscinetti36Sterzo::StaticClass()},
+		 {TEXT("Wheel_RL"), UM80WheelCuscinetti36::StaticClass()}, {TEXT("Wheel_RR"), UM80WheelCuscinetti36::StaticClass()}}, 61.f);
+	DoorOffset = FVector(-20.f, -85.f, 60.f);
+}
+
+AM80CarrettoTriangolo::AM80CarrettoTriangolo()
+{
+	DisplayName = NSLOCTEXT("M80", "CarrettoTriangolo", "carretto a triangolo");
+	SetupCart(*CartMesh(TEXT("CarrettoTriangolo")), *CartPose(TEXT("Triangolo")),
+		{{TEXT("Wheel_FL"), UM80WheelCuscinetti42Sterzo::StaticClass()}, {TEXT("Wheel_FR"), UM80WheelCuscinetti42Sterzo::StaticClass()},
+		 {TEXT("Wheel_RL"), UM80WheelCuscinetti42::StaticClass()}, {TEXT("Wheel_RR"), UM80WheelCuscinetti42::StaticClass()}}, 112.f);
+	DoorOffset = FVector(-15.f, -90.f, 60.f);
+}
+
+AM80CarrettoCassetta::AM80CarrettoCassetta()
+{
+	DisplayName = NSLOCTEXT("M80", "CarrettoCassetta", "carretto con la cassetta");
+	SetupCart(*CartMesh(TEXT("CarrettoCassetta")), *CartPose(TEXT("Cassetta")),
+		{{TEXT("Wheel_FL"), UM80WheelCuscinetti29Sterzo::StaticClass()}, {TEXT("Wheel_FR"), UM80WheelCuscinetti29Sterzo::StaticClass()},
+		 {TEXT("Wheel_RL"), UM80WheelCuscinetti47::StaticClass()}, {TEXT("Wheel_RR"), UM80WheelCuscinetti30::StaticClass()}}, 80.f);
+	DoorOffset = FVector(-25.f, -85.f, 60.f);
+}
+
+AM80CarrettoPersiana::AM80CarrettoPersiana()
+{
+	DisplayName = NSLOCTEXT("M80", "CarrettoPersiana", "carretto persiana");
+	SetupCart(*CartMesh(TEXT("CarrettoPersiana")), *CartPose(TEXT("Persiana")),
+		{{TEXT("Wheel_F"), UM80WheelCuscinetti41Sterzo::StaticClass()}, {TEXT("Wheel_RL"), UM80WheelCuscinetti36::StaticClass()},
+		 {TEXT("Wheel_RR"), UM80WheelCuscinetti36::StaticClass()}}, 106.f);
+	DoorOffset = FVector(-25.f, -85.f, 60.f);
 }

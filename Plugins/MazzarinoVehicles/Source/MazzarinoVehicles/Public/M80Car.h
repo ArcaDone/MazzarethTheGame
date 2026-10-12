@@ -12,6 +12,7 @@ class UAudioComponent;
 class USpotLightComponent;
 class UPointLightComponent;
 class UParticleSystemComponent;
+class UAnimSequenceBase;
 class AM80Car;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FM80CarExploded, AM80Car*, Car);
@@ -103,6 +104,37 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Auto")
 	float LockedChance = 0.35f;
 
+	/**
+	 * Soapbox cart (carrettu): no engine. W pushes it (slowly, up to PushTopKmh on the flat), downhill it rolls
+	 * by itself; S brakes with the feet and, once stopped, shuffles it back. No engine sound, lights, smoke or
+	 * fire, it does not blow up. The rider takes RidePose; its mesh has the bones Sella (where the rider's mesh
+	 * origin goes), Mano_L/R and Piede_L/R (wrists and ankles, under the steering when they hold it).
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Auto|Carretto", meta = (DisplayName = "Carretto (senza motore)"))
+	bool bCart = false;
+
+	/** Pose of the rider on this vehicle (UEFN mannequin); none: the driving pose of the cars. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Auto|Guidatore")
+	TSoftObjectPtr<UAnimSequenceBase> RidePose;
+
+	/** Cart: top speed pushing it on the flat (km/h) and how hard the push is (cm/s2). */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Auto|Carretto")
+	float PushTopKmh = 13.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Auto|Carretto")
+	float PushAccel = 160.f;
+
+	/** Cart: rolling resistance of steel bearings on stone (fraction of g) and air drag of the rider (1/m). */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Auto|Carretto")
+	float RollingResistance = 0.035f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Auto|Carretto")
+	float AirDrag = 0.0035f;
+
+	/** Cart controls from code (tests, AI): push 0..1 forward, brake / back 0..1, steering -1..1 (right +). */
+	UFUNCTION(BlueprintCallable, Category = "Auto|Carretto")
+	void SetCartInput(float Push, float Brake, float Steer = 0.f) { CartPush = Push; CartBrake = Brake; SteerTarget = Steer; }
+
 	UPROPERTY(BlueprintAssignable, Category = "Auto")
 	FM80CarExploded OnExploded;
 
@@ -185,6 +217,12 @@ protected:
 	 */
 	void SetupImported(const TCHAR* MeshPath, TSubclassOf<UChaosVehicleWheel> Front, TSubclassOf<UChaosVehicleWheel> Rear, bool bTwoWheels = false);
 
+	/**
+	 * Carts from Research/Mazzarino80/Blender/m80_carretti_gioco.py: skeletal mesh with Root, Steer, the wheels
+	 * (one wheel class each), Sella, Mano_L/R, Piede_L/R; the rider's pose; slow, light, low grip.
+	 */
+	void SetupCart(const TCHAR* MeshPath, const TCHAR* PosePath, const TArray<TPair<FName, TSubclassOf<UChaosVehicleWheel>>>& Wheels, float InWheelbaseCm);
+
 private:
 	void OnThrottle(const FInputActionValue& Value);
 	void OnBrake(const FInputActionValue& Value);
@@ -252,6 +290,9 @@ private:
 	float MaxLeanDeg = 0.f;
 	void KeepUpright(float DeltaSeconds);
 	TWeakObjectPtr<APlayerController> InputOwner;
+	void UpdateCart(float DeltaSeconds);
+	float CartPush = 0.f;
+	float CartBrake = 0.f;
 };
 
 /** Fiat 126 (1972-2000): 594 cc rear engine, 23 hp, about 580 kg, top speed about 105 km/h. Light and lively, rear-wheel drive. */
@@ -428,4 +469,124 @@ class MAZZARINOVEHICLES_API UM80WheelVespaRear : public UChaosVehicleWheel
 	GENERATED_BODY()
 public:
 	UM80WheelVespaRear();
+};
+
+/** Soapbox carts (carretti): wooden boards on steel ball bearings, steered by a pivoting front axle. */
+UCLASS(Abstract, meta = (DisplayName = "Carretto (base)"))
+class MAZZARINOVEHICLES_API AM80Carretto : public AM80Car
+{
+	GENERATED_BODY()
+public:
+	AM80Carretto();
+};
+
+/** A plank on four bearings: the rider lies on it on the chest (as on a sled) and steers with the bar at the front. */
+UCLASS(meta = (DisplayName = "Carretto a cuscinetti (guidabile)"))
+class MAZZARINOVEHICLES_API AM80CarrettoCuscinetti : public AM80Carretto
+{
+	GENERATED_BODY()
+public:
+	AM80CarrettoCuscinetti();
+};
+
+/** Two rails in a triangle, a seat of slats: sitting as in a go-kart, heels on the front axle, the rope in the hands. */
+UCLASS(meta = (DisplayName = "Carretto a triangolo (guidabile)"))
+class MAZZARINOVEHICLES_API AM80CarrettoTriangolo : public AM80Carretto
+{
+	GENERATED_BODY()
+public:
+	AM80CarrettoTriangolo();
+};
+
+/** An old plank with a fruit crate for a seat and mismatched bearings: go-kart style, rope in the hands. */
+UCLASS(meta = (DisplayName = "Carretto con la cassetta (guidabile)"))
+class MAZZARINOVEHICLES_API AM80CarrettoCassetta : public AM80Carretto
+{
+	GENERATED_BODY()
+public:
+	AM80CarrettoCassetta();
+};
+
+/** A green shutter on three bearings, a broomstick tiller: sitting, arms up on the handle as on a chopper. */
+UCLASS(meta = (DisplayName = "Carretto persiana (guidabile)"))
+class MAZZARINOVEHICLES_API AM80CarrettoPersiana : public AM80Carretto
+{
+	GENERATED_BODY()
+public:
+	AM80CarrettoPersiana();
+};
+
+/** Cart wheels: ball bearings, one class per size (radius and width measured on the meshes). */
+UCLASS(Abstract)
+class MAZZARINOVEHICLES_API UM80WheelCuscinetto : public UChaosVehicleWheel
+{
+	GENERATED_BODY()
+public:
+	UM80WheelCuscinetto();
+protected:
+	void Size(float RadiusCm, float WidthCm, bool bSteer);
+};
+
+UCLASS()
+class MAZZARINOVEHICLES_API UM80WheelCuscinetti36Sterzo : public UM80WheelCuscinetto
+{
+	GENERATED_BODY()
+public:
+	UM80WheelCuscinetti36Sterzo();
+};
+
+UCLASS()
+class MAZZARINOVEHICLES_API UM80WheelCuscinetti36 : public UM80WheelCuscinetto
+{
+	GENERATED_BODY()
+public:
+	UM80WheelCuscinetti36();
+};
+
+UCLASS()
+class MAZZARINOVEHICLES_API UM80WheelCuscinetti42Sterzo : public UM80WheelCuscinetto
+{
+	GENERATED_BODY()
+public:
+	UM80WheelCuscinetti42Sterzo();
+};
+
+UCLASS()
+class MAZZARINOVEHICLES_API UM80WheelCuscinetti42 : public UM80WheelCuscinetto
+{
+	GENERATED_BODY()
+public:
+	UM80WheelCuscinetti42();
+};
+
+UCLASS()
+class MAZZARINOVEHICLES_API UM80WheelCuscinetti29Sterzo : public UM80WheelCuscinetto
+{
+	GENERATED_BODY()
+public:
+	UM80WheelCuscinetti29Sterzo();
+};
+
+UCLASS()
+class MAZZARINOVEHICLES_API UM80WheelCuscinetti47 : public UM80WheelCuscinetto
+{
+	GENERATED_BODY()
+public:
+	UM80WheelCuscinetti47();
+};
+
+UCLASS()
+class MAZZARINOVEHICLES_API UM80WheelCuscinetti30 : public UM80WheelCuscinetto
+{
+	GENERATED_BODY()
+public:
+	UM80WheelCuscinetti30();
+};
+
+UCLASS()
+class MAZZARINOVEHICLES_API UM80WheelCuscinetti41Sterzo : public UM80WheelCuscinetto
+{
+	GENERATED_BODY()
+public:
+	UM80WheelCuscinetti41Sterzo();
 };

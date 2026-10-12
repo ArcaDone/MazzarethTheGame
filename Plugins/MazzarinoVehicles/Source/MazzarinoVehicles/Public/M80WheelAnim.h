@@ -9,6 +9,8 @@
  * Wheel animation for the cars imported from Blender (skeleton Root + Wheel_FL/FR/RL/RR), in code: no
  * animation blueprint needed. Every frame each wheel bone of the vehicle's wheel setups turns with the
  * wheel, steers and follows the suspension, as the Chaos "Wheel Controller" node does.
+ * A bone named Steer (the carts' pivoting front axle, rope, tiller) turns about its own place by the steering
+ * angle, and the steered wheels go round it with it.
  */
 USTRUCT()
 struct FM80WheelAnimProxy : public FAnimInstanceProxy
@@ -29,8 +31,11 @@ struct FM80WheelAnimProxy : public FAnimInstanceProxy
 		float Spin = 0.f;      // degrees
 		float Steer = 0.f;     // degrees
 		float Offset = 0.f;    // cm, suspension
+		bool bSteered = false;
 	};
 	TArray<FWheel> Wheels;
+	FCompactPoseBoneIndex SteerIndex = FCompactPoseBoneIndex(INDEX_NONE);
+	float SteerYaw = 0.f;   // degrees, the steered wheels' mean
 };
 
 UCLASS(Transient, NotBlueprintable)

@@ -23,6 +23,8 @@ void FM80WheelAnimProxy::PreUpdate(UAnimInstance* InAnimInstance, float DeltaSec
 		}
 		CacheBones();
 	}
+	float Sum = 0.f;
+	int32 Steered = 0;
 	for (int32 i = 0; i < Num; ++i)
 	{
 		if (const UChaosVehicleWheel* W = M->Wheels[i])
@@ -30,8 +32,15 @@ void FM80WheelAnimProxy::PreUpdate(UAnimInstance* InAnimInstance, float DeltaSec
 			Wheels[i].Spin = W->GetRotationAngle();
 			Wheels[i].Steer = W->GetSteerAngle();
 			Wheels[i].Offset = W->GetSuspensionOffset();
+			Wheels[i].bSteered = W->bAffectedBySteering;
+			if (W->bAffectedBySteering)
+			{
+				Sum += Wheels[i].Steer;
+				++Steered;
+			}
 		}
 	}
+	SteerYaw = Steered ? Sum / Steered : 0.f;
 }
 
 void FM80WheelAnimProxy::CacheBones()
@@ -47,6 +56,8 @@ void FM80WheelAnimProxy::CacheBones()
 		const int32 MeshIndex = BC.GetPoseBoneIndexForBoneName(W.Bone);
 		W.Index = MeshIndex == INDEX_NONE ? FCompactPoseBoneIndex(INDEX_NONE) : BC.MakeCompactPoseIndex(FMeshPoseBoneIndex(MeshIndex));
 	}
+	const int32 Steer = BC.GetPoseBoneIndexForBoneName(TEXT("Steer"));
+	SteerIndex = Steer == INDEX_NONE ? FCompactPoseBoneIndex(INDEX_NONE) : BC.MakeCompactPoseIndex(FMeshPoseBoneIndex(Steer));
 }
 
 bool FM80WheelAnimProxy::Evaluate(FPoseContext& Output)
@@ -55,6 +66,16 @@ bool FM80WheelAnimProxy::Evaluate(FPoseContext& Output)
 	FCSPose<FCompactPose> CS;
 	CS.InitPose(Output.Pose);
 	TArray<FBoneTransform> Out;
+	// The steering part turns about its bolt; the steered wheels on it go round with it.
+	FVector Pivot = FVector::ZeroVector;
+	const FQuat SteerRot(FVector::UpVector, FMath::DegreesToRadians(SteerYaw));
+	if (SteerIndex.IsValid())
+	{
+		FTransform T = CS.GetComponentSpaceTransform(SteerIndex);
+		Pivot = T.GetLocation();
+		T.SetRotation(SteerRot * T.GetRotation());
+		Out.Add(FBoneTransform(SteerIndex, T));
+	}
 	for (const FWheel& W : Wheels)
 	{
 		if (!W.Index.IsValid())
@@ -62,6 +83,10 @@ bool FM80WheelAnimProxy::Evaluate(FPoseContext& Output)
 			continue;
 		}
 		FTransform T = CS.GetComponentSpaceTransform(W.Index);
+		if (SteerIndex.IsValid() && W.bSteered)
+		{
+			T.SetLocation(Pivot + SteerRot.RotateVector(T.GetLocation() - Pivot));
+		}
 		T.AddToTranslation(FVector(0.f, 0.f, W.Offset));
 		T.SetRotation(FQuat(FRotator(W.Spin, W.Steer, 0.f)) * T.GetRotation());
 		Out.Add(FBoneTransform(W.Index, T));

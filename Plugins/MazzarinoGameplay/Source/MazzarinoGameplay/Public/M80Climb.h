@@ -83,6 +83,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Mazzarino")
 	bool IsClimbing() const { return State != EM80ClimbState::None; }
 
+	/** Out of the wall held (horizontal), while hanging. */
+	FVector GetWallNormal() const { return Ledge.Normal; }
+
 	/** Ledge in front of the character between MinRise and MaxRise above its feet (tests and the HUD hint). */
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
 	bool FindLedge(float MinRise, float MaxRise, FM80Ledge& Out) const;
@@ -124,6 +127,7 @@ private:
 	FVector HandsWorld() const;
 	void AlignHandsTo(const FVector& Target);
 	void FollowBody();
+	void KeepOffWall(float DeltaTime, bool bCheckWall);
 	void TickHang(float DeltaTime);
 	void StartClimbUp();
 	void FinishClimbUp();
@@ -141,6 +145,7 @@ private:
 	uint8 MeshTickOption = 0;
 	bool bMeshURO = false;   // the mesh's VisibilityBasedAnimTickOption before climbing
 	FVector BodyToCapsule = FVector::ZeroVector;   // capsule centre from the pelvis while hanging
+	float Lean = 0.f;                              // degrees the hanging body swings out about the hands
 	float MantleTime = 0.f;
 	float GrabCooldown = 0.f;
 	FVector MoveInput = FVector::ZeroVector;

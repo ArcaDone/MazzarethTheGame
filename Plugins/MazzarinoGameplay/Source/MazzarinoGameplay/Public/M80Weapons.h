@@ -191,6 +191,9 @@ public:
 	/** Unequip everything (death). */
 	void HideWeapon();
 
+	/** The weapon put away (climbing: both hands are needed): hidden and silent; false takes it back in hand. */
+	void SetHolstered(bool bHolster);
+
 	UPROPERTY(BlueprintReadOnly, Category = "Mazzarino")
 	TArray<FM80WeaponSlot> Slots;
 
@@ -213,6 +216,7 @@ private:
 	bool bTrigger = false;
 	FVector TriggerAim = FVector::ZeroVector;
 	bool bAimingGun = false;
+	bool bHolstered = false;
 	FVector AimAt = FVector::ZeroVector;
 	FTransform BaseGrip = FTransform::Identity;   // weapon in the hand bone's space, from M80GripInHand
 	FQuat GripRot = FQuat::Identity;              // its rotation now (turned towards the aim)

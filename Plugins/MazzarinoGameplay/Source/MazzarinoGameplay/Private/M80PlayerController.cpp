@@ -396,8 +396,12 @@ void AM80PlayerController::UpdateClimbInput()
 	{
 		V = Sub->GetPlayerInput()->GetActionValue(Move).Get<FVector2D>();
 	}
-	const FRotator Yaw(0.f, GetControlRotation().Yaw, 0.f);
-	Cl->SetMoveInput(Yaw.RotateVector(FVector(V.Y, V.X, 0.f)));
+	// A / D (stick left/right) always go along the wall, W / S towards / away from it; flipped only when the
+	// camera looks away from the wall, so that right stays right on screen.
+	const FVector Facing = -Cl->GetWallNormal();
+	const FVector Right = FVector::CrossProduct(FVector::UpVector, Facing);
+	const float Flip = FVector::DotProduct(FRotator(0.f, GetControlRotation().Yaw, 0.f).Vector(), Facing) < -0.3f ? -1.f : 1.f;
+	Cl->SetMoveInput(Right * V.X * Flip + Facing * V.Y);
 }
 
 void AM80PlayerController::UpdateWeapons(float DeltaTime)
@@ -410,7 +414,11 @@ void AM80PlayerController::UpdateWeapons(float DeltaTime)
 		return;
 	}
 	const FM80WeaponSpec& S = Inv->CurrentSpec();
-	const bool bOnFoot = State == EM80PlayerState::OnFoot;
+	// Climbing needs both hands: the weapon is put away (no aiming, no shots) and comes back after.
+	const UM80ClimbComponent* Climb = GetClimb();
+	const bool bClimbing = Climb && Climb->IsClimbing();
+	Inv->SetHolstered(bClimbing);
+	const bool bOnFoot = State == EM80PlayerState::OnFoot && !bClimbing;
 	ForceAimTime -= DeltaTime;
 	// Aim: right mouse (the sample turns the character to the camera), or held for a moment after a shot.
 	bool* WantsAim = InputStateFlag(W, TEXT("WantsToAim"));
@@ -469,6 +477,7 @@ void AM80PlayerController::UpdateWeapons(float DeltaTime)
 		O->SinceFire = Inv->SinceFire();
 		O->ComboStep = Inv->GetComboStep();
 		O->bEnabled = bOnFoot;
+		O->bClimbing = bClimbing;
 	}
 }
 

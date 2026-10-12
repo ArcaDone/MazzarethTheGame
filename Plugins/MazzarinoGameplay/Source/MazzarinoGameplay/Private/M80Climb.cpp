@@ -318,6 +318,54 @@ void UM80ClimbComponent::FollowBody()
 	Mesh->SetWorldLocation(MeshWorld);
 }
 
+void UM80ClimbComponent::KeepOffWall(float DeltaTime, bool bCheckWall)
+{
+	// The braced hang clip plants the feet on a wall of its own; the wall under a real ledge may stand further out
+	// (a sill, a plain wall under a thin cornice): the body swings out about the hands until legs and head are off it.
+	ACharacter* C = Owner();
+	UWorld* W = GetWorld();
+	if (!C || !W)
+	{
+		return;
+	}
+	USkeletalMeshComponent* Mesh = C->GetMesh();
+	const FVector Out = Ledge.Normal;
+	const FVector Pivot = HandsWorld();
+	FCollisionQueryParams Q(SCENE_QUERY_STAT(M80ClimbWall), true, C);
+	float Need = -90.f;   // degrees more to swing out (negative: it may swing back in)
+	bool bWall = false;
+	if (bCheckWall)
+	{
+		for (const TCHAR* Bone : {TEXT("ball_l"), TEXT("ball_r"), TEXT("foot_l"), TEXT("foot_r"), TEXT("calf_l"), TEXT("calf_r"), TEXT("pelvis"),
+				 TEXT("spine_03"), TEXT("head")})
+		{
+			const FVector P = Mesh->GetSocketLocation(Bone);
+			const float Below = Pivot.Z - P.Z;
+			FHitResult H;
+			if (Below > 30.f && W->LineTraceSingleByChannel(H, P + Out * 60.f, P - Out * 40.f, ECC_Visibility, Q) && !H.bStartPenetrating)
+			{
+				// > 0: inside the wall (keeping 4 cm off it).
+				const float Depth = FVector::DotProduct(H.ImpactPoint - P, Out) + 4.f;
+				Need = FMath::Max(Need, FMath::RadiansToDegrees(FMath::Atan2(Depth, Below)));
+				bWall = true;
+			}
+		}
+	}
+	const float Want = bWall ? FMath::Clamp(Lean + Need, 0.f, 35.f) : 0.f;
+	// Out at once (never seen in the wall), back in slowly.
+	const float NewLean = Want > Lean ? Want : FMath::FInterpTo(Lean, Want, DeltaTime, 4.f);
+	if (FMath::Abs(NewLean - Lean) < 0.01f)
+	{
+		return;
+	}
+	const FVector Right = FVector::CrossProduct(FVector::UpVector, -Out);
+	const float Sign = FVector::DotProduct(FQuat(Right, 0.1f).RotateVector(-FVector::UpVector), Out) > 0.f ? 1.f : -1.f;
+	const FQuat Swing(Right, Sign * FMath::DegreesToRadians(NewLean - Lean));
+	const FTransform T = Mesh->GetComponentTransform();
+	Mesh->SetWorldLocationAndRotation(Pivot + Swing.RotateVector(T.GetLocation() - Pivot), Swing * T.GetRotation());
+	Lean = NewLean;
+}
+
 bool UM80ClimbComponent::Grab(const FM80Ledge& L)
 {
 	ACharacter* C = Owner();
@@ -340,9 +388,11 @@ bool UM80ClimbComponent::Grab(const FM80Ledge& L)
 	M->SetMovementMode(MOVE_None);
 	C->SetActorRotation(FRotator(0.f, (-L.Normal).Rotation().Yaw, 0.f));
 	C->GetMesh()->SetRelativeTransform(MeshRelative);
+	Lean = 0.f;
 	PlayClip(Hang, 0.f, 0.f);
 	Ledge = L;
 	AlignHandsTo(HoldPoint(L));
+	KeepOffWall(0.f, true);
 	// The capsule hangs with the body, a little out from the wall so it never sits in it.
 	BodyToCapsule = L.Normal * 12.f;
 	FollowBody();
@@ -365,12 +415,15 @@ void UM80ClimbComponent::TickHang(float DeltaTime)
 	const float Side = FVector::DotProduct(In, Right);
 	const FString Why = Debug;
 	const float Dir = Side > 0.3f ? 1.f : (Side < -0.3f ? -1.f : 0.f);
-	Note(FString::Printf(TEXT("appeso: input %.2f,%.2f lato %.2f stato %d clip %.2f/%.2f"), In.X, In.Y, Side, int32(State), Mesh->GetPosition(), ClipLength));
+	Note(FString::Printf(TEXT("appeso: input %.2f,%.2f lato %.2f stato %d clip %.2f/%.2f fuori dal muro %.0f gradi"), In.X, In.Y, Side, int32(State),
+		Mesh->GetPosition(), ClipLength, Lean));
 
 	if (State == EM80ClimbState::Hanging)
 	{
 		if (Dir == 0.f)
 		{
+			KeepOffWall(DeltaTime, true);
+			FollowBody();
 			return;
 		}
 		// Is there ledge on that side?
@@ -381,8 +434,11 @@ void UM80ClimbComponent::TickHang(float DeltaTime)
 			Note(FString::Printf(TEXT("laterale %.2f: bordo finito (%s)"), Side, *Debug));
 			return;
 		}
-		// The clip shuffles to the right; played backwards it goes left.
+		// The clip shuffles to the right; played backwards (from its end, where the body stands further right) it
+		// goes left: the body stays where it is.
+		const FVector Before = HandsWorld();
 		PlayClip(Hang, Dir > 0.f ? 0.f : ClipLength * 0.999f, Dir * ShimmySpeed);
+		Mesh->AddWorldOffset(Before - HandsWorld());
 		State = EM80ClimbState::Shimmying;
 		return;
 	}
@@ -418,6 +474,7 @@ void UM80ClimbComponent::TickHang(float DeltaTime)
 			AlignHandsTo(HoldPoint(Here));
 		}
 	}
+	KeepOffWall(DeltaTime, true);
 	FollowBody();
 }
 
@@ -461,6 +518,7 @@ void UM80ClimbComponent::RestoreBody()
 	USkeletalMeshComponent* Mesh = C->GetMesh();
 	Mesh->SetAnimationMode(EAnimationMode::AnimationBlueprint);
 	Mesh->SetRelativeTransform(MeshRelative);
+	Lean = 0.f;
 	Mesh->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption(MeshTickOption);
 	Mesh->bEnableUpdateRateOptimizations = bMeshURO;
 	Clip.Reset();
@@ -538,6 +596,7 @@ void UM80ClimbComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 		Note(FString::Printf(TEXT("salita: clip %.2f/%.2f"), C->GetMesh()->GetPosition(), ClipLength));
 		ClipTime = FMath::Clamp(ClipTime + DeltaTime * ClipRate, 0.f, ClipLength);
 		C->GetMesh()->SetPosition(ClipTime, false);
+		KeepOffWall(DeltaTime, false);   // upright again while climbing over
 		FollowBody();
 		if (ClipTime >= ClipLength - 0.03f)
 		{

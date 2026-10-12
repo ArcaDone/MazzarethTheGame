@@ -126,6 +126,7 @@ void FM80OverlayProxy::PreUpdate(UAnimInstance* InAnimInstance, float DeltaSecon
 	bPunch = Pose == EM80WeaponPose::Unarmed;
 	PunchStep = I->ComboStep;
 	PunchTime = I->bEnabled ? I->SinceFire : 99.f;
+	bGripLedge = I->bClimbing;
 }
 
 void FM80OverlayProxy::CacheBones()
@@ -321,6 +322,30 @@ bool FM80OverlayProxy::UpperBodyPose(FPoseContext& Output)
 	return true;
 }
 
+void FM80OverlayProxy::CurlThumbs(FPoseContext& Output)
+{
+	for (const TCHAR* Side : {TEXT("_l"), TEXT("_r")})
+	{
+		const FCompactPoseBoneIndex* Index = Bones.Find(FName(FString(TEXT("index_02")) + Side));
+		if (!Index)
+		{
+			continue;
+		}
+		// Fingers curl about their own Z: how far the index finger is bent from the mannequin's rest pose.
+		const FQuat Bend = Output.Pose.GetRefPose(*Index).GetRotation().Inverse() * Output.Pose[*Index].GetRotation();
+		const float Curl = Bend.GetTwistAngle(FVector::ZAxisVector);
+		const TPair<const TCHAR*, float> Thumb[] = {{TEXT("thumb_01"), 0.9f}, {TEXT("thumb_02"), 0.8f}, {TEXT("thumb_03"), 0.6f}};
+		for (const TPair<const TCHAR*, float>& T : Thumb)
+		{
+			if (const FCompactPoseBoneIndex* I = Bones.Find(FName(FString(T.Key) + Side)))
+			{
+				FTransform& Local = Output.Pose[*I];
+				Local.SetRotation((Local.GetRotation() * FQuat(FVector::ZAxisVector, Curl * T.Value)).GetNormalized());
+			}
+		}
+	}
+}
+
 bool FM80OverlayProxy::Evaluate(FPoseContext& Output)
 {
 	FMemMark Mark(FMemStack::Get());
@@ -328,6 +353,10 @@ bool FM80OverlayProxy::Evaluate(FPoseContext& Output)
 	if (Bones.Num() == 0)
 	{
 		return true;
+	}
+	if (bGripLedge)
+	{
+		CurlThumbs(Output);
 	}
 	if (ArmsWeight > 0.01f && !UpperBodyPose(Output))
 	{

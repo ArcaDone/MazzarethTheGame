@@ -43,6 +43,7 @@ struct FM80OverlayProxy : public FAnimInstanceProxy
 	float Recoil = 0.f;          // 0..1, decays after a shot
 	float Swing = -1.f;          // melee blow phase 0..1, <0 none
 	bool bPunch = false;
+	bool bGripLedge = false;     // hands closed on a ledge (climbing)
 	FTransform Grip = FTransform::Identity;  // weapon frame in the hand bone's space (UEFN hand)
 
 	// Weapon poses (loaded on the game thread in Initialize).
@@ -65,6 +66,8 @@ private:
 	void LayerUpper(FPoseContext& Output, UAnimSequence* Seq, double Time, float Weight);
 	/** A blow of the fists' combination from the punch clip; false without it. */
 	bool Punch(FPoseContext& Output);
+	/** The thumbs (left straight by the climbing clips) bend as much as the index fingers. */
+	void CurlThumbs(FPoseContext& Output);
 
 	/** Upper body bones (spine_01 and everything under it) with their blend weights. */
 	TArray<TPair<FCompactPoseBoneIndex, float>> Upper;
@@ -88,6 +91,7 @@ public:
 	float SinceFire = 99.f;
 	int32 ComboStep = 0;
 	bool bEnabled = true;
+	bool bClimbing = false;
 
 	float BlendArms = 0.f;
 

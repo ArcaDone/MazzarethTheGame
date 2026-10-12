@@ -190,8 +190,27 @@ USkeletalMeshComponent* UM80WeaponInventory::HandMesh() const
 	return C->GetMesh();
 }
 
+void UM80WeaponInventory::SetHolstered(bool bHolster)
+{
+	if (bHolster == bHolstered)
+	{
+		return;
+	}
+	bHolstered = bHolster;
+	bTrigger = false;
+	UpdateHeldMesh();
+}
+
 void UM80WeaponInventory::UpdateHeldMesh()
 {
+	if (bHolstered)
+	{
+		if (Held)
+		{
+			Held->SetVisibility(false);
+		}
+		return;
+	}
 	const FM80WeaponSpec& S = CurrentSpec();
 	UStaticMesh* Mesh = LoadPath<UStaticMesh>(S.Mesh);
 	USkeletalMeshComponent* Hand = HandMesh();
@@ -419,7 +438,7 @@ void UM80WeaponInventory::TickComponent(float DeltaTime, ELevelTick TickType, FA
 bool UM80WeaponInventory::TryFire(FVector AimPoint)
 {
 	const FM80WeaponSpec& S = CurrentSpec();
-	if (Cooldown > 0.f || ReloadLeft > 0.f)
+	if (Cooldown > 0.f || ReloadLeft > 0.f || bHolstered)
 	{
 		return false;
 	}

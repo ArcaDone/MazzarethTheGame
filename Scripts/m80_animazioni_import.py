@@ -156,6 +156,10 @@ def mixamo_retargeter(name, rig, mesh, height):
     rc.set_preview_mesh(unreal.RetargetSourceOrTarget.SOURCE, mesh)
     rc.set_preview_mesh(unreal.RetargetSourceOrTarget.TARGET, unreal.load_asset(UEFN_MESH))
     rc.auto_map_chains(unreal.AutoMapChainType.FUZZY, True)
+    # Mixamo's thumbs twist differently and came out sticking up (a "thumbs up" on the ledge): the mannequin keeps
+    # its own relaxed thumbs.
+    for side in ("Left", "Right"):
+        rc.set_source_chain("None", side + "Thumb")
     # Mixamo stands in a T pose, the mannequin in an A pose: the source bones are turned onto the target's directions.
     rc.auto_align_all_bones(unreal.RetargetSourceOrTarget.SOURCE)
     # The clips have no root bone: root motion comes from the pelvis.

@@ -192,6 +192,9 @@ def run():
     if spot:
         x, y, yaw, ledge = spot
         place(world, pawn, x, y, yaw)
+        # With a gun in hand: it is put away while climbing and comes back after.
+        inv = pc.get_inventory()
+        inv.give(unreal.M80Weapon.BERETTA, -1, True)
         for s in wait(world, 0.4):
             yield s
         report["jump_to_ledge"] = climb.jump_pressed()
@@ -205,28 +208,56 @@ def run():
             report["grab_direct"] = climb.grab(ledge)
             for s in wait(world, 0.3):
                 yield s
+        held = inv.get_held_mesh()
+        report["gun_visible_hanging"] = bool(held and held.is_visible())
         for s in side(world, pc, pawn, "03_appeso", report):
+            yield s
+        for s in side(world, pc, pawn, "03c_appeso_vicino", report, 170, -60):
             yield s
         for s in shot(world, "03b_appeso_camera", report):
             yield s
-        right = pawn.get_actor_right_vector()
-        p0 = pawn.get_actor_location()
-
-        climb.force_move_input(right, 2.4)
-        trk = []
-        for s in wait(world, 2.4, lambda: trk.append([round((pawn.get_actor_location() - p0).dot(right)), climb.get_editor_property("Debug")])):
+        report["hang_debug"] = climb.get_editor_property("Debug")
+        # The hands on the edge, from close by (the fingers).
+        cam = list(unreal.GameplayStatics.get_all_actors_of_class(world, unreal.CameraActor))[0]
+        mesh = pawn.get_component_by_class(unreal.SkeletalMeshComponent)
+        hands = (mesh.get_socket_location("hand_l") + mesh.get_socket_location("hand_r")) * 0.5
+        eye = hands - pawn.get_actor_forward_vector() * 90 + V(0, 0, 45)
+        d = hands - eye
+        cam.set_actor_location_and_rotation(eye, unreal.Rotator(0, math.degrees(math.atan2(d.z, math.hypot(d.x, d.y))), math.degrees(math.atan2(d.y, d.x))), False, True)
+        pc.set_view_target_with_blend(cam, 0.0)
+        yield 2
+        for s in shot(world, "03d_mani", report):
             yield s
-        report["shimmy_track"] = trk[::8]
-        report["shimmy_right_cm"] = round((pawn.get_actor_location() - p0).dot(right))
-        report["shimmy_debug"] = climb.get_editor_property("Debug")
+        pc.set_view_target_with_blend(pawn, 0.0)
+        right = pawn.get_actor_right_vector()
+
+        # Along the ledge, right then left (the input as the controller passes it), with the camera behind and turned.
+        def shimmy(x, seconds, tag):
+            p = pawn.get_actor_location()
+            trk = []
+
+            def push():
+                climb.force_move_input(right * x, 0.1)
+                trk.append([round((pawn.get_actor_location() - p).dot(right)), climb.get_editor_property("Debug")[:60]])
+            for s in wait(world, seconds, push):
+                yield s
+            report["shimmy_" + tag + "_cm"] = round((pawn.get_actor_location() - p).dot(right))
+            report["shimmy_" + tag + "_track"] = trk[::10]
+            for s in wait(world, 0.8):
+                yield s
+        for s in shimmy(1.0, 2.4, "right"):
+            yield s
         for s in side(world, pc, pawn, "04_spostamento_destra", report):
             yield s
-
-        p1 = pawn.get_actor_location()
-        climb.force_move_input(right * -1.0, 2.4)
-        for s in wait(world, 2.4):
+        for s in shimmy(-1.0, 2.4, "left"):
             yield s
-        report["shimmy_left_cm"] = round((pawn.get_actor_location() - p1).dot(right * -1.0))
+        yaw = pawn.get_actor_rotation().yaw
+        pc.set_control_rotation(unreal.Rotator(0, -10, yaw + 70))
+        for s in shimmy(-1.0, 2.0, "left_camera_side"):
+            yield s
+        for s in shimmy(1.0, 2.0, "right_camera_side"):
+            yield s
+        pc.set_control_rotation(unreal.Rotator(0, -10, yaw))
         for s in wait(world, 1.3):
             yield s
         report["state_before_up"] = str(climb.get_state())
@@ -253,6 +284,10 @@ def run():
         for s in wait(world, 1.2, lambda: ctr.append([round(pawn.get_actor_location().z), str(climb.get_state())[-14:], climb.get_editor_property("Debug")])):
             yield s
         report["climb_track"] = ctr[::5]
+        for s in wait(world, 0.5):
+            yield s
+        held = inv.get_held_mesh()
+        report["gun_visible_after_climb"] = bool(held and held.is_visible())
         report["climb_debug"] = climb.get_editor_property("Debug")
         report["after_climb"] = {"state": str(climb.get_state()), "feet_z": round(pawn.get_actor_location().z - 92),
                                  "ledge_z": round(ledge.get_editor_property("Edge").z)}

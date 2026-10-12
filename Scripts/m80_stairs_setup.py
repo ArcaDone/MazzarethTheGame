@@ -230,6 +230,15 @@ def build_level():
            fence_height_cm=160)
     stairs("5_Muretto_conci", [(-1500, 3200, 0), (1500, 3200, 0)], kind=K.FENCE_ONLY, wall_sides=S.LEFT, wall_height_cm=110,
            wall_finish=W.STONE)
+    # 6. Walls from the spline down to the ground and the Madonna's railing (posts at both ends, never open rails):
+    # a stone wall whose top follows the spline from 2.5 m down to 1.2 m, railing on top; the railing on the ground;
+    # a 3 m thick low wall with the railing.
+    stairs("6_Muro_dalla_spline", [(-1500, 4000, 250), (0, 4150, 180), (1500, 4000, 120)], kind=K.WALL_FROM_SPLINE,
+           wall_thickness_cm=60, wall_finish=W.STONE, fence_kind=F.MADONNA_RAILING)
+    stairs("6_Ringhiera_Madonna", [(-1500, 4800, 0), (1300, 4800, 0)], kind=K.FENCE_ONLY, fence_kind=F.MADONNA_RAILING,
+           fence_sides=S.LEFT, fence_height_cm=109)
+    stairs("6_Muretto_largo_ringhiera", [(-1500, 5500, 0), (1000, 5500, 0)], kind=K.FENCE_ONLY, wall_sides=S.LEFT,
+           wall_height_cm=60, wall_thickness_cm=300, wall_finish=W.LAVA, fence_kind=F.MADONNA_RAILING, fence_sides=S.LEFT)
 
 
 VIEWS = {
@@ -248,6 +257,10 @@ VIEWS = {
     "dettaglio_tubolare": ((-300, 1500, 130), (300, 1850, 90)),
     "dettaglio_canne": ((-200, 2350, 120), (300, 2650, 100)),
     "dettaglio_muro_copertina": ((600, 3000, 130), (0, 3150, 100)),
+    "6_muri_ringhiere": ((-2600, 3300, 600), (0, 4800, 100)),
+    "6_muro_dalla_spline": ((300, 3300, 260), (-300, 4100, 220)),
+    "6_ringhiera_fine": ((1700, 4500, 170), (1150, 4750, 60)),
+    "6_muretto_largo": ((1600, 6300, 300), (500, 5600, 60)),
 }
 
 

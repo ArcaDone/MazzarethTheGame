@@ -91,6 +91,32 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
 	void KnockDown(FVector Push);
 
+	/** Weapon wheel (GTA V): Tab / gamepad LB held opens it and slows time; the mouse or the right stick points a
+	 * sector, the mouse wheel / Q changes the weapon inside it; letting go takes it. */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
+	void OpenWheel();
+
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
+	void CloseWheel(bool bTake = true);
+
+	UFUNCTION(BlueprintPure, Category = "Mazzarino")
+	bool IsWheelOpen() const { return bWheelOpen; }
+
+	/** Sector pointed at (0 = top, clockwise), -1 none yet. */
+	UFUNCTION(BlueprintPure, Category = "Mazzarino")
+	int32 GetWheelSector() const { return WheelSector; }
+
+	/** Points the wheel at a sector (tests, the d-pad). */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
+	void PointWheel(int32 Sector);
+
+	/** The next weapon inside the sector pointed at (mouse wheel, Q). */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
+	void WheelNext(int32 Dir);
+
+	/** Weapon category of each wheel sector, clockwise from the top. */
+	static int32 WheelCategory(int32 Sector);
+
 	/** Holds the aim as the right mouse button does (tests, gamepad left trigger). */
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
 	void SetAimHeld(bool bHeld) { bAimHeld = bHeld; }
@@ -209,6 +235,10 @@ private:
 	bool bFireHeld = false;
 	bool bAimingNow = false;
 	bool bAimHeld = false;
+	bool bWheelOpen = false;
+	int32 WheelSector = -1;
+	FVector2D WheelCursor = FVector2D::ZeroVector;
+	void UpdateWheel();
 	bool bAimHeldApplied = false;
 	bool bAimForced = false;
 	bool bStrafeForced = false;

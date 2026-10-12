@@ -71,6 +71,8 @@ FM80WeaponSpec MakeSpecs(EM80Weapon W)
 		S.MaxAmmo = 60; S.PickupAmmo = 16; S.ReloadTime = 2.2f; S.Range = 2500.f; S.SpreadDeg = 5.f; S.Impulse = 1200.f;
 		S.FireSound = TEXT("/Game/Mazzarino80/Audio/M80_Lupara.M80_Lupara"); S.Glow = FLinearColor(1.f, 0.35f, 0.2f);
 		break;
+	default:
+		break;
 	}
 	return S;
 }
@@ -137,14 +139,24 @@ const FM80WeaponSpec& M80WeaponSpec(EM80Weapon W)
 // ---------------------------------------------------------------------------------------------
 // Inventory
 
+const TCHAR* M80WeaponCategoryName(int32 Category)
+{
+	static const TCHAR* Names[M80WeaponCategories] = {TEXT("Pugni"), TEXT("Armi bianche"), TEXT("Pistole"), TEXT("Fucili a pompa"),
+		TEXT("Mitragliette"), TEXT("Fucili"), TEXT("Da lancio"), TEXT("Pesanti")};
+	return Names[FMath::Clamp(Category, 0, M80WeaponCategories - 1)];
+}
+
 UM80WeaponInventory::UM80WeaponInventory()
 {
 	PrimaryComponentTick.bCanEverTick = true;
-	Slots.SetNum(4);
+	Slots.SetNum(int32(EM80Weapon::Count));
+	for (int32 i = 0; i < Slots.Num(); ++i)
+	{
+		Slots[i].Weapon = EM80Weapon(i);
+	}
 	Slots[0].bHas = true;
-	Slots[0].Weapon = EM80Weapon::Pugni;
+	Chosen.Init(-1, M80WeaponCategories);
 }
-
 void UM80WeaponInventory::BeginPlay()
 {
 	Super::BeginPlay();
@@ -210,14 +222,19 @@ void UM80WeaponInventory::HideWeapon()
 
 bool UM80WeaponInventory::Give(EM80Weapon Weapon, int32 Ammo, bool bSelect)
 {
+	if (!Slots.IsValidIndex(int32(Weapon)))
+	{
+		return false;
+	}
 	const FM80WeaponSpec& S = M80WeaponSpec(Weapon);
-	FM80WeaponSlot& Slot = Slots[S.Slot];
+	FM80WeaponSlot& Slot = Slots[int32(Weapon)];
 	if (Ammo < 0)
 	{
 		Ammo = S.PickupAmmo;
 	}
-	if (Slot.bHas && Slot.Weapon == Weapon)
+	if (Slot.bHas)
 	{
+		// Already carried: the ammo adds up.
 		if (S.bMelee || Slot.Reserve + Slot.InClip >= S.MaxAmmo)
 		{
 			return false;
@@ -225,25 +242,67 @@ bool UM80WeaponInventory::Give(EM80Weapon Weapon, int32 Ammo, bool bSelect)
 		Slot.Reserve = FMath::Min(S.MaxAmmo - Slot.InClip, Slot.Reserve + Ammo);
 		return true;
 	}
-	// Another weapon of the same kind: swap (GTA keeps one per slot).
 	Slot.bHas = true;
-	Slot.Weapon = Weapon;
 	Slot.InClip = FMath::Min(S.Clip, Ammo);
 	Slot.Reserve = FMath::Min(S.MaxAmmo, Ammo) - Slot.InClip;
 	if (bSelect)
 	{
-		SelectSlot(S.Slot);
+		SelectWeapon(Weapon);
 	}
 	return true;
 }
 
-void UM80WeaponInventory::SelectSlot(int32 Slot)
+TArray<EM80Weapon> UM80WeaponInventory::WeaponsIn(int32 Category) const
 {
-	if (!Slots.IsValidIndex(Slot) || !Slots[Slot].bHas)
+	TArray<EM80Weapon> Out;
+	for (const FM80WeaponSlot& Slot : Slots)
+	{
+		if (Slot.bHas && M80WeaponSpec(Slot.Weapon).Slot == Category)
+		{
+			Out.Add(Slot.Weapon);
+		}
+	}
+	return Out;
+}
+
+EM80Weapon UM80WeaponInventory::ChosenIn(int32 Category) const
+{
+	if (Chosen.IsValidIndex(Category) && Slots.IsValidIndex(Chosen[Category]) && Slots[Chosen[Category]].bHas)
+	{
+		return EM80Weapon(Chosen[Category]);
+	}
+	const TArray<EM80Weapon> In = WeaponsIn(Category);
+	return In.Num() ? In[0] : EM80Weapon::Pugni;
+}
+
+void UM80WeaponInventory::ChooseIn(EM80Weapon Weapon)
+{
+	if (HasWeapon(Weapon))
+	{
+		Chosen[M80WeaponSpec(Weapon).Slot] = int32(Weapon);
+	}
+}
+
+void UM80WeaponInventory::SelectSlot(int32 Category)
+{
+	if (WeaponsIn(Category).Num() > 0)
+	{
+		SelectWeapon(ChosenIn(Category));
+	}
+}
+
+void UM80WeaponInventory::SelectWeapon(EM80Weapon Weapon)
+{
+	if (!HasWeapon(Weapon))
 	{
 		return;
 	}
-	Current = Slot;
+	ChooseIn(Weapon);
+	if (Current == int32(Weapon))
+	{
+		return;
+	}
+	Current = int32(Weapon);
 	ReloadLeft = 0.f;
 	Cooldown = FMath::Max(Cooldown, 0.25f);  // drawing the weapon
 	UpdateHeldMesh();
@@ -251,14 +310,16 @@ void UM80WeaponInventory::SelectSlot(int32 Slot)
 
 void UM80WeaponInventory::Cycle(int32 Dir)
 {
-	for (int32 i = 1; i <= Slots.Num(); ++i)
+	// Every weapon carried, sector by sector.
+	TArray<EM80Weapon> All;
+	for (int32 Cat = 0; Cat < M80WeaponCategories; ++Cat)
 	{
-		const int32 S = (Current + Dir * i + Slots.Num() * 4) % Slots.Num();
-		if (Slots[S].bHas)
-		{
-			SelectSlot(S);
-			return;
-		}
+		All.Append(WeaponsIn(Cat));
+	}
+	const int32 At = All.IndexOfByKey(GetCurrentWeapon());
+	if (All.Num() > 1)
+	{
+		SelectWeapon(All[((At == INDEX_NONE ? 0 : At) + Dir + All.Num()) % All.Num()]);
 	}
 }
 
@@ -279,10 +340,10 @@ void UM80WeaponInventory::DropCurrent()
 		Pick->LifeTime = 120.f;
 		Pick->SetWeapon(Slot.Weapon, M80WeaponSpec(Slot.Weapon).bMelee ? 0 : Slot.InClip + Slot.Reserve);
 	}
-	Slot = FM80WeaponSlot();
-	SelectSlot(0);
+	Slot.bHas = false;
+	Slot.InClip = Slot.Reserve = 0;
+	SelectWeapon(EM80Weapon::Pugni);
 }
-
 void UM80WeaponInventory::Reload()
 {
 	const FM80WeaponSpec& S = CurrentSpec();

@@ -1,5 +1,6 @@
 #include "M80PlayerController.h"
 #include "M80PlayerCamera.h"
+#include "Kismet/GameplayStatics.h"
 #include "M80Climb.h"
 #include "M80Car.h"
 #include "M80Vitals.h"
@@ -98,7 +99,19 @@ void AM80PlayerController::SetupInputComponent()
 	{
 		BindKeyLambda(Numbers[i], [this, i]() { if (UM80WeaponInventory* Inv = GetInventory()) { Inv->SelectSlot(i); } });
 	}
-	BindKeyLambda(EKeys::Q, [this]() { if (UM80WeaponInventory* Inv = GetInventory()) { Inv->Cycle(1); } });
+	BindKeyLambda(EKeys::Q, [this]() { if (bWheelOpen) { WheelNext(1); } else if (UM80WeaponInventory* Inv = GetInventory()) { Inv->Cycle(1); } });
+	BindKeyLambda(EKeys::MouseScrollUp, [this]() { if (bWheelOpen) { WheelNext(1); } });
+	BindKeyLambda(EKeys::MouseScrollDown, [this]() { if (bWheelOpen) { WheelNext(-1); } });
+	BindKeyLambda(EKeys::Gamepad_FaceButton_Left, [this]() { if (bWheelOpen) { WheelNext(1); } });
+	// The weapon wheel: open while held.
+	for (const FKey& K : {EKeys::Tab, EKeys::Gamepad_LeftShoulder})
+	{
+		BindKeyLambda(K, [this]() { OpenWheel(); });
+		FInputKeyBinding Up{FInputChord(K), IE_Released};
+		Up.bConsumeInput = false;
+		Up.KeyDelegate.GetDelegateForManualSet().BindLambda([this]() { CloseWheel(true); });
+		InputComponent->KeyBindings.Add(Up);
+	}
 	BindKeyLambda(EKeys::Gamepad_DPad_Right, [this]() { if (UM80WeaponInventory* Inv = GetInventory()) { Inv->Cycle(1); } });
 	BindKeyLambda(EKeys::Gamepad_DPad_Left, [this]() { if (UM80WeaponInventory* Inv = GetInventory()) { Inv->Cycle(-1); } });
 	auto OnFootDo = [this](TFunction<void(UM80WeaponInventory*)> Fn)
@@ -142,6 +155,10 @@ UM80WeaponInventory* AM80PlayerController::GetInventory() const
 
 void AM80PlayerController::SetFire(bool bDown)
 {
+	if (bWheelOpen && bDown)
+	{
+		return;
+	}
 	bFireHeld = bDown && State == EM80PlayerState::OnFoot;
 	if (UM80WeaponInventory* Inv = GetInventory())
 	{
@@ -174,6 +191,108 @@ bool AM80PlayerController::IsActionHeld(const TSoftObjectPtr<UInputAction>& Acti
 	const UInputAction* A = Action.LoadSynchronous();
 	const UEnhancedInputLocalPlayerSubsystem* Sub = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
 	return A && Sub && Sub->GetPlayerInput() && Sub->GetPlayerInput()->GetActionValue(A).Get<bool>();
+}
+
+int32 AM80PlayerController::WheelCategory(int32 Sector)
+{
+	// Clockwise from the top: pistols, machine pistols, shotguns, rifles, fists (bottom), melee, heavy, thrown.
+	static const int32 Map[M80WeaponCategories] = {2, 4, 3, 5, 0, 1, 7, 6};
+	return Map[((Sector % M80WeaponCategories) + M80WeaponCategories) % M80WeaponCategories];
+}
+
+void AM80PlayerController::OpenWheel()
+{
+	if (bWheelOpen || State != EM80PlayerState::OnFoot || !GetInventory())
+	{
+		return;
+	}
+	bWheelOpen = true;
+	WheelCursor = FVector2D::ZeroVector;
+	// Start on the sector of the weapon in hand.
+	WheelSector = -1;
+	const int32 Cat = M80WeaponSpec(GetInventory()->GetCurrentWeapon()).Slot;
+	for (int32 i = 0; i < M80WeaponCategories; ++i)
+	{
+		if (WheelCategory(i) == Cat)
+		{
+			WheelSector = i;
+		}
+	}
+	SetFire(false);
+	SetIgnoreLookInput(true);
+	UGameplayStatics::SetGlobalTimeDilation(this, 0.3f);
+}
+
+void AM80PlayerController::CloseWheel(bool bTake)
+{
+	if (!bWheelOpen)
+	{
+		return;
+	}
+	bWheelOpen = false;
+	ResetIgnoreLookInput();
+	UGameplayStatics::SetGlobalTimeDilation(this, 1.f);
+	UM80WeaponInventory* Inv = GetInventory();
+	if (bTake && Inv && WheelSector >= 0)
+	{
+		Inv->SelectSlot(WheelCategory(WheelSector));
+	}
+}
+
+void AM80PlayerController::PointWheel(int32 Sector)
+{
+	WheelSector = ((Sector % M80WeaponCategories) + M80WeaponCategories) % M80WeaponCategories;
+	const float A = FMath::DegreesToRadians(WheelSector * 45.f);
+	WheelCursor = FVector2D(FMath::Sin(A), FMath::Cos(A));
+}
+
+void AM80PlayerController::WheelNext(int32 Dir)
+{
+	UM80WeaponInventory* Inv = GetInventory();
+	if (!Inv || WheelSector < 0)
+	{
+		return;
+	}
+	const int32 Cat = WheelCategory(WheelSector);
+	const TArray<EM80Weapon> In = Inv->WeaponsIn(Cat);
+	if (In.Num() > 1)
+	{
+		const int32 At = In.IndexOfByKey(Inv->ChosenIn(Cat));
+		Inv->ChooseIn(In[((At == INDEX_NONE ? 0 : At) + Dir + In.Num()) % In.Num()]);
+	}
+}
+
+void AM80PlayerController::UpdateWheel()
+{
+	if (!bWheelOpen)
+	{
+		return;
+	}
+	if (State != EM80PlayerState::OnFoot)
+	{
+		CloseWheel(false);
+		return;
+	}
+	// Mouse: the cursor moves with it (screen up = +Y); right stick: it points directly.
+	float DX = 0.f, DY = 0.f;
+	GetInputMouseDelta(DX, DY);
+	WheelCursor += FVector2D(DX, DY) * 0.08f;
+	float SX = 0.f, SY = 0.f;
+	GetInputAnalogStickState(EControllerAnalogStick::CAS_RightStick, SX, SY);
+	if (FVector2D(SX, SY).Size() > 0.4f)
+	{
+		WheelCursor = FVector2D(SX, SY);
+	}
+	if (WheelCursor.Size() > 1.f)
+	{
+		WheelCursor.Normalize();
+	}
+	if (WheelCursor.Size() > 0.35f)
+	{
+		// 0 at the top, clockwise.
+		const float Deg = FMath::RadiansToDegrees(FMath::Atan2(WheelCursor.X, WheelCursor.Y));
+		WheelSector = FMath::FloorToInt(FMath::Fmod(Deg + 360.f + 22.5f, 360.f) / 45.f) % M80WeaponCategories;
+	}
 }
 
 void AM80PlayerController::UpdateClimbInput()
@@ -855,6 +974,7 @@ void AM80PlayerController::PlayerTick(float DeltaTime)
 	}
 	UpdateWeapons(DeltaTime);
 	UpdateClimbInput();
+	UpdateWheel();
 
 	StreetTimer -= DeltaTime;
 	if (StreetTimer <= 0.f)

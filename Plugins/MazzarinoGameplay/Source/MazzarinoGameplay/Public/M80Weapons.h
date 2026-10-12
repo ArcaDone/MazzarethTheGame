@@ -21,8 +21,13 @@ enum class EM80Weapon : uint8
 	Mazza,
 	Revolver,
 	Beretta,
-	Lupara
+	Lupara,
+	Count UMETA(Hidden)
 };
+
+/** The weapon wheel's eight sectors (GTA V): FM80WeaponSpec::Slot is the sector of a weapon. */
+constexpr int32 M80WeaponCategories = 8;
+MAZZARINOGAMEPLAY_API const TCHAR* M80WeaponCategoryName(int32 Category);
 
 /** How the arms hold the weapon (the overlay animation picks the pose from this). */
 UENUM(BlueprintType)
@@ -38,7 +43,7 @@ enum class EM80WeaponPose : uint8
 struct MAZZARINOGAMEPLAY_API FM80WeaponSpec
 {
 	const TCHAR* Name = TEXT("");
-	int32 Slot = 0;                 // 0 fists, 1 melee, 2 pistol, 3 shotgun
+	int32 Slot = 0;                 // sector: 0 fists, 1 melee, 2 pistols, 3 shotguns, 4 machine pistols, 5 rifles, 6 thrown, 7 heavy
 	const TCHAR* Mesh = nullptr;    // static mesh path, null for fists
 	EM80WeaponPose Pose = EM80WeaponPose::Unarmed;
 	bool bMelee = true;
@@ -64,7 +69,7 @@ MAZZARINOGAMEPLAY_API FCollisionObjectQueryParams M80ShotObjects();
 /** Weapon frame in the right hand bone's space (grip in the palm, barrel along the knuckles), from the mesh's hand bones. */
 MAZZARINOGAMEPLAY_API FTransform M80GripInHand(const class USkeletalMesh* Mesh, bool bBlade);
 
-/** One inventory slot: the weapon in it and its ammo. */
+/** A weapon the character may carry, and its ammo. */
 USTRUCT(BlueprintType)
 struct FM80WeaponSlot
 {
@@ -84,8 +89,9 @@ struct FM80WeaponSlot
 };
 
 /**
- * The weapons a character carries, GTA style: four slots (fists, melee, pistol, shotgun), one weapon
- * per slot (picking up another one of the same slot swaps it), ammo adds up. Fires hitscan shots
+ * The weapons a character carries, GTA V style: every weapon picked up is kept with its ammo (picking up one
+ * already carried adds the ammo), grouped in the eight sectors of the weapon wheel; each sector remembers the
+ * weapon last chosen in it. Fires hitscan shots
  * (UGameplayStatics::ApplyPointDamage, impulses, impacts) and melee blows. The weapon in hand is a
  * static mesh on the right hand of the visible body.
  */
@@ -104,10 +110,29 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
 	bool Give(EM80Weapon Weapon, int32 Ammo, bool bSelect = true);
 
+	/** Takes the weapon of a sector (the one last chosen there, else the first carried). */
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
-	void SelectSlot(int32 Slot);
+	void SelectSlot(int32 Category);
 
-	/** Next (+1) or previous (-1) slot that has a weapon. */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
+	void SelectWeapon(EM80Weapon Weapon);
+
+	/** Weapons carried in a sector, in order. */
+	UFUNCTION(BlueprintPure, Category = "Mazzarino")
+	TArray<EM80Weapon> WeaponsIn(int32 Category) const;
+
+	/** The weapon a sector gives (last chosen there, else its first one); Pugni when the sector is empty. */
+	UFUNCTION(BlueprintPure, Category = "Mazzarino")
+	EM80Weapon ChosenIn(int32 Category) const;
+
+	/** Makes Weapon the one its sector gives, without taking it in hand (the wheel's second button). */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
+	void ChooseIn(EM80Weapon Weapon);
+
+	UFUNCTION(BlueprintPure, Category = "Mazzarino")
+	bool HasWeapon(EM80Weapon Weapon) const { return Slots.IsValidIndex(int32(Weapon)) && Slots[int32(Weapon)].bHas; }
+
+	/** Next (+1) or previous (-1) weapon carried, sector by sector. */
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
 	void Cycle(int32 Dir);
 
@@ -129,6 +154,7 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Mazzarino")
 	EM80Weapon GetCurrentWeapon() const { return Slots[Current].Weapon; }
 
+	/** Index of the weapon in hand (into Slots). */
 	UFUNCTION(BlueprintPure, Category = "Mazzarino")
 	int32 GetCurrentSlot() const { return Current; }
 
@@ -165,6 +191,7 @@ private:
 	TObjectPtr<UStaticMeshComponent> Held;
 
 	int32 Current = 0;
+	TArray<int32> Chosen;   // per sector: the weapon index last chosen, or -1
 	float Cooldown = 0.f;
 	float ReloadLeft = 0.f;
 	float SinceLastFire = 99.f;

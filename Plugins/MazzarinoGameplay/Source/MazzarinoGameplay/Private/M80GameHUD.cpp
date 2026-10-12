@@ -1,4 +1,5 @@
 #include "M80GameHUD.h"
+#include "Engine/Texture2D.h"
 #include "M80Atmosphere.h"
 #include "M80Car.h"
 #include "M80PlayerController.h"
@@ -112,6 +113,7 @@ void AM80GameHUD::DrawHUD()
 	DrawWeapon(S);
 	DrawSpeed(S);
 	DrawEffects(S);
+	DrawWheel(S);
 }
 
 void AM80GameHUD::DrawSpeed(float S)
@@ -176,6 +178,107 @@ void AM80GameHUD::DrawWeapon(float S)
 			Canvas->DrawItem(L);
 		}
 	}
+}
+
+UTexture2D* AM80GameHUD::WeaponIcon(int32 Weapon)
+{
+	// /Game/Mazzarino80/UI/Icone/T_M80_Icona_<weapon> (Scripts/m80_icone_armi.py), null when missing.
+	if (const TObjectPtr<UTexture2D>* Found = Icons.Find(Weapon))
+	{
+		return Found->Get();
+	}
+	const FString Name = StaticEnum<EM80Weapon>()->GetNameStringByValue(Weapon);
+	UTexture2D* T = LoadObject<UTexture2D>(nullptr, *FString::Printf(TEXT("/Game/Mazzarino80/UI/Icone/T_M80_Icona_%s.T_M80_Icona_%s"), *Name, *Name), nullptr, LOAD_NoWarn | LOAD_Quiet);
+	Icons.Add(Weapon, T);
+	return T;
+}
+
+void AM80GameHUD::DrawWheel(float S)
+{
+	const AM80PlayerController* PC = Cast<AM80PlayerController>(PlayerOwner);
+	const UM80WeaponInventory* Inv = PC ? PC->GetInventory() : nullptr;
+	if (!Inv || !PC->IsWheelOpen())
+	{
+		return;
+	}
+	// GTA V: a ring of eight grey sectors, the one pointed at in red, the weapon and its ammo in each.
+	const FVector2D C(Canvas->ClipX / 2, Canvas->ClipY / 2);
+	const float R1 = 140.f * S, R2 = 330.f * S;
+	const int32 Hover = PC->GetWheelSector();
+	auto At = [&C](float Deg, float R) { const float A = FMath::DegreesToRadians(Deg); return C + FVector2D(FMath::Sin(A), -FMath::Cos(A)) * R; };
+	for (int32 Sec = 0; Sec < M80WeaponCategories; ++Sec)
+	{
+		const int32 Cat = AM80PlayerController::WheelCategory(Sec);
+		const TArray<EM80Weapon> In = Inv->WeaponsIn(Cat);
+		const bool bHover = Sec == Hover;
+		const FLinearColor Fill = bHover ? FLinearColor(0.78f, 0.33f, 0.32f, 0.72f)
+			: (In.Num() ? FLinearColor(0.72f, 0.72f, 0.72f, 0.6f) : FLinearColor(0.06f, 0.06f, 0.06f, 0.45f));   // empty until a weapon of it is picked up
+		const float A0 = Sec * 45.f - 22.5f;
+		constexpr int32 Steps = 10;
+		for (int32 k = 0; k < Steps; ++k)
+		{
+			const float Da = A0 + 45.f * k / Steps, Db = A0 + 45.f * (k + 1) / Steps;
+			for (const TArray<FVector2D>& T : {TArray<FVector2D>{At(Da, R1), At(Da, R2), At(Db, R2)}, TArray<FVector2D>{At(Da, R1), At(Db, R2), At(Db, R1)}})
+			{
+				FCanvasTriangleItem Tri(T[0], T[1], T[2], GWhiteTexture);
+				Tri.SetColor(Fill);
+				Tri.BlendMode = SE_BLEND_Translucent;
+				Canvas->DrawItem(Tri);
+			}
+		}
+		// Separator and the green rim of the weapon in hand's sector.
+		FCanvasLineItem Sep(At(A0, R1), At(A0, R2));
+		Sep.SetColor(FLinearColor(0.15f, 0.15f, 0.15f, 0.8f));
+		Sep.LineThickness = 2.f * S;
+		Canvas->DrawItem(Sep);
+		if (In.Contains(Inv->GetCurrentWeapon()))
+		{
+			for (int32 k = 0; k < Steps; ++k)
+			{
+				FCanvasLineItem Rim(At(A0 + 45.f * k / Steps, R2 - 3.f * S), At(A0 + 45.f * (k + 1) / Steps, R2 - 3.f * S));
+				Rim.SetColor(FLinearColor(0.35f, 0.85f, 0.4f, 0.95f));
+				Rim.LineThickness = 4.f * S;
+				Canvas->DrawItem(Rim);
+			}
+		}
+		// The weapon the sector gives: its icon (or name) and its ammo.
+		if (In.Num())
+		{
+			const EM80Weapon W = Inv->ChosenIn(Cat);
+			const FM80WeaponSpec& Spec = M80WeaponSpec(W);
+			const FVector2D Mid = At(A0 + 22.5f, (R1 + R2) * 0.5f);
+			if (UTexture2D* Icon = WeaponIcon(int32(W)))
+			{
+				const FVector2D Size(190.f * S, 95.f * S);
+				FCanvasTileItem Tile(Mid - Size * 0.5f - FVector2D(0, 12.f * S), Icon->GetResource(), Size, FLinearColor::White);
+				Tile.BlendMode = SE_BLEND_Translucent;
+				Canvas->DrawItem(Tile);
+			}
+			else
+			{
+				Text(FString(Spec.Name).ToUpper(), Mid.X, Mid.Y - 14.f * S, FLinearColor(0.05f, 0.05f, 0.05f), 1.05f * S, false, true, true);
+			}
+			if (!Spec.bMelee)
+			{
+				const FM80WeaponSlot Slot = Inv->GetSlot(int32(W));
+				Text(FString::Printf(TEXT("%d / %d"), Slot.Reserve, Slot.InClip), Mid.X, Mid.Y + 38.f * S, FLinearColor(0.97f, 0.97f, 0.97f), 0.95f * S, false, true, true);
+			}
+		}
+	}
+	// Centre: what the sector pointed at gives, and which of its weapons.
+	if (Hover >= 0)
+	{
+		const int32 Cat = AM80PlayerController::WheelCategory(Hover);
+		const TArray<EM80Weapon> In = Inv->WeaponsIn(Cat);
+		const FString Name = In.Num() ? FString(M80WeaponSpec(Inv->ChosenIn(Cat)).Name) : FString(TEXT("vuoto"));
+		Text(Name, C.X, C.Y - 26.f * S, FLinearColor(0.97f, 0.97f, 0.97f), 1.35f * S, false, true, true);
+		Text(M80WeaponCategoryName(Cat), C.X, C.Y + 10.f * S, FLinearColor(0.85f, 0.85f, 0.85f), 0.9f * S, false, true, true);
+		if (In.Num() > 1)
+		{
+			Text(FString::Printf(TEXT("<  %d / %d  >"), In.IndexOfByKey(Inv->ChosenIn(Cat)) + 1, In.Num()), C.X, C.Y + 44.f * S, FLinearColor(0.97f, 0.97f, 0.97f), 1.05f * S, false, true, true);
+		}
+	}
+	Text(TEXT("Rotella / Q: cambia arma nel settore"), C.X, C.Y + R2 + 34.f * S, FLinearColor(0.95f, 0.95f, 0.95f), 1.0f * S, false, true, true);
 }
 
 void AM80GameHUD::DrawRadar(float X, float Y, float W, float H, float S)

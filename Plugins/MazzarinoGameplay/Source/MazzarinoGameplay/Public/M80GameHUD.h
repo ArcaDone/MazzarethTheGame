@@ -55,6 +55,8 @@ private:
 	void Text(const FString& Str, float X, float Y, const FLinearColor& Color, float Scale, bool bRight = false, bool bBig = true, bool bCentre = false);
 	void DrawEffects(float S);
 	void DrawWeapon(float S);
+	void DrawWheel(float S);
+	class UTexture2D* WeaponIcon(int32 Weapon);
 	void DrawSpeed(float S);
 	void Star(float X, float Y, float R, const FLinearColor& Fill, const FLinearColor& Edge);
 	FVector2D WorldToMapUV(const FVector& P) const;
@@ -64,6 +66,9 @@ private:
 
 	UPROPERTY(Transient)
 	TObjectPtr<UMaterialInstanceDynamic> MapMID;
+
+	UPROPERTY(Transient)
+	TMap<int32, TObjectPtr<class UTexture2D>> Icons;
 
 	float RadarRange = 9000.f;
 	float StaminaAlpha = 0.f;

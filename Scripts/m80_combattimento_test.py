@@ -109,6 +109,11 @@ def run():
     for s in wait(world, 0.8):
         yield s
     report["aiming"] = pc.is_aiming()
+    cm = pc.player_camera_manager
+    head = pawn.get_actor_location() + unreal.Vector(0, 0, 58)
+    report["camera_from_shoulder_cm"] = round((cm.get_camera_location() - head).length())
+    report["camera_fov"] = round(cm.get_fov_angle())
+    report["camera_local"] = [round(v) for v in (pawn.get_actor_transform().inverse_transform_location(cm.get_camera_location())).to_tuple()]
     for s in shot(world, "03_pistola_mira", report):
         yield s
     for s in side(world, pc, pawn, "03b_pistola_mira_lato", report):
@@ -158,6 +163,33 @@ def run():
         yield s
     pc.set_aim_held(False)
     report["aim_point_m"] = round((pc.get_aim_point() - pawn.get_actor_location()).length() / 100, 1)
+
+    # The weapon wheel: two pistols, the lupara, the bat and the knife; point the pistols, the other pistol, take it.
+    for w in (W.REVOLVER, W.MAZZA, W.COLTELLO):
+        inv.give(w, -1, False)
+    inv.select_weapon(W.LUPARA)
+    for s in wait(world, 0.3):
+        yield s
+    pc.open_wheel()
+    pc.point_wheel(0)
+    for s in wait(world, 0.15):
+        yield s
+    before = str(inv.chosen_in(2))
+    pc.wheel_next(1)
+    report["wheel"] = {"open": pc.is_wheel_open(), "sector": pc.get_wheel_sector(), "pistols": [str(w) for w in inv.weapons_in(2)],
+                       "chosen_before": before, "chosen_after": str(inv.chosen_in(2)),
+                       "time_dilation": round(unreal.GameplayStatics.get_global_time_dilation(world), 2)}
+    for s in shot(world, "08_ruota_armi", report):
+        yield s
+    pc.point_wheel(5)
+    for s in shot(world, "08b_ruota_armi_bianche", report):
+        yield s
+    pc.point_wheel(0)
+    pc.close_wheel(True)
+    for s in wait(world, 0.3):
+        yield s
+    report["wheel"]["in_hand"] = str(inv.get_current_weapon())
+    report["wheel"]["time_after"] = round(unreal.GameplayStatics.get_global_time_dilation(world), 2)
     (OUT / "combattimento.json").write_text(json.dumps(report, indent=1), encoding="utf-8")
     unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).editor_request_end_play()
     yield 30

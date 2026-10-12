@@ -69,6 +69,50 @@ Altre mappe:
 | **Atmosfera (Mazzarino)** | Sole nella posizione reale per Mazzarino (latitudine, giorno dell'anno, ora), luna, cielo, nuvole, foschia nelle valli, ora blu, notte. Meteo: Sereno, Afa estiva, Scirocco, Nuvoloso. In gioco l'ora avanza. |
 | **Orizzonte (colline ed Etna)** | Anello di colline lontane con il profilo dell'Etna. |
 | **Auto Mazzarino** | Fiat 126, Ape, Panda, 127, Uno, Golf GTI, Vespa. |
+| **Bouganvillea (Mazzarino)** | Pianta procedurale che cresce lungo una spline. Regole d'uso nella sezione qui sotto. |
+
+### La bouganvillea (spline)
+
+**Come si disegna:**
+- La spline è il **fusto principale**. Il primo punto è la radice: mettilo a terra, a qualche centimetro dal muro, mai dentro.
+- Disegna il fusto lungo il percorso che vuoi: su per un muro, lungo un balcone o un cornicione, su un palo, o attraverso la strada fino alla casa di fronte.
+- I rami nascono da soli e si regolano solo con i parametri. Dal fusto escono i rami, dai rami i rametti.
+
+**Come cresce:**
+- I rami non attraversano mai muri e oggetti: ci si appoggiano e ci scivolano sopra. Per questo servono le collisioni (case, balconi e terreno le hanno).
+- **Rampicante** acceso: i rami restano attaccati alle superfici e ricadono oltre gli spigoli. Spento: è un cespuglio libero.
+- **Colore**: magenta, viola, arancione o rosso, uguale per tutta la pianta. **Variante (seed)** cambia la forma a parità di parametri.
+
+**Regole per le strade:**
+- **Passaggio libero**: i rami che pendono nel vuoto si fermano a questa altezza sopra la radice. Le piante sui muri usano 2,2 m, quelle che attraversano la strada 4 m.
+- Per attraversare una strada: fusto teso tra le due facciate ad **almeno 4,7 m** sopra il punto più alto del suolo sotto (strada e soglie), più basso dei due muri, senza balconi o fili in mezzo. Accendi **Filo di sostegno**: disegna un cavo sotto il fusto nei tratti che non toccano niente.
+
+**Parametri:**
+
+| Gruppo | Cosa regola |
+|---|---|
+| Rami | raggio del tronco, tronco nudo alla base, rami per metro, lunghezza, livelli (1-3), apertura, ricadenza, irregolarità |
+| Foglie e fiori | quantità di foglie e di fiori, fiori verso le punte, dimensioni, foglie piegate (più belle da vicino, il doppio dei triangoli) |
+| Rampicante | distanza di presa, distacco dal muro |
+
+**Peso:**
+- Una pianta su un cubo di 1,5 m sono circa 25.000 triangoli. Lo script del paese tiene ogni pianta sotto i 40.000.
+- Foglie e brattee sono card trasparenti (2 triangoli) prese dagli atlanti 2×2 delle texture.
+
+**Cottura e HLOD:**
+- `unreal.M80EditorLibrary.bake_bougainvillea(pianta, "/Game/Mazzarino80/Vegetazione/Bouganvillea/Piante")` trasforma la pianta in una Static Mesh con tre LOD fatti a mano: da lontano tiene meno card, ma più grandi. Così entra negli HLOD.
+- Qualsiasi modifica la riporta in anteprima finché non la ricuoci.
+- Come le case, le mesh cotte sono **fuori da Git**: lo script del paese le ricuoce. Se manca la mesh cotta, la pianta si rigenera da sola.
+
+**Script:**
+
+| Script | Cosa fa |
+|---|---|
+| `m80_bouganvillea_materiali.py` | Texture (da `D:\BlenderTest\Bouganvillea`) e materiali in `Vegetazione/Bouganvillea`: card con trasparenza, vento, traslucenza, corteccia. |
+| `m80_bouganvillea_paese.py` | Mette le piante nel 5% delle case, vicino a un angolo della facciata principale dove il muro è pieno (non davanti a porte o vetrine). Dove una casa ha un muro di fronte a 2,5-13 m, metà delle piante attraversa la strada con le regole sopra. Ogni pianta viene cotta e salvata da sola. Si può rilanciare: salta le case che hanno già una pianta e ricuoce quelle senza mesh. Variabili: `M80_BGV_QUOTA`, `M80_BGV_PASSAGGI`, `M80_BGV_TRIANGOLI`, `M80_BGV_CENTRO`, `M80_BGV_FOTO=1` (foto dalla strada), `M80_BGV_PROVA=1` (non salva). |
+| `m80_bouganvillea_prova.py` | Quattro piante di prova lontano dalle case (cubo, sfera, cespuglio, muro) con le foto. |
+
+Dopo aver aggiunto o spostato piante, ricostruisci gli HLOD (capitolo 1).
 
 ### Le case
 - Ogni casa è una mesh generata dal C++ (anteprima live).
@@ -98,6 +142,7 @@ Altre mappe:
 |---|---|
 | `Content/Mazzarino80/Houses` | Mappe, stili, materiali e mesh cotte delle case |
 | `Content/Mazzarino80/Kit` | Oggetti versionati: piante, cartelli, ceramiche siciliane, lampioni, marciapiedi |
+| `Content/Mazzarino80/Vegetazione` | Bouganvillea: texture, materiali e (fuori da Git) le mesh cotte delle piante |
 | `Content/Mazzarino80/Vehicles`, `Player`, `Weapons`, `UI`, `Sky`, `Audio` | Gioco |
 | `Scripts/` | Automazione dell'editor (Python) |
 | `Tools/` | Backup, mappa del radar, suoni, migrazione dal progetto Comune |
@@ -151,7 +196,7 @@ I circa 220 script `mazzarino80_*.py` sono della prima versione basata su PCG (s
 - La quota LFS gratuita è di **10 GB**: oggi ne usiamo circa 5,7.
 - Della mappa del paese si versionano solo i file degli attori cambiati.
 - Sono **fuori da Git**:
-  - le mesh cotte delle case;
+  - le mesh cotte delle case e delle bouganvillee;
   - gli HLOD;
   - i pacchetti del marketplace;
   - l'Ape (324 MB);

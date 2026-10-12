@@ -36,6 +36,7 @@
 #include "PhysicsEngine/SkeletalBodySetup.h"
 #include "AnimationRuntime.h"
 #include "MaterialEditingLibrary.h"
+#include "M80Bougainvillea.h"
 
 namespace
 {
@@ -778,4 +779,103 @@ bool UM80EditorLibrary::MakeVehiclePhysicsAsset(USkeletalMesh* Mesh, FName RootB
 bool UM80EditorLibrary::ConnectWorldPositionOffset(UMaterialExpression* From, const FString& OutputName)
 {
 	return From && UMaterialEditingLibrary::ConnectMaterialProperty(From, OutputName, MP_WorldPositionOffset);
+}
+
+UStaticMesh* UM80EditorLibrary::BakeBougainvillea(AM80Bougainvillea* Plant, const FString& Folder)
+{
+	if (!Plant)
+	{
+		return nullptr;
+	}
+	constexpr int32 NumLods = 3;
+	TArray<UE::Geometry::FDynamicMesh3> Lods;
+	Lods.SetNum(NumLods);
+	for (int32 k = 0; k < NumLods; ++k)
+	{
+		Plant->BuildLOD(k, Lods[k]);
+	}
+	if (Lods[0].TriangleCount() == 0)
+	{
+		return nullptr;
+	}
+	const TArray<UMaterialInterface*> Materials = Plant->GetSlotMaterials();
+	FString Label = Plant->GetActorLabel();
+	for (TCHAR& Ch : Label)
+	{
+		if (!FChar::IsAlnum(Ch))
+		{
+			Ch = TEXT('_');
+		}
+	}
+	const FString Name = TEXT("SM_M80_BGV_") + Label;
+	const FString PackagePath = Folder / Name;
+	UStaticMesh* StaticMesh = LoadObject<UStaticMesh>(nullptr, *(PackagePath + TEXT(".") + Name), nullptr, LOAD_NoWarn | LOAD_Quiet);
+	if (StaticMesh)
+	{
+		// Re-bake in place so references and the asset path stay stable.
+		StaticMesh->Modify();
+		TArray<FStaticMaterial> Slots;
+		for (UMaterialInterface* Material : Materials)
+		{
+			Slots.Add(FStaticMaterial(Material));
+		}
+		StaticMesh->SetStaticMaterials(Slots);
+		StaticMesh->SetNumSourceModels(NumLods);
+		FMeshSectionInfoMap SectionInfoMap;
+		for (int32 k = 0; k < NumLods; ++k)
+		{
+			FMeshDescription Description;
+			FStaticMeshAttributes(Description).Register();
+			FDynamicMeshToMeshDescription Converter;
+			Converter.Convert(&Lods[k], Description);
+			for (int32 Section = 0; Section < Description.PolygonGroups().Num(); ++Section)
+			{
+				SectionInfoMap.Set(k, Section, FMeshSectionInfo(Section));
+			}
+			StaticMesh->CreateMeshDescription(k, MoveTemp(Description));
+			StaticMesh->CommitMeshDescription(k);
+		}
+		StaticMesh->GetSectionInfoMap().CopyFrom(SectionInfoMap);
+		StaticMesh->GetOriginalSectionInfoMap().CopyFrom(SectionInfoMap);
+	}
+	else
+	{
+		UE::AssetUtils::FStaticMeshAssetOptions Options;
+		Options.NewAssetPath = PackagePath;
+		Options.NumSourceModels = NumLods;
+		Options.NumMaterialSlots = Materials.Num();
+		Options.AssetMaterials = Materials;
+		Options.bGenerateNaniteEnabledMesh = false;
+		Options.bAllowDistanceField = false;
+		Options.bCreatePhysicsBody = false;
+		for (UE::Geometry::FDynamicMesh3& L : Lods)
+		{
+			Options.SourceMeshes.DynamicMeshes.Add(&L);
+		}
+		UE::AssetUtils::FStaticMeshResults Results;
+		if (UE::AssetUtils::CreateStaticMeshAsset(Options, Results) != UE::AssetUtils::ECreateStaticMeshResult::Ok || !Results.StaticMesh)
+		{
+			return nullptr;
+		}
+		StaticMesh = Results.StaticMesh;
+		FAssetRegistryModule::AssetCreated(StaticMesh);
+	}
+	// Levels of detail by screen size: full up close, fewer and larger cards from a few metres, a sketch far away.
+	StaticMesh->bAutoComputeLODScreenSize = false;
+	const float Screen[NumLods] = {1.f, 0.3f, 0.1f};
+	for (int32 k = 0; k < NumLods; ++k)
+	{
+		FStaticMeshSourceModel& Source = StaticMesh->GetSourceModel(k);
+		Source.ScreenSize.Default = Screen[k];
+		Source.BuildSettings.bRecomputeNormals = false;
+		Source.BuildSettings.bGenerateLightmapUVs = false;
+		Source.BuildSettings.DistanceFieldResolutionScale = 0.f;
+	}
+	StaticMesh->NaniteSettings.bEnabled = false;
+	StaticMesh->bGenerateMeshDistanceField = false;
+	StaticMesh->Build();
+	StaticMesh->PostEditChange();
+	StaticMesh->MarkPackageDirty();
+	Plant->ApplyBakedMesh(StaticMesh);
+	return StaticMesh;
 }

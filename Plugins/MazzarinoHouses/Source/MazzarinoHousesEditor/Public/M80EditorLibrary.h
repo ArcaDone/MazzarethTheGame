@@ -15,6 +15,7 @@ class ULandscapeLayerInfoObject;
 class USplineComponent;
 class USkeletalMesh;
 class UMaterialExpression;
+class AM80Bougainvillea;
 
 /** Editor helpers callable from Python (unreal.M80EditorLibrary). */
 UCLASS()
@@ -95,4 +96,11 @@ public:
 	/** Connects an expression output to the material's World Position Offset (hidden from Python's MaterialProperty). */
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Materiali")
 	static bool ConnectWorldPositionOffset(UMaterialExpression* From, const FString& OutputName);
+
+	/**
+	 * Bakes a bougainvillea into Folder/SM_M80_BGV_<label>: three hand-made levels of detail (fewer, larger cards far
+	 * away), no Nanite, no collision, no distance field; the plant then shows it (HLOD-ready). Re-bakes in place.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Vegetazione")
+	static UStaticMesh* BakeBougainvillea(AM80Bougainvillea* Plant, const FString& Folder);
 };

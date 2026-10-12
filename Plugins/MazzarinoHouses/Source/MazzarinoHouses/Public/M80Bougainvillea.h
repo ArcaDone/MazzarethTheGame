@@ -7,6 +7,9 @@
 class UDynamicMeshComponent;
 class UMaterialInterface;
 class USplineComponent;
+class UStaticMesh;
+class UStaticMeshComponent;
+namespace UE::Geometry { class FDynamicMesh3; }
 
 UENUM(BlueprintType)
 enum class EM80BougainvilleaColour : uint8
@@ -24,6 +27,10 @@ enum class EM80BougainvilleaColour : uint8
  * texture atlases, so a plant stays light. One colour for the whole plant.
  * With "Rampicante" the branches hold on to the surfaces they meet and fall over the edges; without it they grow
  * free and only avoid passing through things.
+ * "Passaggio libero" cuts the branches that hang free below that height (streets stay passable); "Filo di sostegno"
+ * draws a thin cable under the free stretches of the stem (a plant trained across a street).
+ * "Cuoci" (M80EditorLibrary.BakeBougainvillea) turns the plant into a static mesh with three levels of detail, which
+ * World Partition HLODs can use; any edit returns to the live preview.
  * Materials: /Game/Mazzarino80/Vegetazione/Bouganvillea (Scripts/m80_bouganvillea_materiali.py).
  */
 UCLASS(meta = (DisplayName = "Bouganvillea (Mazzarino)"))
@@ -35,6 +42,8 @@ public:
 	AM80Bougainvillea();
 
 	virtual void OnConstruction(const FTransform& Transform) override;
+	/** A plant whose baked mesh is missing (not in this checkout) and has no preview grows again. */
+	virtual void BeginPlay() override;
 
 	/** The main stem, from the root. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Bouganvillea", meta = (DisplayName = "Fusto"))
@@ -42,6 +51,10 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Bouganvillea")
 	TObjectPtr<UDynamicMeshComponent> Mesh;
+
+	/** Baked version of the plant (static mesh with LODs), shown instead of the live preview. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Bouganvillea")
+	TObjectPtr<UStaticMeshComponent> Baked;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pianta", meta = (DisplayName = "Colore"))
 	EM80BougainvilleaColour Colour = EM80BougainvilleaColour::Magenta;
@@ -99,6 +112,18 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Foglie e fiori", meta = (DisplayName = "Dimensione brattee (cm)", ClampMin = "1", ClampMax = "20"))
 	float BractSize = 4.5f;
 
+	/** Leaves folded along the midrib (4 triangles each) instead of flat (2): rounder up close, twice the leaves' cost. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Foglie e fiori", meta = (DisplayName = "Foglie piegate"))
+	bool bFoldedLeaves = false;
+
+	/** Branches hanging free (not lying on a surface) stop at this height above the root (cm); 0 = no limit. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rami", meta = (DisplayName = "Passaggio libero (cm)", ClampMin = "0", ClampMax = "1500"))
+	float ClearHeight = 0.f;
+
+	/** Thin cable under the stretches of the stem that touch nothing (a plant trained across a street). */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rami", meta = (DisplayName = "Filo di sostegno"))
+	bool bSupportWire = false;
+
 	/** Climbing plant: branches hold on to the walls, poles and roofs they meet and fall over their edges. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rampicante", meta = (DisplayName = "Rampicante"))
 	bool bClimbing = true;
@@ -126,4 +151,27 @@ public:
 
 	UFUNCTION(BlueprintCallable, CallInEditor, Category = "Pianta", meta = (DisplayName = "Rigenera"))
 	void Rebuild();
+
+	/** Shows Mesh (a bake of this plant) instead of the live preview, which is freed. */
+	UFUNCTION(BlueprintCallable, Category = "Pianta")
+	void ApplyBakedMesh(UStaticMesh* InMesh);
+
+	UFUNCTION(BlueprintCallable, Category = "Pianta")
+	bool IsBaked() const;
+
+	/**
+	 * The plant at a level of detail: 0 full, 1 fewer and larger cards and no finest twigs, 2 for far away. The
+	 * plant grows the same at every level (same seed). Returns a summary.
+	 */
+	FString BuildLOD(int32 Lod, UE::Geometry::FDynamicMesh3& OutMesh);
+
+	/** Materials of the four slots: bark, leaves, bracts (of the chosen colour), small flowers. */
+	TArray<UMaterialInterface*> GetSlotMaterials() const;
+
+private:
+	/** Hash of everything the plant grows from (parameters, spline, placement), to keep a bake valid. */
+	int32 ComputeInputHash() const;
+
+	UPROPERTY()
+	int32 BakedHash = 0;
 };

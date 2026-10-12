@@ -2,6 +2,9 @@
 #include "M80MeshBuffer.h"
 #include "Components/DynamicMeshComponent.h"
 #include "Components/SplineComponent.h"
+#include "Components/StaticMeshComponent.h"
+#include "Engine/StaticMesh.h"
+#include "Misc/Crc.h"
 #include "DynamicMesh/DynamicMesh3.h"
 #include "Engine/World.h"
 #include "Materials/Material.h"
@@ -173,6 +176,10 @@ struct FGrower
 					Dir = (Dir + (S.ImpactPoint - Q).GetSafeNormal() * 0.6).GetSafeNormal();
 				}
 			}
+			if (Wall.IsZero() && Plant.ClearHeight > 0 && Q.Z < Plant.GetActorLocation().Z + Plant.ClearHeight)
+			{
+				break;   // hanging into the passage below: pruned
+			}
 			P = Q;
 			B.Add(P, R, Wall);
 		}
@@ -222,15 +229,15 @@ struct FGrower
 	}
 };
 
-/** Tube with a radius per point, smooth normals and bark UVs at 20 cm per unit. */
-void Wood(FM80MeshBuffer& M, const FBranch& B, const FTransform& ToLocal)
+/** Tube with a radius per point, smooth normals and bark UVs at 20 cm per unit; fewer sides far away. */
+void Wood(FM80MeshBuffer& M, const FBranch& B, const FTransform& ToLocal, int32 Lod)
 {
 	const int32 N = B.P.Num();
 	if (N < 2)
 	{
 		return;
 	}
-	const int32 Sides = B.Level == 0 ? 8 : (B.Level == 1 ? 6 : (B.Level == 2 ? 4 : 3));
+	const int32 Sides = FMath::Max(3, (B.Level == 0 ? 8 : (B.Level == 1 ? 6 : (B.Level == 2 ? 4 : 3))) >> Lod);
 	TArray<FVector3d> P, U, V;
 	FVector3d Frame = AnyPerp(B.Tangent(0));
 	for (int32 i = 0; i < N; ++i)
@@ -318,22 +325,120 @@ AM80Bougainvillea::AM80Bougainvillea()
 	Mesh->SetupAttachment(Stem);
 	Mesh->SetMobility(EComponentMobility::Static);
 	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Baked = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Baked"));
+	Baked->SetupAttachment(Stem);
+	Baked->SetMobility(EComponentMobility::Static);
+	Baked->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void AM80Bougainvillea::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
+	if (Baked->GetStaticMesh() && BakedHash == ComputeInputHash())
+	{
+		Baked->SetVisibility(true);
+		Mesh->SetVisibility(false);
+		return;
+	}
 	Rebuild();
+}
+
+void AM80Bougainvillea::BeginPlay()
+{
+	Super::BeginPlay();
+	if (!Baked->GetStaticMesh())
+	{
+		int32 Triangles = 0;
+		Mesh->ProcessMesh([&Triangles](const UE::Geometry::FDynamicMesh3& M) { Triangles = M.TriangleCount(); });
+		if (Triangles == 0)
+		{
+			Rebuild();
+		}
+	}
+}
+
+bool AM80Bougainvillea::IsBaked() const
+{
+	return Baked->GetStaticMesh() != nullptr;
+}
+
+void AM80Bougainvillea::ApplyBakedMesh(UStaticMesh* InMesh)
+{
+	Baked->SetStaticMesh(InMesh);
+	Baked->SetVisibility(InMesh != nullptr);
+	Mesh->SetVisibility(InMesh == nullptr);
+	if (InMesh)
+	{
+		BakedHash = ComputeInputHash();
+		Mesh->SetMesh(UE::Geometry::FDynamicMesh3());
+	}
+}
+
+int32 AM80Bougainvillea::ComputeInputHash() const
+{
+	FString S = FString::Printf(TEXT("%d %d %g %g %g %g %d %g %g %g %g %g %g %g %g %d %d %g %g %g %d %g"), int32(Colour), Seed, TrunkRadius, BareTrunk,
+		BranchesPerMetre, BranchLength, BranchLevels, BranchAngle, Droop, Wander, LeafAmount, FlowerAmount, FlowersAtTips, LeafSize, BractSize,
+		int32(bFoldedLeaves), int32(bClimbing), ClimbReach, WallGap, ClearHeight, int32(bSupportWire), 0.0);
+	for (const UMaterialInterface* M : {BarkMaterial.Get(), LeafMaterial.Get(), BractMaterial.Get(), FlowerMaterial.Get()})
+	{
+		S += M ? M->GetPathName() : TEXT("-");
+	}
+	for (int32 i = 0; i < Stem->GetNumberOfSplinePoints(); ++i)
+	{
+		S += Stem->GetLocationAtSplinePoint(i, ESplineCoordinateSpace::Local).ToString();
+		S += Stem->GetArriveTangentAtSplinePoint(i, ESplineCoordinateSpace::Local).ToString();
+		S += Stem->GetLeaveTangentAtSplinePoint(i, ESplineCoordinateSpace::Local).ToString();
+	}
+	S += GetActorTransform().ToString();
+	return int32(FCrc::StrCrc32(*S));
+}
+
+TArray<UMaterialInterface*> AM80Bougainvillea::GetSlotMaterials() const
+{
+	using namespace M80Bgv;
+	static const TCHAR* ColourNames[] = {TEXT("Magenta"), TEXT("Viola"), TEXT("Arancione"), TEXT("Rosso")};
+	return {Pick(BarkMaterial, TEXT("MI_M80_BGV_Corteccia")), Pick(LeafMaterial, TEXT("MI_M80_BGV_Foglie")),
+		Pick(BractMaterial, FString(TEXT("MI_M80_BGV_Brattee_")) + ColourNames[uint8(Colour)]), Pick(FlowerMaterial, TEXT("MI_M80_BGV_Fiorellini"))};
 }
 
 void AM80Bougainvillea::Rebuild()
 {
+	if (Baked->GetStaticMesh())
+	{
+		// Edited or regenerated: back to the live preview (the baked asset stays until the next bake).
+		Baked->SetStaticMesh(nullptr);
+		BakedHash = 0;
+	}
+	Baked->SetVisibility(false);
+	Mesh->SetVisibility(true);
+	UE::Geometry::FDynamicMesh3 Dyn;
+	BuildInfo = BuildLOD(0, Dyn);
+	Mesh->SetMesh(MoveTemp(Dyn));
+	TArray<UMaterialInterface*> Materials = GetSlotMaterials();
+	Mesh->ConfigureMaterialSet(Materials);
+}
+
+FString AM80Bougainvillea::BuildLOD(int32 Lod, UE::Geometry::FDynamicMesh3& OutMesh)
+{
 	using namespace M80Bgv;
+	Lod = FMath::Clamp(Lod, 0, 2);
 	FRandomStream Rng(Seed);
+	// Which cards a level of detail keeps comes from its own stream, so the plant grows the same at every level.
+	FRandomStream Keep(Seed * 7919 + 101);
+	const float Fraction = Lod == 0 ? 1.f : (Lod == 1 ? 0.45f : 0.15f);
+	const double Enlarge = Lod == 0 ? 1.0 : (Lod == 1 ? 1.35 : 2.2);
+	const int32 MaxWoodLevel = Lod == 0 ? 3 : (Lod == 1 ? 2 : 1);
 	FGrower G(*this, GetWorld(), Rng);
 	const double StemLength = Stem->GetSplineLength();
 	FM80MeshBuffer M;
 	const FTransform ToLocal = Mesh->GetComponentTransform().Inverse();
+
+	// One tiny triangle per slot inside the trunk base: every level of detail has the four sections in the same order.
+	for (int32 Slot = 0; Slot < 4; ++Slot)
+	{
+		const FVector3d O = ToLocal.TransformPosition(Stem->GetLocationAtDistanceAlongSpline(0.0, ESplineCoordinateSpace::World));
+		M.TriN(Slot, O, O + FVector3d(0.01, 0, 0), O + FVector3d(0, 0.01, 0), {0, 0}, {0, 0}, {0, 0}, FVector3f::UnitZ(), FVector3f::UnitZ(), FVector3f::UnitZ());
+	}
 
 	if (Stem->GetNumberOfSplinePoints() >= 2 && StemLength > 10.0)
 	{
@@ -361,6 +466,36 @@ void AM80Bougainvillea::Rebuild()
 		const FVector TipP = R.P[Last], TipDir = R.Tangent(Last), TipWall = R.Wall[Last];
 		const double TipR = R.R[Last];
 		G.Grow(TipP, TipDir, TipR, BranchLength * 0.8, 1, TipWall, 0.3);
+
+		// The cable under the free stretches of the stem, from wall to wall.
+		if (bSupportWire)
+		{
+			const FBranch& St = G.Branches[Root];
+			FBranch Cable;
+			Cable.Level = 3;
+			auto Flush = [&]()
+			{
+				if (Cable.P.Num() >= 2)
+				{
+					Wood(M, Cable, ToLocal, FMath::Min(Lod, 1));
+				}
+				Cable = FBranch();
+				Cable.Level = 3;
+			};
+			for (int32 i = 0; i < St.P.Num(); ++i)
+			{
+				const bool bFree = St.Wall[i].IsZero() || (i > 0 && St.Wall[i - 1].IsZero()) || (i + 1 < St.P.Num() && St.Wall[i + 1].IsZero());
+				if (bFree)
+				{
+					Cable.Add(St.P[i] - FVector(0, 0, St.R[i] + 0.6), 0.5, FVector::ZeroVector);
+				}
+				else
+				{
+					Flush();
+				}
+			}
+			Flush();
+		}
 	}
 
 	// Centre of the plant: free leaves and flowers face away from it.
@@ -379,7 +514,10 @@ void AM80Bougainvillea::Rebuild()
 	int32 Leaves = 0, Flowers = 0;
 	for (const FBranch& B : G.Branches)
 	{
-		Wood(M, B, ToLocal);
+		if (B.Level <= MaxWoodLevel)
+		{
+			Wood(M, B, ToLocal, Lod);
+		}
 		const double Length = B.Length();
 		const double Start = B.Level == 0 ? Length * BareTrunk : 0.0;
 		const double Density = B.Level == 0 ? 0.4 : 1.0;
@@ -389,7 +527,7 @@ void AM80Bougainvillea::Rebuild()
 			return Wall.IsZero() ? ((P - Centre).GetSafeNormal() * 0.6 + FVector::ZAxisVector * 0.5).GetSafeNormal() : Wall;
 		};
 
-		// Leaves, alternating along the branch, held out on either side and facing the light.
+		// Leaves, 1-3 per node along the branch, held out on either side and facing the light.
 		if (LeafAmount > 0)
 		{
 			const double Spacing = 100.0 / (36.0 * LeafAmount * Density);
@@ -409,13 +547,17 @@ void AM80Bougainvillea::Rebuild()
 				Side = -Side;
 				FVector Dir = (Tan * Rng.FRandRange(0.2f, 0.7f) + Across + Rng.GetUnitVector() * 0.2).GetSafeNormal();
 				Dir = (FVector::VectorPlaneProject(Dir, Face).GetSafeNormal() - FVector::ZAxisVector * 0.25).GetSafeNormal();
-				const double Len = LeafSize * Rng.FRandRange(0.7f, 1.25f) * (B.Level == 0 ? 1.1 : 1.0);
+				const double Len = LeafSize * Rng.FRandRange(0.7f, 1.25f) * (B.Level == 0 ? 1.1 : 1.0) * Enlarge;
 				FVector2f UV0, UV1;
 				Cell(Rng, UV0, UV1);
 				M.FacadeMask = Sway(D);
 				M.ElementRandom = Rng.FRand();
-				Card(M, SlotLeaf, ToLocal, B.P[i] + Across * B.R[i], Dir, Face, (Face + Out).GetSafeNormal(), Len, Len * 0.88, Len * 0.12, UV0, UV1);
-				++Leaves;
+				if (Keep.FRand() < Fraction)
+				{
+					Card(M, SlotLeaf, ToLocal, B.P[i] + Across * B.R[i], Dir, Face, (Face + Out).GetSafeNormal(), Len, Len * 0.88,
+						bFoldedLeaves && Lod == 0 ? Len * 0.12 : 0.0, UV0, UV1);
+					++Leaves;
+				}
 			}
 		}
 
@@ -434,9 +576,10 @@ void AM80Bougainvillea::Rebuild()
 					const FVector X = AnyPerp(Axis), Y = FVector::CrossProduct(Axis, X);
 					const FVector C = B.P[i] + (Rng.GetUnitVector() * 0.6 + Axis * 0.5) * BractSize * 1.3;
 					const double Phase = Rng.FRandRange(0.f, 2 * PI);
-					const double Len = BractSize * Rng.FRandRange(0.8f, 1.2f);
+					const double Len = BractSize * Rng.FRandRange(0.8f, 1.2f) * Enlarge;
 					M.FacadeMask = Sway(D) + 0.1f;
 					M.ElementRandom = Rng.FRand();
+					const bool bKeep = Keep.FRand() < Fraction;
 					for (int32 k = 0; k < 3; ++k)
 					{
 						const double A = Phase + k * 2 * PI / 3 + Rng.FRandRange(-0.2f, 0.2f);
@@ -449,11 +592,18 @@ void AM80Bougainvillea::Rebuild()
 						}
 						FVector2f UV0, UV1;
 						Cell(Rng, UV0, UV1);
-						Card(M, SlotBract, ToLocal, C + Radial * 0.3, Dir, Face, (Face + Out).GetSafeNormal(), Len, Len * 0.88, 0.0, UV0, UV1);
+						if (bKeep)
+						{
+							Card(M, SlotBract, ToLocal, C + Radial * 0.3, Dir, Face, (Face + Out).GetSafeNormal(), Len, Len * 0.88, 0.0, UV0, UV1);
+						}
 					}
-					// The small white flowers in the middle.
-					Card(M, SlotFlower, ToLocal, C, Axis, Rng.FRand() < 0.5f ? X : Y, Out, Len * 0.75, Len * 0.75, 0.0, FVector2f(0.32f, 0.41f), FVector2f(0.77f, 0.86f));
-					++Flowers;
+					// The small white flowers in the middle (left out far away).
+					const bool bX = Rng.FRand() < 0.5f;
+					if (bKeep && Lod < 2)
+					{
+						Card(M, SlotFlower, ToLocal, C, Axis, bX ? X : Y, Out, Len * 0.75, Len * 0.75, 0.0, FVector2f(0.32f, 0.41f), FVector2f(0.77f, 0.86f));
+					}
+					Flowers += bKeep ? 1 : 0;
 				}
 			};
 			for (double D = Rng.FRandRange(0.f, float(Spacing)); D < Length * 0.92; D += Spacing * Rng.FRandRange(0.6f, 1.4f))
@@ -468,11 +618,6 @@ void AM80Bougainvillea::Rebuild()
 		}
 	}
 
-	UE::Geometry::FDynamicMesh3 Dyn;
-	M.ToDynamicMesh(Dyn);
-	Mesh->SetMesh(MoveTemp(Dyn));
-	static const TCHAR* ColourNames[] = {TEXT("Magenta"), TEXT("Viola"), TEXT("Arancione"), TEXT("Rosso")};
-	Mesh->ConfigureMaterialSet({Pick(BarkMaterial, TEXT("MI_M80_BGV_Corteccia")), Pick(LeafMaterial, TEXT("MI_M80_BGV_Foglie")),
-		Pick(BractMaterial, FString(TEXT("MI_M80_BGV_Brattee_")) + ColourNames[uint8(Colour)]), Pick(FlowerMaterial, TEXT("MI_M80_BGV_Fiorellini"))});
-	BuildInfo = FString::Printf(TEXT("%d rami, %d foglie, %d terne di brattee, %d triangoli"), G.Branches.Num(), Leaves, Flowers, M.NumTriangles());
+	M.ToDynamicMesh(OutMesh);
+	return FString::Printf(TEXT("%d rami, %d foglie, %d terne di brattee, %d triangoli"), G.Branches.Num(), Leaves, Flowers, M.NumTriangles());
 }

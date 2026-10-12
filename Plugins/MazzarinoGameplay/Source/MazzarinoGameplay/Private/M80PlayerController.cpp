@@ -199,13 +199,6 @@ FVector AM80PlayerController::GetAimPoint() const
 	return GetWorld()->LineTraceSingleByObjectType(Hit, Eye, End, M80ShotObjects(), Q) ? Hit.ImpactPoint : End;
 }
 
-bool AM80PlayerController::IsActionHeld(const TSoftObjectPtr<UInputAction>& Action) const
-{
-	const UInputAction* A = Action.LoadSynchronous();
-	const UEnhancedInputLocalPlayerSubsystem* Sub = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	return A && Sub && Sub->GetPlayerInput() && Sub->GetPlayerInput()->GetActionValue(A).Get<bool>();
-}
-
 int32 AM80PlayerController::WheelCategory(int32 Sector)
 {
 	// Clockwise from the top: pistols, machine pistols, shotguns, rifles, fists (bottom), melee, heavy, thrown.
@@ -421,7 +414,8 @@ void AM80PlayerController::UpdateWeapons(float DeltaTime)
 	ForceAimTime -= DeltaTime;
 	// Aim: right mouse (the sample turns the character to the camera), or held for a moment after a shot.
 	bool* WantsAim = InputStateFlag(W, TEXT("WantsToAim"));
-	const bool bRMB = IsActionHeld(AimAction) || bAimHeld;
+	// The sample's IA_Aim only fires on press and release: the held state comes from the keys themselves.
+	const bool bRMB = IsInputKeyDown(EKeys::RightMouseButton) || GetInputAnalogKeyState(EKeys::Gamepad_LeftTriggerAxis) > 0.3f || bAimHeld;
 	const bool bForce = bOnFoot && !S.bMelee && ForceAimTime > 0.f;
 	if (WantsAim)
 	{

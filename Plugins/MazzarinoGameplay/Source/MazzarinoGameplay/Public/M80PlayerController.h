@@ -187,9 +187,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Mazzarino")
 	TSoftObjectPtr<UAnimSequenceBase> RollAnim = TSoftObjectPtr<UAnimSequenceBase>(FSoftObjectPath(TEXT("/Game/Mazzarino80/Player/Anim/A_M80_Capriola.A_M80_Capriola")));
 
-	UPROPERTY(EditAnywhere, Category = "Mazzarino")
-	TSoftObjectPtr<UInputAction> AimAction = TSoftObjectPtr<UInputAction>(FSoftObjectPath(TEXT("/Game/Input/IA_Aim.IA_Aim")));
-
 	/** The sample's move action (X right, Y forward), read while climbing. */
 	UPROPERTY(EditAnywhere, Category = "Mazzarino")
 	TSoftObjectPtr<UInputAction> MoveAction = TSoftObjectPtr<UInputAction>(FSoftObjectPath(TEXT("/Game/Input/IA_Move.IA_Move")));
@@ -216,7 +213,6 @@ private:
 	void LimitSprint();
 	void UpdateWeapons(float DeltaTime);
 	void UpdateClimbInput();
-	bool IsActionHeld(const TSoftObjectPtr<UInputAction>& Action) const;
 	void BindKeyLambda(const FKey& Key, TFunction<void()> Fn);
 	void CheckCarHits(float DeltaTime);
 	void Respawn();

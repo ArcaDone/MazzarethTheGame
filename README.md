@@ -37,8 +37,22 @@ Repository privato: `ArcaDone/MazzarethTheGame` (Git + LFS).
 Altre mappe:
 - `Houses/Maps/L_M80_Houses18_V2`: 18 case di prova del generatore.
 - `Vehicles/L_M80_ProvaGuida`: pista di prova delle auto (rettilineo, rampe, slalom, vicolo). Tab cambia auto.
+- `Player/Maps/L_M80_ProvaAzione`: il quartiere più fitto del paese (44 case vive) per provare armi e arrampicata. Si apre in pochi secondi. Contiene armi a terra, una Fiat 126, blocchi da 1, 2,2 e 2,9 m e quattro bersagli umani. Si rifà da zero con `m80_prova_azione_setup.py`.
 - `Rooms/L_M80_RoomStudio`: le stanze fotografate per le finestre.
 - `L_M80_District_V2`: quartiere di prova, solo in locale.
+
+### Comandi in gioco (tastiera / gamepad)
+
+| Azione | Tasti |
+|---|---|
+| Mirare / sparare | Destro / sinistro del mouse; LT / RT. Mirando la camera va sopra la spalla destra. Con il gamepad LT aggancia la persona più vicina davanti. |
+| Ruota delle armi (come GTA V) | Tenere Tab / LB: il tempo rallenta, mouse o stick destro scelgono il settore. Rotella, Q o X cambiano arma dentro il settore; lasciando il tasto si prende. Solo le armi raccolte, il resto resta vuoto. |
+| Armi | 1-4 settore, Q o croce destra/sinistra arma successiva, R / X ricarica, G / croce giù lascia l'arma. |
+| Saltare e arrampicarsi | Spazio / A. Davanti a un ostacolo di 0,5-2,5 m (muretto, auto, balcone basso) ci sale sopra. Più in alto (cornicioni, balconi, davanzali, tetti) salta e si aggrappa al bordo. |
+| Appeso | Sinistra/destra lungo il bordo; Spazio / A sale sopra se c'è posto, oppure salta al bordo più in alto, oppure si stacca dal muro (indietro + salto). C, Ctrl o B si lascia cadere. |
+| Auto, mappa, pausa | E / Y sale o scende; M mappa; P / Start pausa con la mappa del paese. |
+
+L'arrampicata funziona su qualsiasi geometria, perché cerca i bordi sulla collisione complessa. Non servono marcature sulle case.
 
 ---
 
@@ -179,6 +193,11 @@ powershell -ExecutionPolicy Bypass -File Scripts/run_editor_script.ps1 -Script S
 | `m80_props_nanite.py`, `m80_town_hlod_setup.py` | Nanite sui dettagli; impostazione degli HLOD. |
 | `m80_lamps_setup.py`, `m80_sicilia_setup.py`, `m80_import_blender_assets.py` | Import dei modelli da Blender (lampioni, ceramiche, edifici, veicoli). |
 | `m80_play_test.py`, `m80_weapons_test.py`, `m80_vitals_test.py`, `m80_drive_telemetry.py`, `m80_cars_damage_test.py` | Test automatici in gioco con foto e report. |
+| `m80_prova_azione_setup.py` | Rifà da zero la mappa di prova `L_M80_ProvaAzione`. |
+| `m80_combattimento_test.py`, `m80_arrampicata_test.py` | Test in `L_M80_ProvaAzione`, con foto dalla camera del giocatore e di lato. Il primo prova mira, pose delle armi, errore della canna, ruota, pugni, aggancio e bersagli. Il secondo prova la salita sull'auto e sui blocchi, l'aggrappo, lo spostamento lungo il bordo, la salita sul tetto e la caduta. |
+| `m80_weapons_setup.py` | Importa le armi da Blender (`M80_ARMI=Fucile` per importarne solo alcune), i materiali dei colpi e le animazioni ALS per rialzarsi. |
+| `m80_animazioni_import.py` | Animazioni Mixamo (aggrappo, salita, pugni) e pose ALS di pistola e fucile, retargettate sul manichino del sample. |
+| `m80_icone_armi.py` + `Blender/m80_icone_alpha.py` | Icone grigie delle armi per la ruota, fotografate di lato. |
 
 I circa 220 script `mazzarino80_*.py` sono della prima versione basata su PCG (settembre 2026): restano solo come archivio e non servono più.
 
@@ -270,6 +289,7 @@ Sull'altro PC:
 | 3 ott | Paese `L_M80_Paese` con tutte le case cotte; edifici fatti a mano con zone di esclusione; strade dipinte, marciapiedi, manifesti, palazzi neoclassici. Auto guidabili (Chaos), pista di prova, giocatore MetaHuman in tuta acetata, HUD con radar. |
 | 4 ott | Terreno ritoccato a mano. Storia Git azzerata (repository nuovo, circa 4,9 GB di LFS). Piano GTA. Armi, vita e morte, danni e fuoco delle auto, 7 veicoli. |
 | 6 ott | Tutti i lotti OSM; zone sui perimetri reali degli edifici fatti a mano; strumento **Isolato da riempire**. **Atmosfera** con sole reale, notte, ora blu e Etna all'orizzonte. **World Partition** (la mappa si apre in 3 s invece che in 5 minuti), dettagli più leggeri, Nanite, HLOD. **Lampioni** dalle foto vere: 941 a muro. Backup con copia per trasferimento. |
+| 12 ott | Bouganvillea procedurale a spline nel paese. **Combattimento e arrampicata** (punto 1 del piano GTA) nella mappa `L_M80_ProvaAzione`: camera sopra la spalla, pose delle armi di ALS con la canna sul mirino, ruota delle armi come GTA V, fucile da caccia, combo di pugni, aggancio con il gamepad, bersagli umani, arrampicata su muri, balconi, tetti e auto. |
 
 ---
 

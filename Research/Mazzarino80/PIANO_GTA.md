@@ -70,8 +70,19 @@ Obiettivo: raccogliere, usare e lasciare armi come in GTA Vice City.
 Fatto quando: nel paese ci sono armi a terra, le prendi, le cambi, spari a bersagli e auto, le lasci
 cadere; test automatico con foto.
 
-Stato: fatti i punti 1-3, 5 (senza lock-on da gamepad), 6 in parte (fori, vetri), 8 e 9. Restano:
-fucile da caccia, lock-on, sangue e scintille, combo di pugni e corpo a corpo completo.
+Stato (12 ottobre 2026): fatto. Si prova nella mappa `Player/Maps/L_M80_ProvaAzione`, che si apre in
+pochi secondi, con i test `m80_combattimento_test.py` e `m80_arrampicata_test.py`.
+- Armi: tutte e sei, compreso il fucile da caccia (a otturatore, con cannocchiale).
+- Inventario per arma, raggruppato negli otto settori della ruota di GTA V (Tab / LB, tempo rallentato,
+  icone, munizioni). La ruota mostra solo le armi raccolte.
+- Pose: pistola e fucile da ALS sul busto, con l'arma girata in mano verso il mirino. Pugni: combo
+  sinistro-destro dalla clip Mixamo.
+- Camera sopra la spalla mirando; lock-on con LT; sangue per coltello, mazza e colpi; scintille sul ferro.
+- Bersagli umani che cadono e si rialzano.
+- Arrampicata ovunque (vedi i comandi nel README): sale su ostacoli fino a 2,5 m, auto comprese;
+  si aggrappa a cornicioni, balconi e tetti, si sposta lungo il bordo, sale, salta più su, si lascia cadere.
+- Resta per dopo: ricarica animata (oggi l'arma si ricarica senza animazione); mira con lo zoom del
+  cannocchiale.
 
 ## 2. Guida completa
 

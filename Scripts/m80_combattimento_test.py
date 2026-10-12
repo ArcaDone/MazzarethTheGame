@@ -190,6 +190,28 @@ def run():
         yield s
     report["wheel"]["in_hand"] = str(inv.get_current_weapon())
     report["wheel"]["time_after"] = round(unreal.GameplayStatics.get_global_time_dilation(world), 2)
+    # Fists: four blows in a row (left, right, left, right), each caught at its hit, from the side.
+    inv.select_slot(0)
+    for s in wait(world, 0.4):
+        yield s
+    steps = []
+    cam = world_cam(world)
+    base = pawn.get_actor_location()
+    eye = base + pawn.get_actor_right_vector() * 260 + pawn.get_actor_forward_vector() * 80 + unreal.Vector(0, 0, 30)
+    d = base - eye
+    cam.set_actor_location_and_rotation(eye, unreal.Rotator(0, math.degrees(math.atan2(d.z, math.hypot(d.x, d.y))), math.degrees(math.atan2(d.y, d.x))), False, True)
+    pc.set_view_target_with_blend(cam, 0.0)
+    for s in wait(world, 0.3):
+        yield s
+    for k in range(4):
+        inv.try_fire(pc.get_aim_point())
+        steps.append(inv.get_combo_step())
+        for s in wait(world, 0.12):
+            yield s
+        for s in shot(world, "09_pugno_%d" % (k + 1), report):
+            yield s
+    pc.set_view_target_with_blend(pawn, 0.0)
+    report["punch_steps"] = steps
     (OUT / "combattimento.json").write_text(json.dumps(report, indent=1), encoding="utf-8")
     unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).editor_request_end_play()
     yield 30

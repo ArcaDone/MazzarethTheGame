@@ -169,6 +169,10 @@ public:
 	/** Seconds since the last shot / blow (recoil and swing in the overlay animation). */
 	float SinceFire() const { return SinceLastFire; }
 
+	/** Which blow of the fists' combination the last one was (0-3: left, right, left, right). */
+	UFUNCTION(BlueprintPure, Category = "Mazzarino")
+	int32 GetComboStep() const { return ComboStep; }
+
 	/** The visible body mesh the weapon is held by (MetaHuman body, else the character mesh). */
 	USkeletalMeshComponent* HandMesh() const;
 
@@ -195,6 +199,7 @@ private:
 	float Cooldown = 0.f;
 	float ReloadLeft = 0.f;
 	float SinceLastFire = 99.f;
+	int32 ComboStep = 0;
 	bool bTrigger = false;
 	FVector TriggerAim = FVector::ZeroVector;
 };

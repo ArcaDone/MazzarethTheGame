@@ -90,6 +90,7 @@ void FM80OverlayProxy::Initialize(UAnimInstance* InAnimInstance)
 	PistolHold = Load(TEXT("A_M80_Pistola_Pose"));
 	RifleAim = Load(TEXT("A_M80_Fucile_Mira_Sweep"));
 	RifleHold = Load(TEXT("A_M80_Fucile_Pose"));
+	Punches = Load(TEXT("A_M80_Pugni_Combo"));
 }
 
 void FM80OverlayProxy::PreUpdate(UAnimInstance* InAnimInstance, float DeltaSeconds)
@@ -120,9 +121,11 @@ void FM80OverlayProxy::PreUpdate(UAnimInstance* InAnimInstance, float DeltaSecon
 		AimPitch = AimYaw = 0.f;
 	}
 	Recoil = (bGun && I->bEnabled) ? FMath::Clamp(1.f - I->SinceFire / 0.15f, 0.f, 1.f) : 0.f;
-	const float Duration = Pose == EM80WeaponPose::Melee ? 0.5f : 0.35f;
+	const float Duration = 0.5f;   // a blow of the bat or knife, the longest blow of the fists
 	Swing = (!bGun && I->bEnabled && I->SinceFire < Duration) ? I->SinceFire / Duration : -1.f;
 	bPunch = Pose == EM80WeaponPose::Unarmed;
+	PunchStep = I->ComboStep;
+	PunchTime = I->bEnabled ? I->SinceFire : 99.f;
 }
 
 void FM80OverlayProxy::CacheBones()
@@ -258,6 +261,44 @@ void FM80OverlayProxy::AimArms(FPoseContext& Output)
 	FCSPose<FCompactPose>::ConvertComponentPosesToLocalPoses(MoveTemp(CS), Output.Pose);
 }
 
+void FM80OverlayProxy::LayerUpper(FPoseContext& Output, UAnimSequence* Seq, double Time, float Weight)
+{
+	FCompactPose P;
+	P.SetBoneContainer(&Output.Pose.GetBoneContainer());
+	FBlendedCurve Curve;
+	Curve.InitFrom(Output.Curve);
+	UE::Anim::FStackAttributeContainer Attributes;
+	FAnimationPoseData Data(P, Curve, Attributes);
+	Seq->GetAnimationPose(Data, FAnimExtractContext(Time, false));
+	for (const TPair<FCompactPoseBoneIndex, float>& B : Upper)
+	{
+		const float W = Weight * B.Value;
+		FTransform& Local = Output.Pose[B.Key];
+		Local.SetRotation(FQuat::Slerp(Local.GetRotation(), P[B.Key].GetRotation(), W).GetNormalized());
+	}
+}
+
+bool FM80OverlayProxy::Punch(FPoseContext& Output)
+{
+	if (!Punches || Upper.Num() == 0)
+	{
+		return false;
+	}
+	// The four blows of A_M80_Pugni_Combo (left jab, right cross, left, right), from the guard to the guard; the
+	// hits land 0.2 s in.
+	static const float Start[4] = {0.42f, 0.68f, 0.92f, 1.14f};
+	static const float Length[4] = {0.34f, 0.32f, 0.28f, 0.50f};
+	const int32 K = FMath::Clamp(PunchStep, 0, 3);
+	if (PunchTime > Length[K])
+	{
+		return true;
+	}
+	// In fast, out over the last 0.12 s.
+	const float W = FMath::Clamp(PunchTime / 0.06f, 0.f, 1.f) * FMath::Clamp((Length[K] - PunchTime) / 0.12f, 0.f, 1.f);
+	LayerUpper(Output, Punches, Start[K] + PunchTime, W);
+	return true;
+}
+
 bool FM80OverlayProxy::UpperBodyPose(FPoseContext& Output)
 {
 	const bool bRifle = Pose == EM80WeaponPose::Rifle;
@@ -269,19 +310,7 @@ bool FM80OverlayProxy::UpperBodyPose(FPoseContext& Output)
 	// The aim sweep goes from straight up (start) to straight down (end); the hold pose is its first frame.
 	const double Len = Seq->GetPlayLength();
 	const double T = bAimPoint ? Len * FMath::Clamp(0.5 - AimPitch / 180.0, 0.0, 1.0) : 0.0;
-	FCompactPose P;
-	P.SetBoneContainer(&Output.Pose.GetBoneContainer());
-	FBlendedCurve Curve;
-	Curve.InitFrom(Output.Curve);
-	UE::Anim::FStackAttributeContainer Attributes;
-	FAnimationPoseData Data(P, Curve, Attributes);
-	Seq->GetAnimationPose(Data, FAnimExtractContext(T, false));
-	for (const TPair<FCompactPoseBoneIndex, float>& B : Upper)
-	{
-		const float W = ArmsWeight * B.Value;
-		FTransform& Local = Output.Pose[B.Key];
-		Local.SetRotation(FQuat::Slerp(Local.GetRotation(), P[B.Key].GetRotation(), W).GetNormalized());
-	}
+	LayerUpper(Output, Seq, T, ArmsWeight);
 	// What is left to the crosshair sideways: the chest turns (the body follows the camera anyway).
 	const float Yaw = FMath::Clamp(AimYaw, -60.f, 60.f) * ArmsWeight;
 	Rotate(Output, TEXT("spine_03"), CSUp, Yaw * 0.5f);
@@ -306,7 +335,10 @@ bool FM80OverlayProxy::Evaluate(FPoseContext& Output)
 	}
 	if (Swing >= 0.f)
 	{
-		if (bPunch)
+		if (bPunch && Punch(Output))
+		{
+		}
+		else if (bPunch)
 		{
 			// Jab: right arm forward and straight, a quick turn of the shoulders.
 			const float E = Bump(Swing);

@@ -413,6 +413,8 @@ bool UM80WeaponInventory::TryFire(FVector AimPoint)
 	}
 	else
 	{
+		// Fists: blows close together make a combination (left, right, left, right).
+		ComboStep = (GetCurrentWeapon() == EM80Weapon::Pugni && SinceLastFire < 0.9f) ? (ComboStep + 1) % 4 : 0;
 		FireMelee(S);
 	}
 	Cooldown = FMath::Max(Cooldown, S.Interval);

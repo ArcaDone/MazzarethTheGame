@@ -50,6 +50,9 @@ struct FM80OverlayProxy : public FAnimInstanceProxy
 	UAnimSequence* PistolHold = nullptr;
 	UAnimSequence* RifleAim = nullptr;
 	UAnimSequence* RifleHold = nullptr;
+	UAnimSequence* Punches = nullptr;   // the Mixamo punch combination
+	int32 PunchStep = 0;
+	float PunchTime = 99.f;
 	float AimPitch = 0.f;   // degrees, up positive
 	float AimYaw = 0.f;     // degrees left of straight ahead (what the body has not turned yet)
 
@@ -58,6 +61,10 @@ private:
 	void AimArms(FPoseContext& Output);
 	/** Lays the upper body of the weapon pose over the copied pose; false without the clips. */
 	bool UpperBodyPose(FPoseContext& Output);
+	/** The upper body of Seq at Time, laid over the pose with Weight. */
+	void LayerUpper(FPoseContext& Output, UAnimSequence* Seq, double Time, float Weight);
+	/** A blow of the fists' combination from the punch clip; false without it. */
+	bool Punch(FPoseContext& Output);
 
 	/** Upper body bones (spine_01 and everything under it) with their blend weights. */
 	TArray<TPair<FCompactPoseBoneIndex, float>> Upper;
@@ -79,6 +86,7 @@ public:
 	bool bAiming = false;
 	FVector AimPoint = FVector::ZeroVector;   // world
 	float SinceFire = 99.f;
+	int32 ComboStep = 0;
 	bool bEnabled = true;
 
 	float BlendArms = 0.f;

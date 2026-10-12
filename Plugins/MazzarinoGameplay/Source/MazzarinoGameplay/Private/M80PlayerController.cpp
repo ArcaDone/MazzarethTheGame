@@ -379,6 +379,7 @@ void AM80PlayerController::UpdateWeapons(float DeltaTime)
 		O->bAiming = bAimingNow;
 		O->AimPoint = bAimingNow ? GetAimPoint() : FVector::ZeroVector;
 		O->SinceFire = Inv->SinceFire();
+		O->ComboStep = Inv->GetComboStep();
 		O->bEnabled = bOnFoot;
 	}
 }

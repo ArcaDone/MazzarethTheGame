@@ -2,10 +2,12 @@
 #include "M80MeshBuffer.h"
 #include "M80Sidewalk.h"
 #include "Components/DynamicMeshComponent.h"
+#include "Components/InstancedStaticMeshComponent.h"
 #include "Components/SplineComponent.h"
 #include "DynamicMesh/DynamicMesh3.h"
 #include "Materials/Material.h"
 #include "Materials/MaterialInterface.h"
+#include "Engine/StaticMesh.h"
 #include "MaterialDomain.h"
 
 namespace M80St
@@ -20,6 +22,17 @@ UMaterialInterface* Kit(const TCHAR* Name)
 {
 	// Made by Scripts/m80_stairs_setup.py.
 	return LoadObject<UMaterialInterface>(nullptr, *FString::Printf(TEXT("/Game/Mazzarino80/Kit/Stairs/%s.%s"), Name, Name), nullptr, LOAD_NoWarn);
+}
+
+// The Madonna's railing (Research/Mazzarino80/Blender/m80_muretto_madonna.py, Scripts/m80_muretto_madonna_import.py):
+// pivots at the post's plan centre and bottom, the rails run along +X to the next post RailingSpan cm away.
+constexpr double RailingSpan = 353.8;
+constexpr double RailingPostHeight = 109.0;
+constexpr double RailingPostHalf = 21.7;
+
+UStaticMesh* KitMesh(const TCHAR* Name)
+{
+	return LoadObject<UStaticMesh>(nullptr, *FString::Printf(TEXT("/Game/Mazzarino80/Kit/Stairs/%s.%s"), Name, Name), nullptr, LOAD_NoWarn);
 }
 
 UMaterialInterface* Pick(UMaterialInterface* Override, const TCHAR* Name)
@@ -254,6 +267,13 @@ AM80Stairs::AM80Stairs()
 	Mesh->SetupAttachment(Path);
 	Mesh->SetMobility(EComponentMobility::Static);
 	Mesh->SetTangentsType(EDynamicMeshComponentTangentsMode::AutoCalculated);
+	RailingPosts = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("RailingPosts"));
+	RailingBays = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("RailingBays"));
+	for (UInstancedStaticMeshComponent* C : {RailingPosts.Get(), RailingBays.Get()})
+	{
+		C->SetupAttachment(Path);
+		C->SetMobility(EComponentMobility::Static);
+	}
 	// Houses must keep finding the real ground under a stair.
 	Tags.Add(TEXT("M80IgnoreGround"));
 }
@@ -525,11 +545,16 @@ void AM80Stairs::BuildTreads(FM80MeshBuffer& B) const
 	}
 }
 
+double AM80Stairs::WallGap() const
+{
+	return Kind == EM80StairsKind::WallFromSpline ? -WallThicknessCm * 0.5 : FMath::Max(20.0, double(WidthCm)) * 0.5;
+}
+
 void AM80Stairs::BuildWall(FM80MeshBuffer& B, double Side) const
 {
 	const FTransform& T = Path->GetComponentTransform();
 	auto Local = [&T](const FVector& V) { return FVector3d(T.InverseTransformVectorNoScale(V)); };
-	const double HalfW = FMath::Max(20.0, double(WidthCm)) * 0.5;
+	const double HalfW = WallGap();
 	const double Th = WallThicknessCm;
 	const double Use = FMath::Clamp(double(Wear), 0.0, 1.0);
 	const int32 Seed = int32(GetTypeHash(GetName()) % 9973) + int32(Side * 31);
@@ -614,7 +639,7 @@ void AM80Stairs::BuildFence(FM80MeshBuffer& B, double Side, bool bOnWall) const
 {
 	const FTransform& T = Path->GetComponentTransform();
 	auto Local = [&T](const FVector& V) { return FVector3d(T.InverseTransformVectorNoScale(V)); };
-	const double HalfW = FMath::Max(20.0, double(WidthCm)) * 0.5;
+	const double HalfW = WallGap();
 	const double Lat = bOnWall ? Side * (HalfW + WallThicknessCm * 0.5) : Side * (HalfW - 10.0);
 	const double H = FenceHeightCm;
 	const double Cop = bWallCoping ? 7.0 : 0.0;
@@ -727,6 +752,47 @@ void AM80Stairs::BuildFence(FM80MeshBuffer& B, double Side, bool bOnWall) const
 	}
 }
 
+void AM80Stairs::PlaceMadonnaRailing(double Side, bool bOnWall)
+{
+	UStaticMesh* PostMesh = M80St::KitMesh(TEXT("SM_M80_MurettoMadonna_Pilastrino"));
+	UStaticMesh* BayMesh = M80St::KitMesh(TEXT("SM_M80_MurettoMadonna_Ringhiera"));
+	if (!PostMesh || !BayMesh || Length < 2.0 * M80St::RailingPostHalf)
+	{
+		return;
+	}
+	RailingPosts->SetStaticMesh(PostMesh);
+	RailingBays->SetStaticMesh(BayMesh);
+	const double Lat = bOnWall ? Side * (WallGap() + WallThicknessCm * 0.5) : Side * (WallGap() - 10.0);
+	const double Cop = bWallCoping ? 7.0 : 0.0;
+	const double Scale = FMath::Max(0.2, double(FenceHeightCm) / M80St::RailingPostHeight);
+	auto Base = [&](double D) { return bOnWall ? EdgeLineZ(D) + WallHeightCm + Cop : SurfaceZ(D); };
+	// Posts at both ends and evenly between them, about the model's own spacing apart: never an open end.
+	const double Inset = FMath::Min(M80St::RailingPostHalf * Scale, Length * 0.5);
+	const double Run = FMath::Max(0.0, Length - 2.0 * Inset);
+	const int32 Bays = FMath::Max(1, FMath::RoundToInt(Run / (M80St::RailingSpan * Scale)));
+	TArray<FVector> Pts;
+	for (int32 i = 0; i <= Bays; ++i)
+	{
+		const double D = Inset + Run * i / Bays;
+		Pts.Add(PointAt(D, Lat, Base(D)));
+	}
+	auto Yaw = [](const FVector& Dir) { return FMath::RadiansToDegrees(FMath::Atan2(Dir.Y, Dir.X)); };
+	for (int32 i = 0; i < Pts.Num(); ++i)
+	{
+		// Each post faces the mean direction of its two bays.
+		const FVector Dir = (Pts[FMath::Min(i + 1, Pts.Num() - 1)] - Pts[FMath::Max(i - 1, 0)]).GetSafeNormal2D();
+		RailingPosts->AddInstance(FTransform(FRotator(0, Yaw(Dir), 0), Pts[i], FVector(Scale)));
+	}
+	for (int32 i = 0; i + 1 < Pts.Num(); ++i)
+	{
+		// The rails rise or fall with the ground, stretched to reach the next post.
+		const FVector Dir = Pts[i + 1] - Pts[i];
+		const double Flat = FVector(Dir.X, Dir.Y, 0).Size();
+		const double Pitch = FMath::RadiansToDegrees(FMath::Atan2(Dir.Z, Flat));
+		RailingBays->AddInstance(FTransform(FRotator(Pitch, Yaw(Dir), 0), Pts[i], FVector(Dir.Size() / M80St::RailingSpan, Scale, Scale)));
+	}
+}
+
 void AM80Stairs::Rebuild()
 {
 	if (!Mesh || !Path)
@@ -734,6 +800,13 @@ void AM80Stairs::Rebuild()
 		return;
 	}
 	Mesh->SetMesh(UE::Geometry::FDynamicMesh3());
+	for (UInstancedStaticMeshComponent* C : {RailingPosts.Get(), RailingBays.Get()})
+	{
+		if (C)
+		{
+			C->ClearInstances();
+		}
+	}
 	Treads.Reset();
 	EdgeLine.Reset();
 	StepCount = LandingCount = 0;
@@ -753,12 +826,13 @@ void AM80Stairs::Rebuild()
 	const double Rise = FMath::Abs(Dz);
 	const bool bUp = Dz >= 0.0;
 
-	if (Kind == EM80StairsKind::FenceOnly)
+	if (Kind == EM80StairsKind::FenceOnly || Kind == EM80StairsKind::WallFromSpline)
 	{
-		// Walls and fences on the ground.
+		// Walls and fences on the ground, or (from the spline) with their top on the spline.
 		for (const double D : M80St::Cuts(0.0, Length))
 		{
-			EdgeLine.Add(FVector2D(D, GroundAt(Path->GetLocationAtDistanceAlongSpline(D, ESplineCoordinateSpace::World))));
+			const FVector P = Path->GetLocationAtDistanceAlongSpline(D, ESplineCoordinateSpace::World);
+			EdgeLine.Add(FVector2D(D, Kind == EM80StairsKind::WallFromSpline ? P.Z : GroundAt(P)));
 		}
 	}
 	else
@@ -840,7 +914,7 @@ void AM80Stairs::Rebuild()
 	}
 
 	FM80MeshBuffer B;
-	if (Kind != EM80StairsKind::FenceOnly)
+	if (Kind != EM80StairsKind::FenceOnly && Kind != EM80StairsKind::WallFromSpline)
 	{
 		BuildTreads(B);
 	}
@@ -850,15 +924,26 @@ void AM80Stairs::Rebuild()
 	};
 	for (const double S : {-1.0, 1.0})
 	{
-		const bool bWall = Has(WallSides, S) && (Kind != EM80StairsKind::FenceOnly || WallHeightCm > 1.f);
+		// The wall from the spline is a single wall on the spline itself.
+		const bool bFromSpline = Kind == EM80StairsKind::WallFromSpline;
+		const bool bWall = bFromSpline ? S > 0 : Has(WallSides, S) && (Kind != EM80StairsKind::FenceOnly || WallHeightCm > 1.f);
 		if (bWall)
 		{
 			BuildWall(B, S);
 		}
-		if (FenceKind != EM80FenceKind::None && Has(FenceSides, S))
+		const bool bFence = FenceKind != EM80FenceKind::None && (bFromSpline ? S > 0 : Has(FenceSides, S));
+		if (bFence && FenceKind == EM80FenceKind::MadonnaRailing)
+		{
+			PlaceMadonnaRailing(S, bWall);
+		}
+		else if (bFence)
 		{
 			BuildFence(B, S, bWall);
 		}
+	}
+	for (UInstancedStaticMeshComponent* C : {RailingPosts.Get(), RailingBays.Get()})
+	{
+		C->SetCollisionProfileName(bCollision ? TEXT("BlockAll") : TEXT("NoCollision"));
 	}
 	if (B.NumTriangles() == 0)
 	{

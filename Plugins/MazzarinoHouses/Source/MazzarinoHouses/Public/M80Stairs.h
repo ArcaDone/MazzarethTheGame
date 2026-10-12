@@ -6,6 +6,7 @@
 
 class USplineComponent;
 class UDynamicMeshComponent;
+class UInstancedStaticMeshComponent;
 class UMaterialInterface;
 struct FM80MeshBuffer;
 
@@ -14,7 +15,8 @@ enum class EM80StairsKind : uint8
 {
 	Steps UMETA(DisplayName = "Scalinata (gradini)"),
 	SteppedPath UMETA(DisplayName = "Cordonata (marciapiede a gradoni)"),
-	FenceOnly UMETA(DisplayName = "Solo muretto / staccionata")
+	FenceOnly UMETA(DisplayName = "Solo muretto / staccionata"),
+	WallFromSpline UMETA(DisplayName = "Muro dalla spline fino a terra")
 };
 
 UENUM(BlueprintType)
@@ -49,7 +51,8 @@ enum class EM80FenceKind : uint8
 	WroughtIron UMETA(DisplayName = "Ferro battuto"),
 	IronTube UMETA(DisplayName = "Ferro tubolare"),
 	Wood UMETA(DisplayName = "Legno"),
-	Cane UMETA(DisplayName = "Canne (rustica)")
+	Cane UMETA(DisplayName = "Canne (rustica)"),
+	MadonnaRailing UMETA(DisplayName = "Ringhiera della Madonna (pilastrini e tubi)")
 };
 
 /**
@@ -61,6 +64,10 @@ enum class EM80FenceKind : uint8
  * steps are spread evenly between them. "Pieno fino a terra" fills the space under the steps down to
  * the terrain; otherwise the stair is a slab (with its walls, if any, still reaching the ground).
  * "Solo muretto / staccionata" builds only walls and fences along the ground.
+ * "Muro dalla spline fino a terra" builds one wall centred on the spline, its top at the height of the spline
+ * (plus "Altezza muro"), down into the terrain: a retaining wall or a parapet that follows the drawn line.
+ * The Madonna's railing (stone posts and iron rails, the model of the Madonna's villa) is a fence kind: it stands on
+ * any wall, or on the ground with no wall.
  * "Destra" is the right-hand side walking along the spline from the first point.
  */
 UCLASS(meta = (DisplayName = "Scalinata (Mazzarino)"))
@@ -78,6 +85,13 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Scalinata")
 	TObjectPtr<UDynamicMeshComponent> Mesh;
+
+	/** Posts and bays of rails of the Madonna's railing (models from the Madonna's villa). */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Staccionata")
+	TObjectPtr<UInstancedStaticMeshComponent> RailingPosts;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Staccionata")
+	TObjectPtr<UInstancedStaticMeshComponent> RailingBays;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scalinata", meta = (DisplayName = "Tipo"))
 	EM80StairsKind Kind = EM80StairsKind::Steps;
@@ -127,10 +141,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Muri", meta = (DisplayName = "Finitura muro"))
 	EM80StairsWallFinish WallFinish = EM80StairsWallFinish::Stone;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Muri", meta = (DisplayName = "Spessore muro (cm)", ClampMin = "10", ClampMax = "150"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Muri", meta = (DisplayName = "Spessore muro (cm)", ClampMin = "5", ClampMax = "600"))
 	float WallThicknessCm = 40.f;
 
-	/** Height of the wall above the steps (0 = flush with the edge of the steps, a retaining wall). */
+	/** Height of the wall above the steps (0 = flush with the edge of the steps, a retaining wall); for
+	 *  "Muro dalla spline fino a terra", above the spline. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Muri", meta = (DisplayName = "Altezza muro sopra i gradini (cm)", ClampMin = "0", ClampMax = "400"))
 	float WallHeightCm = 0.f;
 
@@ -206,6 +221,10 @@ private:
 	void BuildTreads(FM80MeshBuffer& B) const;
 	void BuildWall(FM80MeshBuffer& B, double Side) const;
 	void BuildFence(FM80MeshBuffer& B, double Side, bool bOnWall) const;
+	/** Lateral offset of the wall's inner face from the spline (negative: the wall straddles the spline). */
+	double WallGap() const;
+	/** The Madonna's railing: a post at each end and between the bays, the rails stretched from post to post. */
+	void PlaceMadonnaRailing(double Side, bool bOnWall);
 
 	TArray<FTread> Treads;
 	TArray<FVector2D> EdgeLine; // (distance, z)

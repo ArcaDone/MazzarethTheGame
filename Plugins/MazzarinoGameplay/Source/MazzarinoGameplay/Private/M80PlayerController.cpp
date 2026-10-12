@@ -1,4 +1,6 @@
 #include "M80PlayerController.h"
+#include "M80PlayerCamera.h"
+#include "M80Climb.h"
 #include "M80Car.h"
 #include "M80Vitals.h"
 #include "M80Weapons.h"
@@ -66,6 +68,7 @@ bool* WantsToSprint(ACharacter* C)
 
 AM80PlayerController::AM80PlayerController()
 {
+	PlayerCameraManagerClass = AM80PlayerCameraManager::StaticClass();
 	static ConstructorHelpers::FObjectFinderOptional<UAnimSequenceBase> Seated(TEXT("/Game/Mazzarino80/Player/A_M80_Seduto_Guida.A_M80_Seduto_Guida"));
 	SeatedAnim = Seated.Get();
 }
@@ -105,6 +108,15 @@ void AM80PlayerController::SetupInputComponent()
 	BindKeyLambda(EKeys::R, OnFootDo([](UM80WeaponInventory* Inv) { Inv->Reload(); }));
 	BindKeyLambda(EKeys::Gamepad_FaceButton_Left, OnFootDo([](UM80WeaponInventory* Inv) { Inv->Reload(); }));
 	BindKeyLambda(EKeys::G, OnFootDo([](UM80WeaponInventory* Inv) { Inv->DropCurrent(); }));
+	// Climbing: jump climbs onto things, catches ledges and acts on the ledge held; C / Ctrl / B let go.
+	for (const FKey& K : {EKeys::SpaceBar, EKeys::Gamepad_FaceButton_Bottom})
+	{
+		BindKeyLambda(K, [this]() { if (UM80ClimbComponent* Cl = GetClimb()) { if (State == EM80PlayerState::OnFoot) { Cl->JumpPressed(); } } });
+	}
+	for (const FKey& K : {EKeys::C, EKeys::LeftControl, EKeys::Gamepad_FaceButton_Right})
+	{
+		BindKeyLambda(K, [this]() { if (UM80ClimbComponent* Cl = GetClimb()) { Cl->Drop(); } });
+	}
 	BindKeyLambda(EKeys::Gamepad_DPad_Down, OnFootDo([](UM80WeaponInventory* Inv) { Inv->DropCurrent(); }));
 }
 
@@ -114,6 +126,12 @@ void AM80PlayerController::BindKeyLambda(const FKey& Key, TFunction<void()> Fn)
 	B.bConsumeInput = false;
 	B.KeyDelegate.GetDelegateForManualSet().BindLambda(MoveTemp(Fn));
 	InputComponent->KeyBindings.Add(B);
+}
+
+UM80ClimbComponent* AM80PlayerController::GetClimb() const
+{
+	const ACharacter* W = Walker.Get();
+	return W ? W->FindComponentByClass<UM80ClimbComponent>() : nullptr;
 }
 
 UM80WeaponInventory* AM80PlayerController::GetInventory() const
@@ -158,6 +176,25 @@ bool AM80PlayerController::IsActionHeld(const TSoftObjectPtr<UInputAction>& Acti
 	return A && Sub && Sub->GetPlayerInput() && Sub->GetPlayerInput()->GetActionValue(A).Get<bool>();
 }
 
+void AM80PlayerController::UpdateClimbInput()
+{
+	// While climbing the move stick / WASD moves along the ledge: the component gets it in world space.
+	UM80ClimbComponent* Cl = GetClimb();
+	if (!Cl || !Cl->IsClimbing())
+	{
+		return;
+	}
+	const UInputAction* Move = MoveAction.LoadSynchronous();
+	const UEnhancedInputLocalPlayerSubsystem* Sub = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+	FVector2D V = FVector2D::ZeroVector;
+	if (Move && Sub && Sub->GetPlayerInput())
+	{
+		V = Sub->GetPlayerInput()->GetActionValue(Move).Get<FVector2D>();
+	}
+	const FRotator Yaw(0.f, GetControlRotation().Yaw, 0.f);
+	Cl->SetMoveInput(Yaw.RotateVector(FVector(V.Y, V.X, 0.f)));
+}
+
 void AM80PlayerController::UpdateWeapons(float DeltaTime)
 {
 	ACharacter* W = Walker.Get();
@@ -172,7 +209,7 @@ void AM80PlayerController::UpdateWeapons(float DeltaTime)
 	ForceAimTime -= DeltaTime;
 	// Aim: right mouse (the sample turns the character to the camera), or held for a moment after a shot.
 	bool* WantsAim = InputStateFlag(W, TEXT("WantsToAim"));
-	const bool bRMB = IsActionHeld(AimAction);
+	const bool bRMB = IsActionHeld(AimAction) || bAimHeld;
 	const bool bForce = bOnFoot && !S.bMelee && ForceAimTime > 0.f;
 	if (WantsAim)
 	{
@@ -186,6 +223,11 @@ void AM80PlayerController::UpdateWeapons(float DeltaTime)
 			*WantsAim = bRMB;
 			bAimForced = false;
 		}
+	}
+	if (WantsAim && bAimHeld != bAimHeldApplied)
+	{
+		*WantsAim = bAimHeld;   // the sample's own aim state follows SetAimHeld
+		bAimHeldApplied = bAimHeld;
 	}
 	bAimingNow = bOnFoot && !S.bMelee && (bRMB || bForce);
 	// Aiming: the character faces the crosshair at once (GTA) and walks sideways (the sample's strafe).
@@ -246,6 +288,10 @@ void AM80PlayerController::OnPossess(APawn* InPawn)
 		V->OnDamaged.AddUniqueDynamic(this, &AM80PlayerController::OnWalkerDamaged);
 		MeshRelative = C->GetMesh()->GetRelativeTransform();
 		MeshProfile = C->GetMesh()->GetCollisionProfileName();
+		if (!C->FindComponentByClass<UM80ClimbComponent>())
+		{
+			NewObject<UM80ClimbComponent>(C, TEXT("M80Arrampicata"))->RegisterComponent();
+		}
 		if (!C->FindComponentByClass<UM80WeaponInventory>())
 		{
 			NewObject<UM80WeaponInventory>(C, TEXT("M80Armi"))->RegisterComponent();
@@ -808,6 +854,7 @@ void AM80PlayerController::PlayerTick(float DeltaTime)
 		CheckCarHits(DeltaTime);
 	}
 	UpdateWeapons(DeltaTime);
+	UpdateClimbInput();
 
 	StreetTimer -= DeltaTime;
 	if (StreetTimer <= 0.f)

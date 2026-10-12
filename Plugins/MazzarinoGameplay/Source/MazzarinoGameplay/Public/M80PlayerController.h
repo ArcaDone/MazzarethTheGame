@@ -10,6 +10,7 @@ class UAnimSequenceBase;
 class UInputAction;
 class UM80VitalsComponent;
 class UM80WeaponInventory;
+class UM80ClimbComponent;
 class UM80OverlayAnimInstance;
 class UStaticMesh;
 
@@ -70,6 +71,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
 	bool SetCharacterSprint(bool bSprint);
 
+	/** Climbing on houses, balconies and roofs (null while there is no character). */
+	UFUNCTION(BlueprintPure, Category = "Mazzarino")
+	UM80ClimbComponent* GetClimb() const;
+
 	/** Weapons carried by the character on foot (null while there is none). */
 	UFUNCTION(BlueprintPure, Category = "Mazzarino")
 	UM80WeaponInventory* GetInventory() const;
@@ -85,6 +90,10 @@ public:
 	/** Throws the character to the ground (ragdoll) with this push; it gets up after a moment. */
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
 	void KnockDown(FVector Push);
+
+	/** Holds the aim as the right mouse button does (tests, gamepad left trigger). */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
+	void SetAimHeld(bool bHeld) { bAimHeld = bHeld; }
 
 	/** Trigger (left mouse / right trigger). */
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
@@ -139,6 +148,10 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Mazzarino")
 	TSoftObjectPtr<UInputAction> AimAction = TSoftObjectPtr<UInputAction>(FSoftObjectPath(TEXT("/Game/Input/IA_Aim.IA_Aim")));
 
+	/** The sample's move action (X right, Y forward), read while climbing. */
+	UPROPERTY(EditAnywhere, Category = "Mazzarino")
+	TSoftObjectPtr<UInputAction> MoveAction = TSoftObjectPtr<UInputAction>(FSoftObjectPath(TEXT("/Game/Input/IA_Move.IA_Move")));
+
 	UPROPERTY(EditAnywhere, Category = "Mazzarino")
 	TSoftObjectPtr<UInputAction> SprintAction = TSoftObjectPtr<UInputAction>(FSoftObjectPath(TEXT("/Game/Input/IA_Sprint.IA_Sprint")));
 
@@ -160,6 +173,7 @@ private:
 	void StartGetOut(bool bJump = false);
 	void LimitSprint();
 	void UpdateWeapons(float DeltaTime);
+	void UpdateClimbInput();
 	bool IsActionHeld(const TSoftObjectPtr<UInputAction>& Action) const;
 	void BindKeyLambda(const FKey& Key, TFunction<void()> Fn);
 	void CheckCarHits(float DeltaTime);
@@ -194,6 +208,8 @@ private:
 	bool bSprintForcedOff = false;
 	bool bFireHeld = false;
 	bool bAimingNow = false;
+	bool bAimHeld = false;
+	bool bAimHeldApplied = false;
 	bool bAimForced = false;
 	bool bStrafeForced = false;
 	float ForceAimTime = 0.f;

@@ -172,6 +172,20 @@ def steps():
         x, y = car_spots[6]
         car = EAS.spawn_actor_from_class(unreal.M80CarFiat126, V(x, y, 80))
         placed["car"] = [x, y]
+    # Climbing blocks of known heights next to the start (tests and practice): 1 m, 2.2 m, 2.9 m (2 m deep, to stand on).
+    blocks = []
+    free = open_spots(rings, RADIUS * 0.9, 450, 6, 600)
+    for (x, y), (h, depth, name) in zip(free[1:], ((100, 150, "Muretto_1m"), (220, 150, "Muro_2_2m"), (290, 200, "Blocco_2_9m"))):
+        b = EAS.spawn_actor_from_object(unreal.load_asset("/Engine/BasicShapes/Cube"), V(x, y, h / 2.0))
+        b.set_actor_scale3d(V(depth / 100.0, 3.0, h / 100.0))
+        b.set_actor_label("Prova_" + name)
+        b.set_folder_path("Prove arrampicata")
+        b.tags = ["M80ProvaArrampicata"]
+        blocks.append([name, x, y, h])
+    placed["blocks"] = blocks
+    # A camera the automatic tests move around (Python cannot spawn actors in Play In Editor).
+    cam = EAS.spawn_actor_from_class(unreal.CameraActor, V(sx, sy, 400))
+    cam.set_actor_label("CameraTest")
     yield 5
     LES.save_current_level()
     # Check photos: from above and from the start.

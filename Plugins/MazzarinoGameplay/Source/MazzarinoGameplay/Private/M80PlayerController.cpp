@@ -121,7 +121,8 @@ void AM80PlayerController::SetupInputComponent()
 		return [this, Fn]() { if (UM80WeaponInventory* Inv = GetInventory(); Inv && State == EM80PlayerState::OnFoot) { Fn(Inv); } };
 	};
 	BindKeyLambda(EKeys::R, OnFootDo([](UM80WeaponInventory* Inv) { Inv->Reload(); }));
-	BindKeyLambda(EKeys::Gamepad_FaceButton_Left, OnFootDo([](UM80WeaponInventory* Inv) { Inv->Reload(); }));
+	// Gamepad X reloads, but inside the open wheel it changes the weapon of the sector.
+	BindKeyLambda(EKeys::Gamepad_FaceButton_Left, OnFootDo([this](UM80WeaponInventory* Inv) { if (!bWheelOpen) { Inv->Reload(); } }));
 	BindKeyLambda(EKeys::G, OnFootDo([](UM80WeaponInventory* Inv) { Inv->DropCurrent(); }));
 	// Climbing: jump climbs onto things, catches ledges and acts on the ledge held; C / Ctrl / B let go.
 	for (const FKey& K : {EKeys::SpaceBar, EKeys::Gamepad_FaceButton_Bottom})

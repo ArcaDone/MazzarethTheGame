@@ -175,6 +175,10 @@ void AM80PlayerController::SetFire(bool bDown)
 
 FVector AM80PlayerController::GetAimPoint() const
 {
+	if (bAimFrozen)
+	{
+		return FrozenAim;
+	}
 	// Locked on a person (gamepad): the shot goes to the chest.
 	if (const ACharacter* T = LockTarget.Get())
 	{
@@ -461,6 +465,7 @@ void AM80PlayerController::UpdateWeapons(float DeltaTime)
 	{
 		Inv->SetTrigger(bOnFoot, GetAimPoint());
 	}
+	Inv->SetAim(bAimingNow, GetAimPoint());
 	if (O)
 	{
 		O->Pose = bOnFoot ? S.Pose : EM80WeaponPose::Unarmed;

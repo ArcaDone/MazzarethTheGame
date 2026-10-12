@@ -147,6 +147,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
 	void SetTrigger(bool bDown, FVector AimPoint);
 
+	/** Aiming at AimPoint: the gun turns in the hand to point its barrel there (the borrowed aim poses hold
+	 * the hands right but were made for other grips); not aiming, it goes back to the plain grip. */
+	void SetAim(bool bAiming, const FVector& AimPoint) { bAimingGun = bAiming; AimAt = AimPoint; }
+
 	/** Fires once now if the weapon is ready (used by the trigger and by tests). */
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
 	bool TryFire(FVector AimPoint);
@@ -163,6 +167,10 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Mazzarino")
 	bool IsReloading() const { return ReloadLeft > 0.f; }
+
+	/** The weapon in the hand (its Muzzle socket, where it points), null for the fists. */
+	UFUNCTION(BlueprintPure, Category = "Mazzarino")
+	UStaticMeshComponent* GetHeldMesh() const { return Held; }
 
 	const FM80WeaponSpec& CurrentSpec() const { return M80WeaponSpec(GetCurrentWeapon()); }
 
@@ -190,6 +198,7 @@ private:
 	void FireMelee(const FM80WeaponSpec& S);
 	void Impact(const FHitResult& Hit, const FVector& Dir, const FM80WeaponSpec& S);
 	void UpdateHeldMesh();
+	void UpdateGripAim(float DeltaTime);
 
 	UPROPERTY(Transient)
 	TObjectPtr<UStaticMeshComponent> Held;
@@ -202,6 +211,10 @@ private:
 	int32 ComboStep = 0;
 	bool bTrigger = false;
 	FVector TriggerAim = FVector::ZeroVector;
+	bool bAimingGun = false;
+	FVector AimAt = FVector::ZeroVector;
+	FTransform BaseGrip = FTransform::Identity;   // weapon in the hand bone's space, from M80GripInHand
+	FQuat GripRot = FQuat::Identity;              // its rotation now (turned towards the aim)
 };
 
 /**

@@ -87,6 +87,10 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Mazzarino")
 	FVector GetAimPoint() const;
 
+	/** Keeps the aim point where it is now, whatever the view (tests: photos from another camera). */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
+	void FreezeAim(bool bFreeze) { FrozenAim = GetAimPoint(); bAimFrozen = bFreeze; }
+
 	/** Throws the character to the ground (ragdoll) with this push; it gets up after a moment. */
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
 	void KnockDown(FVector Push);
@@ -251,6 +255,8 @@ private:
 	TWeakObjectPtr<ACharacter> LockTarget;
 	bool bPadAimWas = false;
 	bool bLockHeld = false;
+	bool bAimFrozen = false;
+	FVector FrozenAim = FVector::ZeroVector;
 	void UpdateLockOn(float DeltaTime);
 	int32 WheelSector = -1;
 	FVector2D WheelCursor = FVector2D::ZeroVector;

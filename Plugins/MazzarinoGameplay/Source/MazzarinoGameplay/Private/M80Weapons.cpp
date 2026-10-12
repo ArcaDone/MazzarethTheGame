@@ -207,8 +207,32 @@ void UM80WeaponInventory::UpdateHeldMesh()
 	// Grip in the palm: the weapon meshes have the grip at the origin, barrel along +X, top along +Z.
 	// UEFN/MetaHuman hand_r: X along the fingers, palm towards -Y... (tuned with the weapons test).
 	Held->AttachToComponent(Hand, FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("hand_r"));
-	const FTransform Grip = M80GripInHand(Hand->GetSkeletalMeshAsset(), S.Pose == EM80WeaponPose::Melee);
-	Held->SetRelativeTransform(Grip);
+	BaseGrip = M80GripInHand(Hand->GetSkeletalMeshAsset(), S.Pose == EM80WeaponPose::Melee);
+	GripRot = BaseGrip.GetRotation();
+	Held->SetRelativeTransform(BaseGrip);
+}
+
+void UM80WeaponInventory::UpdateGripAim(float DeltaTime)
+{
+	USkeletalMeshComponent* Hand = Held && Held->IsVisible() ? HandMesh() : nullptr;
+	if (!Hand)
+	{
+		return;
+	}
+	FQuat Want = BaseGrip.GetRotation();
+	if (bAimingGun && !CurrentSpec().bMelee)
+	{
+		// The barrel from the grip to the aim point, the top up; in the hand bone's space.
+		const FTransform HandW = Hand->GetSocketTransform(TEXT("hand_r"));
+		const FVector X = (AimAt - HandW.TransformPosition(BaseGrip.GetLocation())).GetSafeNormal();
+		if (!X.IsNearlyZero() && FMath::Abs(X.Z) < 0.98f)
+		{
+			Want = HandW.GetRotation().Inverse() * FRotationMatrix::MakeFromXZ(X, FVector::UpVector).ToQuat();
+		}
+	}
+	// Smoothly (the recoil still shows), and never a sudden turn in the hand.
+	GripRot = FQuat::Slerp(GripRot, Want, 1.f - FMath::Exp(-14.f * DeltaTime)).GetNormalized();
+	Held->SetRelativeRotation(GripRot);
 }
 
 void UM80WeaponInventory::HideWeapon()
@@ -366,6 +390,7 @@ void UM80WeaponInventory::TickComponent(float DeltaTime, ELevelTick TickType, FA
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	Cooldown -= DeltaTime;
 	SinceLastFire += DeltaTime;
+	UpdateGripAim(DeltaTime);
 	if (ReloadLeft > 0.f)
 	{
 		ReloadLeft -= DeltaTime;

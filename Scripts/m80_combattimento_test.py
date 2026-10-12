@@ -44,13 +44,28 @@ def side(world, pc, pawn, name, report, each=None):
     eye = base + pawn.get_actor_right_vector() * 260 + pawn.get_actor_forward_vector() * 80 + unreal.Vector(0, 0, 30)
     d = base - eye
     cam.set_actor_location_and_rotation(eye, unreal.Rotator(0, math.degrees(math.atan2(d.z, math.hypot(d.x, d.y))), math.degrees(math.atan2(d.y, d.x))), False, True)
+    # The aim stays where the player's camera put it (it would follow this camera's crosshair).
+    pc.freeze_aim(True)
     pc.set_view_target_with_blend(cam, 0.0)
     for s in wait(world, 0.1, each):
         yield s
     for s in shot(world, name, report):
         yield s
     pc.set_view_target_with_blend(pawn, 0.0)
+    pc.freeze_aim(False)
     yield 2
+
+
+def muzzle_error(pc, inv):
+    """Degrees between where the weapon in hand points (its barrel, +X) and the line from its muzzle to the aim point."""
+    held = inv.get_held_mesh()
+    if not held:
+        return None
+    muzzle = held.get_socket_location("Muzzle")
+    want = pc.get_aim_point() - muzzle
+    want = want * (1.0 / max(want.length(), 1.0))
+    barrel = held.get_forward_vector()
+    return round(math.degrees(math.acos(max(-1.0, min(1.0, barrel.dot(want))))), 1)
 
 
 def world_cam(world):
@@ -113,6 +128,7 @@ def run():
     head = pawn.get_actor_location() + unreal.Vector(0, 0, 58)
     report["camera_from_shoulder_cm"] = round((cm.get_camera_location() - head).length())
     report["camera_fov"] = round(cm.get_fov_angle())
+    report["muzzle_error_deg"] = {"Beretta": muzzle_error(pc, inv)}
     report["camera_local"] = [round(v) for v in (pawn.get_actor_transform().inverse_transform_location(cm.get_camera_location())).to_tuple()]
     for s in shot(world, "03_pistola_mira", report):
         yield s
@@ -157,6 +173,7 @@ def run():
     pc.set_aim_held(True)
     for s in wait(world, 0.8):
         yield s
+    report["muzzle_error_deg"]["Lupara"] = muzzle_error(pc, inv)
     for s in shot(world, "07_lupara_mira", report):
         yield s
     for s in side(world, pc, pawn, "07b_lupara_mira_lato", report):

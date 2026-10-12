@@ -213,6 +213,10 @@ private:
 	void LimitSprint();
 	void UpdateWeapons(float DeltaTime);
 	void UpdateClimbInput();
+	/** On a cart: hands (and feet) on its grips, following the steering. */
+	void UpdateRide();
+	/** Where the character's root goes in the vehicle (its mesh origin on the cart's Sella bone, else SeatOffset). */
+	FVector SeatFor(const AM80Car* C) const;
 	void BindKeyLambda(const FKey& Key, TFunction<void()> Fn);
 	void CheckCarHits(float DeltaTime);
 	void Respawn();

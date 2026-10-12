@@ -57,6 +57,12 @@ struct FM80OverlayProxy : public FAnimInstanceProxy
 	float AimPitch = 0.f;   // degrees, up positive
 	float AimYaw = 0.f;     // degrees left of straight ahead (what the body has not turned yet)
 
+	// Riding a cart: wrists and ankles onto the cart's grips (component space).
+	float RideWeight = 0.f;
+	bool bRideFeet = false;
+	FVector RideHandCS[2] = {FVector::ZeroVector, FVector::ZeroVector};
+	FVector RideFootCS[2] = {FVector::ZeroVector, FVector::ZeroVector};
+
 private:
 	void Rotate(FPoseContext& Output, FName Bone, const FVector& CSAxis, float Degrees);
 	void AimArms(FPoseContext& Output);
@@ -68,6 +74,8 @@ private:
 	bool Punch(FPoseContext& Output);
 	/** The thumbs (left straight by the climbing clips) bend as much as the index fingers. */
 	void CurlThumbs(FPoseContext& Output);
+	/** Riding a cart: arms (and legs) by two-bone IK onto the grips, keeping the pose's bend and hands. */
+	void RideLimbs(FPoseContext& Output);
 
 	/** Upper body bones (spine_01 and everything under it) with their blend weights. */
 	TArray<TPair<FCompactPoseBoneIndex, float>> Upper;
@@ -92,6 +100,12 @@ public:
 	int32 ComboStep = 0;
 	bool bEnabled = true;
 	bool bClimbing = false;
+
+	/** Riding a cart: the wrists (and the ankles, with bRideFeet) go to these world points, by RideWeight. */
+	float RideWeight = 0.f;
+	bool bRideFeet = false;
+	FVector RideHand[2] = {FVector::ZeroVector, FVector::ZeroVector};
+	FVector RideFoot[2] = {FVector::ZeroVector, FVector::ZeroVector};
 
 	float BlendArms = 0.f;
 

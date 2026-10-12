@@ -849,6 +849,49 @@ void AM80PlayerController::PutOnSunglasses(ACharacter* C)
 	G->AttachToComponent(Face, FAttachmentTransformRules::KeepWorldTransform, Bone);
 }
 
+FVector AM80PlayerController::SeatFor(const AM80Car* C) const
+{
+	static const FName Sella(TEXT("Sella"));
+	const USkeletalMeshComponent* M = C->GetMesh();
+	if (M && M->DoesSocketExist(Sella))
+	{
+		// Attached to the vehicle's mesh, facing its front: the character's mesh origin on the Sella bone.
+		return M->GetSocketTransform(Sella, RTS_Component).GetLocation() - MeshRelative.GetLocation();
+	}
+	return C->SeatOffset;
+}
+
+void AM80PlayerController::UpdateRide()
+{
+	UM80OverlayAnimInstance* O = Overlay.Get();
+	if (!O)
+	{
+		return;
+	}
+	const ACharacter* W = Walker.Get();
+	const AM80Car* C = Car.Get();
+	const USkeletalMeshComponent* M = C ? C->GetMesh() : nullptr;
+	static const FName Hand[2] = {TEXT("Mano_L"), TEXT("Mano_R")};
+	static const FName Foot[2] = {TEXT("Piede_L"), TEXT("Piede_R")};
+	const bool bOn = W && M && C->bCart && W->IsAttachedTo(C) && (State == EM80PlayerState::GettingIn || State == EM80PlayerState::Driving)
+		&& M->DoesSocketExist(Hand[0]);
+	// Comes in with the slide onto the seat.
+	O->RideWeight = !bOn ? 0.f : (State == EM80PlayerState::Driving ? 1.f : FMath::Clamp(PhaseTime / SlideInTime, 0.f, 1.f));
+	if (!bOn)
+	{
+		return;
+	}
+	O->bRideFeet = M->DoesSocketExist(Foot[0]);
+	for (int32 k = 0; k < 2; ++k)
+	{
+		O->RideHand[k] = M->GetSocketLocation(Hand[k]);
+		if (O->bRideFeet)
+		{
+			O->RideFoot[k] = M->GetSocketLocation(Foot[k]);
+		}
+	}
+}
+
 FVector AM80PlayerController::DoorWorld(const AM80Car* C) const
 {
 	return C->GetActorTransform().TransformPosition(C->DoorOffset);
@@ -935,11 +978,13 @@ void AM80PlayerController::FinishGetIn()
 	W->AttachToComponent(C->GetMesh(), FAttachmentTransformRules::KeepWorldTransform);
 	SeatStartRel = W->GetRootComponent()->GetRelativeLocation();
 	SeatStartRot = W->GetRootComponent()->GetRelativeRotation();
-	if (SeatedAnim)
+	// The vehicle's own pose (carts: lying on the chest, go-kart, chopper), else the driving pose.
+	UAnimSequenceBase* Pose = C->RidePose.IsNull() ? nullptr : C->RidePose.LoadSynchronous();
+	if (Pose || SeatedAnim)
 	{
 		// The sample's animation blueprint does not let a slot override the whole body while the
 		// character has no movement: play the driving pose on the mesh directly while seated.
-		W->GetMesh()->PlayAnimation(SeatedAnim, true);
+		W->GetMesh()->PlayAnimation(Pose ? Pose : SeatedAnim.Get(), true);
 	}
 }
 
@@ -1071,6 +1116,7 @@ void AM80PlayerController::PlayerTick(float DeltaTime)
 		CheckCarHits(DeltaTime);
 	}
 	UpdateWeapons(DeltaTime);
+	UpdateRide();
 	UpdateClimbInput();
 	UpdateWheel();
 	UpdateLockOn(DeltaTime);
@@ -1127,7 +1173,7 @@ void AM80PlayerController::PlayerTick(float DeltaTime)
 	const float A = FMath::Clamp(PhaseTime / SlideInTime, 0.f, 1.f);
 	const float E = A * A * (3.f - 2.f * A);
 	USceneComponent* Root = W->GetRootComponent();
-	Root->SetRelativeLocation(FMath::Lerp(SeatStartRel, C->SeatOffset, E));
+	Root->SetRelativeLocation(FMath::Lerp(SeatStartRel, SeatFor(C), E));
 	Root->SetRelativeRotation(FQuat::Slerp(SeatStartRot.Quaternion(), FQuat::Identity, E));
 	if (A >= 1.f)
 	{
@@ -1136,6 +1182,10 @@ void AM80PlayerController::PlayerTick(float DeltaTime)
 		SetIgnoreLookInput(false);
 		State = EM80PlayerState::Driving;
 		VehicleName = C->DisplayName.ToString();
+		if (!VehicleName.IsEmpty())
+		{
+			VehicleName[0] = FChar::ToUpper(VehicleName[0]);   // carts are named in lower case for the hints
+		}
 		VehicleNameAge = 0.f;
 	}
 }

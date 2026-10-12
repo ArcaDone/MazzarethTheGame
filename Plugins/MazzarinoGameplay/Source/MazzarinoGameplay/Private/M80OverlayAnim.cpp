@@ -127,6 +127,14 @@ void FM80OverlayProxy::PreUpdate(UAnimInstance* InAnimInstance, float DeltaSecon
 	PunchStep = I->ComboStep;
 	PunchTime = I->bEnabled ? I->SinceFire : 99.f;
 	bGripLedge = I->bClimbing;
+	RideWeight = I->RideWeight;
+	bRideFeet = I->bRideFeet;
+	const FTransform& CT = Comp->GetComponentTransform();
+	for (int32 k = 0; k < 2; ++k)
+	{
+		RideHandCS[k] = CT.InverseTransformPosition(I->RideHand[k]);
+		RideFootCS[k] = CT.InverseTransformPosition(I->RideFoot[k]);
+	}
 }
 
 void FM80OverlayProxy::CacheBones()
@@ -346,6 +354,42 @@ void FM80OverlayProxy::CurlThumbs(FPoseContext& Output)
 	}
 }
 
+void FM80OverlayProxy::RideLimbs(FPoseContext& Output)
+{
+	auto Find = [this](const TCHAR* N) { const FCompactPoseBoneIndex* I = Bones.Find(N); return I ? *I : FCompactPoseBoneIndex(INDEX_NONE); };
+	static const TCHAR* const Chains[4][3] = {{TEXT("upperarm_l"), TEXT("lowerarm_l"), TEXT("hand_l")}, {TEXT("upperarm_r"), TEXT("lowerarm_r"), TEXT("hand_r")},
+		{TEXT("thigh_l"), TEXT("calf_l"), TEXT("foot_l")}, {TEXT("thigh_r"), TEXT("calf_r"), TEXT("foot_r")}};
+	FCSPose<FCompactPose> CS;
+	CS.InitPose(Output.Pose);
+	const float W = FMath::Clamp(RideWeight, 0.f, 1.f);
+	for (int32 k = 0; k < (bRideFeet ? 4 : 2); ++k)
+	{
+		const FCompactPoseBoneIndex A = Find(Chains[k][0]), B = Find(Chains[k][1]), C = Find(Chains[k][2]);
+		if (!A.IsValid() || !B.IsValid() || !C.IsValid())
+		{
+			continue;
+		}
+		FTransform T[3] = {CS.GetComponentSpaceTransform(A), CS.GetComponentSpaceTransform(B), CS.GetComponentSpaceTransform(C)};
+		const FTransform T0[3] = {T[0], T[1], T[2]};
+		const FVector Target = k < 2 ? RideHandCS[k] : RideFootCS[k - 2];
+		// The elbow / knee keeps the side the pose bends it to; the hand / foot keeps its turn.
+		const FVector Joint = T[1].GetLocation() * 2.f - (T[0].GetLocation() + T[2].GetLocation()) * 0.5f;
+		const FQuat EndRot = T[2].GetRotation();
+		AnimationCore::SolveTwoBoneIK(T[0], T[1], T[2], Joint, Target, false, 1.0, 1.0);
+		T[2].SetRotation(EndRot);
+		TArray<FBoneTransform> Out;
+		const FCompactPoseBoneIndex Index[3] = {A, B, C};
+		for (int32 j = 0; j < 3; ++j)
+		{
+			FTransform Blended;
+			Blended.Blend(T0[j], T[j], W);
+			Out.Add(FBoneTransform(Index[j], Blended));
+		}
+		CS.SafeSetCSBoneTransforms(Out);
+	}
+	FCSPose<FCompactPose>::ConvertComponentPosesToLocalPoses(MoveTemp(CS), Output.Pose);
+}
+
 bool FM80OverlayProxy::Evaluate(FPoseContext& Output)
 {
 	FMemMark Mark(FMemStack::Get());
@@ -357,6 +401,10 @@ bool FM80OverlayProxy::Evaluate(FPoseContext& Output)
 	if (bGripLedge)
 	{
 		CurlThumbs(Output);
+	}
+	if (RideWeight > 0.01f)
+	{
+		RideLimbs(Output);
 	}
 	if (ArmsWeight > 0.01f && !UpperBodyPose(Output))
 	{

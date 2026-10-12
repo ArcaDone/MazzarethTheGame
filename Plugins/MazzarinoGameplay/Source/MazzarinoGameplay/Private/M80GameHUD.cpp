@@ -129,6 +129,10 @@ void AM80GameHUD::DrawSpeed(float S)
 	const int32 Kmh = FMath::RoundToInt(FMath::Abs(C->GetSpeedKmh()));
 	Text(FString::Printf(TEXT("%d"), Kmh), R - 70.f * S, Y, White, 2.2f * S, true);
 	Text(TEXT("km/h"), R, Y + 30.f * S, FLinearColor(0.85f, 0.85f, 0.85f), 0.8f * S, true);
+	if (C->bCart)
+	{
+		return;   // no gears, no lights
+	}
 	const int32 Gear = C->GetGear();
 	Text(Gear < 0 ? TEXT("R") : (Gear == 0 ? TEXT("N") : FString::FromInt(Gear)), R, Y - 2.f * S, GoldCol, 1.0f * S, true);
 	if (C->AreLightsOn())
@@ -501,7 +505,8 @@ void AM80GameHUD::DrawHelp(float S)
 	}
 	else if (const AM80Car* C = PC->GetCarInReach())
 	{
-		Msg = FString::Printf(TEXT("Premi  E  per salire sulla %s"), *C->DisplayName.ToString());
+		Msg = C->bCart ? FString::Printf(TEXT("Premi  E  per salire sul %s"), *C->DisplayName.ToString())
+			: FString::Printf(TEXT("Premi  E  per salire sulla %s"), *C->DisplayName.ToString());
 	}
 	if (Msg.IsEmpty())
 	{

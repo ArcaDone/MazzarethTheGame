@@ -129,12 +129,19 @@ bool UM80ClimbComponent::FindLedgeFrom(const FVector& Feet, const FVector& Forwa
 	Out.Normal = N;
 	Out.Height = Height;
 	Out.Actor = Top.GetActor();
-	// 5) Room to stand on the top.
-	const FVector Stand = Top.ImpactPoint - N * (Radius + 15.f) + FVector(0, 0, Half + 3.f);
+	// 5) Room to stand on the top: the floor a step in from the edge (a car roof bulges up), the body standing on it.
+	const FVector Above = Top.ImpactPoint - N * (Radius + 15.f);
 	FHitResult Floor;
-	Out.bRoomOnTop = !W->OverlapAnyTestByChannel(Stand, FQuat::Identity, ECC_Pawn, FCollisionShape::MakeCapsule(Radius, Half), Q)
-		&& W->LineTraceSingleByChannel(Floor, Stand, Stand - FVector(0, 0, Half + 30.f), ECC_Visibility, Q) && Floor.ImpactNormal.Z > 0.7f
-		&& FMath::Abs(Floor.ImpactPoint.Z - Top.ImpactPoint.Z) < 25.f;
+	const bool bFloor = W->LineTraceSingleByChannel(Floor, Above + FVector(0, 0, 40.f), Above - FVector(0, 0, 30.f), ECC_Visibility, Q)
+		&& !Floor.bStartPenetrating;
+	const FVector Stand = (bFloor ? Floor.ImpactPoint : Above) + FVector(0, 0, Half + 3.f);
+	const bool bFree = !W->OverlapAnyTestByChannel(Stand, FQuat::Identity, ECC_Pawn, FCollisionShape::MakeCapsule(Radius, Half), Q);
+	Out.bRoomOnTop = bFree && bFloor && Floor.ImpactNormal.Z > 0.7f && FMath::Abs(Floor.ImpactPoint.Z - Top.ImpactPoint.Z) < 25.f;
+	if (!Out.bRoomOnTop)
+	{
+		Note(FString::Printf(TEXT("bordo a %.0f cm senza spazio sopra (libero %d, pavimento %d, normale %.2f, dislivello %.0f)"), Height, bFree ? 1 : 0,
+			bFloor ? 1 : 0, Floor.ImpactNormal.Z, Floor.ImpactPoint.Z - Top.ImpactPoint.Z));
+	}
 	return true;
 }
 

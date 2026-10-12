@@ -126,15 +126,25 @@ def run():
         hit = trace(world, pawn.get_actor_location(), c, [pawn])
         report["car_trace"] = [hit[9].get_name() if hit and hit[9] else None, round((hit[4] - pawn.get_actor_location()).length()) if hit else None]
         report["car_mantle_started"] = climb.jump_pressed()
-        for s in wait(world, 0.45):
+        track = []
+
+        def follow():
+            p = pawn.get_actor_location()
+            track.append([round(p.z - 92 - c.z), str(climb.get_state()).split(".")[-1][:8], round((car.get_actor_location() - c).length())])
+        for s in wait(world, 0.45, follow):
             yield s
         for s in side(world, pc, pawn, "01_sale_sull_auto_meta", report):
             yield s
-        for s in wait(world, 1.4):
+        for s in wait(world, 1.4, follow):
             yield s
-        report["car_after"] = {"state": str(climb.get_state()), "feet_above_car_cm": round(pawn.get_actor_location().z - 92 - c.z)}
+        report["car_track"] = track[::3]
+        report["car_after"] = {"state": str(climb.get_state()), "feet_above_car_cm": round(pawn.get_actor_location().z - 92 - c.z),
+                               "car_moved_cm": round((car.get_actor_location() - c).length())}
         for s in side(world, pc, pawn, "02_sopra_l_auto", report):
             yield s
+        if os.environ.get("M80_SOLO_AUTO"):
+            (OUT / "arrampicata.json").write_text(json.dumps(report, indent=1), encoding="utf-8")
+            return
 
     # 1a) The test blocks: mantle onto 1 m and 2.2 m, jump to the 2.9 m one, hang, climb onto it.
     blocks = {b.get_actor_label(): b for b in unreal.GameplayStatics.get_all_actors_of_class(world, unreal.StaticMeshActor) if b.get_actor_label().startswith("Prova_")}

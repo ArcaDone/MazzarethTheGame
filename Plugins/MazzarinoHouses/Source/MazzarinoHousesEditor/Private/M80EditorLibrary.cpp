@@ -35,6 +35,7 @@
 #include "PhysicsEngine/PhysicsAsset.h"
 #include "PhysicsEngine/SkeletalBodySetup.h"
 #include "AnimationRuntime.h"
+#include "MaterialEditingLibrary.h"
 
 namespace
 {
@@ -772,4 +773,9 @@ bool UM80EditorLibrary::MakeVehiclePhysicsAsset(USkeletalMesh* Mesh, FName RootB
 	Mesh->SetPhysicsAsset(Asset);
 	Mesh->MarkPackageDirty();
 	return true;
+}
+
+bool UM80EditorLibrary::ConnectWorldPositionOffset(UMaterialExpression* From, const FString& OutputName)
+{
+	return From && UMaterialEditingLibrary::ConnectMaterialProperty(From, OutputName, MP_WorldPositionOffset);
 }

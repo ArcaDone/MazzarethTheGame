@@ -14,6 +14,7 @@ class UTextureCubeArray;
 class ULandscapeLayerInfoObject;
 class USplineComponent;
 class USkeletalMesh;
+class UMaterialExpression;
 
 /** Editor helpers callable from Python (unreal.M80EditorLibrary). */
 UCLASS()
@@ -90,4 +91,8 @@ public:
 	/** Logical size of the texture source, for reports. */
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Texture")
 	static FIntPoint GetTextureSourceSize(UTexture* Texture);
+
+	/** Connects an expression output to the material's World Position Offset (hidden from Python's MaterialProperty). */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Materiali")
+	static bool ConnectWorldPositionOffset(UMaterialExpression* From, const FString& OutputName);
 };

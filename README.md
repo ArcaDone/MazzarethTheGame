@@ -38,6 +38,7 @@ Altre mappe:
 - `Houses/Maps/L_M80_Houses18_V2`: 18 case di prova del generatore.
 - `Vehicles/L_M80_ProvaGuida`: pista di prova delle auto (rettilineo, rampe, slalom, vicolo). Tab cambia auto.
 - `Player/Maps/L_M80_ProvaAzione`: il quartiere più fitto del paese (44 case vive) per provare armi e arrampicata. Si apre in pochi secondi. Contiene armi a terra, una Fiat 126, blocchi da 1, 2,2 e 2,9 m e quattro bersagli umani. Si rifà da zero con `m80_prova_azione_setup.py`.
+- `Vehicles/Maps/L_M80_ProvaCarretti`: i quattro carretti a cuscinetti su un piano di basolato, con una piattaforma di 3 m e una rampa al 10% (la pendenza delle strade del paese) e uno slalom di paletti. Si rifà da zero con `m80_carretti_prova_setup.py`.
 - `Rooms/L_M80_RoomStudio`: le stanze fotografate per le finestre.
 - `L_M80_District_V2`: quartiere di prova, solo in locale.
 
@@ -51,6 +52,7 @@ Altre mappe:
 | Saltare e arrampicarsi | Spazio / A. Davanti a un ostacolo di 0,5-2,5 m (muretto, auto, balcone basso) ci sale sopra. Più in alto (cornicioni, balconi, davanzali, tetti) salta e si aggrappa al bordo. |
 | Appeso | Sinistra/destra lungo il bordo; Spazio / A sale sopra se c'è posto, oppure salta al bordo più in alto, oppure si stacca dal muro (indietro + salto). C, Ctrl o B si lascia cadere. |
 | Auto, mappa, pausa | E / Y sale o scende; M mappa; P / Start pausa con la mappa del paese. |
+| Carretti | E / Y sale o scende. W / RT spinge (piano, al massimo 13 km/h), in discesa va da solo. S / LT frena coi piedi; da fermo lo fa arretrare. A / D sterzano, Spazio i talloni a terra. |
 
 L'arrampicata funziona su qualsiasi geometria, perché cerca i bordi sulla collisione complessa. Non servono marcature sulle case.
 
@@ -83,6 +85,7 @@ L'arrampicata funziona su qualsiasi geometria, perché cerca i bordi sulla colli
 | **Atmosfera (Mazzarino)** | Sole nella posizione reale per Mazzarino (latitudine, giorno dell'anno, ora), luna, cielo, nuvole, foschia nelle valli, ora blu, notte. Meteo: Sereno, Afa estiva, Scirocco, Nuvoloso. In gioco l'ora avanza. |
 | **Orizzonte (colline ed Etna)** | Anello di colline lontane con il profilo dell'Etna. |
 | **Auto Mazzarino** | Fiat 126, Ape, Panda, 127, Uno, Golf GTI, Vespa. |
+| **Carretti** | *Carretto a cuscinetti* (sdraiati sul petto, mani sulla barra davanti), *a triangolo* e *con la cassetta* (seduti come in un go-kart, talloni sull'asse, corda in mano), *persiana* (seduti, braccia sul manico di scopa come su un chopper). Niente motore: si spingono piano e corrono in discesa (circa 22 km/h in fondo a 30 m al 10%). |
 | **Bouganvillea (Mazzarino)** | Pianta procedurale che cresce lungo una spline. Regole d'uso nella sezione qui sotto. |
 
 ### La bouganvillea (spline)
@@ -196,6 +199,8 @@ powershell -ExecutionPolicy Bypass -File Scripts/run_editor_script.ps1 -Script S
 | `m80_prova_azione_setup.py` | Rifà da zero la mappa di prova `L_M80_ProvaAzione`. |
 | `m80_combattimento_test.py`, `m80_arrampicata_test.py` | Test in `L_M80_ProvaAzione`, con foto dalla camera del giocatore e di lato. Il primo prova mira, pose delle armi, errore della canna, ruota, pugni, aggancio e bersagli. Il secondo prova la salita sull'auto e sui blocchi, l'aggrappo, lo spostamento lungo il bordo, la salita sul tetto e la caduta. |
 | `m80_weapons_setup.py` | Importa le armi da Blender (`M80_ARMI=Fucile` per importarne solo alcune), i materiali dei colpi e le animazioni ALS per rialzarsi. |
+| `m80_carretti_import.py` + `Blender/m80_carretti_gioco.py` | I carretti di `D:\BlenderTest\carretti` (Blender 5.2) con lo scheletro guidabile e la posa del guidatore per ciascuno; import in `Vehicles/Carretti` e `Player/Anim`. |
+| `m80_carretti_prova_setup.py`, `m80_carretti_test.py` | Mappa di prova dei carretti e test: salita, foto, mani e piedi sui punti di presa, spinta, sterzo, freno, retromarcia, rampa, discesa. |
 | `m80_animazioni_import.py` | Animazioni Mixamo (aggrappo, salita, pugni) e pose ALS di pistola e fucile, retargettate sul manichino del sample. |
 | `m80_icone_armi.py` + `Blender/m80_icone_alpha.py` | Icone grigie delle armi per la ruota, fotografate di lato. |
 
@@ -205,6 +210,7 @@ I circa 220 script `mazzarino80_*.py` sono della prima versione basata su PCG (s
 - Gli script stanno in `Research/Mazzarino80/Blender/`. Producono FBX e texture dipinte o cotte con Cycles: lampioni, ceramiche siciliane, cartelli, armi, occhiali, tuta.
 - Si lanciano con `blender -b --factory-startup --python <script>.py`.
 - Poi si importano in Unreal con lo script `m80_*_setup.py` corrispondente.
+- **Carretti:** `m80_carretti_gioco.py` (Blender 5.2) + `m80_carretti_import.py`. Ossa: `Steer` (asse o manico che sterza), ruote, `Sella` (dove va l'origine del giocatore), `Mano_L/R` e `Piede_L/R` (polsi e caviglie, figli di `Steer` se tengono lo sterzo).
 - **Veicoli:** `m80_prepare_vehicle.py` + `m80_import_blender_assets.py`. Vanno rispettati i nomi delle ossa delle ruote, l'orientamento e la scala in cm, altrimenti Chaos si rompe.
 
 ---
@@ -290,6 +296,7 @@ Sull'altro PC:
 | 4 ott | Terreno ritoccato a mano. Storia Git azzerata (repository nuovo, circa 4,9 GB di LFS). Piano GTA. Armi, vita e morte, danni e fuoco delle auto, 7 veicoli. |
 | 6 ott | Tutti i lotti OSM; zone sui perimetri reali degli edifici fatti a mano; strumento **Isolato da riempire**. **Atmosfera** con sole reale, notte, ora blu e Etna all'orizzonte. **World Partition** (la mappa si apre in 3 s invece che in 5 minuti), dettagli più leggeri, Nanite, HLOD. **Lampioni** dalle foto vere: 941 a muro. Backup con copia per trasferimento. |
 | 12 ott | Bouganvillea procedurale a spline nel paese. **Combattimento e arrampicata** (punto 1 del piano GTA) nella mappa `L_M80_ProvaAzione`: camera sopra la spalla, pose delle armi di ALS con la canna sul mirino, ruota delle armi come GTA V, fucile da caccia, combo di pugni, aggancio con il gamepad, bersagli umani, arrampicata su muri, balconi, tetti e auto. |
+| 12 ott (sera) | **Carretti a cuscinetti** guidabili: quattro modelli da Blender, ognuno con la sua posa del guidatore (sdraiato, go-kart, chopper) e mani e piedi che seguono lo sterzo; spinta lenta, discesa per gravità; mappa `L_M80_ProvaCarretti`. |
 
 ---
 

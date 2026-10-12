@@ -21,8 +21,12 @@ AM80StreetLight::AM80StreetLight()
 	Lantern->LDMaxDrawDistance = 8000.f;
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> WallMesh(TEXT("/Game/Mazzarino80/Kit/Lamps/SM_M80_Lampione_Muro.SM_M80_Lampione_Muro"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> PoleMesh(TEXT("/Game/Mazzarino80/Kit/Lamps/SM_M80_Lampione_Palo.SM_M80_Lampione_Palo"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> CityMesh(TEXT("/Game/Mazzarino80/Kit/Lamps/SM_M80_LampCity.SM_M80_LampCity"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> GardenMesh(TEXT("/Game/Mazzarino80/Kit/Lamps/SM_M80_LampioneMadonna.SM_M80_LampioneMadonna"));
 	WallModel = WallMesh.Succeeded() ? WallMesh.Object : nullptr;
 	PoleModel = PoleMesh.Succeeded() ? PoleMesh.Object : nullptr;
+	CityModel = CityMesh.Succeeded() ? CityMesh.Object : nullptr;
+	GardenModel = GardenMesh.Succeeded() ? GardenMesh.Object : nullptr;
 	Lantern->SetStaticMesh(WallModel);
 
 	// Warm sodium-like light, no shadows: dozens of lamps stay cheap at night.
@@ -46,7 +50,7 @@ AM80StreetLight::AM80StreetLight()
 void AM80StreetLight::SetNight(float Night)
 {
 	const float N = bBroken ? 0.f : FMath::Clamp(Night, 0.f, 1.f);
-	Light->SetIntensity(NightIntensity * N * (Kind == EM80LampKind::Pole ? PoleScale : 1.f));
+	Light->SetIntensity(NightIntensity * N * KindScale());
 	Light->SetVisibility(N > 0.02f);
 }
 
@@ -62,14 +66,36 @@ void AM80StreetLight::SetNightForAll(const UWorld* World, float Night)
 	}
 }
 
+float AM80StreetLight::KindScale() const
+{
+	switch (Kind)
+	{
+	case EM80LampKind::Pole: return PoleScale;
+	case EM80LampKind::City: return PoleScale * 0.8f;  // three lanterns, lower than the candelabra
+	case EM80LampKind::Garden: return 0.6f;            // one small lantern at head height
+	default: return 1.f;
+	}
+}
+
 void AM80StreetLight::PlaceLight()
 {
-	UStaticMesh* Model = MeshOverride ? MeshOverride.Get() : (Kind == EM80LampKind::Pole ? PoleModel.Get() : WallModel.Get());
+	UStaticMesh* Kinds[] = {WallModel.Get(), PoleModel.Get(), CityModel.Get(), GardenModel.Get()};
+	UStaticMesh* Model = MeshOverride ? MeshOverride.Get() : Kinds[FMath::Clamp(int32(Kind), 0, 3)];
 	Lantern->SetStaticMesh(Model);
-	const float Scale = Kind == EM80LampKind::Pole ? PoleScale : 1.f;
-	Light->SetAttenuationRadius(1600.f * FMath::Sqrt(Scale));
+	Light->SetAttenuationRadius(1600.f * FMath::Sqrt(KindScale()));
+	// The recovered lamps stand in the street: they block like a post (box collision on their meshes).
+	const bool bStanding = Kind == EM80LampKind::City || Kind == EM80LampKind::Garden;
+	Lantern->SetCollisionEnabled(bStanding ? ECollisionEnabled::QueryAndPhysics : ECollisionEnabled::NoCollision);
+	Lantern->SetCollisionProfileName(bStanding ? TEXT("BlockAll") : TEXT("NoCollision"));
 	if (!Model)
 	{
+		return;
+	}
+	if (!MeshOverride && bStanding)
+	{
+		// Measured on the models: the middle of Lamp_city's three lanterns (on arms 45 cm out, 2.2-2.5 m up),
+		// the Lampione's lantern on its column.
+		Light->SetRelativeLocation(Kind == EM80LampKind::City ? FVector(5, 0, 233) : FVector(4, 0, 150));
 		return;
 	}
 	// The glass: for a wall lamp the far end of the bracket, for a pole the top of the candelabra.

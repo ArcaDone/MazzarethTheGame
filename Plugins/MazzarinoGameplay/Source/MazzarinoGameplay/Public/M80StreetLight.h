@@ -12,7 +12,9 @@ UENUM(BlueprintType)
 enum class EM80LampKind : uint8
 {
 	Wall UMETA(DisplayName = "A muro (braccio in ferro battuto)"),
-	Pole UMETA(DisplayName = "A palo (candelabro a tre luci)")
+	Pole UMETA(DisplayName = "A palo (candelabro a tre luci)"),
+	City UMETA(DisplayName = "Lamp_city (tre lanterne sui bracci)"),
+	Garden UMETA(DisplayName = "Lampione della Madonna (lanterna su colonnina)")
 };
 
 /**
@@ -20,8 +22,10 @@ enum class EM80LampKind : uint8
  * a lantern on a wrought-iron bracket on the facade, or the three-light candelabra of the squares.
  * Its warm light and glowing glass are switched on at dusk and off at dawn by the "Atmosfera
  * (Mazzarino)" (no cost by day: the light is hidden). Wall lamps are placed along the streets by
- * Scripts/m80_town_streetlights.py; both kinds can be placed and moved by hand (the back of a wall
- * lamp goes against the wall).
+ * Scripts/m80_town_streetlights.py; every kind can be placed and moved by hand (the back of a wall
+ * lamp goes against the wall). Two more kinds are the recovered lamps of the old project (Lamp_city and the
+ * Madonna's Lampione, copies in Kit/Lamps made by Scripts/m80_lampioni_migrati.py with the night glass); they stand
+ * on the ground and collide.
  */
 UCLASS(meta = (DisplayName = "Lampione (Mazzarino)"))
 class MAZZARINOGAMEPLAY_API AM80StreetLight : public AActor
@@ -75,4 +79,13 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UStaticMesh> PoleModel;
+
+	UPROPERTY()
+	TObjectPtr<UStaticMesh> CityModel;
+
+	UPROPERTY()
+	TObjectPtr<UStaticMesh> GardenModel;
+
+	/** Brightness and reach of the kind against a wall lamp. */
+	float KindScale() const;
 };

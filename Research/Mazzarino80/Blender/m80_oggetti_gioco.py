@@ -1,4 +1,4 @@
-"""The older hand-made models of the Unity project (D:/BitBucket/mazzareththegame/Assets: the bank, the hospital, Heaven)
+"""The older hand-made models of the Unity project (D:/BitBucket/mazzareththegame/Assets: the bank, the hospital)
 made ready for Unreal: opened from where they were made, so their textures resolve; vegetation, scatter, references,
 lights and vehicles left out (vegetation and vehicles are Unreal's); brought to real metres; the heaviest objects
 decimated to a cap of triangles each; textures cut to MAX_PX and packed into the FBX, so Unreal builds their materials (base colour, normal) on import.
@@ -24,13 +24,20 @@ SKIP_WORDS = ("gscatter", "bentgrass", "plantain", "moss", "grass", "vegetation"
 
 OGGETTI = {
     # scale: to real metres, from the human-sized parts. The bank was built about 2.5 times too big (doors 11.7 m,
-    # windows 5.2 m), Heaven 5 times too small (birches 1.8 m, street lamps 0.8 m, benches 0.27 m); the hospital's
-    # main block is 96 m long against the 86 m of its OSM footprint.
-    # cap: triangles per object at most; budget: the whole model's, reached by collapsing the pieces over 500 alike.
-    "Banca": {"blend": UNITY + "/Models2/banca.blend", "cap": 40000, "budget": 300000, "scale": 0.4},
-    "Ospedale": {"blend": UNITY + "/Models2/ospedale.blend", "cap": 40000, "budget": 250000, "scale": 0.9},
-    "Heaven": {"blend": UNITY + "/Models/Heaven/Heaven.blend", "cap": 40000, "budget": 250000, "scale": 5.0},
+    # windows 5.2 m); the hospital's main block is 96 m long against the 86 m of its OSM footprint.
+    # cap: triangles per heavy object at most; budget: the heavy objects' whole, reached by collapsing them alike.
+    # The bank's 8.4M triangles are almost all in its wrought-iron gates, railings and roof tiles.
+    "Banca": {"blend": UNITY + "/Models2/banca.blend", "cap": 20000, "budget": 200000, "scale": 0.4},
+    "Ospedale": {"blend": UNITY + "/Models2/ospedale.blend", "cap": 30000, "budget": 400000, "scale": 0.9},
 }
+# Objects up to KEEP triangles (walls, doors, windows: the building itself) are exported as they are, and so are the
+# PROTECT ones of any size but for a lossless merge of their flat faces: a collapse bends their outline and stretches
+# their textures (the bank's door frames and its lettering).
+KEEP = 16000
+PROTECT = ("text", "scritta", "portone", "door", "jamb", "main", "window", "porta")
+# A merge of flat faces must stop at material, UV, seam and sharp borders, or a face takes one material and UVs
+# across two (the white triangle over the bank's ochre facade, the stretched stone on its corner).
+DELIMIT = {"NORMAL", "MATERIAL", "SEAM", "SHARP", "UV"}
 
 
 def skipped(o):
@@ -52,15 +59,20 @@ def evaluated_copy(o, scale):
     return cp
 
 
+def protected(o):
+    return any(w in o.name.lower() for w in PROTECT)
+
+
 def reduce(o, cap):
     tris = sum(len(p.vertices) - 2 for p in o.data.polygons)
-    if tris <= cap:
+    if tris <= max(cap, KEEP):
         return tris
     bpy.context.view_layer.objects.active = o
-    # First the flat parts (coplanar faces merged), then a collapse down to the cap.
+    # First the flat parts (coplanar faces merged within their borders), then a collapse down to the cap.
     m = o.modifiers.new("planar", "DECIMATE")
     m.decimate_type = "DISSOLVE"
     m.angle_limit = math.radians(1.0)
+    m.delimit = DELIMIT
     bpy.ops.object.modifier_apply(modifier=m.name)
     bm = bmesh.new()
     bm.from_mesh(o.data)
@@ -68,7 +80,7 @@ def reduce(o, cap):
     bm.to_mesh(o.data)
     bm.free()
     t2 = len(o.data.polygons)
-    if t2 > cap:
+    if t2 > cap and not protected(o):
         m = o.modifiers.new("collapse", "DECIMATE")
         m.ratio = cap / float(t2)
         bpy.ops.object.modifier_apply(modifier=m.name)
@@ -104,13 +116,12 @@ def build(key, preview):
         if o not in copies:
             o.hide_render = True
     tris = {c.name: reduce(c, cfg["cap"]) for c in copies}
-    heavy = sum(t for t in tris.values() if t > 500)
-    light = sum(tris.values()) - heavy
-    if heavy + light > cfg["budget"]:
-        ratio = max(0.05, (cfg["budget"] - light) / float(heavy))
-        for c in copies:
-            if tris[c.name] > 500:
-                tris[c.name] = reduce(c, int(tris[c.name] * ratio))
+    heavy = [c for c in copies if tris[c.name] > KEEP and not protected(c)]
+    total_heavy = sum(tris[c.name] for c in heavy)
+    if heavy and total_heavy > cfg["budget"]:
+        ratio = max(0.05, cfg["budget"] / float(total_heavy))
+        for c in heavy:
+            tris[c.name] = reduce(c, int(tris[c.name] * ratio))
     missing = sorted({i.name for i in bpy.data.images if i.source == "FILE" and not os.path.exists(bpy.path.abspath(i.filepath))})
     bpy.ops.object.select_all(action="DESELECT")
     for c in copies:

@@ -1,7 +1,8 @@
 """Imports the older hand-made models made ready by Research/Mazzarino80/Blender/m80_oggetti_gioco.py
 (Saved/Mazzarino80/Oggetti/<Key>/) into /Game/Mazzarino80/Buildings/<Key>: one static mesh with Nanite, collision from its
 own triangles, the materials and textures Unreal builds from the FBX (textures cut to 1024 px in Blender; colour and
-mask sources stored as JPEG, normals lossless). Not placed in the town: where they stand is still to decide.
+mask sources stored as JPEG, normals lossless); assets of the folder the mesh does not use are deleted. Not placed in
+the town: where they stand is still to decide.
 Env M80_OGGETTI=Key1,Key2 (default: all). Report: Saved/Mazzarino80/Oggetti/import_report.json
 
 powershell -File Scripts/run_editor_script.ps1 -Script Scripts/m80_oggetti_import.py
@@ -28,6 +29,22 @@ def keys():
     only = [k for k in os.environ.get("M80_OGGETTI", "").split(",") if k]
     found = sorted(p.name for p in SRC.iterdir() if (p / ("SM_M80_%s.fbx" % p.name)).exists())
     return [k for k in found if not only or k in only]
+
+
+def unused(folder, mesh):
+    """Assets in folder that the mesh does not reach through its references."""
+    ar = unreal.AssetRegistryHelpers.get_asset_registry()
+    opts = unreal.AssetRegistryDependencyOptions(include_soft_package_references=True, include_hard_package_references=True)
+    seen, todo = set(), [mesh]
+    while todo:
+        p = todo.pop()
+        if p in seen:
+            continue
+        seen.add(p)
+        todo += [str(d) for d in (ar.get_dependencies(p, opts) or []) if str(d).startswith(folder + "/")]
+    if len(seen) < 2:
+        return []   # the mesh was not found or uses nothing: nothing is touched
+    return [a for a in EAL.list_assets(folder, recursive=True) if a.split(".")[0] not in seen]
 
 
 def run():
@@ -75,8 +92,13 @@ def run():
                 rep["size_m"] = [round((b.max.x - b.min.x) / 100, 1), round((b.max.y - b.min.y) / 100, 1), round((b.max.z - b.min.z) / 100, 1)]
                 EAL.save_loaded_asset(a, False)
             yield 1
-        report[key] = rep
         unreal.EditorLoadingAndSavingUtils.save_dirty_packages(False, True)
+        yield 5
+        # What the folder holds and the mesh no longer uses (left out parts, an older import's materials) goes.
+        rep["deleted"] = unused(dest, "%s/SM_M80_%s" % (dest, key))
+        for path in rep["deleted"]:
+            EAL.delete_asset(path)
+        report[key] = rep
         yield 5
     (SRC / "import_report.json").write_text(json.dumps(report, indent=1), encoding="utf-8")
 

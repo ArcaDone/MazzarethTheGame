@@ -71,6 +71,13 @@ FM80WeaponSpec MakeSpecs(EM80Weapon W)
 		S.MaxAmmo = 60; S.PickupAmmo = 16; S.ReloadTime = 2.2f; S.Range = 2500.f; S.SpreadDeg = 5.f; S.Impulse = 1200.f;
 		S.FireSound = TEXT("/Game/Mazzarino80/Audio/M80_Lupara.M80_Lupara"); S.Glow = FLinearColor(1.f, 0.35f, 0.2f);
 		break;
+	case EM80Weapon::Fucile:
+		// Bolt-action hunting rifle with a small scope: slow, precise, far, hits hard.
+		S.Name = TEXT("Fucile da caccia"); S.Slot = 5; S.Mesh = TEXT("/Game/Mazzarino80/Weapons/SM_M80_Fucile.SM_M80_Fucile");
+		S.Pose = EM80WeaponPose::Rifle; S.bMelee = false; S.Damage = 90.f; S.Interval = 1.2f; S.Clip = 5; S.MaxAmmo = 50;
+		S.PickupAmmo = 10; S.ReloadTime = 2.8f; S.Range = 15000.f; S.SpreadDeg = 0.25f; S.Impulse = 4000.f;
+		S.FireSound = TEXT("/Game/Mazzarino80/Audio/M80_Lupara.M80_Lupara"); S.Glow = FLinearColor(1.f, 0.35f, 0.2f);
+		break;
 	default:
 		break;
 	}
@@ -132,7 +139,8 @@ FCollisionObjectQueryParams M80ShotObjects()
 const FM80WeaponSpec& M80WeaponSpec(EM80Weapon W)
 {
 	static const FM80WeaponSpec Table[] = {MakeSpecs(EM80Weapon::Pugni), MakeSpecs(EM80Weapon::Coltello), MakeSpecs(EM80Weapon::Mazza),
-		MakeSpecs(EM80Weapon::Revolver), MakeSpecs(EM80Weapon::Beretta), MakeSpecs(EM80Weapon::Lupara)};
+		MakeSpecs(EM80Weapon::Revolver), MakeSpecs(EM80Weapon::Beretta), MakeSpecs(EM80Weapon::Lupara),
+		MakeSpecs(EM80Weapon::Fucile)};
 	return Table[FMath::Clamp(int32(W), 0, int32(UE_ARRAY_COUNT(Table)) - 1)];
 }
 

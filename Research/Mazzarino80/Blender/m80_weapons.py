@@ -1,7 +1,8 @@
 """Blender 4.3: period weapons for the GTA-like game -> one FBX each in <out_dir>.
 
-Run: blender -b --factory-startup --python m80_weapons.py -- <out_dir>
-Revolver, Beretta 92, lupara (sawed-off side-by-side shotgun), switchblade, baseball bat.
+Run: blender -b --factory-startup --python m80_weapons.py -- <out_dir> [Name ...]
+Revolver, Beretta 92, lupara (sawed-off side-by-side shotgun), switchblade, baseball bat, hunting rifle (bolt
+action with a small scope). With names after the folder, only those (e.g. Fucile).
 Each mesh: origin at the grip (where the right hand closes), barrel / blade along +X, top along +Z
 (Unreal axes after export). Materials: slot 0 metal, slot 1 grip (wood or plastic). An empty named
 SOCKET_Muzzle (the muzzle or the tip) becomes a static mesh socket in Unreal.
@@ -14,6 +15,7 @@ import bpy
 from mathutils import Matrix, Vector
 
 OUT = sys.argv[sys.argv.index("--") + 1]
+ONLY = sys.argv[sys.argv.index("--") + 2:]
 
 
 def reset():
@@ -138,6 +140,45 @@ def coltello():
     finish("Coltello", bm, (0.16, 0, 0.006), ["Metallo", "Impugnatura"])
 
 
+def prism(bm, x0, x1, back, front, width, mat=1):
+    """Wooden block from x0 to x1 whose section changes: back / front = (bottom z, top z) at x0 / x1."""
+    r = bmesh.ops.create_cube(bm, size=1.0)
+    for v in r["verts"]:
+        front_end = v.co.x > 0
+        lo, hi = front if front_end else back
+        v.co.x = x1 if front_end else x0
+        v.co.z = hi if v.co.z > 0 else lo
+        v.co.y = width / 2 if v.co.y > 0 else -width / 2
+    for f in {f for v in r["verts"] for f in v.link_faces}:
+        f.material_index = mat
+    return r
+
+
+def fucile():
+    reset()
+    bm = bmesh.new()
+    # Walnut stock: butt (comb, then dropping to the butt plate), the wrist where the right hand closes, the
+    # fore-end under the barrel; blued receiver, bolt with its handle on the right, barrel, small scope.
+    prism(bm, -0.36, -0.07, (-0.125, 0.012), (-0.05, 0.02), 0.042)
+    prism(bm, -0.07, 0.03, (-0.05, 0.02), (-0.075, 0.022), 0.036)          # wrist and pistol grip
+    prism(bm, 0.03, 0.42, (-0.03, 0.026), (-0.012, 0.026), 0.04)            # fore-end
+    box(bm, (-0.365, 0, -0.056), (0.012, 0.044, 0.14), 0)                   # butt plate
+    cyl(bm, (0.0, 0, 0.038), (0.2, 0, 0.038), 0.014, 0, 16)                 # receiver
+    cyl(bm, (-0.03, 0, 0.038), (0.0, 0, 0.038), 0.011, 0, 12)               # bolt shroud
+    cyl(bm, (0.06, 0, 0.042), (0.06, -0.06, 0.03), 0.004, 0, 8)             # bolt handle
+    cyl(bm, (0.06, -0.06, 0.03), (0.06, -0.066, 0.029), 0.008, 0, 10)       # its knob
+    cyl(bm, (0.2, 0, 0.038), (0.72, 0, 0.038), 0.0105, 0, 14, 0.0085)       # barrel
+    box(bm, (0.04, 0, -0.03), (0.06, 0.006, 0.004), 0)                      # trigger guard
+    box(bm, (0.035, 0, -0.016), (0.004, 0.006, 0.026), 0)                   # trigger
+    box(bm, (0.17, 0, -0.035), (0.05, 0.02, 0.012), 0)                      # magazine floor plate
+    cyl(bm, (-0.02, 0, 0.085), (0.25, 0, 0.085), 0.0125, 0, 16)             # scope tube
+    cyl(bm, (-0.06, 0, 0.085), (-0.02, 0, 0.085), 0.019, 0, 16, 0.0125)     # eyepiece
+    cyl(bm, (0.25, 0, 0.085), (0.3, 0, 0.085), 0.0125, 0, 16, 0.021)        # objective
+    for x in (0.02, 0.17):
+        box(bm, (x, 0, 0.062), (0.016, 0.014, 0.03), 0)                     # scope rings
+    finish("Fucile", bm, (0.722, 0, 0.038), ["Metallo", "Impugnatura"])
+
+
 def mazza():
     reset()
     bm = bmesh.new()
@@ -150,5 +191,6 @@ def mazza():
     finish("Mazza", bm, (0.7, 0, 0), ["Metallo", "Impugnatura"])
 
 
-for make in (revolver, beretta, lupara, coltello, mazza):
-    make()
+for make in (revolver, beretta, lupara, coltello, mazza, fucile):
+    if not ONLY or make.__name__.capitalize() in ONLY:
+        make()

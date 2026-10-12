@@ -22,6 +22,7 @@ enum class EM80Weapon : uint8
 	Revolver,
 	Beretta,
 	Lupara,
+	Fucile,
 	Count UMETA(Hidden)
 };
 

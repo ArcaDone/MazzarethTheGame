@@ -610,7 +610,8 @@ void AM80GameMode::StartPlay()
 		}
 	}
 	Spots.Sort([&](const FVector& A, const FVector& B) { return FVector::DistSquared2D(A, Origin) < FVector::DistSquared2D(B, Origin); });
-	const EM80Weapon Order[] = {EM80Weapon::Beretta, EM80Weapon::Mazza, EM80Weapon::Lupara, EM80Weapon::Coltello, EM80Weapon::Revolver};
+	const EM80Weapon Order[] = {EM80Weapon::Beretta, EM80Weapon::Mazza, EM80Weapon::Lupara, EM80Weapon::Coltello, EM80Weapon::Revolver,
+		EM80Weapon::Fucile};
 	for (int32 i = 0; i < Spots.Num(); ++i)
 	{
 		FActorSpawnParameters P;

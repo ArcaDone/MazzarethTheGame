@@ -22,7 +22,7 @@ ROOT = Path(unreal.Paths.project_dir())
 OUT = ROOT / "Saved/Mazzarino80/Icone"
 DEST = "/Game/Mazzarino80/UI/Icone"
 WEAPONS = {"Coltello": "SM_M80_Coltello", "Mazza": "SM_M80_Mazza", "Revolver": "SM_M80_Revolver", "Beretta": "SM_M80_Beretta",
-           "Lupara": "SM_M80_Lupara"}
+           "Lupara": "SM_M80_Lupara", "Fucile": "SM_M80_Fucile"}
 EAS = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
 SPOT = unreal.Vector(-300000, -300000, 60000)
 V = unreal.Vector

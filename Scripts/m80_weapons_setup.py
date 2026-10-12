@@ -9,6 +9,7 @@
   RTG_M80_ALS_to_UEFN (UE4 mannequin IK rig -> UEFN IK rig, target aligned to the source pose).
   (The ALS aim sweeps are not used: on their own, without ALS' layering, the arms come out wrong; the
   aim is two-bone IK in M80OverlayAnim.cpp.)
+M80_ARMI=Fucile,... imports only those weapons (nothing else is redone).
 Report: Saved/Mazzarino80/Weapons/setup_report.json.
 """
 import json
@@ -48,7 +49,9 @@ GRIPS = {
     "Lupara": ("Legno", (0.16, 0.07, 0.03), 0.55),
     "Coltello": ("Corno", (0.06, 0.04, 0.03), 0.4),
     "Mazza": ("Frassino", (0.55, 0.38, 0.2), 0.5),
+    "Fucile": ("Legno", (0.16, 0.07, 0.03), 0.55),
 }
+ONLY = [n for n in os.environ.get("M80_ARMI", "").split(",") if n]
 
 
 def simple_material(name, color, rough, metal=0.0, spec=0.5):
@@ -235,9 +238,12 @@ def retarget_anims(rtg, report):
 
 def run():
     report = {"weapons": {}}
-    for name in GRIPS:
+    for name in ONLY or GRIPS:
         report["weapons"][name] = import_weapon(name)
         yield 2
+    if ONLY:
+        OUT.write_text(json.dumps(report, indent=1), encoding="utf-8")
+        return
     hole_decal()
     glow_material()
     burnt_material()

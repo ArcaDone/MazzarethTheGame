@@ -179,9 +179,24 @@ def run():
     for s in side(world, pc, pawn, "07b_lupara_mira_lato", report):
         yield s
     pc.set_aim_held(False)
+    for s in wait(world, 0.6):
+        yield s
+    for s in side(world, pc, pawn, "07c_lupara_in_mano_lato", report):
+        yield s
+    # The hunting rifle: aimed, from the shoulder and from the side.
+    inv.give(W.FUCILE, -1, True)
+    pc.set_aim_held(True)
+    for s in wait(world, 0.8):
+        yield s
+    report["muzzle_error_deg"]["Fucile"] = muzzle_error(pc, inv)
+    for s in shot(world, "07d_fucile_mira", report):
+        yield s
+    for s in side(world, pc, pawn, "07e_fucile_mira_lato", report):
+        yield s
+    pc.set_aim_held(False)
     report["aim_point_m"] = round((pc.get_aim_point() - pawn.get_actor_location()).length() / 100, 1)
 
-    # The weapon wheel: two pistols, the lupara, the bat and the knife; point the pistols, the other pistol, take it.
+    # The weapon wheel: two pistols, the lupara, the rifle, the bat and the knife; point the pistols, the other pistol, take it.
     for w in (W.REVOLVER, W.MAZZA, W.COLTELLO):
         inv.give(w, -1, False)
     inv.select_weapon(W.LUPARA)
@@ -200,6 +215,9 @@ def run():
         yield s
     pc.point_wheel(5)
     for s in shot(world, "08b_ruota_armi_bianche", report):
+        yield s
+    pc.point_wheel(3)
+    for s in shot(world, "08c_ruota_fucili", report):
         yield s
     pc.point_wheel(0)
     pc.close_wheel(True)

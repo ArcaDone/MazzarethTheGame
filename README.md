@@ -194,6 +194,7 @@ powershell -ExecutionPolicy Bypass -File Scripts/run_editor_script.ps1 -Script S
 | `m80_atmosphere_photos.py`, `m80_town_aerial.py`, `m80_photos.py` | Foto a ore e meteo diversi; viste aeree. |
 | `m80_profile_scene.py` | Misura fps, GPU, draw call e tempo di caricamento. |
 | `m80_termometro.py` | Il "termometro" del paese: tempo di apertura della mappa e di Play fino a quando ci si muove, poi fps, GPU, draw call, RAM e memoria video in tre punti (partenza a mezzogiorno, piazza Matrice e panorama alle 20:30). Report e foto in `Saved/Mazzarino80/Termometro/<versione>_<data>`; serve a confrontare versioni del motore e a vedere quanto pesa ogni aggiunta. |
+| `m80_memoria.py`, `m80_wp_analisi.py` | Dove va la memoria: attori caricati per classe e `memreport -full` dopo l'apertura del paese e durante Play (`Saved/Mazzarino80/Memoria`, `Saved/Profiling/MemReports`). Come è diviso il paese per World Partition: per classe quanti attori, quanti sempre caricati, dimensioni e distanza dal PlayerStart. |
 | `m80_props_nanite.py`, `m80_town_hlod_setup.py` | Nanite sui dettagli; impostazione degli HLOD. |
 | `m80_lamps_setup.py`, `m80_sicilia_setup.py`, `m80_import_blender_assets.py` | Import dei modelli da Blender (lampioni, ceramiche, edifici, veicoli). |
 | `m80_play_test.py`, `m80_weapons_test.py`, `m80_vitals_test.py`, `m80_drive_telemetry.py`, `m80_cars_damage_test.py` | Test automatici in gioco con foto e report. |

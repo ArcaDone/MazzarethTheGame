@@ -14,7 +14,6 @@ import glob
 import json
 import math
 import os
-import subprocess
 import sys
 import time
 from pathlib import Path
@@ -34,30 +33,6 @@ SYS = unreal.SystemLibrary
 K32 = ctypes.WinDLL("kernel32")
 K32.GetCurrentProcess.restype = wt.HANDLE
 K32.GetProcessTimes.argtypes = [wt.HANDLE] + [ctypes.POINTER(wt.FILETIME)] * 4
-K32.K32GetProcessMemoryInfo.argtypes = [wt.HANDLE, ctypes.c_void_p, wt.DWORD]
-
-
-class MemCounters(ctypes.Structure):
-    _fields_ = [("cb", wt.DWORD), ("PageFaultCount", wt.DWORD), ("PeakWorkingSetSize", ctypes.c_size_t),
-                ("WorkingSetSize", ctypes.c_size_t), ("QuotaPeakPagedPoolUsage", ctypes.c_size_t),
-                ("QuotaPagedPoolUsage", ctypes.c_size_t), ("QuotaPeakNonPagedPoolUsage", ctypes.c_size_t),
-                ("QuotaNonPagedPoolUsage", ctypes.c_size_t), ("PagefileUsage", ctypes.c_size_t),
-                ("PeakPagefileUsage", ctypes.c_size_t), ("PrivateUsage", ctypes.c_size_t)]
-
-
-def memory():
-    """The editor's RAM (working set and private bytes) and the GPU's used video memory, in MB."""
-    m = MemCounters()
-    m.cb = ctypes.sizeof(m)
-    K32.K32GetProcessMemoryInfo(K32.GetCurrentProcess(), ctypes.byref(m), m.cb)
-    out = {"ram_mb": round(m.WorkingSetSize / 2 ** 20), "ram_private_mb": round(m.PrivateUsage / 2 ** 20)}
-    try:
-        used, total = subprocess.run(["nvidia-smi", "--query-gpu=memory.used,memory.total", "--format=csv,noheader,nounits"],
-                                     capture_output=True, text=True, timeout=10, creationflags=0x08000000).stdout.split(",")
-        out["vram_mb"], out["vram_total_mb"] = int(used), int(total)
-    except Exception as e:  # noqa: BLE001
-        out["vram_error"] = str(e)
-    return out
 
 
 def process_age():
@@ -114,6 +89,17 @@ def streaming_done(world):
         return None
 
 
+def streaming_grids(world):
+    """The World Partition runtime grids (cell size, loading range in m), when Python can read them."""
+    try:
+        wp = world.get_world_settings().get_editor_property("world_partition")
+        grids = wp.get_editor_property("runtime_hash").get_editor_property("grids")
+        return [{"name": str(g.get_editor_property("grid_name")), "cell_m": g.get_editor_property("cell_size") / 100,
+                 "loading_range_m": g.get_editor_property("loading_range") / 100} for g in grids]
+    except Exception as e:  # noqa: BLE001
+        return repr(e)
+
+
 def wait_streaming(world, report, key, limit=30.0):
     t0 = time.time()
     frames = 0
@@ -129,14 +115,15 @@ def run():
     OUT.mkdir(parents=True, exist_ok=True)
     version = SYS.get_engine_version()
     report = {"engine": version, "date": datetime.datetime.now().isoformat(timespec="seconds"),
-              "editor_open_seconds": process_age(), "memory_editor_empty": memory()}
+              "editor_open_seconds": process_age(), "memory_editor_empty": m80_seq.memory()}
     tag = "%s_%s" % (version.split("-")[0], datetime.datetime.now().strftime("%Y%m%d_%H%M"))
 
     t0 = time.time()
     unreal.EditorLoadingAndSavingUtils.load_map(m80_seq.TOWN_MAP)
     report["map_open_seconds"] = round(time.time() - t0, 1)
     yield 60
-    report["memory_map_open"] = memory()
+    report["memory_map_open"] = m80_seq.memory()
+    report["streaming_grids"] = streaming_grids(m80_seq.editor_world())
     # Where the Matrice square is: the recovered Matrice's frame (as in m80_matrice_test.py).
     descs = [d for d in m80_seq.actor_descs() if str(d.label) == MATRICE]
     if not descs:
@@ -213,7 +200,7 @@ def run():
         yield 60
         new = [p for p in glob.glob(str(CSV_DIR / "*.csv")) if p not in before]
         view.update(summarize(max(new, key=os.path.getmtime)) if new else {"error": "no csv"})
-        view["memory"] = memory()
+        view["memory"] = m80_seq.memory()
         since = time.time()
         SYS.execute_console_command(game, "HighResShot 1280x720")
         yield 30

@@ -13,7 +13,9 @@ param(
 )
 $Project = Join-Path $PSScriptRoot '..\MazzarethTheGame.uproject' | Resolve-Path
 $ScriptPath = (Resolve-Path $Script).Path -replace '\\', '/'
-$Editor = 'D:\UE_5.5\Engine\Binaries\Win64\UnrealEditor.exe'
+# The engine is the one the project is associated with ("EngineAssociation": "5.5" -> D:\UE_5.5).
+$Engine = (Get-Content $Project -Raw | ConvertFrom-Json).EngineAssociation
+$Editor = "D:\UE_$Engine\Engine\Binaries\Win64\UnrealEditor.exe"
 $EditorArgs = @(
     "`"$Project`"",
     "-ExecCmds=`"py $ScriptPath`"",

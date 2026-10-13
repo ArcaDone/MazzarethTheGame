@@ -17,6 +17,8 @@
 #include "Landscape.h"
 #include "LandscapeComponent.h"
 #include "LandscapeProxy.h"
+#include "LandscapeSubsystem.h"
+#include "LandscapeEditLayer.h"
 #include "Components/SplineComponent.h"
 #include "TimerManager.h"
 #include "LandscapeInfo.h"
@@ -64,11 +66,11 @@ public:
 		{
 			GEngine->OnLevelActorAdded().Remove(ActorAddedHandle);
 		}
-		for (const TWeakObjectPtr<ALandscapeProxy>& Proxy : BoundProxies)
+		for (const TWeakObjectPtr<ULandscapeSubsystem>& Subsystem : BoundSubsystems)
 		{
-			if (Proxy.IsValid())
+			if (Subsystem.IsValid())
 			{
-				Proxy->OnComponentDataChanged.RemoveAll(this);
+				Subsystem->OnLandscapeProxyComponentDataChanged().RemoveAll(this);
 			}
 		}
 	}
@@ -114,7 +116,13 @@ private:
 	{
 		if (Proxy && !BoundProxies.Contains(Proxy))
 		{
-			Proxy->OnComponentDataChanged.AddRaw(this, &FMazzarinoHousesEditorModule::OnLandscapeChanged);
+			// Since 5.7 the landscapes of a world report their changes through its landscape subsystem.
+			ULandscapeSubsystem* Subsystem = Proxy->GetWorld() ? Proxy->GetWorld()->GetSubsystem<ULandscapeSubsystem>() : nullptr;
+			if (Subsystem && !BoundSubsystems.Contains(Subsystem))
+			{
+				Subsystem->OnLandscapeProxyComponentDataChanged().AddRaw(this, &FMazzarinoHousesEditorModule::OnLandscapeChanged);
+				BoundSubsystems.Add(Subsystem);
+			}
 			BoundProxies.Add(Proxy);
 			for (ULandscapeComponent* C : Proxy->LandscapeComponents)
 			{
@@ -203,6 +211,7 @@ private:
 	FDelegateHandle MapOpenedHandle;
 	FDelegateHandle ActorAddedHandle;
 	TSet<TWeakObjectPtr<ALandscapeProxy>> BoundProxies;
+	TSet<TWeakObjectPtr<ULandscapeSubsystem>> BoundSubsystems;
 	TMap<TWeakObjectPtr<const ULandscapeComponent>, uint32> HeightHashes;
 	FBox DirtyArea = FBox(ForceInit);
 	FTimerHandle RebuildTimer;
@@ -449,7 +458,6 @@ ALandscape* UM80EditorLibrary::CreateLandscapeFromTerrain(AActor* Terrain, FVect
 
 	UWorld* World = Terrain->GetWorld();
 	ALandscape* Landscape = World->SpawnActor<ALandscape>(FVector(Origin.X, Origin.Y, MidZ), FRotator::ZeroRotator);
-	Landscape->bCanHaveLayersContent = true;
 	Landscape->LandscapeMaterial = Material;
 	Landscape->SetActorRelativeScale3D(FVector(QuadSizeCm, QuadSizeCm, ScaleZ));
 	Landscape->StaticLightingLOD = FMath::DivideAndRoundUp(FMath::CeilLogTwo((SizeX * SizeY) / (2048 * 2048) + 1), (uint32)2);
@@ -578,8 +586,8 @@ ULandscapeLayerInfoObject* UM80EditorLibrary::EnsureLandscapeLayer(ALandscape* L
 		UPackage* Package = CreatePackage(*PackagePath);
 		LayerInfo = NewObject<ULandscapeLayerInfoObject>(Package, FName(*FPackageName::GetShortName(PackagePath)), RF_Public | RF_Standalone);
 		LayerInfo->SetFlags(RF_Transactional);
-		LayerInfo->LayerName = LayerName;
-		LayerInfo->bNoWeightBlend = bNoWeightBlend;
+		LayerInfo->SetLayerName(LayerName, false);
+		LayerInfo->SetBlendMethod(bNoWeightBlend ? ELandscapeTargetLayerBlendMethod::None : ELandscapeTargetLayerBlendMethod::FinalWeightBlending, false);
 		FAssetRegistryModule::AssetCreated(LayerInfo);
 		Package->MarkPackageDirty();
 	}
@@ -612,7 +620,7 @@ int32 UM80EditorLibrary::PaintLandscapeLayerAlongSplines(ALandscape* Landscape, 
 	const FTransform LT = Landscape->GetActorTransform();
 	const double Quad = LT.GetScale3D().X;
 	const double Edge = FMath::Max(1.0, (double)EdgeCm);
-	const FGuid EditLayer = Landscape->HasLayersContent() && Landscape->GetLayerConst(0) ? Landscape->GetLayerConst(0)->Guid : FGuid();
+	const FGuid EditLayer = Landscape->GetEditLayerConst(0) ? Landscape->GetEditLayerConst(0)->GetGuid() : FGuid();
 
 	TArray<uint8> Data;
 	Data.SetNumZeroed(W * H);
@@ -673,7 +681,7 @@ int32 UM80EditorLibrary::PaintLandscapeLayerAlongSplines(ALandscape* Landscape, 
 
 	{
 		FScopedSetLandscapeEditingLayer Scope(Landscape, EditLayer, [Landscape] { Landscape->RequestLayersContentUpdate(ELandscapeLayerUpdateMode::Update_Weightmap_All); });
-		FAlphamapAccessor<false, false> Accessor(Info, Layer);
+		TAlphamapAccessor<false> Accessor(Info, Layer);
 		Accessor.SetData(MinX, MinY, MaxX, MaxY, Data.GetData(), ELandscapeLayerPaintingRestriction::None);
 	}
 	Landscape->MarkPackageDirty();
@@ -694,9 +702,9 @@ FString UM80EditorLibrary::DescribeLandscapeLayer(ALandscape* Landscape, ULandsc
 		TArray<uint8> Data;
 		Data.SetNumZeroed(W * H);
 		TOptional<FScopedSetLandscapeEditingLayer> Scope;
-		if (bEditLayer && Landscape->HasLayersContent())
+		if (bEditLayer && Landscape->GetEditLayerConst(0))
 		{
-			Scope.Emplace(Landscape, Landscape->GetLayerConst(0)->Guid);
+			Scope.Emplace(Landscape, Landscape->GetEditLayerConst(0)->GetGuid());
 		}
 		FLandscapeEditDataInterface Edit(Info);
 		Edit.GetWeightDataFast(Layer, MinX, MinY, MaxX, MaxY, Data.GetData(), 0);
@@ -720,7 +728,7 @@ FString UM80EditorLibrary::DescribeLandscapeLayer(ALandscape* Landscape, ULandsc
 		return true;
 	});
 	return FString::Printf(TEXT("edit=%d final=%d comps=%d layers=%d editing=%s infolayers=%d"), Count(true), Count(false), Comps,
-		Landscape->GetLayerCount(), *Landscape->GetEditingLayer().ToString(), Info->Layers.Num());
+		Landscape->GetEditLayersConst().Num(), *Landscape->GetEditingLayer().ToString(), Info->Layers.Num());
 }
 
 bool UM80EditorLibrary::MakeVehiclePhysicsAsset(USkeletalMesh* Mesh, FName RootBone, FVector BoxMin, FVector BoxMax, float BeltHeight, float CabinLengthFraction)

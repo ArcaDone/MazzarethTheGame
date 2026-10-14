@@ -100,6 +100,20 @@ class Body:
 
 # --- building blocks -----------------------------------------------------------------------------------------------
 
+def straighten_borders(bm, iterations):
+    """Smooths the open borders of a mesh (a cut that follows edges goes in steps): each border vertex moves
+    towards the middle of its two border neighbours."""
+    for _ in range(iterations):
+        moves = {}
+        for v in bm.verts:
+            if v.is_boundary:
+                nb = [e.other_vert(v) for e in v.link_edges if e.is_boundary]
+                if len(nb) == 2:
+                    moves[v] = (nb[0].co + nb[1].co) * 0.5
+        for v, c in moves.items():
+            v.co = v.co * 0.5 + c * 0.5
+
+
 def shell(body, keep, ease, smooth=12, name="Shell"):
     """The body's faces whose vertices all pass keep(index array) -> bool array, smoothed, pushed out by ease(i)."""
     sel = keep(np.arange(len(body.co)))
@@ -118,17 +132,7 @@ def shell(body, keep, ease, smooth=12, name="Shell"):
     for v in [v for v in bm.verts if not v.link_faces]:
         bm.verts.remove(v)
     bm.verts.ensure_lookup_table()
-    # Straighten the borders (the cut follows the body's edges, in steps): each border vertex towards the middle
-    # of its two border neighbours.
-    for _ in range(6):
-        moves = {}
-        for v in bm.verts:
-            if v.is_boundary:
-                nb = [e.other_vert(v) for e in v.link_edges if e.is_boundary]
-                if len(nb) == 2:
-                    moves[v] = (nb[0].co + nb[1].co) * 0.5
-        for v, c in moves.items():
-            v.co = v.co * 0.5 + c * 0.5
+    straighten_borders(bm, 6)
     # Smooth away the anatomy, keeping the borders (necklines, cuffs) where they are.
     inner = [v for v in bm.verts if not v.is_boundary]
     for _ in range(smooth):
@@ -408,42 +412,60 @@ def g_abito_nero(body, rng):
 
 
 def g_fazzoletto(body, rng):
-    """Black headscarf: over the head and ears, framing the face, round the neck and tied under the chin."""
+    """Black veil (the old women's 'fazzoletto'): loose over the head, framing the face, closed under the chin round
+    the neck and falling over the shoulders, lower at the back than at the front."""
     head = body.j("head")
-    top_z = float(body.co[body.part == "head"][:, 2].max())
-    hairline = top_z - 0.075
+    neck = body.j("neck_01")
+    hd = body.co[body.part == "head"]
+    top_z = float(hd[:, 2].max())
+    chin_z = float(hd[np.abs(hd[:, 0]) < 0.02][:, 2].min())
+    hairline = top_z - 0.06
+    front_hem, back_hem = neck[2] - 0.11, neck[2] - 0.2
+    shoulder = neck[2] - 0.03
 
-    def keep(i):
-        p, part = body.co[i], body.part[i]
-        ok = np.isin(part, ["head", "neck"])
-        face = (p[:, 1] < head[1] - 0.035) & (p[:, 2] < hairline) & (p[:, 2] > head[2] - 0.12)
-        ok &= ~face
-        ok &= p[:, 2] > z_of(body, "neck_01") - 0.02
-        return ok
+    def ease(z, a):
+        # Close on the crown, loose round the neck, wide over the shoulders.
+        return float(np.interp(z, [back_hem, shoulder, chin_z, head[2], top_z], [0.045, 0.04, 0.032, 0.02, 0.014]))
 
-    def ease(i):
-        z = body.co[i][:, 2]
-        return np.where(body.part[i] == "neck", 0.028, 0.012 + np.clip((z - head[2]) / 0.12, 0, 1) * 0.014)
-
-    ob = shell(body, keep, ease, smooth=24, name="Fazzoletto")
-    cylinder_uv(ob, body)
-    # The knot under the chin.
-    chin = body.co[(body.part == "head") & (np.abs(body.co[:, 0]) < 0.01)]
-    chin = chin[chin[:, 2].argmin()] if len(chin) else head
+    ob = loft(body, ["head", "neck", "torso"], top_z - 0.012, back_hem, ease, n=56, dz=0.012, name="Velo",
+              centre_xy=(head[0], head[1] + 0.005))
     bm = bmesh.new()
-    bmesh.ops.create_uvsphere(bm, u_segments=10, v_segments=6, radius=0.022,
-                              matrix=Matrix.Translation(Vector((0, chin[1] + 0.02, chin[2] - 0.015))) @ Matrix.Diagonal((1.3, 0.8, 0.9, 1)),
-                              calc_uvs=True)
-    knot = bpy.data.meshes.new("Nodo")
-    bm.to_mesh(knot)
+    bm.from_mesh(ob.data)
+    front = -math.pi / 2
+
+    def angle(c):
+        return math.atan2(c.y - head[1], c.x - head[0])
+
+    gone = []
+    for f in bm.faces:
+        c = f.calc_center_median()
+        da = abs((angle(c) - front + math.pi) % (2 * math.pi) - math.pi)
+        # The face: an oval from the chin to the hairline, about 110 degrees wide at the cheeks.
+        t = (c.z - chin_z) / (hairline - chin_z)
+        if 0.0 < t < 1.0 and da < math.radians(58) * math.sqrt(max(0.0, 1 - (2 * t - 1) ** 4)) + math.radians(8):
+            gone.append(f)
+            continue
+        # The hem: front_hem at the front, back_hem at the back.
+        if c.z < front_hem + (back_hem - front_hem) * (da / math.pi):
+            gone.append(f)
+    bmesh.ops.delete(bm, geom=gone, context="FACES")
+    straighten_borders(bm, 14)
+    # The crown closed with a fan.
+    ring = [v for v in bm.verts if abs(v.co.z - (top_z - 0.012)) < 1e-4]
+    if len(ring) > 2:
+        tip = bm.verts.new((head[0], head[1] + 0.005, top_z + 0.014))
+        ring.sort(key=lambda v: math.atan2(v.co.y - head[1], v.co.x - head[0]))
+        for v0, v1 in zip(ring, ring[1:] + ring[:1]):
+            try:
+                bm.faces.new([tip, v1, v0])
+            except ValueError:
+                pass
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
+    bm.to_mesh(ob.data)
     bm.free()
-    kob = bpy.data.objects.new("Nodo", knot)
-    bpy.context.scene.collection.objects.link(kob)
-    ob = [ob, kob]
-    mat = fabric("Seta_nera", weave(TEX, (0.03, 0.03, 0.032), rng, scale=2, depth=0.05), rough=0.7, tile_m=0.1)
-    for o in ob:
-        o.data.materials.append(mat)
-    return ob
+    mat = fabric("Lana_velo", weave(TEX, (0.045, 0.043, 0.046), rng, scale=2, depth=0.05), rough=0.95, tile_m=0.08)
+    ob.data.materials.append(mat)
+    return [ob]
 
 
 def g_scarpe(body, rng, colour=(0.05, 0.035, 0.03), name="Scarpe"):

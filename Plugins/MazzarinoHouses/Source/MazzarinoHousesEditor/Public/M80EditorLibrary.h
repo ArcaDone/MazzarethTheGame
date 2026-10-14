@@ -206,6 +206,13 @@ public:
 	static FString GetObjectPropertyText(UObject* Object, FName Property);
 
 	/**
+	 * Connects a material expression's output to a material input by the input's enum name, also the ones scripts
+	 * can't name (MP_CustomData0: the Cloth shading model's Cloth input). Returns false if not connected.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Personaggi")
+	static bool ConnectMaterialInput(UMaterialExpression* Expression, const FString& OutputName, const FString& Input);
+
+	/**
 	 * The sizes of a resizable outfit asset (made by Epic's MakeResizableOutfitTemplate graph): for each size,
 	 * the cloth asset made on a source body and that body (a MetaHuman full body, *_FullBody / *CombinedSkelMesh).
 	 * Rebuilds the outfit. Returns false if the asset's graph has no SizedOutfitSource variable.

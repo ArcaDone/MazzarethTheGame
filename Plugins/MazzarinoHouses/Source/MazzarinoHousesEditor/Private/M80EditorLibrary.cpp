@@ -52,6 +52,8 @@
 #include "Dataflow/DataflowInstance.h"
 #include "ChaosOutfitAsset/SizedOutfitSource.h"
 #include "ChaosClothAsset/ClothAssetBase.h"
+#include "Rendering/SkeletalMeshRenderData.h"
+#include "RenderingThread.h"
 
 namespace
 {
@@ -1186,6 +1188,24 @@ bool UM80EditorLibrary::SetDataflowNodeProperty(UDataflow* Dataflow, FName Node,
 	return true;
 }
 
+// Rebuilding a cloth or outfit asset that is already loaded replaces its render data, and the 5.8 engine releases
+// everything but the LODs' half-edge buffers first (fatal: "FRenderResource was deleted without being released",
+// FSkeletalMeshLODRenderData.HalfEdgeBuffer). Released here before a rebuild.
+static void ReleaseHalfEdgeBuffers(UObject* Asset)
+{
+	UChaosClothAssetBase* Cloth = Cast<UChaosClothAssetBase>(Asset);
+	FSkeletalMeshRenderData* RenderData = Cloth ? Cloth->GetResourceForRendering() : nullptr;
+	if (!RenderData)
+	{
+		return;
+	}
+	for (FSkeletalMeshLODRenderData& Lod : RenderData->LODRenderData)
+	{
+		BeginReleaseResource(&Lod.HalfEdgeBuffer);
+	}
+	FlushRenderingCommands();
+}
+
 UDataflow* UM80EditorLibrary::GetAssetDataflow(UObject* Asset)
 {
 	return Asset ? UE::Dataflow::InstanceUtils::GetDataflowAssetFromObject(Asset) : nullptr;
@@ -1199,6 +1219,7 @@ bool UM80EditorLibrary::RebuildAssetFromDataflow(UObject* Asset, UDataflow* Data
 		return false;
 	}
 	Asset->Modify();
+	ReleaseHalfEdgeBuffers(Asset);
 	if (Dataflow)
 	{
 		Instance->GetDataflowInstance().SetDataflowAsset(Dataflow);
@@ -1251,6 +1272,7 @@ bool UM80EditorLibrary::SetOutfitSizes(UObject* Outfit, const TArray<UObject*>& 
 		}
 	}
 	Outfit->Modify();
+	ReleaseHalfEdgeBuffers(Outfit);
 	FDataflowInstance& Dataflow = Instance->GetDataflowInstance();
 	if (!Dataflow.GetVariableOverrides().OverrideVariableStructArray(TEXT("SizedOutfitSource"), Sizes))
 	{
@@ -1270,4 +1292,11 @@ FString UM80EditorLibrary::GetObjectPropertyText(UObject* Object, FName Property
 		Prop->ExportTextItem_InContainer(Value, Object, nullptr, Object, PPF_None);
 	}
 	return Value;
+}
+
+bool UM80EditorLibrary::ConnectMaterialInput(UMaterialExpression* Expression, const FString& OutputName, const FString& Input)
+{
+	const int64 Value = StaticEnum<EMaterialProperty>()->GetValueByNameString(Input);
+	return Expression && Value != INDEX_NONE
+		&& UMaterialEditingLibrary::ConnectMaterialProperty(Expression, OutputName, static_cast<EMaterialProperty>(Value));
 }

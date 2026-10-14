@@ -103,4 +103,18 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Vegetazione")
 	static UStaticMesh* BakeBougainvillea(AM80Bougainvillea* Plant, const FString& Folder);
+
+	/**
+	 * The world's World Partition runtime partitions (runtime hash set, hidden from Python), one line per layer:
+	 * partition, layer (main or HLOD), class, cell size and loading range in cm. Empty if the world has none.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|World Partition")
+	static FString DescribeRuntimePartitions(UWorld* World);
+
+	/**
+	 * Sets the cell size and the loading range (cm) of the main layer of the runtime partition PartitionName and
+	 * marks the map dirty. The HLODs are built on the old cells: rebuild them afterwards.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|World Partition")
+	static bool SetRuntimePartitionGrid(UWorld* World, FName PartitionName, int32 CellSize, int32 LoadingRange);
 };

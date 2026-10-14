@@ -39,6 +39,8 @@
 #include "AnimationRuntime.h"
 #include "MaterialEditingLibrary.h"
 #include "M80Bougainvillea.h"
+#include "WorldPartition/WorldPartition.h"
+#include "WorldPartition/WorldPartitionRuntimeHash.h"
 
 namespace
 {
@@ -886,4 +888,98 @@ UStaticMesh* UM80EditorLibrary::BakeBougainvillea(AM80Bougainvillea* Plant, cons
 	StaticMesh->MarkPackageDirty();
 	Plant->ApplyBakedMesh(StaticMesh);
 	return StaticMesh;
+}
+
+namespace
+{
+// The runtime hash set keeps its partitions private and Python cannot see them: they are read and written through
+// reflection, as the World Settings panel does. Each partition is {Name, MainLayer, HLODSetups[{Name, PartitionLayer}]}.
+template <typename FFunc>
+void ForEachRuntimePartitionLayer(UWorld* World, FFunc&& Func)
+{
+	UWorldPartition* WorldPartition = World ? World->GetWorldPartition() : nullptr;
+	UObject* Hash = WorldPartition ? WorldPartition->RuntimeHash.Get() : nullptr;
+	FArrayProperty* Partitions = Hash ? FindFProperty<FArrayProperty>(Hash->GetClass(), TEXT("RuntimePartitions")) : nullptr;
+	FStructProperty* Desc = Partitions ? CastField<FStructProperty>(Partitions->Inner) : nullptr;
+	if (!Desc)
+	{
+		return;
+	}
+	FNameProperty* NameProp = FindFProperty<FNameProperty>(Desc->Struct, TEXT("Name"));
+	FObjectProperty* MainProp = FindFProperty<FObjectProperty>(Desc->Struct, TEXT("MainLayer"));
+	FArrayProperty* HLODsProp = FindFProperty<FArrayProperty>(Desc->Struct, TEXT("HLODSetups"));
+	FStructProperty* Setup = HLODsProp ? CastField<FStructProperty>(HLODsProp->Inner) : nullptr;
+	FScriptArrayHelper Items(Partitions, Partitions->ContainerPtrToValuePtr<void>(Hash));
+	for (int32 i = 0; i < Items.Num(); ++i)
+	{
+		const uint8* Item = Items.GetRawPtr(i);
+		const FName Partition = NameProp ? NameProp->GetPropertyValue_InContainer(Item) : NAME_None;
+		Func(Partition, FName(TEXT("Main")), MainProp ? MainProp->GetObjectPropertyValue_InContainer(Item) : nullptr);
+		if (!Setup)
+		{
+			continue;
+		}
+		FNameProperty* SetupName = FindFProperty<FNameProperty>(Setup->Struct, TEXT("Name"));
+		FObjectProperty* SetupLayer = FindFProperty<FObjectProperty>(Setup->Struct, TEXT("PartitionLayer"));
+		FScriptArrayHelper HLODs(HLODsProp, HLODsProp->ContainerPtrToValuePtr<void>(Item));
+		for (int32 k = 0; k < HLODs.Num(); ++k)
+		{
+			const uint8* HLOD = HLODs.GetRawPtr(k);
+			Func(Partition, SetupName ? SetupName->GetPropertyValue_InContainer(HLOD) : NAME_None,
+				SetupLayer ? SetupLayer->GetObjectPropertyValue_InContainer(HLOD) : nullptr);
+		}
+	}
+}
+
+FNumericProperty* RuntimePartitionNumber(UObject* Layer, const TCHAR* Name)
+{
+	return Layer ? FindFProperty<FNumericProperty>(Layer->GetClass(), Name) : nullptr;
+}
+}
+
+FString UM80EditorLibrary::DescribeRuntimePartitions(UWorld* World)
+{
+	FString Out;
+	ForEachRuntimePartitionLayer(World, [&Out](FName Partition, FName Layer, UObject* Object)
+	{
+		Out += FString::Printf(TEXT("%s %s %s"), *Partition.ToString(), *Layer.ToString(), Object ? *Object->GetClass()->GetName() : TEXT("none"));
+		for (const TCHAR* Name : {TEXT("CellSize"), TEXT("LoadingRange")})
+		{
+			if (FNumericProperty* Prop = RuntimePartitionNumber(Object, Name))
+			{
+				Out += FString::Printf(TEXT(" %s=%lld"), Name, Prop->GetSignedIntPropertyValue(Prop->ContainerPtrToValuePtr<void>(Object)));
+			}
+		}
+		Out += TEXT("\n");
+	});
+	return Out;
+}
+
+bool UM80EditorLibrary::SetRuntimePartitionGrid(UWorld* World, FName PartitionName, int32 CellSize, int32 LoadingRange)
+{
+	bool bDone = false;
+	ForEachRuntimePartitionLayer(World, [&](FName Partition, FName Layer, UObject* Object)
+	{
+		FNumericProperty* Cell = RuntimePartitionNumber(Object, TEXT("CellSize"));
+		FNumericProperty* Range = RuntimePartitionNumber(Object, TEXT("LoadingRange"));
+		if (Partition != PartitionName || Layer != FName(TEXT("Main")) || !Cell || !Range)
+		{
+			return;
+		}
+		Object->Modify();
+		for (const TPair<FNumericProperty*, int32>& Change : {TPair<FNumericProperty*, int32>(Cell, CellSize), TPair<FNumericProperty*, int32>(Range, LoadingRange)})
+		{
+			Object->PreEditChange(Change.Key);
+			Change.Key->SetIntPropertyValue(Change.Key->ContainerPtrToValuePtr<void>(Object), static_cast<int64>(Change.Value));
+			FPropertyChangedEvent Event(Change.Key, EPropertyChangeType::ValueSet);
+			Object->PostEditChangeProperty(Event);
+		}
+		bDone = true;
+	});
+	if (bDone)
+	{
+		World->GetWorldPartition()->RuntimeHash->Modify();
+		World->MarkPackageDirty();
+	}
+	return bDone;
 }

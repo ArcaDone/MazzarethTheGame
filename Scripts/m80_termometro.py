@@ -100,7 +100,9 @@ def streaming_grids(world):
         return repr(e)
 
 
-def wait_streaming(world, report, key, limit=30.0):
+# Python cannot ask World Partition whether it finished, so the wait is fixed: after Play the town keeps loading for
+# a while (30 s measured 3 fps where 120 s measured 69).
+def wait_streaming(world, report, key, limit=120.0):
     t0 = time.time()
     frames = 0
     while time.time() - t0 < limit:

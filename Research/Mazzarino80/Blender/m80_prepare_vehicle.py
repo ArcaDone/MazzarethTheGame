@@ -46,8 +46,9 @@ ASSETS = {
     # Town buildings (Comune and its church are stand-ins until the user rebuilds the Comune).
     "Comune": {"kind": "building", "density": 1500, "budget": 0},
     "ChiesaComune": {"kind": "building", "density": 1500, "budget": 0},
+    # MatriceDentroFuori.blend; the pews came without a material: the church's wood.
     "Matrice": {"kind": "building", "density": 1500, "budget": 0, "collections": ["Export", "Export2", "Interno"],
-                "split_collections": {"Interno": "Interno"}},
+                "split_collections": {"Interno": "Interno"}, "materials": {"PancheChiesa": "Wood"}},
     "Castello": {"kind": "building", "density": 1500, "budget": 0},
     # Every part on its own, to be arranged in Unreal; the church is the main mesh ("main").
     "Madonna": {"kind": "building", "density": 1500, "budget": 0, "split": "*", "main": "ChiesaMadonna", "exclude": ["CreepingBentgrass"],
@@ -147,6 +148,12 @@ def collect():
     if CFG.get("collections"):
         keep = [o for o in keep if any(c.name in CFG["collections"] for c in o.users_collection)]
     keep = [o for o in keep if not any(o.name.startswith(x) for x in CFG.get("exclude", []))]
+    for o in keep:
+        mat = bpy.data.materials.get(CFG.get("materials", {}).get(o.name, ""))
+        if mat and o.type == "MESH" and not any(s.material for s in o.material_slots):
+            o.data.materials.clear()
+            o.data.materials.append(mat)
+            log("material", mat.name, "on", o.name)
     for o in keep:
         if o.type != "MESH":
             continue

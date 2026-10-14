@@ -3,10 +3,13 @@
 Each `yield N` waits N rendered engine frames before resuming. Loading a map
 inside a step is safe: re-entrant ticks are ignored while a step is running.
 """
+import ctypes
+import ctypes.wintypes as wt
 import glob
 import math
 import os
 import shutil
+import subprocess
 import traceback
 from pathlib import Path
 
@@ -166,3 +169,31 @@ def collect_screenshot(target_png, since):
     Path(target_png).parent.mkdir(parents=True, exist_ok=True)
     shutil.move(newest, target_png)
     return target_png
+
+
+_K32 = ctypes.WinDLL("kernel32")
+_K32.GetCurrentProcess.restype = wt.HANDLE
+_K32.K32GetProcessMemoryInfo.argtypes = [wt.HANDLE, ctypes.c_void_p, wt.DWORD]
+
+
+class _MemCounters(ctypes.Structure):
+    _fields_ = [("cb", wt.DWORD), ("PageFaultCount", wt.DWORD), ("PeakWorkingSetSize", ctypes.c_size_t),
+                ("WorkingSetSize", ctypes.c_size_t), ("QuotaPeakPagedPoolUsage", ctypes.c_size_t),
+                ("QuotaPagedPoolUsage", ctypes.c_size_t), ("QuotaPeakNonPagedPoolUsage", ctypes.c_size_t),
+                ("QuotaNonPagedPoolUsage", ctypes.c_size_t), ("PagefileUsage", ctypes.c_size_t),
+                ("PeakPagefileUsage", ctypes.c_size_t), ("PrivateUsage", ctypes.c_size_t)]
+
+
+def memory():
+    """The editor's RAM (working set and private bytes) and the GPU's used video memory, in MB."""
+    m = _MemCounters()
+    m.cb = ctypes.sizeof(m)
+    _K32.K32GetProcessMemoryInfo(_K32.GetCurrentProcess(), ctypes.byref(m), m.cb)
+    out = {"ram_mb": round(m.WorkingSetSize / 2 ** 20), "ram_private_mb": round(m.PrivateUsage / 2 ** 20)}
+    try:
+        used, total = subprocess.run(["nvidia-smi", "--query-gpu=memory.used,memory.total", "--format=csv,noheader,nounits"],
+                                     capture_output=True, text=True, timeout=10, creationflags=0x08000000).stdout.split(",")
+        out["vram_mb"], out["vram_total_mb"] = int(used), int(total)
+    except Exception as e:  # noqa: BLE001
+        out["vram_error"] = str(e)
+    return out

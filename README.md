@@ -318,6 +318,8 @@ Sull'altro PC:
 - Il vaso `SM_M80_PROP__PottedPlant_Small_01` risulta modificato in locale da prima del 6 ottobre: decidere se tenerlo.
 - `.git_old` (38 GB) va spostato o cancellato quando non serve più.
 - **Paese buio di notte da lontano** con la griglia nuova: i lampioni lontani non sono caricati. Tenerli sempre caricati costa troppo (3 fps): da rivedere.
+- **DynamicMesh in Play: 2,5 GB di RAM** (691 oggetti, 5.8 con la griglia nuova; erano 6,7 GB in 5.5). Le producono case non cotte, strade, marciapiedi, scalinate, fili, orizzonte e bouganvillea. Prima misurarle per tipo, poi cuocere in static mesh chi pesa di più. Da fare prima di portare la folla nel paese.
+- **Veicoli Panda, Golf, Vespa**: mancano le texture, ma prima vanno riviste le mesh (forse troppo pesanti).
 
 ## 8. Fonti e licenze
 

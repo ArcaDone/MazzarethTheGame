@@ -143,13 +143,24 @@ def newsprint(w, h, rng):
 def finish(objs, key, fit=None, keep_origin=False):
     """Join, size, put the origin at the bottom centre, triangulate; returns the single mesh object."""
     bpy.ops.object.select_all(action="DESELECT")
+    # Each piece goes into a fresh object with its world transform baked into the mesh: an imported object can carry
+    # an animation or other FBX leftovers (the net bag kept its 0.001 scale into the exported FBX).
+    fresh = []
     for o in objs:
-        o.select_set(True)
+        if o.data.shape_keys:   # Mesh.transform leaves shape keys alone, and the basis is what gets exported
+            o.shape_key_clear()
+        me = o.data.copy()
+        me.transform(o.matrix_world)
+        n = bpy.data.objects.new(o.name, me)
+        bpy.context.scene.collection.objects.link(n)
+        bpy.data.objects.remove(o)
+        n.select_set(True)
+        fresh.append(n)
+    objs = fresh
     bpy.context.view_layer.objects.active = objs[0]
     if len(objs) > 1:
         bpy.ops.object.join()
     ob = bpy.context.view_layer.objects.active
-    bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
     ob.name = ob.data.name = "SM_M80_" + key
     co = np.array([v.co[:] for v in ob.data.vertices])
     lo, hi = co.min(0), co.max(0)

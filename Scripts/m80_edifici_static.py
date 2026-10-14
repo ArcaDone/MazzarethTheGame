@@ -3,7 +3,7 @@ left out: the Madonna, the Scuola by the Matrice, the Salesiane, Liardo, the Cas
 vanished from far away, the Comune, already static, did not). None of them moves anything in game.
 In L_M80_Paese_WP the recovered Matrice (now holding the new meshes) is shown again and the separate Matrice_Interno
 actor left by m80_matrice_place.py is hidden in game, without collision (kept, not deleted).
-Saves the 7 Blueprints and the two actors; the HLODs then need a rebuild.
+Saves the 7 Blueprints, their placed actors and the two Matrice actors; the HLODs then need a rebuild.
 Output: Saved/Mazzarino80/Memoria/edifici_static.json
 powershell -File Scripts/run_editor_script.ps1 -Script Scripts/m80_edifici_static.py
 """
@@ -61,8 +61,10 @@ def steps():
     unreal.EditorLoadingAndSavingUtils.load_map(m80_seq.TOWN_MAP)
     yield 30
     classes = {unreal.load_asset(p).generated_class().get_name() for p in BLUEPRINTS}
+    # A desc's native_class is the C++ parent (Actor): pick the Blueprint instances by their actor name (<Class>_<n>).
     descs = [d for d in m80_seq.actor_descs() if str(d.get_editor_property("label")) in (SHOW, HIDE)
-             or (d.get_editor_property("native_class") and d.get_editor_property("native_class").get_name() in classes)]
+             or str(d.get_editor_property("name")).rsplit("_", 1)[0] in classes]
+    report["descs"] = sorted(str(d.get_editor_property("label")) for d in descs)
     m80_seq.load(descs)
     yield 120
     world = m80_seq.editor_world()
@@ -77,7 +79,10 @@ def steps():
             if before.get("MOVABLE"):
                 for c in a.get_components_by_class(unreal.SceneComponent):
                     c.set_mobility(STATIC)
-                packages.append(a.get_package())
+            # Always resaved: its actor desc keeps "not HLOD relevant" from the last save, and the HLOD build
+            # reads the descs, not the Blueprint, so an unsaved instance stays out of the HLODs.
+            a.modify()
+            packages.append(a.get_package())
             report["instances"][label] = {"before": before, "after": mobilities(a)}
         if label in (SHOW, HIDE):
             show = label == SHOW

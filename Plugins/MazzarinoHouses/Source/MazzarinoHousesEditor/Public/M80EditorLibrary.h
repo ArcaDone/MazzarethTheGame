@@ -136,4 +136,27 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Personaggi")
 	static bool ResetMetaHumanNeck(UMetaHumanCharacter* Character);
+
+	/**
+	 * The face regions of a MetaHuman Character (the Creator's blend and move handles): one position per region,
+	 * in the face's space (cm; X sideways, Y up, Z forward). The character must be added for editing.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Personaggi")
+	static TArray<FVector> GetMetaHumanFaceRegions(UMetaHumanCharacter* Character);
+
+	/**
+	 * Blends one face region (-1: the whole face) towards the given characters (presets), by weight, as the
+	 * Creator's Blend tool does, symmetrically. bShapeOnly keeps the region's proportions and blends its shape.
+	 * All characters must be added for editing.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Personaggi")
+	static bool BlendMetaHumanFaceRegion(UMetaHumanCharacter* Character, int32 Region,
+		const TArray<UMetaHumanCharacter*>& Sources, const TArray<float>& Weights, bool bShapeOnly);
+
+	/**
+	 * Moves one face region by Offset (face space, cm) and scales it by ScaleFactor, symmetrically and within the
+	 * Creator's bounds, as dragging its handle does. Returns the region's new position.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Personaggi")
+	static FVector MoveMetaHumanFaceRegion(UMetaHumanCharacter* Character, int32 Region, FVector Offset, float ScaleFactor);
 };

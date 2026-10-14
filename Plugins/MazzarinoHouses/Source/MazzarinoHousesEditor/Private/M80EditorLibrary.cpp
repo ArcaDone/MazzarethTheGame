@@ -1035,3 +1035,76 @@ bool UM80EditorLibrary::ResetMetaHumanNeck(UMetaHumanCharacter* Character)
 	Subsystem->ApplyFaceState(Character, State);
 	return true;
 }
+
+static UMetaHumanCharacterEditorSubsystem* EditingSubsystem(UMetaHumanCharacter* Character)
+{
+	UMetaHumanCharacterEditorSubsystem* Subsystem = GEditor ? GEditor->GetEditorSubsystem<UMetaHumanCharacterEditorSubsystem>() : nullptr;
+	return Character && Subsystem && Subsystem->IsObjectAddedForEditing(Character) ? Subsystem : nullptr;
+}
+
+TArray<FVector> UM80EditorLibrary::GetMetaHumanFaceRegions(UMetaHumanCharacter* Character)
+{
+	TArray<FVector> Regions;
+	if (UMetaHumanCharacterEditorSubsystem* Subsystem = EditingSubsystem(Character))
+	{
+		for (const FVector3f& Gizmo : Subsystem->GetFaceGizmos(Character))
+		{
+			Regions.Add(FVector(Gizmo));
+		}
+	}
+	return Regions;
+}
+
+bool UM80EditorLibrary::BlendMetaHumanFaceRegion(UMetaHumanCharacter* Character, int32 Region,
+	const TArray<UMetaHumanCharacter*>& Sources, const TArray<float>& Weights, bool bShapeOnly)
+{
+	UMetaHumanCharacterEditorSubsystem* Subsystem = EditingSubsystem(Character);
+	if (!Subsystem || Sources.Num() == 0 || Sources.Num() != Weights.Num())
+	{
+		return false;
+	}
+	TArray<TSharedRef<FMetaHumanCharacterIdentity::FState>> States;
+	TArray<TPair<float, const FMetaHumanCharacterIdentity::FState*>> Weighted;
+	for (int32 i = 0; i < Sources.Num(); ++i)
+	{
+		if (!Sources[i] || !Subsystem->IsObjectAddedForEditing(Sources[i]))
+		{
+			return false;
+		}
+		States.Add(Subsystem->CopyFaceState(Sources[i]));
+		Weighted.Add({ Weights[i], &States.Last().Get() });
+	}
+	TSharedRef<FMetaHumanCharacterIdentity::FState> State = Subsystem->CopyFaceState(Character);
+	State->BlendPresets(Region, Weighted, bShapeOnly ? EBlendOptions::Proportions : EBlendOptions::Both, true);
+	Subsystem->ApplyFaceState(Character, State);
+	return true;
+}
+
+FVector UM80EditorLibrary::MoveMetaHumanFaceRegion(UMetaHumanCharacter* Character, int32 Region, FVector Offset, float ScaleFactor)
+{
+	UMetaHumanCharacterEditorSubsystem* Subsystem = EditingSubsystem(Character);
+	if (!Subsystem)
+	{
+		return FVector::ZeroVector;
+	}
+	TSharedRef<FMetaHumanCharacterIdentity::FState> State = Subsystem->CopyFaceState(Character);
+	if (Region < 0 || Region >= State->NumGizmos())
+	{
+		return FVector::ZeroVector;
+	}
+	FVector3f Position;
+	State->GetGizmoPosition(Region, Position);
+	if (!Offset.IsNearlyZero())
+	{
+		State->SetGizmoPosition(Region, Position + FVector3f(Offset), true, true);
+	}
+	if (!FMath::IsNearlyEqual(ScaleFactor, 1.0f))
+	{
+		float Scale = 1.0f;
+		State->GetGizmoScale(Region, Scale);
+		State->SetGizmoScale(Region, Scale * ScaleFactor, true, true);
+	}
+	State->GetGizmoPosition(Region, Position);
+	Subsystem->ApplyFaceState(Character, State);
+	return FVector(Position);
+}

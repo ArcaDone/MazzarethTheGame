@@ -17,6 +17,7 @@ class USkeletalMesh;
 class UMaterialExpression;
 class AM80Bougainvillea;
 class UMetaHumanCharacter;
+class UDataflow;
 
 /** Editor helpers callable from Python (unreal.M80EditorLibrary). */
 UCLASS()
@@ -159,4 +160,57 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Personaggi")
 	static FVector MoveMetaHumanFaceRegion(UMetaHumanCharacter* Character, int32 Region, FVector Offset, float ScaleFactor);
+
+	/**
+	 * Why a MetaHuman Character can't be built yet (not rigged, auto-rig in progress, no high resolution
+	 * textures ...), empty when it can. The character must be added for editing.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Personaggi")
+	static FString GetMetaHumanBuildStatus(UMetaHumanCharacter* Character);
+
+	/**
+	 * A Dataflow graph as text, one node per line: name, type, its editable properties and, for each connected
+	 * input, the node and output it comes from. To script copies of Epic's cloth and outfit graphs.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Personaggi")
+	static FString DescribeDataflow(UDataflow* Dataflow);
+
+	/**
+	 * Sets a property of a Dataflow graph node from text (as in copy/paste, e.g. an asset path for a mesh
+	 * property) and invalidates the node, so the next evaluation uses it. Returns false if node or property
+	 * is missing or the text doesn't parse.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Personaggi")
+	static bool SetDataflowNodeProperty(UDataflow* Dataflow, FName Node, const FString& Property, const FString& Value);
+
+	/** The Dataflow graph an asset is made by (cloth asset, outfit asset ...), null if none. */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Personaggi")
+	static UDataflow* GetAssetDataflow(UObject* Asset);
+
+	/**
+	 * Gives an asset (cloth asset, outfit asset ...) another Dataflow graph and terminal node, then rebuilds it
+	 * from the graph. Returns false if the asset can't take a graph or the evaluation fails.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Personaggi")
+	static bool RebuildAssetFromDataflow(UObject* Asset, UDataflow* Dataflow, FName Terminal);
+
+	/**
+	 * Sets any property of an object from text, as in copy/paste, also the ones the editor shows but scripts
+	 * can't write (e.g. a MetaHuman wardrobe item's PrincipalAsset). Returns false if missing or not parsed.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Personaggi")
+	static bool SetObjectPropertyText(UObject* Object, FName Property, const FString& Value);
+
+	/** Any property of an object as text (as copy would give it), empty if missing. */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Personaggi")
+	static FString GetObjectPropertyText(UObject* Object, FName Property);
+
+	/**
+	 * The sizes of a resizable outfit asset (made by Epic's MakeResizableOutfitTemplate graph): for each size,
+	 * the cloth asset made on a source body and that body (a MetaHuman full body, *_FullBody / *CombinedSkelMesh).
+	 * Rebuilds the outfit. Returns false if the asset's graph has no SizedOutfitSource variable.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Personaggi")
+	static bool SetOutfitSizes(UObject* Outfit, const TArray<UObject*>& ClothAssets, const TArray<FString>& SizeNames,
+		const TArray<USkeletalMesh*>& Bodies);
 };

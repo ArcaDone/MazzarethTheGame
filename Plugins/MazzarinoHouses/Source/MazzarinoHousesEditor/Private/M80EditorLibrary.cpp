@@ -46,6 +46,12 @@
 #include "MetaHumanCharacter.h"
 #include "MetaHumanCharacterEditorSubsystem.h"
 #include "MetaHumanCharacterIdentity.h"
+#include "Dataflow/DataflowObject.h"
+#include "Dataflow/DataflowNode.h"
+#include "Dataflow/DataflowInputOutput.h"
+#include "Dataflow/DataflowInstance.h"
+#include "ChaosOutfitAsset/SizedOutfitSource.h"
+#include "ChaosClothAsset/ClothAssetBase.h"
 
 namespace
 {
@@ -1107,4 +1113,161 @@ FVector UM80EditorLibrary::MoveMetaHumanFaceRegion(UMetaHumanCharacter* Characte
 	State->GetGizmoPosition(Region, Position);
 	Subsystem->ApplyFaceState(Character, State);
 	return FVector(Position);
+}
+
+FString UM80EditorLibrary::GetMetaHumanBuildStatus(UMetaHumanCharacter* Character)
+{
+	UMetaHumanCharacterEditorSubsystem* Subsystem = EditingSubsystem(Character);
+	if (!Subsystem)
+	{
+		return TEXT("Character not added for editing");
+	}
+	FText Error;
+	return Subsystem->CanBuildMetaHuman(Character, Error) ? FString() : Error.ToString();
+}
+
+FString UM80EditorLibrary::DescribeDataflow(UDataflow* Dataflow)
+{
+	TSharedPtr<UE::Dataflow::FGraph> Graph = Dataflow ? Dataflow->GetDataflow() : nullptr;
+	if (!Graph)
+	{
+		return FString();
+	}
+	FString Text;
+	for (const TSharedPtr<FDataflowNode>& Node : Graph->GetNodes())
+	{
+		if (!Node)
+		{
+			continue;
+		}
+		Text += FString::Printf(TEXT("%s [%s]\n"), *Node->GetName().ToString(), *Node->GetType().ToString());
+		if (const UScriptStruct* Struct = Node->TypedScriptStruct())
+		{
+			for (TFieldIterator<FProperty> It(Struct); It; ++It)
+			{
+				if (It->HasAnyPropertyFlags(CPF_Edit))
+				{
+					FString Value;
+					It->ExportTextItem_InContainer(Value, Node.Get(), nullptr, nullptr, PPF_None);
+					Text += FString::Printf(TEXT("    %s = %s\n"), *It->GetName(), *Value.Left(300));
+				}
+			}
+		}
+		for (const FDataflowInput* Input : Node->GetInputs())
+		{
+			const FDataflowOutput* From = Input ? Input->GetConnection() : nullptr;
+			if (From && From->GetOwningNode())
+			{
+				Text += FString::Printf(TEXT("    <%s> <- %s.%s\n"), *Input->GetName().ToString(),
+					*From->GetOwningNode()->GetName().ToString(), *From->GetName().ToString());
+			}
+		}
+	}
+	return Text;
+}
+
+bool UM80EditorLibrary::SetDataflowNodeProperty(UDataflow* Dataflow, FName Node, const FString& Property, const FString& Value)
+{
+	TSharedPtr<UE::Dataflow::FGraph> Graph = Dataflow ? Dataflow->GetDataflow() : nullptr;
+	TSharedPtr<FDataflowNode> Found = Graph ? Graph->FindBaseNode(Node) : nullptr;
+	const UScriptStruct* Struct = Found ? Found->TypedScriptStruct() : nullptr;
+	FProperty* Prop = Struct ? Struct->FindPropertyByName(FName(*Property)) : nullptr;
+	if (!Prop)
+	{
+		return false;
+	}
+	Dataflow->Modify();
+	if (!Prop->ImportText_InContainer(*Value, Found.Get(), Dataflow, PPF_None))
+	{
+		return false;
+	}
+	Found->Invalidate();
+	Dataflow->MarkPackageDirty();
+	return true;
+}
+
+UDataflow* UM80EditorLibrary::GetAssetDataflow(UObject* Asset)
+{
+	return Asset ? UE::Dataflow::InstanceUtils::GetDataflowAssetFromObject(Asset) : nullptr;
+}
+
+bool UM80EditorLibrary::RebuildAssetFromDataflow(UObject* Asset, UDataflow* Dataflow, FName Terminal)
+{
+	IDataflowInstanceInterface* Instance = Asset ? UE::Dataflow::InstanceUtils::GetDataflowInterfaceFromObject(Asset) : nullptr;
+	if (!Instance)
+	{
+		return false;
+	}
+	Asset->Modify();
+	if (Dataflow)
+	{
+		Instance->GetDataflowInstance().SetDataflowAsset(Dataflow);
+	}
+	if (!Terminal.IsNone())
+	{
+		Instance->GetDataflowInstance().SetDataflowTerminal(Terminal);
+	}
+	const bool bUpdated = Instance->GetDataflowInstance().UpdateOwnerAsset(true);
+	Asset->MarkPackageDirty();
+	return bUpdated;
+}
+
+bool UM80EditorLibrary::SetObjectPropertyText(UObject* Object, FName Property, const FString& Value)
+{
+	FProperty* Prop = Object ? Object->GetClass()->FindPropertyByName(Property) : nullptr;
+	if (!Prop)
+	{
+		return false;
+	}
+	Object->Modify();
+	if (!Prop->ImportText_InContainer(*Value, Object, Object, PPF_None))
+	{
+		return false;
+	}
+	FPropertyChangedEvent Event(Prop, EPropertyChangeType::ValueSet);
+	Object->PostEditChangeProperty(Event);
+	Object->MarkPackageDirty();
+	return true;
+}
+
+bool UM80EditorLibrary::SetOutfitSizes(UObject* Outfit, const TArray<UObject*>& ClothAssets, const TArray<FString>& SizeNames,
+	const TArray<USkeletalMesh*>& Bodies)
+{
+	IDataflowInstanceInterface* Instance = Outfit ? UE::Dataflow::InstanceUtils::GetDataflowInterfaceFromObject(Outfit) : nullptr;
+	if (!Instance || ClothAssets.Num() == 0 || ClothAssets.Num() != SizeNames.Num() || ClothAssets.Num() != Bodies.Num())
+	{
+		return false;
+	}
+	TArray<FChaosSizedOutfitSource> Sizes;
+	for (int32 i = 0; i < ClothAssets.Num(); ++i)
+	{
+		FChaosSizedOutfitSource& Size = Sizes.AddDefaulted_GetRef();
+		Size.SourceAsset = Cast<UChaosClothAssetBase>(ClothAssets[i]);
+		Size.SizeName = SizeNames[i];
+		Size.SourceBodyParts = { Bodies[i] };
+		if (!Size.SourceAsset || !Bodies[i])
+		{
+			return false;
+		}
+	}
+	Outfit->Modify();
+	FDataflowInstance& Dataflow = Instance->GetDataflowInstance();
+	if (!Dataflow.GetVariableOverrides().OverrideVariableStructArray(TEXT("SizedOutfitSource"), Sizes))
+	{
+		return false;
+	}
+	const bool bUpdated = Dataflow.UpdateOwnerAsset(true);
+	Outfit->MarkPackageDirty();
+	return bUpdated;
+}
+
+FString UM80EditorLibrary::GetObjectPropertyText(UObject* Object, FName Property)
+{
+	FProperty* Prop = Object ? Object->GetClass()->FindPropertyByName(Property) : nullptr;
+	FString Value;
+	if (Prop)
+	{
+		Prop->ExportTextItem_InContainer(Value, Object, nullptr, Object, PPF_None);
+	}
+	return Value;
 }

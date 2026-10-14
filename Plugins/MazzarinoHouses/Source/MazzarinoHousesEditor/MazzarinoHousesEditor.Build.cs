@@ -8,6 +8,7 @@ public class MazzarinoHousesEditor : ModuleRules
         PublicDependencyModuleNames.AddRange(new[] { "Core", "CoreUObject", "Engine" });
         PrivateDependencyModuleNames.AddRange(new[] { "TextureUtilitiesCommon", "TargetPlatform", "UnrealEd", "MazzarinoHouses",
             "GeometryCore", "GeometryFramework", "MeshConversion", "MeshDescription", "StaticMeshDescription", "ModelingComponentsEditorOnly", "Landscape", "RenderCore", "Foliage", "MaterialEditor", "RigLogicModule",
-            "MetaHumanCharacter", "MetaHumanCharacterEditor", "MetaHumanCoreTechLib" });
+            "MetaHumanCharacter", "MetaHumanCharacterEditor", "MetaHumanCoreTechLib",
+            "DataflowCore", "DataflowEngine", "ChaosOutfitAssetEngine", "ChaosClothAssetEngine" });
     }
 }

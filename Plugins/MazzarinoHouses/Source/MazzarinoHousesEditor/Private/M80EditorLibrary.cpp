@@ -43,6 +43,9 @@
 #include "WorldPartition/WorldPartitionRuntimeHash.h"
 #include "DNAReader.h"
 #include "DNAUtils.h"
+#include "MetaHumanCharacter.h"
+#include "MetaHumanCharacterEditorSubsystem.h"
+#include "MetaHumanCharacterIdentity.h"
 
 namespace
 {
@@ -1018,4 +1021,17 @@ FString UM80EditorLibrary::ReadFaceDnaVertices(const FString& DnaPath, TArray<FV
 		}
 	}
 	return Info;
+}
+
+bool UM80EditorLibrary::ResetMetaHumanNeck(UMetaHumanCharacter* Character)
+{
+	UMetaHumanCharacterEditorSubsystem* Subsystem = GEditor ? GEditor->GetEditorSubsystem<UMetaHumanCharacterEditorSubsystem>() : nullptr;
+	if (!Character || !Subsystem || !Subsystem->IsObjectAddedForEditing(Character))
+	{
+		return false;
+	}
+	TSharedRef<FMetaHumanCharacterIdentity::FState> State = Subsystem->CopyFaceState(Character);
+	State->ResetNeckRegion();
+	Subsystem->ApplyFaceState(Character, State);
+	return true;
 }

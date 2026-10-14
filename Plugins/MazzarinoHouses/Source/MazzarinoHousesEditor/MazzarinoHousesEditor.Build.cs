@@ -7,6 +7,7 @@ public class MazzarinoHousesEditor : ModuleRules
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
         PublicDependencyModuleNames.AddRange(new[] { "Core", "CoreUObject", "Engine" });
         PrivateDependencyModuleNames.AddRange(new[] { "TextureUtilitiesCommon", "TargetPlatform", "UnrealEd", "MazzarinoHouses",
-            "GeometryCore", "GeometryFramework", "MeshConversion", "MeshDescription", "StaticMeshDescription", "ModelingComponentsEditorOnly", "Landscape", "RenderCore", "Foliage", "MaterialEditor", "RigLogicModule" });
+            "GeometryCore", "GeometryFramework", "MeshConversion", "MeshDescription", "StaticMeshDescription", "ModelingComponentsEditorOnly", "Landscape", "RenderCore", "Foliage", "MaterialEditor", "RigLogicModule",
+            "MetaHumanCharacter", "MetaHumanCharacterEditor", "MetaHumanCoreTechLib" });
     }
 }

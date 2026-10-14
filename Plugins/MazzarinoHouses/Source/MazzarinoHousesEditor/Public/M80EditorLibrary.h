@@ -16,6 +16,7 @@ class USplineComponent;
 class USkeletalMesh;
 class UMaterialExpression;
 class AM80Bougainvillea;
+class UMetaHumanCharacter;
 
 /** Editor helpers callable from Python (unreal.M80EditorLibrary). */
 UCLASS()
@@ -127,4 +128,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Personaggi")
 	static FString ReadFaceDnaVertices(const FString& DnaPath, TArray<FVector>& Head, TArray<FVector>& LeftEye,
 		TArray<FVector>& RightEye, TArray<FVector>& Teeth);
+
+	/**
+	 * Fits the neck of a MetaHuman Character's face back onto its body, after the body was changed (height,
+	 * build): what the experimental MetaHuman Generator's ResetNeckToBody does. The character must be added for
+	 * editing (MetaHumanCharacterEditorSubsystem.try_add_object_to_edit).
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Personaggi")
+	static bool ResetMetaHumanNeck(UMetaHumanCharacter* Character);
 };

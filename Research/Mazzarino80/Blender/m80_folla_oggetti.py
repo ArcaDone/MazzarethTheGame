@@ -499,4 +499,6 @@ def main():
         json.dump(report, f, indent=1)
 
 
-main()
+# Also imported by m80_bici.py for its helpers.
+if __name__ == "__main__":
+    main()

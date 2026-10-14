@@ -109,6 +109,14 @@
 		{
 			"Name": "MazzarinoGameplay",
 			"Enabled": true
+		},
+		{
+			"Name": "MetaHumanCharacter",
+			"Enabled": true
+		},
+		{
+			"Name": "MetaHumanCrowd",
+			"Enabled": true
 		}
 	],
 	"EpicSampleNameHash": "1673045636"

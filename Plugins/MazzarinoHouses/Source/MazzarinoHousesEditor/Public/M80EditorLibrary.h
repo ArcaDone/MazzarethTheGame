@@ -117,4 +117,14 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino|World Partition")
 	static bool SetRuntimePartitionGrid(UWorld* World, FName PartitionName, int32 CellSize, int32 LoadingRange);
+
+	/**
+	 * Reads the LOD0 vertices of head, eyes and teeth from a MetaHuman face DNA file (for
+	 * MetaHumanCharacterEditorSubsystem.fit_state_to_target_vertices: the 5.8 Creator refuses to import the DNA of
+	 * a legacy online-Creator MetaHuman, whose rig differs, but its meshes have the MetaHuman topology).
+	 * Returns one line per mesh of the file (index, name, vertex count), empty if the file can't be read.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Personaggi")
+	static FString ReadFaceDnaVertices(const FString& DnaPath, TArray<FVector>& Head, TArray<FVector>& LeftEye,
+		TArray<FVector>& RightEye, TArray<FVector>& Teeth);
 };

@@ -29,6 +29,10 @@
     {
       "Name": "MeshModelingToolset",
       "Enabled": true
+    },
+    {
+      "Name": "RigLogic",
+      "Enabled": true
     }
   ]
 }

@@ -41,6 +41,8 @@
 #include "M80Bougainvillea.h"
 #include "WorldPartition/WorldPartition.h"
 #include "WorldPartition/WorldPartitionRuntimeHash.h"
+#include "DNAReader.h"
+#include "DNAUtils.h"
 
 namespace
 {
@@ -982,4 +984,38 @@ bool UM80EditorLibrary::SetRuntimePartitionGrid(UWorld* World, FName PartitionNa
 		World->MarkPackageDirty();
 	}
 	return bDone;
+}
+
+FString UM80EditorLibrary::ReadFaceDnaVertices(const FString& DnaPath, TArray<FVector>& Head, TArray<FVector>& LeftEye,
+	TArray<FVector>& RightEye, TArray<FVector>& Teeth)
+{
+	Head.Reset();
+	LeftEye.Reset();
+	RightEye.Reset();
+	Teeth.Reset();
+	// Same reading as the Creator's own DNA import (Maya source axes, transformed), geometry of LOD0 only.
+	const TSharedPtr<IDNAReader> Dna = LoadDNAFromFile(DnaPath, FDNAConfig::Source(ECoordinateSystemTransformPolicy::Transform));
+	if (!Dna.IsValid())
+	{
+		return FString();
+	}
+	FString Info;
+	for (uint16 Mesh = 0; Mesh < Dna->GetMeshCount(); ++Mesh)
+	{
+		const FString Name = Dna->GetMeshName(Mesh);
+		const uint32 Count = Dna->GetVertexPositionCount(Mesh);
+		Info += FString::Printf(TEXT("%d %s %u\n"), Mesh, *Name, Count);
+		// Mesh names of every MetaHuman DNA: head_lod0_mesh, teeth_lod0_mesh, eyeLeft_lod0_mesh, eyeRight_lod0_mesh.
+		TArray<FVector>* Target = Name.StartsWith(TEXT("head_lod0")) ? &Head : Name.StartsWith(TEXT("teeth_lod0")) ? &Teeth
+			: Name.StartsWith(TEXT("eyeLeft_lod0")) ? &LeftEye : Name.StartsWith(TEXT("eyeRight_lod0")) ? &RightEye : nullptr;
+		if (Target && Target->IsEmpty())
+		{
+			Target->Reserve(Count);
+			for (uint32 Vertex = 0; Vertex < Count; ++Vertex)
+			{
+				Target->Add(Dna->GetVertexPosition(Mesh, Vertex));
+			}
+		}
+	}
+	return Info;
 }

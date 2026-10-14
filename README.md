@@ -2,7 +2,7 @@
 
 Gioco open world nello stile di GTA e Red Dead Redemption 2, ambientato a **Mazzarino (Caltanissetta) negli anni '80**. Il paese è ricostruito sui dati reali: terreno, strade ed edifici di OpenStreetMap. Le case sono generate in modo procedurale con lo stile delle case siciliane dell'entroterra.
 
-Progetto Unreal Engine **5.5**: `MazzarethTheGame.uproject`, nato dal Game Animation Sample.
+Progetto Unreal Engine **5.8** (dal 14 ottobre 2026; l'ultima versione in 5.5 è il tag Git `pre-ue58`): `MazzarethTheGame.uproject`, nato dal Game Animation Sample.
 Repository privato: `ArcaDone/MazzarethTheGame` (Git + LFS).
 
 - **Dove si va:** [`Research/Mazzarino80/PIANO_GTA.md`](Research/Mazzarino80/PIANO_GTA.md) (fasi, traguardi, cosa è fatto e cosa manca).
@@ -14,8 +14,8 @@ Repository privato: `ArcaDone/MazzarethTheGame` (Git + LFS).
 
 | Cosa | Dove |
 |---|---|
-| Motore | Unreal 5.5 in `D:\UE_5.5` |
-| Compilare (editor chiuso) | `D:\UE_5.5\Engine\Build\BatchFiles\Build.bat MazzarethTheGameEditor Win64 Development -Project="D:\UE5Projects\GameAnimationSample\MazzarethTheGame.uproject"` |
+| Motore | Unreal 5.8.3 in `D:\UE_5.8` (Visual Studio 2026 per il C++) |
+| Compilare (editor chiuso) | `D:\UE_5.8\Engine\Build\BatchFiles\Build.bat MazzarethTheGameEditor Win64 Development -Project="D:\UE5Projects\GameAnimationSample\MazzarethTheGame.uproject"` |
 | Mappa d'apertura | `/Game/Levels/Main`: vuota, si apre in pochi secondi |
 | **Mappa del paese** | `/Game/Mazzarino80/Houses/Maps/L_M80_Paese_WP` (World Partition) |
 | Modalità di gioco | "Mazzarino 80 (gioco)" (`M80GameMode`), predefinita del progetto |
@@ -26,12 +26,14 @@ Repository privato: `ArcaDone/MazzarethTheGame` (Git + LFS).
 - Per lavorare su una zona: finestra *World Partition* → selezioni le celle → *Load Region from Selection*. Caricare i 250 m intorno al Corso richiede circa 50 secondi; tutto il paese pesa molto di più.
 - Atmosfera, orizzonte e zone di esclusione sono sempre caricati.
 - In gioco le zone si caricano da sole intorno al giocatore. Da lontano si vedono gli **HLOD**: versioni semplificate delle case.
-  - Si ricostruiscono con il comando qui sotto (circa 35 minuti, editor chiuso).
+  - Si ricostruiscono dall'editor con *Build → Build HLODs* (circa 1 ora e 15 la prima volta, poi rifà solo quelli cambiati) o con il comando qui sotto, a editor chiuso.
+  - Il build legge l'attore **salvato**: dopo aver cambiato un Blueprint di un edificio, risalva anche gli attori piazzati, se no l'HLOD non si aggiorna.
+  - Gli edifici con componenti *Movable* non entrano negli HLOD (da lontano spariscono): i Blueprint degli edifici devono essere *Static*.
   - **Non si versionano** (oltre 700 MB a ogni ricostruzione): restano in locale e nel backup.
   - I loro file sono elencati in `.git/info/exclude`.
 
 ```
-"D:\UE_5.5\Engine\Binaries\Win64\UnrealEditor-Cmd.exe" "D:\UE5Projects\GameAnimationSample\MazzarethTheGame.uproject" /Game/Mazzarino80/Houses/Maps/L_M80_Paese_WP -run=WorldPartitionBuilderCommandlet -Builder=WorldPartitionHLODsBuilder -AllowCommandletRendering
+"D:\UE_5.8\Engine\Binaries\Win64\UnrealEditor-Cmd.exe" "D:\UE5Projects\GameAnimationSample\MazzarethTheGame.uproject" /Game/Mazzarino80/Houses/Maps/L_M80_Paese_WP -run=WorldPartitionBuilderCommandlet -Builder=WorldPartitionHLODsBuilder -AllowCommandletRendering
 ```
 
 Altre mappe:
@@ -241,6 +243,7 @@ Script: `Tools/Backup/MTGBackup.ps1`.
 
 ### Backup giornaliero
 - L'attività pianificata di Windows **MTGBackup** lo lancia ogni giorno alle 13:00 e copia tutto in `C:\MTGBackup`.
+- Salva il progetto in cui si trova lo script (o quello dato con `-Project`), in `C:\MTGBackup\GameAnimationSample_UE<versione>`: la 5.8 va in `GameAnimationSample_UE5.8`. I backup della 5.5 restano in `C:\MTGBackup\GameAnimationSample`, così le due versioni non si mischiano.
 - Copia solo i file nuovi o cambiati e **non cancella mai nulla**: un file eliminato per sbaglio su D: resta recuperabile qui.
 - Cosa copia:
   - il progetto, senza `.git`, cache, `Binaries` e `Intermediate`;
@@ -282,10 +285,10 @@ powershell -ExecutionPolicy Bypass -File Tools\Backup\MTGBackup.ps1 -Transfer -D
 
 Sull'altro PC:
 1. Copia `UE5Projects` e `Blender` nella radice di **D:**, così tornano gli stessi percorsi di qui.
-2. Installa Unreal **5.5**, possibilmente in `D:\UE_5.5`, e Git con Git LFS.
+2. Installa Unreal **5.8**, possibilmente in `D:\UE_5.8`, e Git con Git LFS.
 3. Apri `MazzarethTheGame.uproject`.
-   - Con le Binaries incluse e lo stesso Unreal 5.5 si apre senza compilare.
-   - Se chiede di ricompilare i moduli serve **Visual Studio 2022** con "Sviluppo di giochi con C++".
+   - Con le Binaries incluse e lo stesso Unreal 5.8 si apre senza compilare.
+   - Se chiede di ricompilare i moduli serve **Visual Studio 2026** con "Sviluppo di giochi con C++".
 4. La prima apertura è lenta, da una a qualche ora: ricompila gli shader. Poi va normale.
 5. Per rifare gli HLOD usa il comando del capitolo 1.
 
@@ -302,6 +305,7 @@ Sull'altro PC:
 | 6 ott | Tutti i lotti OSM; zone sui perimetri reali degli edifici fatti a mano; strumento **Isolato da riempire**. **Atmosfera** con sole reale, notte, ora blu e Etna all'orizzonte. **World Partition** (la mappa si apre in 3 s invece che in 5 minuti), dettagli più leggeri, Nanite, HLOD. **Lampioni** dalle foto vere: 941 a muro. Backup con copia per trasferimento. |
 | 12 ott | Bouganvillea procedurale a spline nel paese. **Combattimento e arrampicata** (punto 1 del piano GTA) nella mappa `L_M80_ProvaAzione`: camera sopra la spalla, pose delle armi di ALS con la canna sul mirino, ruota delle armi come GTA V, fucile da caccia, combo di pugni, aggancio con il gamepad, bersagli umani, arrampicata su muri, balconi, tetti e auto. |
 | 12 ott (sera) | **Carretti a cuscinetti** guidabili: quattro modelli da Blender, ognuno con la sua posa del guidatore (sdraiato, go-kart, chopper) e mani e piedi che seguono lo sterzo; spinta lenta, discesa per gravità; mappa `L_M80_ProvaCarretti`. |
+| 13-14 ott | **Passaggio a Unreal 5.8.3** (per MetaHuman Creator nell'editor e le prestazioni): copia di prova, stessi test e misure di 5.5 e 5.8. Griglia di World Partition del paese a celle di 64 m caricate fino a 192 m: Play pronto in 136 s invece di 229, 58-76 fps invece di 49-68, 10 GB di RAM in meno. Gli edifici recuperati (Madonna, Scuola, Salesiane, Liardo, Castello, San Domenico, Matrice) resi *Static* per vederli negli HLOD. |
 
 ---
 
@@ -313,6 +317,7 @@ Sull'altro PC:
 - Due "case" OSM (lotti 1249067262 e 1249081252) sono triangoli di 0,6 m²: errori dei dati, non generano nulla.
 - Il vaso `SM_M80_PROP__PottedPlant_Small_01` risulta modificato in locale da prima del 6 ottobre: decidere se tenerlo.
 - `.git_old` (38 GB) va spostato o cancellato quando non serve più.
+- **Paese buio di notte da lontano** con la griglia nuova: i lampioni lontani non sono caricati. Tenerli sempre caricati costa troppo (3 fps): da rivedere.
 
 ## 8. Fonti e licenze
 

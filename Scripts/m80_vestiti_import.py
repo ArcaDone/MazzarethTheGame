@@ -183,8 +183,11 @@ def run():
         rep["meshes"] = [m.get_path_name() if m else None for m in meshes]
         # The fabric texture of each material, T_M80_<Key>_<material> (imported from the PNGs, colour sources as
         # JPEG; the FBX importer skips textures it thinks it has).
+        slots = meshes[0].get_editor_property("static_materials")
+        names = [str(sl.get_editor_property("material_slot_name")) for sl in slots]
+        wanted = {"T_M80_%s_%s" % (key, n) for n in names}     # not the PNGs of materials since renamed
         textures = {}
-        for png in sorted((SRC / key / "Textures").glob("*.png")):
+        for png in sorted(p for p in (SRC / key / "Textures").glob("*.png") if p.stem in wanted):
             t = unreal.AssetImportTask()
             t.set_editor_property("filename", str(png))
             t.set_editor_property("destination_path", dest)
@@ -198,8 +201,6 @@ def run():
                 textures[a.get_name()] = a
         # Every LOD wears the fabric instances (the FBX import's own Phong instances are left unused).
         parent = master()
-        slots = meshes[0].get_editor_property("static_materials")
-        names = [str(sl.get_editor_property("material_slot_name")) for sl in slots]
         mats = [fabric_instance(parent, n, textures.get("T_M80_%s_%s" % (key, n)), dest) for n in names]
         rep["materials"] = [m.get_name() for m in mats]
         rep["textures"] = sorted(textures)

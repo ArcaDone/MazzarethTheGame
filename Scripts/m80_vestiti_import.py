@@ -35,15 +35,15 @@ LODS = ["", "_LOD1", "_LOD2", "_LOD3"]
 MASTER = DEST + "/Materiali/M_M80_Stoffa"
 MICROS = "/MetaHumanCharacter/Optional/Clothing/Common/Materials/Textures/Clothing/Micros/"
 MEL = unreal.MaterialEditingLibrary
-# Fabric by the Blender material's name prefix: roughness, specular, fuzz (Cloth pin), fuzz brightening, micro normal,
-# its repeats per texture tile, its strength.
+# Fabric by the Blender material's name prefix: roughness, specular, fuzz (Cloth pin), fuzz colour as a multiple of the
+# cloth's plus a brightening (strong fuzz greys black wool), micro normal, its repeats per texture tile, its strength.
 FABRICS = {
-    "Lana": (0.92, 0.25, 1.0, 0.06, "micro_weave_plain_normal", 24.0, 0.8),
-    "Cotone": (0.85, 0.3, 0.6, 0.04, "micro_poplin_N", 30.0, 0.6),
-    "Maglia": (0.95, 0.2, 1.0, 0.08, "micro_knit_front_N", 10.0, 1.0),
-    "Seta": (0.6, 0.35, 0.5, 0.05, "micro_weave_plain_normal", 40.0, 0.4),
-    "Jeans": (0.85, 0.3, 0.7, 0.05, "micro_weave_denim_N", 20.0, 0.9),
-    "Cuoio": (0.5, 0.4, 0.0, 0.0, None, 1.0, 0.0),
+    "Lana": (0.92, 0.2, 0.5, 1.3, 0.012, "micro_weave_plain_normal", 24.0, 0.8),
+    "Cotone": (0.85, 0.3, 0.4, 1.2, 0.02, "micro_poplin_N", 30.0, 0.6),
+    "Maglia": (0.95, 0.2, 0.7, 1.4, 0.02, "micro_knit_front_N", 10.0, 1.0),
+    "Seta": (0.6, 0.35, 0.3, 1.2, 0.01, "micro_weave_plain_normal", 40.0, 0.4),
+    "Jeans": (0.85, 0.3, 0.5, 1.3, 0.015, "micro_weave_denim_N", 20.0, 0.9),
+    "Cuoio": (0.5, 0.4, 0.0, 1.0, 0.0, None, 1.0, 0.0),
 }
 # The default garment graph's nodes, LOD by LOD.
 IMPORT_NODES = ["StaticMeshImport", "StaticMeshImport_0", "StaticMeshImport_1", "StaticMeshImport_2"]
@@ -140,7 +140,7 @@ def master():
 
 def fabric_instance(parent, mat_name, texture, dest):
     kind = next((k for k in FABRICS if mat_name.startswith(k)), "Lana")
-    rough, spec, fuzz, fuzz_add, micro, scale, strength = FABRICS[kind]
+    rough, spec, fuzz, fuzz_mul, fuzz_add, micro, scale, strength = FABRICS[kind]
     path = "%s/MI_M80_%s" % (dest, mat_name)
     if EAL.does_asset_exist(path):
         EAL.delete_asset(path)
@@ -149,7 +149,7 @@ def fabric_instance(parent, mat_name, texture, dest):
     mi.set_editor_property("parent", parent)
     if texture:
         MEL.set_material_instance_texture_parameter_value(mi, "Colore", texture)
-    for name, value in (("Ruvidita", rough), ("Specular", spec), ("Fuzz", fuzz), ("FuzzAggiunta", fuzz_add),
+    for name, value in (("Ruvidita", rough), ("Specular", spec), ("Fuzz", fuzz), ("FuzzMolt", fuzz_mul), ("FuzzAggiunta", fuzz_add),
                         ("DettaglioScala", scale), ("DettaglioForza", strength)):
         MEL.set_material_instance_scalar_parameter_value(mi, name, value)
     if micro:

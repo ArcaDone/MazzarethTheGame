@@ -4,18 +4,24 @@
 # Regenerable folders (caches, build output) and Blender .blend1 files are skipped.
 # External drive: powershell -ExecutionPolicy Bypass -File Tools\Backup\MTGBackup.ps1 -Dest E:\MTGBackup
 # (the first run copies everything, the next ones only the differences).
+# The project backed up is the one this script lives in (or -Project). It goes to
+# <Dest>\GameAnimationSample_UE<EngineAssociation of the .uproject>, so the 5.8 project never mixes
+# with the 5.5 backups kept in <Dest>\GameAnimationSample (nothing is deleted, stale files would pile up).
 #
 # -Transfer: a clean copy to move the project to another PC, in <Dest>\Trasferimento with the same
 # layout as D:\ (UE5Projects\GameAnimationSample, UE5Projects\Comune, Blender\AssetsMazzarethTheGame,
 # BlenderTest, HDRI, Audio_Music), plus ClaudeMemory (Claude Code's notes, from the user profile).
 # It mirrors D: exactly (files deleted on D: are deleted from the copy too, so removed World
 # Partition actors do not come back) and includes .git (with the LFS files) and the compiled
-# Binaries, so the project opens without Visual Studio on a PC with the same Unreal 5.5.
+# Binaries, so the project opens without Visual Studio on a PC with the same Unreal version.
 # Caches, Intermediate and Saved are left out. Close the editor first.
 #   powershell -ExecutionPolicy Bypass -File Tools\Backup\MTGBackup.ps1 -Transfer -Dest E:\MTGBackup
-param([string]$Dest = 'C:\MTGBackup', [switch]$Transfer)
+param([string]$Dest = 'C:\MTGBackup', [switch]$Transfer, [string]$Project = (Resolve-Path "$PSScriptRoot\..\..").Path)
 
 $ErrorActionPreference = 'Stop'
+
+$Engine = (Get-Content (Join-Path $Project 'MazzarethTheGame.uproject') -Raw | ConvertFrom-Json).EngineAssociation
+$ProjectBackup = "$Dest\GameAnimationSample_UE$Engine"
 
 if (-not (Test-Path (Split-Path $Dest -Qualifier))) { throw "Drive not found: $Dest" }
 $LogDir = Join-Path $Dest '_logs'
@@ -26,19 +32,19 @@ $CommonArgs = @('/E', '/COPY:DAT', '/DCOPY:T', '/R:2', '/W:5', '/MT:8', '/NP', '
 
 $Jobs = @(
     @{  # Main Unreal project (history is on GitHub, so .git is skipped)
-        Src = 'D:\UE5Projects\GameAnimationSample'
-        Dst = "$Dest\GameAnimationSample"
-        XD  = @('.git', '.git_old', '.vs', 'Binaries', 'Intermediate', 'DerivedDataCache', 'Saved', '__pycache__')
+        Src = $Project
+        Dst = $ProjectBackup
+        XD  = @('.git','.git_old', '.vs', 'Binaries', 'Intermediate', 'DerivedDataCache', 'Saved', '__pycache__')
         XF  = @('*.blend1', '*.tmp', '*.pyc')
     },
     @{  # Editor autosaves and Mazzarino80 work backups/reports
-        Src = 'D:\UE5Projects\GameAnimationSample\Saved\Autosaves'
-        Dst = "$Dest\GameAnimationSample\Saved\Autosaves"
+        Src = "$Project\Saved\Autosaves"
+        Dst = "$ProjectBackup\Saved\Autosaves"
         XD  = @(); XF = @()
     },
     @{
-        Src = 'D:\UE5Projects\GameAnimationSample\Saved\Mazzarino80'
-        Dst = "$Dest\GameAnimationSample\Saved\Mazzarino80"
+        Src = "$Project\Saved\Mazzarino80"
+        Dst = "$ProjectBackup\Saved\Mazzarino80"
         XD  = @(); XF = @('*.tmp')
     },
     @{  # Comune: source project for buildings and materials
@@ -83,7 +89,7 @@ if ($Transfer) {
     $CommonArgs = @('/MIR', '/COPY:DAT', '/DCOPY:T', '/R:2', '/W:5', '/MT:8', '/NP', '/NDL', '/FFT', "/LOG+:$Log")
     $Jobs = @(
         @{
-            Src = 'D:\UE5Projects\GameAnimationSample'
+            Src = $Project
             Dst = "$Root\UE5Projects\GameAnimationSample"
             XD  = @('.git_old', '.vs', 'Intermediate', 'DerivedDataCache', 'Saved', '__pycache__')
             XF  = @('*.blend1', '*.tmp', '*.pyc')

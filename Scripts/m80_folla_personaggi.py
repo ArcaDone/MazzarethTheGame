@@ -10,7 +10,8 @@ Each one starts from a European-looking preset of the Creator (Optional content)
   for the old. No children, as in GTA (the Creator has none: 135 cm at least, adult proportions);
 - the neck fitted back on the new body (UM80EditorLibrary.ResetMetaHumanNeck).
 Faces are only proposals until the user approves them: M80_RIG=1 asks Epic's auto-rigging service for the rig
-(cloud, on the user's Epic account; joints and blend shapes for the protagonist, joints only for the crowd).
+(cloud, on the user's Epic account; joints and blend shapes for the protagonist, joints only for the crowd) and then
+the 2k skin textures that building needs, with retries (the service answers 'Busy' to quick requests).
 Env: M80_CHI=Key1,Key2 (default all), M80_RIFAI=1 remakes existing characters from scratch, M80_RIG=1.
 Out: /Game/Mazzarino80/Personaggi/{Sandro/MHC_Sandro, Folla/MHC_<Key>}; portraits in
 Saved/Mazzarino80/Personaggi/Folla/<Key>_{fronte,figura}.png; report personaggi.json
@@ -280,16 +281,38 @@ def make(key, cfg, cache, report):
             eyes.set_editor_property(side, e)
         SUB.commit_eyes_settings(c, eyes)
         set_grooms(c, cfg, entry)
-    if RIG and not SUB.can_build_meta_human(c, False):
-        params = unreal.MetaHumanCharacterAutoRiggingRequestParams()
-        params.set_editor_property("rig_type", getattr(unreal.MetaHumanRigType, cfg.get("rig", "JOINTS_ONLY")))
-        params.set_editor_property("blocking", True)
-        params.set_editor_property("report_progress", False)
-        SUB.request_auto_rigging(c, params)
-    entry["can_build"] = SUB.can_build_meta_human(c, False)
     entry["saved"] = EAL.save_loaded_asset(c, False)
     report[key] = entry
     return c
+
+
+def rig(c, cfg, entry):
+    """Epic's cloud services, until the character can be built: the face rig, then the high resolution textures
+    (2k, the Creator's default) that assembling needs. The rig service answers 'Busy' to requests too close
+    together and the local DNS sometimes fails: each step is retried after a pause (yields = frames to wait)."""
+    status = unreal.M80EditorLibrary.get_meta_human_build_status
+    entry["tries"] = []
+    for attempt in range(6):
+        why = status(c)
+        entry["tries"].append(why)
+        if not why:
+            break
+        if "not rigged" in why:
+            params = unreal.MetaHumanCharacterAutoRiggingRequestParams()
+            params.set_editor_property("rig_type", getattr(unreal.MetaHumanRigType, cfg.get("rig", "JOINTS_ONLY")))
+            params.set_editor_property("blocking", True)
+            params.set_editor_property("report_progress", False)
+            SUB.request_auto_rigging(c, params)
+        elif "textures" in why.lower():
+            params = unreal.MetaHumanCharacterTextureRequestParams()
+            params.set_editor_property("blocking", True)
+            params.set_editor_property("report_progress", False)
+            SUB.request_texture_sources(c, params)
+        if status(c) == why:
+            yield 300 + 300 * attempt
+    entry["build_status"] = status(c) or "ok"
+    entry["can_build"] = SUB.can_build_meta_human(c, False)
+    entry["saved"] = EAL.save_loaded_asset(c, False)
 
 
 def portrait_lights(head, fwd, right):
@@ -331,6 +354,8 @@ def steps():
         except Exception as e:  # noqa: BLE001 - one broken character must not stop the others
             report[key] = {"error": repr(e)}
             continue
+        if RIG:
+            yield from rig(c, cfg, report[key])
         yield 20
         actor = SUB.spawn_meta_human_actor(c, True)
         yield 30

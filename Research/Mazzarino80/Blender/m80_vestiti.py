@@ -124,26 +124,42 @@ def keep_out(bm, body, margin):
                 v.co += nrm * (margin - out)
 
 
-def drape(bm, src, body, part, z_lo, z_hi, fall=0.35, band=0.012):
-    """Cloth over the hollows of `part` between z_lo and z_hi: per height band its vertices go out to the band's convex
-    hull (no cleavage, no hollow at the small of the back), and from the top down each band is at least as wide as
-    the one above less `fall` per metre of drop (the cloth hangs from the bust instead of following under it)."""
-    verts = [v for v in bm.verts if body.part[v[src]] == part and z_lo <= v.co.z <= z_hi and not v.is_boundary]
+def drape(bm, src, body, part, z_lo, z_hi, fall=0.35, side=0, band=0.012):
+    """Cloth over the hollows of `part` (a part or a list) between z_lo and z_hi: per height band its vertices go out
+    to the band's convex hull (no cleavage, no gap between the pecs, no hollow at the small of the back), and from
+    the top down each band is at least as wide as the one above less `fall` per metre of drop (the cloth hangs from
+    the chest instead of following under it; trouser legs fall straight from the thigh). side: +1/-1 one leg only."""
+    parts = [part] if isinstance(part, str) else list(part)
+    mid_x = float(body.j("pelvis")[0])
+    verts = [v for v in bm.verts if body.part[v[src]] in parts and z_lo <= v.co.z <= z_hi
+             and (side == 0 or (v.co.x - mid_x) * side > 0)]
     if not verts:
         return
     n = 72
     xy = np.array([(v.co.x, v.co.y) for v in verts])
-    centre = xy.mean(axis=0)
     zs = np.array([v.co.z for v in verts])
-    prev, prev_z = None, None
+    bands = []
     for top in np.arange(z_hi, z_lo - band, -band):
         idx = np.nonzero((zs <= top) & (zs > top - band))[0]
-        if len(idx) < 3:
-            continue
-        radii = ring_radii(hull2d(xy[idx]), centre, n)
-        if prev is not None:
-            radii = np.maximum(radii, prev - fall * (prev_z - top))
-        prev, prev_z = radii, top
+        if len(idx) >= 3:
+            bands.append(idx)
+    if len(bands) < 2:
+        return
+    # Centres and radii smoothed along the height (each band alone gave a quilted look), the radii never inside the
+    # body's hull and hanging by `fall` from the band above.
+    centres = np.array([xy[idx].mean(axis=0) for idx in bands])
+    for _ in range(8):
+        centres[1:-1] = (centres[:-2] + 2 * centres[1:-1] + centres[2:]) / 4
+    raw = np.array([ring_radii(hull2d(xy[idx]), c, n) for idx, c in zip(bands, centres)])
+    for i in range(1, len(raw)):
+        raw[i] = np.maximum(raw[i], raw[i - 1] - fall * band)
+    radii = raw.copy()
+    for _ in range(3):
+        for _ in range(6):
+            radii[1:-1] = (radii[:-2] + 2 * radii[1:-1] + radii[2:]) / 4
+        radii = (np.roll(radii, 1, 1) + 2 * radii + np.roll(radii, -1, 1)) / 4
+        radii = np.maximum(radii, raw)
+    for idx, centre, rad in zip(bands, centres, radii):
         for i in idx:
             d = xy[i] - centre
             r = float(np.linalg.norm(d))
@@ -151,7 +167,7 @@ def drape(bm, src, body, part, z_lo, z_hi, fall=0.35, band=0.012):
                 continue
             a = math.atan2(d[1], d[0]) % (2 * math.pi) / (2 * math.pi) * n
             k = int(a) % n
-            target = radii[k] + (radii[(k + 1) % n] - radii[k]) * (a - int(a))
+            target = rad[k] + (rad[(k + 1) % n] - rad[k]) * (a - int(a))
             if target > r:
                 verts[i].co.x, verts[i].co.y = centre + d / r * target
 
@@ -268,12 +284,16 @@ def loft(body, parts, z_top, z_hem, ease, n=40, dz=0.02, name="Loft", centre_xy=
             continue
         c, r = last
         rings.append((z, c, r.copy()))
-    # Smooth radii along the height and around.
-    rr = np.array([r for _, _, r in rings])
-    for _ in range(12):
-        rr[1:-1] = (rr[:-2] + 2 * rr[1:-1] + rr[2:]) / 4
+    # Smooth radii along the height and around, never inside the body's own hull (smoothing alone flattened the
+    # buttocks into the skirt).
+    raw = np.array([r for _, _, r in rings])
+    rr = raw.copy()
     for _ in range(3):
-        rr = (np.roll(rr, 1, 1) + 2 * rr + np.roll(rr, -1, 1)) / 4
+        for _ in range(8):
+            rr[1:-1] = (rr[:-2] + 2 * rr[1:-1] + rr[2:]) / 4
+        for _ in range(2):
+            rr = (np.roll(rr, 1, 1) + 2 * rr + np.roll(rr, -1, 1)) / 4
+        rr = np.maximum(rr, raw)
     bm = bmesh.new()
     uv = bm.loops.layers.uv.new("UVMap")
     grid = []
@@ -296,6 +316,7 @@ def loft(body, parts, z_top, z_hem, ease, n=40, dz=0.02, name="Loft", centre_xy=
                 loop[uv].uv = (kk / n * 2 * math.pi * 0.25, rings[ii][0])
     if close_top:
         bmesh.ops.contextual_create(bm, geom=grid[0])
+    keep_out(bm, body, 0.008)
     bm.normal_update()
     bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
     me = bpy.data.meshes.new(name)
@@ -397,6 +418,39 @@ def stripes(n, cols, widths, rng, knit_base=True):
         rgb[idx == i] = c
     if knit_base:
         rgb *= (knit(n, (1, 1, 1), rng) / 1.0)
+    return rgb
+
+
+def denim(n, col, rng):
+    """Denim: a diagonal twill of indigo warp over white weft, faded in patches."""
+    y, x = np.mgrid[0:n, 0:n]
+    twill = ((x + y) // 2) % 3 == 0
+    rgb = np.array(col) * (0.85 + 0.3 * common.noise(n, n, 64, rng)[..., None])
+    rgb[twill] = rgb[twill] * 0.55 + 0.45 * np.array([0.82, 0.84, 0.86])
+    return rgb * (0.95 + 0.1 * common.noise(n, n, 6, rng)[..., None])
+
+
+def floral(n, base, petals, centre, rng, count=40, size=0.035):
+    """Small five-petal flowers scattered on a cotton ground (tiling)."""
+    rgb = weave(n, base, rng, scale=2, depth=0.03)
+    r = int(size * n)
+    yy, xx = np.mgrid[-r:r + 1, -r:r + 1]
+    for _ in range(count):
+        cy, cx = rng.integers(0, n, 2)
+        rot = rng.random() * 2 * math.pi
+        col = np.array(petals[rng.integers(0, len(petals))])
+        stamp = np.zeros_like(xx, dtype=bool)
+        for k in range(5):
+            a = rot + k * 2 * math.pi / 5
+            px, py = math.cos(a) * r * 0.5, math.sin(a) * r * 0.5
+            stamp |= (xx - px) ** 2 + (yy - py) ** 2 < (r * 0.38) ** 2
+        mid = xx ** 2 + yy ** 2 < (r * 0.2) ** 2
+        rows = (np.arange(-r, r + 1) + cy) % n
+        cols = (np.arange(-r, r + 1) + cx) % n
+        patch = rgb[np.ix_(rows, cols)]
+        patch[stamp] = col
+        patch[mid] = centre
+        rgb[np.ix_(rows, cols)] = patch
     return rgb
 
 
@@ -616,8 +670,13 @@ def g_camicia(body, rng, colour=(0.85, 0.84, 0.8), sleeves="long", name="Camicia
                 ok &= ~(mine & (part == "forearm") & ((p - wrist[s]) @ ax > -0.015))
         return ok
 
-    ob = shell(body, keep, lambda i: np.where(body.part[i] == "torso", 0.01, 0.014), name=name)
+    ob = shell(body, keep, lambda i: np.where(body.part[i] == "torso", 0.014, 0.018), name=name,
+               drapes=[("torso", hip_z, z_of(body, "upperarm_l") - 0.04)])
     cylinder_uv(ob, body)
+    if sleeves == "long":
+        neck_j = body.j("neck_01")
+        lapels(ob, neck_j[2] - 0.07, neck_j, width=0.03, lift=0.003)
+        jacket_collar(ob, neck_j, height=0.026)
     ob.data.materials.append(fabric("Cotone_" + name, weave(TEX, colour, rng, scale=2, depth=0.04), rough=0.8,
                                     tile_m=0.06))
     return [ob]
@@ -637,15 +696,150 @@ def g_gilet(body, rng, colour=(0.12, 0.11, 0.1)):
         ok &= ~vee
         return ok
 
-    ob = shell(body, keep, lambda i: np.full(len(i), 0.016), name="Gilet")
+    ob = shell(body, keep, lambda i: np.full(len(i), 0.022), name="Gilet",
+               drapes=[("torso", hip_z, z_of(body, "upperarm_l") - 0.04)])
     cylinder_uv(ob, body)
     ob.data.materials.append(fabric("Lana_gilet", common.tweed(TEX, [colour, (0.2, 0.18, 0.15), (0.05, 0.05, 0.05)],
                                                                 rng), rough=0.95, tile_m=0.15))
     return [ob]
 
 
-def g_giacca(body, rng, colour=(0.1, 0.1, 0.11)):
-    """Jacket: long sleeves, open V front over shirt and waistcoat, tails to below the hips."""
+def walk(verts):
+    """Border vertices in order along their border edges, from the lowest end (sorted by height if they don't make
+    a single open chain)."""
+    group = set(verts)
+    nb = {v: [e.other_vert(v) for e in v.link_edges if e.is_boundary and e.other_vert(v) in group] for v in verts}
+    ends = [v for v in verts if len(nb[v]) == 1]
+    if len(ends) != 2 or any(len(n) > 2 for n in nb.values()):
+        return sorted(verts, key=lambda v: v.co.z)
+    path, prev = [min(ends, key=lambda v: v.co.z)], None
+    while True:
+        nxt = [v for v in nb[path[-1]] if v is not prev]
+        if not nxt:
+            break
+        prev = path[-1]
+        path.append(nxt[0])
+    return path if len(path) == len(verts) else sorted(verts, key=lambda v: v.co.z)
+
+
+def lapels(ob, chest_z, neck, width=0.06, lift=0.006):
+    """Lapels along the jacket's V opening: a flap folded back over the chest from each border of the V, widest at
+    the notch (three quarters up), narrowing to the button at the bottom and to the collar at the top."""
+    bm = bmesh.new()
+    bm.from_mesh(ob.data)
+    uv = bm.loops.layers.uv.verify()
+    lo, hi = chest_z - 0.01, neck[2] - 0.005
+    for sgn in (1, -1):
+        border = [v for v in bm.verts if v.is_boundary and lo < v.co.z < hi and v.co.y < neck[1] - 0.01
+                  and 0 <= (v.co.x - neck[0]) * sgn < 0.14]
+        border = walk(border)
+        if len(border) < 3:
+            continue
+        outer = []
+        for v in border:
+            t = (v.co.z - lo) / (hi - lo)
+            w = width * (min(1.0, t / 0.72) if t < 0.82 else 0.45 + 0.55 * (1 - t) / 0.18)
+            side = Vector((sgn, 0.0, 0.0))
+            side -= v.normal * side.dot(v.normal)
+            side.normalize()
+            outer.append(bm.verts.new(v.co + side * w + v.normal * (lift + 0.1 * w)))
+        for i in range(len(border) - 1):
+            f = bm.faces.new([border[i], border[i + 1], outer[i + 1], outer[i]])
+            for l in f.loops:
+                l[uv].uv = (l.vert.co.x, l.vert.co.z)
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
+    bm.to_mesh(ob.data)
+    bm.free()
+
+
+def jacket_collar(ob, neck, height=0.03):
+    """A collar standing round the back and sides of the neck: the neckline's border extruded up and out."""
+    bm = bmesh.new()
+    bm.from_mesh(ob.data)
+    edges = [e for e in bm.edges if e.is_boundary and all(v.co.z > neck[2] - 0.07 and v.co.y > neck[1] - 0.035
+                                                          for v in e.verts)]
+    if edges:
+        new = bmesh.ops.extrude_edge_only(bm, edges=edges)["geom"]
+        for v in [g for g in new if isinstance(g, bmesh.types.BMVert)]:
+            out = Vector((v.co.x - neck[0], v.co.y - neck[1], 0)).normalized()
+            v.co += Vector((0, 0, height)) + out * 0.006
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
+    bm.to_mesh(ob.data)
+    bm.free()
+
+
+def v_lapels(ob, neck, z_lo, z_hi, slope, width=0.06, lift=0.006):
+    """Lapels on the ideal line of a V opening (|x| = (z - z_lo) * slope from the button at z_lo up to z_hi): flaps
+    laid on the garment from just inside that line outwards, hiding the opening's stepped edge; widest at the
+    notch (three quarters up), narrowing to the button and to the collar."""
+    me = ob.data
+    tree = BVHTree.FromPolygons([v.co[:] for v in me.vertices], [tuple(p.vertices) for p in me.polygons])
+    bm = bmesh.new()
+    bm.from_mesh(me)
+    uv = bm.loops.layers.uv.verify()
+
+    def front_y(x, z):
+        loc, _, _, _ = tree.ray_cast(Vector((x, -1.0, z)), Vector((0, 1, 0)))
+        return loc.y if loc is not None else None
+
+    for sgn in (1, -1):
+        rows = []
+        for t in np.linspace(0.0, 1.0, 18):
+            z = z_lo + (z_hi - z_lo) * float(t)
+            x_in = float(neck[0]) + sgn * ((z - z_lo) * slope - 0.006)
+            w = width * (min(1.0, t / 0.72) if t < 0.82 else 0.45 + 0.55 * (1 - t) / 0.18) + 0.004
+            y_in = front_y(x_in + sgn * 0.012, z)
+            y_out = front_y(x_in + sgn * w, z)
+            if y_in is None or y_out is None:
+                continue
+            rows.append((bm.verts.new((x_in, y_in - lift, z)), bm.verts.new((x_in + sgn * w, y_out - lift - 0.1 * w, z))))
+        for a, b in zip(rows, rows[1:]):
+            f = bm.faces.new([a[0], b[0], b[1], a[1]])
+            for l in f.loops:
+                l[uv].uv = (l.vert.co.x, l.vert.co.z)
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
+    bm.to_mesh(me)
+    bm.free()
+
+
+def extend_hem(ob, body, above, level, flare=0.012):
+    """The garment's bottom border (the torso's border edges below `above`) carried straight down to a level hem at
+    `level`, a little wider (flare) so what is worn under it stays under it."""
+    bm = bmesh.new()
+    bm.from_mesh(ob.data)
+    src = ob["src"]
+    torso = {i for i, k in enumerate(src) if body.part[k] == "torso"}
+    edges = [e for e in bm.edges if e.is_boundary and all(v.co.z < above and v.index in torso for v in e.verts)]
+    if edges:
+        hem = {v for e in edges for v in e.verts}
+        cx = sum(v.co.x for v in hem) / len(hem)
+        cy = sum(v.co.y for v in hem) / len(hem)
+        for v in hem:
+            d = Vector((v.co.x - cx, v.co.y - cy, 0))
+            if d.length > 1e-6:
+                v.co += d.normalized() * flare
+        geom = bmesh.ops.extrude_edge_only(bm, edges=edges)["geom"]
+        for v in [g for g in geom if isinstance(g, bmesh.types.BMVert)]:
+            v.co.z = level
+        # UVs of the new band: round the body (as cylinder_uv's torso), in metres.
+        uv = bm.loops.layers.uv.verify()
+        faces = [g for g in geom if isinstance(g, bmesh.types.BMFace)]
+        cx = sum(v.co.x for v in bm.verts) / len(bm.verts)
+        cy = sum(v.co.y for v in bm.verts) / len(bm.verts)
+        for f in faces:
+            us = [math.atan2(l.vert.co.x - cx, -(l.vert.co.y - cy)) * 0.16 for l in f.loops]
+            if max(us) - min(us) > 0.3:
+                us = [u + 2 * math.pi * 0.16 if u < 0 else u for u in us]
+            for l, u in zip(f.loops, us):
+                l[uv].uv = (u, l.vert.co.z)
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
+    bm.to_mesh(ob.data)
+    bm.free()
+
+
+def g_giacca(body, rng, colour=(0.1, 0.1, 0.11), cloth="Lana_giacca", with_lapels=True, ease=(0.034, 0.026)):
+    """Jacket: long sleeves, open V front with lapels over shirt and waistcoat, buttoned, hanging straight from
+    the chest to below the hips."""
     neck = body.j("neck_01")
     hip_z = z_of(body, "spine_01")
     chest_z = z_of(body, "spine_03")
@@ -653,8 +847,9 @@ def g_giacca(body, rng, colour=(0.1, 0.1, 0.11)):
 
     def keep(i):
         p, part = body.co[i], body.part[i]
-        ok = np.isin(part, ["torso", "arm", "forearm"]) & ~neck_hole(body, p, part, rx=0.08, ry=0.08, front=0.0)
-        ok &= p[:, 2] > hip_z - 0.02
+        ok = np.isin(part, ["torso", "neck", "arm", "forearm"]) & ~neck_hole(body, p, part, rx=0.072, ry=0.072,
+                                                                               front=0.0)
+        ok &= p[:, 2] > hip_z - 0.05
         vee = (p[:, 1] < neck[1]) & (np.abs(p[:, 0]) < (p[:, 2] - chest_z) * 0.33) & (part == "torso")
         ok &= ~vee
         for s, sgn in (("l", 1), ("r", -1)):
@@ -663,13 +858,16 @@ def g_giacca(body, rng, colour=(0.1, 0.1, 0.11)):
             ok &= ~((np.sign(p[:, 0]) == sgn) & (part == "forearm") & ((p - wrist[s]) @ ax > -0.03))
         return ok
 
-    top = shell(body, keep, lambda i: np.where(body.part[i] == "torso", 0.026, 0.02), name="Giacca")
+    top = shell(body, keep, lambda i: np.where(body.part[i] == "torso", ease[0], ease[1]), name="Giacca",
+                drapes=[("torso", hip_z - 0.05, z_of(body, "upperarm_l") - 0.04)])
     cylinder_uv(top, body)
-    tails = loft(body, ["torso", "thigh"], hip_z + 0.02, hip_z - 0.15, lambda z, a: 0.02, name="Falde")
-    cloth = fabric("Lana_giacca", weave(TEX, colour, rng, scale=3, depth=0.06), rough=0.9, tile_m=0.1)
-    for ob in (top, tails):
-        ob.data.materials.append(cloth)
-    return [top, tails]
+    if with_lapels:
+        v_lapels(top, neck, chest_z, neck[2] - 0.01, 0.33)
+    jacket_collar(top, neck)
+    extend_hem(top, body, hip_z + 0.05, hip_z - 0.16)
+    cloth = fabric(cloth, weave(TEX, colour, rng, scale=3, depth=0.06), rough=0.9, tile_m=0.1)
+    top.data.materials.append(cloth)
+    return [top]
 
 
 def from_front(c, centre):
@@ -879,6 +1077,372 @@ def g_mantello(body, rng, colour=(0.075, 0.062, 0.05)):
     return [cloak, cape]
 
 
+def buttons(ob, x, z_top, z_bottom, every=0.085, name="Bottoni"):
+    """Buttons down the front of a garment at x, from z_top to z_bottom, on its own surface."""
+    me = ob.data
+    tree = BVHTree.FromPolygons([v.co[:] for v in me.vertices], [tuple(p.vertices) for p in me.polygons])
+    bm = bmesh.new()
+    z = z_top
+    while z > z_bottom:
+        loc, nrm, _, _ = tree.ray_cast(Vector((x, -1.0, z)), Vector((0, 1, 0)))
+        if loc is not None:
+            if nrm.y > 0:
+                nrm = -nrm
+            disc = bmesh.new()
+            bmesh.ops.create_cone(disc, cap_ends=True, segments=10, radius1=0.0055, radius2=0.0055, depth=0.002)
+            rot = Vector((0, 0, 1)).rotation_difference(nrm).to_matrix().to_4x4()
+            bmesh.ops.transform(disc, matrix=Matrix.Translation(loc + nrm * 0.002) @ rot, verts=disc.verts[:])
+            tmp = bpy.data.meshes.new("tmp")
+            disc.to_mesh(tmp)
+            disc.free()
+            bm.from_mesh(tmp)
+            bpy.data.meshes.remove(tmp)
+        z -= every
+    me2 = bpy.data.meshes.new(name)
+    bm.to_mesh(me2)
+    bm.free()
+    out = bpy.data.objects.new(name, me2)
+    bpy.context.scene.collection.objects.link(out)
+    planar_uv(out)
+    return out
+
+
+def g_top(body, rng, mat, sleeves="long", neck="round", hem=None, ease=(0.016, 0.02), drape=True,
+          open_front=0.0, name="Top", button=None):
+    """Any upper garment as a shell of the body: sleeves long / short / none (a vest with armholes); neck round
+    (scooped), crew (high round), collar (a shirt buttoned to the neck: stand and points), open (a shirt open at the
+    neck: collar spread on a V) or vest (deep); hem height (default the hips); drape: the cloth hangs from the
+    chest instead of following it; open_front: half-width of an opening down the front (cardigans); button: the
+    buttons' colour (shirts)."""
+    hem_z = z_of(body, "spine_01") - 0.03 if hem is None else hem
+    neck_j = body.j("neck_01")
+    elbow = {s: body.j("lowerarm_" + s) for s in "lr"}
+    wrist = {s: body.j("hand_" + s) for s in "lr"}
+    shoulder = {s: body.j("upperarm_" + s) for s in "lr"}
+
+    def keep(i):
+        p, part = body.co[i], body.part[i]
+        parts = ["torso", "neck"] + (["arm", "forearm"] if sleeves != "none" else [])
+        ok = np.isin(part, parts) & (p[:, 2] > hem_z)
+        if neck == "open":
+            ok &= ~((p[:, 1] < neck_j[1]) & (part == "torso")
+                    & (np.abs(p[:, 0] - neck_j[0]) < (p[:, 2] - (neck_j[2] - 0.15)) * 0.42))
+        ok &= ~{"round": lambda: neck_hole(body, p, part, front=0.05),
+                "open": lambda: neck_hole(body, p, part, rx=0.065, ry=0.065, front=0.0),
+                "crew": lambda: neck_hole(body, p, part, rx=0.07, ry=0.07, front=0.015),
+                "collar": lambda: neck_hole(body, p, part, rx=0.065, ry=0.065, front=0.0),
+                "vest": lambda: neck_hole(body, p, part, rx=0.085, ry=0.085, front=0.11, back=0.03)}[neck]()
+        if open_front:
+            ok &= ~((p[:, 1] < neck_j[1]) & (np.abs(p[:, 0] - neck_j[0]) < open_front) & (part == "torso"))
+        for s, sgn in (("l", 1), ("r", -1)):
+            mine = np.sign(p[:, 0]) == sgn
+            if sleeves == "none":
+                ok &= ~(mine & (np.linalg.norm(p - (shoulder[s] + np.array([0.0, 0.0, -0.05])), axis=1) < 0.095))
+            elif sleeves == "short":
+                ax = elbow[s] - shoulder[s]
+                ax /= np.linalg.norm(ax)
+                ok &= ~(mine & (part == "forearm"))
+                ok &= ~(mine & (part == "arm") & ((p - elbow[s]) @ ax > -0.1))
+            else:
+                ax = wrist[s] - elbow[s]
+                ax /= np.linalg.norm(ax)
+                ok &= ~(mine & (part == "forearm") & ((p - wrist[s]) @ ax > -0.015))
+        return ok
+
+    armpit_z = z_of(body, "upperarm_l") - 0.04
+    ob = shell(body, keep, lambda i: np.where(body.part[i] == "torso", ease[0], ease[1]), name=name, smooth=24,
+               drapes=[("torso", hem_z, armpit_z)] if drape else ())
+    cylinder_uv(ob, body)
+    if neck == "collar":
+        lapels(ob, neck_j[2] - 0.07, neck_j, width=0.03, lift=0.003)     # the points
+        jacket_collar(ob, neck_j, height=0.026)
+    elif neck == "open":
+        v_lapels(ob, neck_j, neck_j[2] - 0.15, neck_j[2] - 0.01, 0.42, width=0.045, lift=0.003)
+        jacket_collar(ob, neck_j, height=0.026)
+    ob.data.materials.append(mat)
+    pieces = [ob]
+    if button is not None:
+        top_z = neck_j[2] - (0.05 if neck == "collar" else 0.17)
+        b = buttons(ob, float(neck_j[0]), top_z, hem_z + 0.04)
+        b.data.materials.append(fabric("Seta_bottoni", weave(TEX, button, rng, scale=2, depth=0.02), rough=0.3,
+                                       tile_m=0.02))
+        pieces.append(b)
+    return pieces
+
+
+def g_trousers(body, rng, mat, ease=(0.02, 0.03), name="Pantaloni", fall=0.12):
+    """Trousers in any cloth: waist to ankle, the ease growing down the leg from ease[0] to ease[1]."""
+    waist_z = z_of(body, "spine_01") + 0.02
+    knee = z_of(body, "calf_l")
+
+    def keep(i):
+        p, part = body.co[i], body.part[i]
+        return np.isin(part, ["torso", "thigh", "calf"]) & (p[:, 2] < waist_z) & (p[:, 2] > z_of(body, "foot_l") - 0.01)
+
+    def e(i):
+        z = body.co[i][:, 2]
+        return ease[0] + np.clip((knee + 0.1 - z) / knee, 0, 1) * (ease[1] - ease[0])
+
+    crotch_z = z_of(body, "pelvis") - 0.06
+    foot_z = z_of(body, "foot_l")
+    legs = [(["thigh", "calf"], foot_z, crotch_z, fall, sd) for sd in (1, -1)]
+    ob = shell(body, keep, e, smooth=28, name=name, drapes=legs)      # anatomy smoothed away, legs falling straight
+    cylinder_uv(ob, body)
+    ob.data.materials.append(mat)
+    return [ob]
+
+
+def g_gonna(body, rng, mat, hem=None, flare=0.12, name="Gonna"):
+    """Skirt from the waist, A-line (flare: metres of ease per metre below the hips), to the knee by default."""
+    waist_z = z_of(body, "spine_02")
+    hem_z = z_of(body, "calf_l") - 0.04 if hem is None else hem
+    ob = loft(body, ["torso", "thigh", "calf"], waist_z + 0.02, hem_z,
+              lambda z, a: 0.012 + max(0.0, (waist_z - 0.1 - z)) * flare, name=name)
+    ob.data.materials.append(mat)
+    return [ob]
+
+
+def side_stripes(ob, body, mat, width=0.02):
+    """A band down the outer side of the arms and legs (tracksuits): those faces wear `mat`."""
+    ob.data.materials.append(mat)
+    slot = len(ob.data.materials) - 1
+    part = body.part[np.array(ob["src"])]
+    co = np.array([v.co[:] for v in ob.data.vertices])
+    axes = {}
+    for s in "lr":
+        axes[("arm", s)] = (body.j("upperarm_" + s), body.j("lowerarm_" + s))
+        axes[("forearm", s)] = (body.j("lowerarm_" + s), body.j("hand_" + s))
+        axes[("thigh", s)] = (body.j("thigh_" + s), body.j("calf_" + s))
+        axes[("calf", s)] = (body.j("calf_" + s), body.j("foot_" + s))
+    for poly in ob.data.polygons:
+        vs = list(poly.vertices)
+        pt = part[vs[0]]
+        c = co[vs].mean(0)
+        s = "l" if c[0] >= 0 else "r"
+        if (pt, s) not in axes or any(part[v] != pt for v in vs):
+            continue
+        a, b = axes[(pt, s)]
+        ax = (b - a) / np.linalg.norm(b - a)
+        d = c - a
+        d -= ax * (d @ ax)
+        out = np.array([1.0 if s == "l" else -1.0, 0.0, 0.0])
+        out -= ax * (out @ ax)
+        out /= np.linalg.norm(out)
+        if d @ out > 0 and np.linalg.norm(d - out * (d @ out)) < width:
+            poly.material_index = slot
+
+
+def g_tuta(body, rng, colour, part):
+    """Tracksuit (1980s acetate): zipped jacket with a collar, or trousers, white bands down the sides."""
+    mat = fabric("Seta_tuta", weave(TEX, colour, rng, scale=2, depth=0.03), rough=0.55, tile_m=0.08)
+    band = fabric("Seta_banda", weave(TEX, (0.85, 0.85, 0.85), rng, scale=2, depth=0.03), rough=0.55, tile_m=0.08)
+    if part == "giacca":
+        ob = g_top(body, rng, mat, sleeves="long", neck="collar", ease=(0.028, 0.026), name="TutaGiacca")[0]
+    else:
+        ob = g_trousers(body, rng, mat, ease=(0.024, 0.04), name="TutaPantaloni", fall=0.2)[0]
+    side_stripes(ob, body, band)
+    return [ob]
+
+
+# Adults and the young: cloths.
+def m_jeans(rng, name):
+    return fabric("Jeans_" + name, denim(TEX, (0.09, 0.14, 0.3), rng), rough=0.85, tile_m=0.05)
+
+
+def m_quadri(rng):
+    return fabric("Cotone_quadri", common.tartan(TEX, (0.62, 0.6, 0.55),
+                                                  [(0.0, 0.18, (0.55, 0.1, 0.08), 0.75), (0.5, 0.06, (0.1, 0.12, 0.3), 0.6)],
+                                                  rng), rough=0.8, tile_m=0.12)
+
+
+def m_maglione(rng):
+    return fabric("Maglia_maglione", stripes(TEX, [(0.08, 0.1, 0.22), (0.75, 0.7, 0.6), (0.45, 0.08, 0.08),
+                                                   (0.75, 0.7, 0.6)], [5, 1, 1, 1], rng), rough=0.95, tile_m=0.16)
+
+
+def m_fiori(rng):
+    return fabric("Cotone_fiori", floral(TEX, (0.14, 0.22, 0.45), [(0.9, 0.88, 0.82), (0.95, 0.75, 0.2)],
+                                         (0.95, 0.8, 0.3), rng), rough=0.8, tile_m=0.2)
+
+
+def planar_uv(ob):
+    """UVs in metres from the front (x, z) - for small pieces."""
+    me = ob.data
+    if not me.uv_layers:
+        me.uv_layers.new(name="UVMap")
+    uv = me.uv_layers[0].data
+    for l in me.loops:
+        c = me.vertices[l.vertex_index].co
+        uv[l.index].uv = (c.x + c.y, c.z)
+
+
+def strip(name, pts, sides, widths, closed=False):
+    """A ribbon through points pts, `widths` across along the `sides` directions; closed: a loop."""
+    bm = bmesh.new()
+    rows = [(bm.verts.new(p - sd * w / 2), bm.verts.new(p + sd * w / 2)) for p, sd, w in zip(pts, sides, widths)]
+    count = len(rows) if closed else len(rows) - 1
+    for i in range(count):
+        a, b = rows[i], rows[(i + 1) % len(rows)]
+        bm.faces.new([a[0], b[0], b[1], a[1]])
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
+    me = bpy.data.meshes.new(name)
+    bm.to_mesh(me)
+    bm.free()
+    ob = bpy.data.objects.new(name, me)
+    bpy.context.scene.collection.objects.link(ob)
+    planar_uv(ob)
+    return ob
+
+
+def ring_round(body, centre, axis, offset, n=24, reach=0.09):
+    """Points round a limb on the plane through centre across axis: rays from inside out to the body's surface
+    (capped at `reach`, where the limb joins the torso), `offset` out."""
+    axis = Vector(axis).normalized()
+    u = axis.orthogonal().normalized()
+    v = axis.cross(u)
+    pts = []
+    for k in range(n):
+        a = 2 * math.pi * k / n
+        d = u * math.cos(a) + v * math.sin(a)
+        loc, nrm, _, dist = body.bvh.ray_cast(Vector(centre), d, reach)
+        pts.append(loc + d * offset if loc is not None else Vector(centre) + d * (reach * 0.8))
+    return pts, axis
+
+
+def g_cravatta(body, rng, colour=(0.3, 0.07, 0.06), name="Cravatta"):
+    """Tie: down the middle of the shirt front from the collar to the belt, a knot at the top, pointed."""
+    neck = body.j("neck_01")
+    zs = np.linspace(neck[2] - 0.025, z_of(body, "spine_01") + 0.02, 30)
+    pts, sides, widths = [], [], []
+    hang = None                      # the shirt falls from the chest: the tie's y never comes back towards the body
+    for i, z in enumerate(zs):
+        loc, nrm, _, _ = body.bvh.ray_cast(Vector((neck[0], -1.0, float(z))), Vector((0, 1, 0)))
+        if loc is None:
+            continue
+        t = i / (len(zs) - 1)
+        knot = t < 0.07
+        q = loc + nrm * (0.03 if knot else 0.026)
+        if hang is not None and not knot:
+            q.y = min(q.y, hang + 0.35 * (zs[i - 1] - z))
+        hang = q.y
+        pts.append(q)
+        sides.append(Vector((1, 0, 0)))
+        widths.append(0.034 if knot else 0.028 + 0.06 * t)
+    ob = strip(name, pts, sides, widths)
+    # The point.
+    bm = bmesh.new()
+    bm.from_mesh(ob.data)
+    bm.verts.ensure_lookup_table()
+    a, b = bm.verts[-2], bm.verts[-1]
+    tip = bm.verts.new((a.co + b.co) / 2 + Vector((0, 0, -0.035)))
+    bm.faces.new([a, b, tip])
+    bm.to_mesh(ob.data)
+    bm.free()
+    planar_uv(ob)
+    ob.data.materials.append(fabric("Seta_" + name, weave(TEX, colour, rng, scale=2, depth=0.1), rough=0.5,
+                                    tile_m=0.04))
+    return [ob]
+
+
+def surface_path(body, pts, offset, closed=False, per_segment=8):
+    """A path through pts laid on the body's surface (each point moved to the nearest surface, `offset` out):
+    points, and the directions across it (for strip())."""
+    pts = [Vector(p) for p in pts]
+    dense = []
+    count = len(pts) if closed else len(pts) - 1
+    for i in range(count):
+        a, b = pts[i], pts[(i + 1) % len(pts)]
+        for k in range(per_segment):
+            dense.append(a.lerp(b, k / per_segment))
+    if not closed:
+        dense.append(pts[-1])
+    out, normals = [], []
+    for q in dense:
+        loc, nrm, _, _ = body.bvh.find_nearest(q)
+        out.append(loc + nrm * offset)
+        normals.append(nrm)
+    sides = []
+    for i, (q, n) in enumerate(zip(out, normals)):
+        nxt = out[(i + 1) % len(out)] if closed or i + 1 < len(out) else q
+        prv = out[i - 1] if closed or i > 0 else q
+        tangent = (nxt - prv).normalized()
+        sides.append(n.cross(tangent).normalized())
+    return out, sides
+
+
+def g_fondina(body, rng, colour=(0.3, 0.17, 0.08)):
+    """Shoulder holster in brown leather: a strap round each shoulder, one across the back, the holster under the
+    left arm."""
+    pieces = []
+    # A loop round each shoulder: over the front of the shoulder, the top, the shoulder blade, under the armpit.
+    loop = [(-0.04, -0.09, 0.02), (-0.03, 0.0, 0.08), (-0.04, 0.09, 0.02), (-0.02, 0.08, -0.1), (0.0, 0.0, -0.13),
+            (-0.02, -0.08, -0.1)]
+    for side, sgn in (("l", 1), ("r", -1)):
+        joint = Vector(body.j("upperarm_" + side))
+        pts, sides = surface_path(body, [joint + Vector((dx * sgn, dy, dz)) for dx, dy, dz in loop], 0.014,
+                                  closed=True)
+        pieces.append(strip("Spallaccio", pts, sides, [0.026] * len(pts), closed=True))
+    z = z_of(body, "upperarm_l") + 0.0
+    xs = np.linspace(body.j("upperarm_r")[0] + 0.03, body.j("upperarm_l")[0] - 0.03, 14)
+    pts = []
+    for x in xs:
+        loc, nrm, _, _ = body.bvh.ray_cast(Vector((float(x), 1.0, z)), Vector((0, -1, 0)))
+        if loc is not None:
+            pts.append(loc + nrm * 0.014)
+    pieces.append(strip("Schiena", pts, [Vector((0, 0, 1))] * len(pts), [0.026] * len(pts)))
+    # The holster: a block on the left side under the arm, its muzzle tilted back.
+    armpit_z = z_of(body, "upperarm_l") - 0.04
+    side_y = float(body.j("spine_04")[1])
+    loc, nrm, _, _ = body.bvh.ray_cast(Vector((1.0, side_y, armpit_z - 0.08)), Vector((-1, 0, 0)))
+    if loc is not None:
+        bm = bmesh.new()
+        bmesh.ops.create_cube(bm, size=1.0)
+        mat = (Matrix.Translation(loc + nrm * 0.027) @ Matrix.Rotation(math.radians(-25), 4, "X")
+               @ Matrix.Diagonal((0.025, 0.055, 0.14, 1)))
+        bmesh.ops.transform(bm, matrix=mat, verts=bm.verts[:])
+        me = bpy.data.meshes.new("Fondina")
+        bm.to_mesh(me)
+        bm.free()
+        hol = bpy.data.objects.new("Fondina", me)
+        bpy.context.scene.collection.objects.link(hol)
+        planar_uv(hol)
+        pieces.append(hol)
+    mat = fabric("Cuoio_fondina", common.leather(TEX, colour, rng), rough=0.5, tile_m=0.3)
+    for ob in pieces:
+        ob.data.materials.append(mat)
+    return pieces
+
+
+def g_orologio(body, rng):
+    """Gold wristwatch on the left wrist: a band and a round face on the back of the wrist."""
+    hand, elbow = body.j("hand_l"), body.j("lowerarm_l")
+    axis = (hand - elbow) / np.linalg.norm(hand - elbow)
+    pts, ax = ring_round(body, hand - axis * 0.035, axis, 0.004, n=20, reach=0.06)
+    band = strip("Cinturino", pts, [ax] * len(pts), [0.018] * len(pts), closed=True)
+    # The face: where the band is furthest up and out.
+    up_out = Vector((0.6, 0.0, 0.8)).normalized()
+    c = max(pts, key=lambda q: (q - Vector(hand - axis * 0.035)).normalized().dot(up_out))
+    nrm = (c - Vector(hand - axis * 0.035)).normalized()
+    bm = bmesh.new()
+    bmesh.ops.create_cone(bm, cap_ends=True, segments=16, radius1=0.016, radius2=0.016, depth=0.006)
+    rot = Vector((0, 0, 1)).rotation_difference(nrm).to_matrix().to_4x4()
+    bmesh.ops.transform(bm, matrix=Matrix.Translation(c + nrm * 0.003) @ rot, verts=bm.verts[:])
+    me = bpy.data.meshes.new("Quadrante")
+    bm.to_mesh(me)
+    bm.free()
+    face = bpy.data.objects.new("Quadrante", me)
+    bpy.context.scene.collection.objects.link(face)
+    planar_uv(face)
+    gold = fabric("Oro_orologio", common.leather(TEX, (0.78, 0.58, 0.2), rng), rough=0.3, tile_m=0.1)
+    for ob in (band, face):
+        ob.data.materials.append(gold)
+    return [band, face]
+
+
+def m_cloth(rng, name, colour, scale=3, depth=0.06, tile_m=0.1):
+    return fabric(name, weave(TEX, colour, rng, scale=scale, depth=depth), tile_m=tile_m)
+
+
 # Garment: (source body, builder). Keys are the outfit pieces; the crowd script combines them into outfits.
 GARMENTS = {
     "AbitoNero": ("Anziana1", g_abito_nero),
@@ -892,6 +1456,57 @@ GARMENTS = {
     "Scialle": ("Anziana1", g_scialle),
     "Coppola": ("Anziano1", g_coppola),
     "Mantello": ("Anziano1", g_mantello),
+    # Men and boys (Uomo2's body, resized to the others).
+    "CamiciaQuadri": ("Uomo2", lambda b, r: g_top(b, r, m_quadri(r), neck="collar", ease=(0.018, 0.022),
+                                                  name="CamiciaQuadri", button=(0.85, 0.82, 0.75))),
+    "Maglione": ("Uomo2", lambda b, r: g_top(b, r, m_maglione(r), neck="crew", ease=(0.024, 0.024), name="Maglione")),
+    "Canottiera": ("Uomo2", lambda b, r: g_top(b, r, fabric("Maglia_canottiera", knit(TEX, (0.86, 0.85, 0.82), r,
+                                                                                         rib=True), tile_m=0.05),
+                                               sleeves="none", neck="vest", ease=(0.008, 0.008), name="Canottiera")),
+    "Jeans": ("Uomo2", lambda b, r: g_trousers(b, r, m_jeans(r, "uomo"), ease=(0.018, 0.026), name="Jeans")),
+    "PantaloniChiari": ("Uomo2", lambda b, r: g_trousers(b, r, fabric("Cotone_chiari", weave(TEX, (0.55, 0.5, 0.4), r,
+                                                                                             scale=2), tile_m=0.08),
+                                                         ease=(0.022, 0.035), name="PantaloniChiari")),
+    "TutaGiacca": ("Uomo2", lambda b, r: g_tuta(b, r, (0.08, 0.12, 0.4), "giacca")),
+    "TutaPantaloni": ("Uomo2", lambda b, r: g_tuta(b, r, (0.08, 0.12, 0.4), "pantaloni")),
+    "ScarpeGinnastica": ("Uomo2", lambda b, r: g_scarpe(b, r, colour=(0.86, 0.86, 0.84), name="Ginnastica")),
+    "Mocassini": ("Uomo2", lambda b, r: g_scarpe(b, r, colour=(0.2, 0.11, 0.05), name="Mocassini")),
+    # Women and girls (Donna1's body).
+    "Camicetta": ("Donna1", lambda b, r: g_top(b, r, fabric("Cotone_camicetta", weave(TEX, (0.88, 0.78, 0.78), r,
+                                                                                         scale=2, depth=0.03),
+                                                           tile_m=0.06),
+                                               sleeves="short", ease=(0.01, 0.016), drape=True, name="Camicetta")),
+    "Gonna": ("Donna1", lambda b, r: g_gonna(b, r, fabric("Lana_gonna", weave(TEX, (0.13, 0.11, 0.18), r, scale=3),
+                                                          tile_m=0.1))),
+    "Cardigan": ("Donna1", lambda b, r: g_top(b, r, fabric("Maglia_cardigan", knit(TEX, (0.5, 0.13, 0.12), r),
+                                                           tile_m=0.08),
+                                              neck="round", ease=(0.024, 0.024), drape=True, open_front=0.05,
+                                              name="Cardigan")),
+    "AbitoFiori": ("Donna1", lambda b, r: (lambda m: g_top(b, r, m, sleeves="short", hem=z_of(b, "spine_02") - 0.02,
+                                                           drape=True, ease=(0.012, 0.016), name="Corpetto")
+                                           + g_gonna(b, r, m, hem=z_of(b, "calf_l") - 0.08, flare=0.18))(m_fiori(r))),
+    "JeansDonna": ("Donna1", lambda b, r: g_trousers(b, r, m_jeans(r, "donna"), ease=(0.01, 0.026), name="JeansDonna")),
+    "ScarpeBasse": ("Donna1", lambda b, r: g_scarpe(b, r, colour=(0.32, 0.06, 0.05), name="Basse")),
+    # Sandro: everyday (light blue shirt, tie, grey-blue jacket, grey trousers) and the white suit (pink silk shirt
+    # open at the neck, shoulder holster, gold watch).
+    "CamiciaSandro": ("Sandro", lambda b, r: g_top(b, r, m_cloth(r, "Cotone_camiciaSandro", (0.6, 0.7, 0.85), 2, 0.04,
+                                                                 0.06), neck="collar", ease=(0.018, 0.022),
+                                                 name="CamiciaSandro", button=(0.9, 0.9, 0.88))),
+    "CravattaSandro": ("Sandro", lambda b, r: g_cravatta(b, r, (0.32, 0.08, 0.07), name="CravattaSandro")),
+    "GiaccaSandro": ("Sandro", lambda b, r: g_giacca(b, r, (0.2, 0.23, 0.29), cloth="Lana_giaccaSandro")),
+    "PantaloniSandro": ("Sandro", lambda b, r: g_trousers(b, r, m_cloth(r, "Lana_pantaloniSandro", (0.24, 0.24, 0.25)),
+                                                          ease=(0.022, 0.035), name="PantaloniSandro")),
+    "ScarpeSandro": ("Sandro", lambda b, r: g_scarpe(b, r, colour=(0.12, 0.07, 0.04), name="Sandro")),
+    "CamiciaRosa": ("Sandro", lambda b, r: g_top(b, r, m_cloth(r, "Seta_camiciaRosa", (0.92, 0.6, 0.66), 2, 0.03, 0.05),
+                                                 neck="open", ease=(0.022, 0.026), name="CamiciaRosa",
+                                                 button=(0.95, 0.92, 0.9))),
+    "GiaccaBianca": ("Sandro", lambda b, r: g_giacca(b, r, (0.86, 0.85, 0.8), cloth="Cotone_giaccaBianca",
+                                                   ease=(0.05, 0.03))),
+    "PantaloniBianchi": ("Sandro", lambda b, r: g_trousers(b, r, m_cloth(r, "Cotone_pantaloniBianchi", (0.86, 0.85, 0.8)),
+                                                           ease=(0.022, 0.036), name="PantaloniBianchi")),
+    "ScarpeChiare": ("Sandro", lambda b, r: g_scarpe(b, r, colour=(0.72, 0.66, 0.56), name="Chiare")),
+    "Fondina": ("Sandro", g_fondina),
+    "Orologio": ("Sandro", g_orologio),
 }
 
 
@@ -981,6 +1596,16 @@ OUTFITS = {
     "VecchiaScialle": ["AbitoNero", "Fazzoletto", "Scialle", "ScarpeDonna"],
     "VecchioCoppola": ["PantaloniVecchio", "CamiciaVecchio", "GiletVecchio", "GiaccaVecchio", "Coppola",
                        "ScarpeVecchio"],
+    "UomoQuadri": ["CamiciaQuadri", "Jeans", "ScarpeGinnastica"],
+    "UomoMaglione": ["Maglione", "PantaloniChiari", "Mocassini"],
+    "UomoCanottiera": ["Canottiera", "Jeans", "Mocassini"],
+    "Tuta": ["TutaGiacca", "TutaPantaloni", "ScarpeGinnastica"],
+    "DonnaGonna": ["Camicetta", "Gonna", "Cardigan", "ScarpeBasse"],
+    "DonnaFiori": ["AbitoFiori", "ScarpeBasse"],
+    "DonnaJeans": ["Camicetta", "JeansDonna", "ScarpeBasse"],
+    "SandroClassico": ["CamiciaSandro", "CravattaSandro", "GiaccaSandro", "PantaloniSandro", "ScarpeSandro"],
+    "SandroBianco": ["CamiciaRosa", "Fondina", "GiaccaBianca", "PantaloniBianchi", "ScarpeChiare", "Orologio"],
+    "SandroFondina": ["CamiciaRosa", "Fondina", "PantaloniBianchi", "ScarpeChiare", "Orologio"],
     "Pastore": ["PantaloniVecchio", "CamiciaVecchio", "GiaccaVecchio", "Mantello", "Coppola", "ScarpeVecchio"],
 }
 

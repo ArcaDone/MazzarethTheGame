@@ -2,7 +2,7 @@
 
 Gioco open world nello stile di GTA e Red Dead Redemption 2, ambientato a **Mazzarino (Caltanissetta) negli anni '80**. Il paese è ricostruito sui dati reali: terreno, strade ed edifici di OpenStreetMap. Le case sono generate in modo procedurale con lo stile delle case siciliane dell'entroterra.
 
-Progetto Unreal Engine **5.8** (dal 14 ottobre 2026; l'ultima versione in 5.5 è il tag Git `pre-ue58`): `MazzarethTheGame.uproject`, nato dal Game Animation Sample.
+Progetto Unreal Engine **5.8** (dal 14 ottobre 2026; l'ultima versione in 5.5 è il tag Git `ue55-final`, l'inizio della migrazione è `pre-ue58`): `MazzarethTheGame.uproject`, nato dal Game Animation Sample.
 Repository privato: `ArcaDone/MazzarethTheGame` (Git + LFS).
 
 - **Dove si va:** [`Research/Mazzarino80/PIANO_GTA.md`](Research/Mazzarino80/PIANO_GTA.md) (fasi, traguardi, cosa è fatto e cosa manca).

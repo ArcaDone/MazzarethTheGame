@@ -114,8 +114,41 @@ def straighten_borders(bm, iterations):
             v.co = v.co * 0.5 + c * 0.5
 
 
-def shell(body, keep, ease, smooth=12, name="Shell"):
-    """The body's faces whose vertices all pass keep(index array) -> bool array, smoothed, pushed out by ease(i)."""
+def drape(bm, src, body, part, z_lo, z_hi, fall=0.35, band=0.012):
+    """Cloth over the hollows of `part` between z_lo and z_hi: per height band its vertices go out to the band's convex
+    hull (no cleavage, no hollow at the small of the back), and from the top down each band is at least as wide as
+    the one above less `fall` per metre of drop (the cloth hangs from the bust instead of following under it)."""
+    verts = [v for v in bm.verts if body.part[v[src]] == part and z_lo <= v.co.z <= z_hi and not v.is_boundary]
+    if not verts:
+        return
+    n = 72
+    xy = np.array([(v.co.x, v.co.y) for v in verts])
+    centre = xy.mean(axis=0)
+    zs = np.array([v.co.z for v in verts])
+    prev, prev_z = None, None
+    for top in np.arange(z_hi, z_lo - band, -band):
+        idx = np.nonzero((zs <= top) & (zs > top - band))[0]
+        if len(idx) < 3:
+            continue
+        radii = ring_radii(hull2d(xy[idx]), centre, n)
+        if prev is not None:
+            radii = np.maximum(radii, prev - fall * (prev_z - top))
+        prev, prev_z = radii, top
+        for i in idx:
+            d = xy[i] - centre
+            r = float(np.linalg.norm(d))
+            if r < 1e-6:
+                continue
+            a = math.atan2(d[1], d[0]) % (2 * math.pi) / (2 * math.pi) * n
+            k = int(a) % n
+            target = radii[k] + (radii[(k + 1) % n] - radii[k]) * (a - int(a))
+            if target > r:
+                verts[i].co.x, verts[i].co.y = centre + d / r * target
+
+
+def shell(body, keep, ease, smooth=12, name="Shell", drapes=()):
+    """The body's faces whose vertices all pass keep(index array) -> bool array, smoothed, pushed out by ease(i);
+    drapes: drape() arguments (part, z_lo, z_hi) where the cloth bridges the body's hollows."""
     sel = keep(np.arange(len(body.co)))
     bm = bmesh.new()
     src = bm.verts.layers.int.new("src")    # before any vertex: adding a layer invalidates them
@@ -137,6 +170,10 @@ def shell(body, keep, ease, smooth=12, name="Shell"):
     inner = [v for v in bm.verts if not v.is_boundary]
     for _ in range(smooth):
         bmesh.ops.smooth_vert(bm, verts=inner, factor=0.5, use_axis_x=True, use_axis_y=True, use_axis_z=True)
+    for args in drapes:
+        drape(bm, src, body, *args)
+        for _ in range(3):
+            bmesh.ops.smooth_vert(bm, verts=inner, factor=0.5, use_axis_x=True, use_axis_y=True, use_axis_z=True)
     bm.normal_update()
     idx = np.array([v[src] for v in bm.verts])
     push = ease(idx)
@@ -401,7 +438,10 @@ def g_abito_nero(body, rng):
             ok &= ~((np.sign(p[:, 0]) == sgn) & (part == "forearm") & (along > -0.02))
         return ok
 
-    top = shell(body, keep, lambda i: np.where(body.part[i] == "torso", 0.012, 0.016), name="Corpetto")
+    # The bodice hangs from the bust and the shoulder blades, loose to the waist.
+    armpit_z = z_of(body, "upperarm_l") - 0.04
+    top = shell(body, keep, lambda i: np.where(body.part[i] == "torso", 0.016, 0.016), name="Corpetto",
+                drapes=[("torso", waist_z - 0.06, armpit_z)])
     cylinder_uv(top, body)
     skirt = loft(body, ["torso", "thigh", "calf"], waist_z + 0.02, z_of(body, "calf_l") * 0.55,
                  lambda z, a: 0.012 + max(0.0, (waist_z - 0.1 - z)) * 0.12, name="Gonna")
@@ -453,7 +493,7 @@ def g_fazzoletto(body, rng):
     # The crown closed with a fan.
     ring = [v for v in bm.verts if abs(v.co.z - (top_z - 0.012)) < 1e-4]
     if len(ring) > 2:
-        tip = bm.verts.new((head[0], head[1] + 0.005, top_z + 0.014))
+        tip = bm.verts.new((head[0], head[1] + 0.005, top_z + 0.002))
         ring.sort(key=lambda v: math.atan2(v.co.y - head[1], v.co.x - head[0]))
         for v0, v1 in zip(ring, ring[1:] + ring[:1]):
             try:

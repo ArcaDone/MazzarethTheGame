@@ -30,13 +30,35 @@ VECCHIA = ["AbitoNero", "Fazzoletto", "ScarpeDonna"]
 VECCHIA_SCIALLE = ["AbitoNero", "Fazzoletto", "Scialle", "ScarpeDonna"]
 VECCHIO = ["PantaloniVecchio", "CamiciaVecchio", "GiletVecchio", "GiaccaVecchio", "Coppola", "ScarpeVecchio"]
 PASTORE = ["PantaloniVecchio", "CamiciaVecchio", "GiaccaVecchio", "Mantello", "Coppola", "ScarpeVecchio"]
+UOMO_QUADRI = ["CamiciaQuadri", "Jeans", "ScarpeGinnastica"]
+UOMO_MAGLIONE = ["Maglione", "PantaloniChiari", "Mocassini"]
+UOMO_CANOTTIERA = ["Canottiera", "Jeans", "Mocassini"]
+TUTA = ["TutaGiacca", "TutaPantaloni", "ScarpeGinnastica"]
+DONNA_GONNA = ["Camicetta", "Gonna", "Cardigan", "ScarpeBasse"]
+DONNA_FIORI = ["AbitoFiori", "ScarpeBasse"]
+DONNA_JEANS = ["Camicetta", "JeansDonna", "ScarpeBasse"]
+SANDRO_CLASSICO = ["CamiciaSandro", "CravattaSandro", "GiaccaSandro", "PantaloniSandro", "ScarpeSandro"]
+SANDRO_BIANCO = ["CamiciaRosa", "Fondina", "GiaccaBianca", "PantaloniBianchi", "ScarpeChiare", "Orologio"]
+SANDRO_FONDINA = ["CamiciaRosa", "Fondina", "PantaloniBianchi", "ScarpeChiare", "Orologio"]
 # key: (folder, garments, hide the hair: the headscarf covers it)
 CAST = {
     "Anziana1": ("Folla", VECCHIA_SCIALLE, True),
     "Anziana3": ("Folla", VECCHIA, True),
     "Anziano1": ("Folla", PASTORE, False),
     "Anziano3": ("Folla", VECCHIO, False),
+    "Uomo2": ("Folla", UOMO_QUADRI, False),
+    "Uomo1": ("Folla", UOMO_MAGLIONE, False),
+    "Ragazzo2": ("Folla", UOMO_CANOTTIERA, False),
+    "Ragazzo1": ("Folla", TUTA, False),
+    "Donna1": ("Folla", DONNA_GONNA, False),
+    "Donna2": ("Folla", DONNA_FIORI, False),
+    "Ragazza1": ("Folla", DONNA_JEANS, False),
+    "Sandro": ("Sandro", SANDRO_CLASSICO, False),
+    "SandroBianco": ("Sandro", SANDRO_BIANCO, False),
+    "SandroFondina": ("Sandro", SANDRO_FONDINA, False),
 }
+# Photo keys that are another outfit on a character: the character's asset name.
+ASSET = {"SandroBianco": "Sandro", "SandroFondina": "Sandro"}
 # Adults beside the old for the group photo, as they are.
 ADULTS = {"Uomo2": ("Folla", [], False), "Donna1": ("Folla", [], False)}
 
@@ -89,14 +111,14 @@ def steps():
     spot = V(sum(p.x for p in spots) / len(spots), sum(p.y for p in spots) / len(spots), 0) if spots else V(0, 0, 0)
     yaw = unreal.MathLibrary.radians_to_degrees(unreal.MathLibrary.atan2(-spot.y, -spot.x)) - 90.0 if spots else 0.0
     lit = False
-    cast = dict(CAST, **ADULTS) if GROUP else CAST
+    cast = dict(ADULTS, **CAST) if GROUP else CAST
     group = []
     editing = []
     for key, (folder, garments, no_hair) in cast.items():
         if ONLY and key not in ONLY:
             continue
         entry = report.setdefault(key, {})
-        c = unreal.load_asset("/Game/Mazzarino80/Personaggi/%s/MHC_%s" % (folder, key))
+        c = unreal.load_asset("/Game/Mazzarino80/Personaggi/%s/MHC_%s" % (folder, ASSET.get(key, key)))
         SUB.try_add_object_to_edit(c)
         try:
             dress(c, garments, no_hair, entry)

@@ -44,6 +44,7 @@ FABRICS = {
     "Seta": (0.6, 0.35, 0.3, 1.2, 0.01, "micro_weave_plain_normal", 40.0, 0.4),
     "Jeans": (0.85, 0.3, 0.5, 1.3, 0.015, "micro_weave_denim_N", 20.0, 0.9),
     "Cuoio": (0.5, 0.4, 0.0, 1.0, 0.0, None, 1.0, 0.0),
+    "Oro": (0.25, 1.0, 0.0, 1.0, 0.0, None, 1.0, 0.0),       # the master has no metal: a bright specular instead
 }
 # The default garment graph's nodes, LOD by LOD.
 IMPORT_NODES = ["StaticMeshImport", "StaticMeshImport_0", "StaticMeshImport_1", "StaticMeshImport_2"]

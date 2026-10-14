@@ -210,6 +210,9 @@ powershell -ExecutionPolicy Bypass -File Scripts/run_editor_script.ps1 -Script S
 | `m80_carretti_prova_setup.py`, `m80_carretti_test.py` | Mappa di prova dei carretti e test: salita, foto, mani e piedi sui punti di presa, spinta, sterzo, freno, retromarcia, rampa, discesa. |
 | `m80_animazioni_import.py` | Animazioni Mixamo (aggrappo, salita, pugni) e pose ALS di pistola e fucile, retargettate sul manichino del sample. |
 | `m80_icone_armi.py` + `Blender/m80_icone_alpha.py` | Icone grigie delle armi per la ruota, fotografate di lato. |
+| `m80_vito_crea.py` | Vito diventa un MetaHuman modificabile della 5.8 (`Personaggi/Vito/MHC_Vito`): il viso si adatta ai vertici di testa, occhi e denti del suo DNA, letto dal progetto Comune. Il DNA del vecchio Creator online non passa l'import diretto della 5.8 (rig diverso). |
+| `m80_prova_folla_setup.py` | Rifà da zero la mappa di prova della folla `Personaggi/Maps/L_M80_ProvaFolla`: case vere attorno a una piazza lastricata, tavoli con sedie e carte siciliane, sedie impagliate davanti alle porte e i punti dove mettere la gente (tavolo, sedia, gruppi, giro della piazza, gioco dei bambini). |
+| `m80_folla_sonda.py` | Cosa offre il MetaHuman Creator della 5.8: preset (altezza, corporatura, se hanno il rig), vestiti e capelli, pipeline normali e della folla. |
 
 I circa 220 script `mazzarino80_*.py` sono della prima versione basata su PCG (settembre 2026): restano solo come archivio e non servono più.
 

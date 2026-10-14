@@ -114,6 +114,16 @@ def straighten_borders(bm, iterations):
             v.co = v.co * 0.5 + c * 0.5
 
 
+def keep_out(bm, body, margin):
+    """Every vertex at least `margin` out of the body's surface, or the skin shows through the cloth."""
+    for v in bm.verts:
+        loc, nrm, _, _ = body.bvh.find_nearest(v.co)
+        if loc is not None:
+            out = (v.co - loc).dot(nrm)
+            if out < margin:
+                v.co += nrm * (margin - out)
+
+
 def drape(bm, src, body, part, z_lo, z_hi, fall=0.35, band=0.012):
     """Cloth over the hollows of `part` between z_lo and z_hi: per height band its vertices go out to the band's convex
     hull (no cleavage, no hollow at the small of the back), and from the top down each band is at least as wide as
@@ -146,7 +156,7 @@ def drape(bm, src, body, part, z_lo, z_hi, fall=0.35, band=0.012):
                 verts[i].co.x, verts[i].co.y = centre + d / r * target
 
 
-def shell(body, keep, ease, smooth=12, name="Shell", drapes=()):
+def shell(body, keep, ease, smooth=12, name="Shell", drapes=(), margin=0.006):
     """The body's faces whose vertices all pass keep(index array) -> bool array, smoothed, pushed out by ease(i);
     drapes: drape() arguments (part, z_lo, z_hi) where the cloth bridges the body's hollows."""
     sel = keep(np.arange(len(body.co)))
@@ -182,6 +192,8 @@ def shell(body, keep, ease, smooth=12, name="Shell", drapes=()):
     # A second light pass evens out the offset where the ease changes.
     bmesh.ops.smooth_vert(bm, verts=[v for v in bm.verts if not v.is_boundary], factor=0.5,
                           use_axis_x=True, use_axis_y=True, use_axis_z=True)
+    # Smoothing pulls the cloth into the body's hollows (the crotch, under the bust).
+    keep_out(bm, body, margin)
     me = bpy.data.meshes.new(name)
     bm.to_mesh(me)
     bm.free()
@@ -233,10 +245,11 @@ def ring_radii(hull, centre, n):
     return out
 
 
-def loft(body, parts, z_top, z_hem, ease, n=40, dz=0.02, name="Loft", centre_xy=None, close_top=False):
+def loft(body, parts, z_top, z_hem, ease, n=40, dz=0.02, name="Loft", centre_xy=None, close_top=False, select=None):
     """Rings around the body's cross sections of `parts` (convex hull per height), from z_top down to z_hem.
-    ease(z, angle) -> metres added to the radius. Below the lowest body slice the last ring is carried down."""
-    mask = np.isin(body.part, parts)
+    ease(z, angle) -> metres added to the radius. Below the lowest body slice the last ring is carried down.
+    select: a vertex mask to use instead of `parts`."""
+    mask = np.isin(body.part, parts) if select is None else select
     co = body.co[mask]
     zs = np.arange(z_top, z_hem - 1e-6, -dz)
     if zs[-1] > z_hem + 1e-4:
@@ -490,16 +503,24 @@ def g_fazzoletto(body, rng):
             gone.append(f)
     bmesh.ops.delete(bm, geom=gone, context="FACES")
     straighten_borders(bm, 14)
-    # The crown closed with a fan.
+    # The crown closed with a dome (rings shrinking up to a top 1.6 cm over the head) - a flat fan cut the skull.
     ring = [v for v in bm.verts if abs(v.co.z - (top_z - 0.012)) < 1e-4]
     if len(ring) > 2:
-        tip = bm.verts.new((head[0], head[1] + 0.005, top_z + 0.002))
         ring.sort(key=lambda v: math.atan2(v.co.y - head[1], v.co.x - head[0]))
-        for v0, v1 in zip(ring, ring[1:] + ring[:1]):
-            try:
-                bm.faces.new([tip, v1, v0])
-            except ValueError:
-                pass
+        cx, cy, z0 = head[0], head[1] + 0.005, top_z - 0.012
+        rise = top_z + 0.016 - z0
+        rows = [ring]
+        for t in (0.35, 0.65, 0.85, 0.96):
+            k = math.sqrt(1 - t * t)
+            rows.append([bm.verts.new((cx + (v.co.x - cx) * k, cy + (v.co.y - cy) * k, z0 + rise * t)) for v in ring])
+        for lo, hi in zip(rows, rows[1:]):
+            for i in range(len(ring)):
+                j = (i + 1) % len(ring)
+                bm.faces.new([lo[i], lo[j], hi[j], hi[i]])
+        tip = bm.verts.new((cx, cy, z0 + rise))
+        for i in range(len(ring)):
+            bm.faces.new([tip, rows[-1][(i + 1) % len(ring)], rows[-1][i]])
+    keep_out(bm, body, 0.008)
     bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
     bm.to_mesh(ob.data)
     bm.free()
@@ -612,7 +633,7 @@ def g_gilet(body, rng, colour=(0.12, 0.11, 0.1)):
         p, part = body.co[i], body.part[i]
         ok = (part == "torso") & (p[:, 2] < neck[2] - 0.02) & (p[:, 2] > hip_z)
         # V neck at the front, down to the chest.
-        vee = (p[:, 1] < neck[1]) & (np.abs(p[:, 0]) < (p[:, 2] - chest_z) * 0.45)
+        vee = (p[:, 1] < neck[1]) & (np.abs(p[:, 0]) < (p[:, 2] - chest_z - 0.09) * 0.55)
         ok &= ~vee
         return ok
 
@@ -651,6 +672,213 @@ def g_giacca(body, rng, colour=(0.1, 0.1, 0.11)):
     return [top, tails]
 
 
+def from_front(c, centre):
+    """Angle (0..pi) of point c round centre_xy from the front (-Y)."""
+    a = math.atan2(c[1] - centre[1], c[0] - centre[0])
+    return abs((a + math.pi / 2 + math.pi) % (2 * math.pi) - math.pi)
+
+
+def trim(ob, centre, gone, borders=10):
+    """Deletes the faces of ob whose centre c (Vector) and angle from the front da make gone(c, da) true, then
+    straightens the new borders."""
+    bm = bmesh.new()
+    bm.from_mesh(ob.data)
+    dead = []
+    for f in bm.faces:
+        c = f.calc_center_median()
+        if gone(c, from_front(c, centre)):
+            dead.append(f)
+    bmesh.ops.delete(bm, geom=dead, context="FACES")
+    for v in [v for v in bm.verts if not v.link_faces]:
+        bm.verts.remove(v)
+    straighten_borders(bm, borders)
+    bm.to_mesh(ob.data)
+    bm.free()
+    return ob
+
+
+def near_arms(body, c, radius, start=0.2):
+    """Whether c is within radius of either arm's bones (upper arm from `start` of its length, forearm, hand)."""
+    p = np.array(c[:])
+    for s in "lr":
+        pts = [body.j("upperarm_" + s), body.j("lowerarm_" + s), body.j("hand_" + s)]
+        for k, (a, b) in enumerate(zip(pts, pts[1:])):
+            ab = b - a
+            t = float(np.clip((p - a) @ ab / (ab @ ab), start if k == 0 else 0.0, 1.0))
+            if np.linalg.norm(p - (a + ab * t)) < radius:
+                return True
+    return False
+
+
+def fringes(ob, length=0.08, every=0.01, width=0.004):
+    """Strands hanging from the hems of ob (the open borders whose cloth ends downwards): thin quads every `every`
+    metres, `length` long, with the hem's UVs."""
+    bm = bmesh.new()
+    bm.from_mesh(ob.data)
+    uv = bm.loops.layers.uv.verify()
+    hems = []
+    for e in bm.edges:
+        if not e.is_boundary or not e.link_faces:
+            continue
+        f = e.link_faces[0]
+        mid = (e.verts[0].co + e.verts[1].co) / 2
+        out = mid - f.calc_center_median()
+        if out.length > 0 and out.z < -0.5 * out.length:
+            loops = {l.vert: l[uv].uv.copy() for l in f.loops}
+            hems.append((e.verts[0].co.copy(), e.verts[1].co.copy(), loops[e.verts[0]], loops[e.verts[1]]))
+    for a, b, ua, ub in hems:
+        span = (b - a).length
+        k = max(1, int(span / every))
+        side = (b - a).normalized()
+        for i in range(k):
+            t = (i + 0.5) / k
+            top = a + (b - a) * t
+            sway = Vector((0, 0, -length))
+            q = [bm.verts.new(top - side * width / 2), bm.verts.new(top + side * width / 2),
+                 bm.verts.new(top + side * width / 2 + sway), bm.verts.new(top - side * width / 2 + sway)]
+            f = bm.faces.new(q)
+            u = ua + (ub - ua) * t
+            for l, d in zip(f.loops, ((0, 0), (0.004, 0), (0.004, -length), (0, -length))):
+                l[uv].uv = (u[0] + d[0], u[1] + d[1])
+    bm.to_mesh(ob.data)
+    bm.free()
+    return ob
+
+
+def g_scialle(body, rng, colour=(0.06, 0.05, 0.043)):
+    """Black wool shawl with fringes: over the shoulders, the two ends hanging down the front to the waist, a point
+    at the back; worn over the dress and the veil."""
+    neck = body.j("neck_01")
+    waist_z = z_of(body, "spine_02")
+    armpit_z = z_of(body, "upperarm_l") - 0.04
+    centre = (neck[0], neck[1] + 0.01)
+    # The arms only at the shoulder caps (further out the shawl would bridge to the A-posed arms).
+    caps = np.zeros(len(body.co), bool)
+    for side in "lr":
+        caps |= np.linalg.norm(body.co - body.j("upperarm_" + side), axis=1) < 0.09
+    sel = np.isin(body.part, ["neck", "torso"]) | ((body.part == "arm") & caps)
+
+    def ease(z, a):
+        return float(np.interp(z, [waist_z, armpit_z, neck[2] - 0.03], [0.075, 0.07, 0.06]))
+
+    ob = loft(body, None, neck[2] - 0.03, waist_z - 0.05, ease, n=64, dz=0.012, name="Scialle", centre_xy=centre,
+              select=sel)
+
+    def gone(c, da):
+        t = float(np.clip((neck[2] - c.z) / 0.3, 0, 1))
+        if da < 0.42 + 0.25 * t:                       # open at the front
+            return True
+        # The two ends down the front, rising over the arms, down again to a point at the back.
+        hem = float(np.interp(da, [0.42, 1.1, 1.6, 2.0, math.pi],
+                              [waist_z + 0.01, waist_z + 0.03, armpit_z - 0.01, armpit_z - 0.02, waist_z - 0.06]))
+        return c.z < hem
+
+    trim(ob, centre, gone)
+    fringes(ob, length=0.08)
+    ob.data.materials.append(fabric("Lana_scialle", knit(TEX, colour, rng), rough=0.95, tile_m=0.1))
+    return [ob]
+
+
+def g_coppola(body, rng, colour=(0.2, 0.17, 0.13)):
+    """Coppola: flat wool cap, the crown wider than the head and pulled forward over a short stiff visor."""
+    hd = body.co[body.part == "head"]
+    head = body.j("head")
+    top_z = float(hd[:, 2].max())
+    n = 48
+    centre = np.array([head[0], head[1]])
+
+    def radii_at(z):
+        sl = hd[np.abs(hd[:, 2] - z) < 0.006][:, :2]
+        return ring_radii(hull2d(sl), centre, n)
+
+    def band(da):                                      # the headband: on the forehead, lower at the back
+        return top_z - 0.072 - 0.053 * da / math.pi
+
+    angles = [2 * math.pi * k / n for k in range(n)]
+    das = [from_front((math.cos(a) + centre[0], math.sin(a) + centre[1]), centre) for a in angles]
+    base = [radii_at(band(da))[k] + 0.012 for k, da in enumerate(das)]
+    # Rings: headband, a little higher, the crown's widest (forward), its top edge; then the top.
+    # (height 0..1, bulge, forward shift): on the skull 1.2 cm out, puffing a little near the top, the top panel
+    # pulled forward over the visor.
+    shape = [(0.0, 0.0, 0.0), (0.5, 0.004, 0.006), (0.85, 0.012, 0.02), (0.97, 0.008, 0.024)]
+    bm = bmesh.new()
+    uv = bm.loops.layers.uv.new("UVMap")
+    rows = []
+    for t, bulge, fwd in shape:
+        row = []
+        for k, (a, da) in enumerate(zip(angles, das)):
+            crown = top_z + 0.004 - 0.044 * (1 - da / math.pi) ** 1.5   # high at the back, down to the visor
+            z = band(da) + (crown - band(da)) * t
+            r = (base[k] if t == 0 else radii_at(min(z, top_z - 0.012))[k] + 0.012) + bulge
+            row.append(bm.verts.new((centre[0] + r * math.cos(a), centre[1] - fwd + r * math.sin(a), z)))
+        rows.append(row)
+    for i in range(len(rows) - 1):
+        for k in range(n):
+            bm.faces.new([rows[i][k], rows[i][(k + 1) % n], rows[i + 1][(k + 1) % n], rows[i + 1][k]])
+    tip = bm.verts.new((centre[0], centre[1] - 0.026, top_z + 0.002))
+    for k in range(n):
+        bm.faces.new([rows[-1][k], rows[-1][(k + 1) % n], tip])
+    # Visor: from the headband at the front, 5.5 cm out at the middle, slightly down.
+    front = [k for k, da in enumerate(das) if da < math.radians(72)]
+    front.sort(key=lambda k: (angles[k] - (-math.pi / 2) + math.pi) % (2 * math.pi))
+    inner, outer = [], []
+    for k in front:
+        v = rows[0][k]
+        d = Vector((v.co.x - centre[0], v.co.y - centre[1], 0)).normalized()
+        reach = 0.048 * math.sqrt(max(0.0, 1 - (das[k] / math.radians(72)) ** 2)) + 0.004
+        inner.append(v)
+        outer.append(bm.verts.new(v.co + d * reach + Vector((0, 0, -0.008 * reach / 0.048))))
+    for i in range(len(front) - 1):
+        bm.faces.new([inner[i], inner[i + 1], outer[i + 1], outer[i]])
+    for f in bm.faces:
+        for l in f.loops:
+            c = l.vert.co
+            if c.z < top_z - 0.02:
+                l[uv].uv = (math.atan2(c.y - centre[1], c.x - centre[0]) * 0.1, c.z)
+            else:
+                l[uv].uv = (c.x, c.y)
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
+    me = bpy.data.meshes.new("Coppola")
+    bm.to_mesh(me)
+    bm.free()
+    ob = bpy.data.objects.new("Coppola", me)
+    bpy.context.scene.collection.objects.link(ob)
+    ob.data.materials.append(fabric("Lana_coppola", common.tweed(TEX, [colour, (0.12, 0.1, 0.08), (0.28, 0.25, 0.2)],
+                                                                  rng), rough=0.95, tile_m=0.06))
+    return [ob]
+
+
+def g_mantello(body, rng, colour=(0.075, 0.062, 0.05)):
+    """Shepherd's cloak of coarse wool: standing collar, a cape over the shoulders to the upper arms, the cloak
+    belled to mid-calf, slit at the front below the chest, the arms out through slits at the sides."""
+    neck = body.j("neck_01")
+    armpit_z = z_of(body, "upperarm_l") - 0.04
+    chest_z = z_of(body, "spine_04")
+    hem_z = z_of(body, "calf_l") * 0.5
+    centre = (neck[0], neck[1] + 0.02)
+    body_sel = np.isin(body.part, ["neck", "torso", "thigh", "calf"])
+
+    def ease(z, a):
+        return float(np.interp(z, [hem_z, chest_z - 0.45, armpit_z, neck[2]], [0.17, 0.09, 0.06, 0.03]))
+
+    cloak = loft(body, None, neck[2] + 0.03, hem_z, ease, n=64, dz=0.02, name="Mantello", centre_xy=centre,
+                 select=body_sel)
+    trim(cloak, centre, lambda c, da: (c.z < chest_z - 0.15 and da < 0.03 + 0.05 * (chest_z - c.z))
+         or near_arms(body, c, 0.09))
+    cape_sel = np.isin(body.part, ["neck", "torso", "arm"]) & (body.co[:, 2] > armpit_z - 0.2)
+
+    def cape_ease(z, a):
+        return float(np.interp(z, [armpit_z - 0.2, armpit_z, neck[2]], [0.1, 0.085, 0.05]))
+
+    cape = loft(body, None, neck[2] - 0.01, armpit_z - 0.2, cape_ease, n=64, dz=0.012, name="Mantellina",
+                centre_xy=centre, select=cape_sel)
+    trim(cape, centre, lambda c, da: c.z < armpit_z - 0.06 - 0.08 * da / math.pi or da < 0.04)
+    cloth = fabric("Lana_mantello", weave(TEX, colour, rng, scale=4, depth=0.1), rough=0.97, tile_m=0.12)
+    for ob in (cloak, cape):
+        ob.data.materials.append(cloth)
+    return [cloak, cape]
+
+
 # Garment: (source body, builder). Keys are the outfit pieces; the crowd script combines them into outfits.
 GARMENTS = {
     "AbitoNero": ("Anziana1", g_abito_nero),
@@ -661,6 +889,9 @@ GARMENTS = {
     "GiletVecchio": ("Anziano1", g_gilet),
     "GiaccaVecchio": ("Anziano1", g_giacca),
     "ScarpeVecchio": ("Anziano1", g_scarpe),
+    "Scialle": ("Anziana1", g_scialle),
+    "Coppola": ("Anziano1", g_coppola),
+    "Mantello": ("Anziano1", g_mantello),
 }
 
 
@@ -747,11 +978,17 @@ def build(key, src, fn):
 OUTFITS = {
     "VecchiaNero": ["AbitoNero", "Fazzoletto", "ScarpeDonna"],
     "VecchioGiacca": ["PantaloniVecchio", "CamiciaVecchio", "GiletVecchio", "GiaccaVecchio", "ScarpeVecchio"],
+    "VecchiaScialle": ["AbitoNero", "Fazzoletto", "Scialle", "ScarpeDonna"],
+    "VecchioCoppola": ["PantaloniVecchio", "CamiciaVecchio", "GiletVecchio", "GiaccaVecchio", "Coppola",
+                       "ScarpeVecchio"],
+    "Pastore": ["PantaloniVecchio", "CamiciaVecchio", "GiaccaVecchio", "Mantello", "Coppola", "ScarpeVecchio"],
 }
 
 
-def preview_outfits():
+def preview_outfits(only=()):
     for name, keys in OUTFITS.items():
+        if only and name not in only:
+            continue
         body = Body(GARMENTS[keys[0]][0])
         rng = np.random.default_rng(1)
         for key in keys:
@@ -762,8 +999,8 @@ def preview_outfits():
 
 
 def main():
-    if ONLY == ["insieme"]:
-        preview_outfits()
+    if ONLY[:1] == ["insieme"]:
+        preview_outfits(ONLY[1:])
         return
     for key, (src, fn) in GARMENTS.items():
         if ONLY and key not in ONLY:

@@ -2,6 +2,7 @@
 square: the outfits' fit on their source body and, resized by the Creator, on other bodies. The characters are not
 saved (preview only), unless M80_SALVA=1.
 Env M80_CHI=Key1,Key2 (default the cast below). Out: Saved/Mazzarino80/Folla/Vestiti/Prova/<Key>_{fronte,retro,figura}.png
+Env M80_GRUPPO=1: instead, the cast and a few adults side by side in one photo (Gruppo.png), to compare heights.
 powershell -File Scripts/run_editor_script.ps1 -Script Scripts/m80_vestiti_prova.py -ForceLit
 """
 import json
@@ -23,16 +24,21 @@ EAL = unreal.EditorAssetLibrary
 V = unreal.Vector
 SAVE = os.environ.get("M80_SALVA") == "1"
 ONLY = [k for k in os.environ.get("M80_CHI", "").split(",") if k]
+GROUP = os.environ.get("M80_GRUPPO") == "1"
 
 VECCHIA = ["AbitoNero", "Fazzoletto", "ScarpeDonna"]
-VECCHIO = ["PantaloniVecchio", "CamiciaVecchio", "GiletVecchio", "GiaccaVecchio", "ScarpeVecchio"]
+VECCHIA_SCIALLE = ["AbitoNero", "Fazzoletto", "Scialle", "ScarpeDonna"]
+VECCHIO = ["PantaloniVecchio", "CamiciaVecchio", "GiletVecchio", "GiaccaVecchio", "Coppola", "ScarpeVecchio"]
+PASTORE = ["PantaloniVecchio", "CamiciaVecchio", "GiaccaVecchio", "Mantello", "Coppola", "ScarpeVecchio"]
 # key: (folder, garments, hide the hair: the headscarf covers it)
 CAST = {
-    "Anziana1": ("Folla", VECCHIA, True),
+    "Anziana1": ("Folla", VECCHIA_SCIALLE, True),
     "Anziana3": ("Folla", VECCHIA, True),
-    "Anziano1": ("Folla", VECCHIO, False),
+    "Anziano1": ("Folla", PASTORE, False),
     "Anziano3": ("Folla", VECCHIO, False),
 }
+# Adults beside the old for the group photo, as they are.
+ADULTS = {"Uomo2": ("Folla", [], False), "Donna1": ("Folla", [], False)}
 
 
 def dress(c, garments, no_hair, entry):
@@ -83,7 +89,10 @@ def steps():
     spot = V(sum(p.x for p in spots) / len(spots), sum(p.y for p in spots) / len(spots), 0) if spots else V(0, 0, 0)
     yaw = unreal.MathLibrary.radians_to_degrees(unreal.MathLibrary.atan2(-spot.y, -spot.x)) - 90.0 if spots else 0.0
     lit = False
-    for key, (folder, garments, no_hair) in CAST.items():
+    cast = dict(CAST, **ADULTS) if GROUP else CAST
+    group = []
+    editing = []
+    for key, (folder, garments, no_hair) in cast.items():
         if ONLY and key not in ONLY:
             continue
         entry = report.setdefault(key, {})
@@ -96,6 +105,13 @@ def steps():
         yield 60
         actor = SUB.spawn_meta_human_actor(c, True)
         yield 60
+        if actor and GROUP:
+            # In a row across the camera, 70 cm apart.
+            actor.set_actor_rotation(unreal.Rotator(0, 0, yaw), False)
+            across = actor.get_actor_forward_vector() * -1.0
+            actor.set_actor_location(spot + across * (70.0 * (len(group) - (len(cast) - 1) / 2.0)), False, True)
+            group.append((key, actor))
+            actor = None
         if actor:
             actor.set_actor_location(spot, False, True)
             actor.set_actor_rotation(unreal.Rotator(0, 0, yaw), False)
@@ -116,9 +132,28 @@ def steps():
             actor.destroy_actor()
         if SAVE:
             entry["saved"] = EAL.save_loaded_asset(c, False)
+        if GROUP:
+            editing.append(c)       # closing the character would empty its actor before the group photo
+            continue
         SUB.remove_object_to_edit(c)
         unreal.SystemLibrary.collect_garbage()
         (OUT / "prova.json").write_text(json.dumps(report, indent=1, default=str), encoding="utf-8")
+        yield 5
+    if group:
+        actor = group[0][1]
+        fwd = actor.get_actor_right_vector()
+        portrait_lights(spot + V(0, 0, 150), fwd, actor.get_actor_forward_vector() * -1.0)
+        yield 120
+        eye = spot + V(0, 0, 95) + fwd * 520.0
+        cap = m80_seq.ViewCapture(1200, 700, 50)
+        cap.capture(eye, unreal.MathLibrary.find_look_at_rotation(eye, spot + V(0, 0, 85)), OUT / "Gruppo.png")
+        cap.destroy()
+        report["gruppo"] = [k for k, _ in group]
+        (OUT / "prova.json").write_text(json.dumps(report, indent=1, default=str), encoding="utf-8")
+        for _, a in group:
+            a.destroy_actor()
+        for c in editing:
+            SUB.remove_object_to_edit(c)
         yield 5
 
 

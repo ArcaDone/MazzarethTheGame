@@ -39,7 +39,7 @@ Repository privato: `ArcaDone/MazzarethTheGame` (Git + LFS).
 Altre mappe:
 - `Houses/Maps/L_M80_Houses18_V2`: 18 case di prova del generatore.
 - `Vehicles/L_M80_ProvaGuida`: pista di prova delle auto (rettilineo, rampe, slalom, vicolo). Tab cambia auto.
-- `Player/Maps/L_M80_ProvaAzione`: il quartiere più fitto del paese (44 case vive) per provare armi e arrampicata. Si apre in pochi secondi. Contiene armi a terra, una Fiat 126, blocchi da 1, 2,2 e 2,9 m e quattro bersagli umani. Si rifà da zero con `m80_prova_azione_setup.py`.
+- `Player/Maps/L_M80_ProvaAzione`: il quartiere più fitto del paese (44 case vive) per provare armi e arrampicata. Si apre in pochi secondi. Contiene armi a terra, una Fiat 500, blocchi da 1, 2,2 e 2,9 m e quattro bersagli umani. Si rifà da zero con `m80_prova_azione_setup.py`.
 - `Vehicles/Maps/L_M80_ProvaCarretti`: i quattro carretti a cuscinetti su un piano di basolato, con una piattaforma di 3 m e una rampa al 10% (la pendenza delle strade del paese) e uno slalom di paletti. Si rifà da zero con `m80_carretti_prova_setup.py`.
 - `Rooms/L_M80_RoomStudio`: le stanze fotografate per le finestre.
 - `L_M80_District_V2`: quartiere di prova, solo in locale.
@@ -86,7 +86,7 @@ L'arrampicata funziona su qualsiasi geometria, perché cerca i bordi sulla colli
 | **Lampione (Mazzarino)** | Tipo *Muro* (lanterna esagonale a braccio) o *Palo* (candelabro in ghisa a tre luci). Modellati in Blender dalle foto dei lampioni veri. Si accendono da soli al tramonto. Opzioni *Spento (guasto)* e *Modello* per cambiare mesh. |
 | **Atmosfera (Mazzarino)** | Sole nella posizione reale per Mazzarino (latitudine, giorno dell'anno, ora), luna, cielo, nuvole, foschia nelle valli, ora blu, notte. Meteo: Sereno, Afa estiva, Scirocco, Nuvoloso. In gioco l'ora avanza. |
 | **Orizzonte (colline ed Etna)** | Anello di colline lontane con il profilo dell'Etna. |
-| **Auto Mazzarino** | Fiat 126, Ape, Panda, 127, Uno, Golf GTI, Vespa. |
+| **Auto Mazzarino** | Fiat 500 F (l'auto comune del paese: 40 mila triangoli, `m80_fiat500_sorgente.py` + `m80_prepare_vehicle.py`), Ape, Vespa. 126, Panda, 127, Uno e Golf tolte il 16/10/2026: troppo pesanti per il traffico. |
 | **Carretti** | *Carretto a cuscinetti* (sdraiati sul petto, mani sulla barra davanti), *a triangolo* e *con la cassetta* (seduti come in un go-kart, talloni sull'asse, corda in mano), *persiana* (seduti, braccia sul manico di scopa come su un chopper). Niente motore: si spingono piano e corrono in discesa (circa 22 km/h in fondo a 30 m al 10%). |
 | **Bouganvillea (Mazzarino)** | Pianta procedurale che cresce lungo una spline. Regole d'uso nella sezione qui sotto. |
 
@@ -322,7 +322,7 @@ Sull'altro PC:
 - `.git_old` (38 GB) va spostato o cancellato quando non serve più.
 - **Paese buio di notte da lontano** con la griglia nuova: i lampioni lontani non sono caricati. Tenerli sempre caricati costa troppo (3 fps): da rivedere.
 - **DynamicMesh in Play: 2,5 GB di RAM** (691 oggetti, 5.8 con la griglia nuova; erano 6,7 GB in 5.5). Le producono case non cotte, strade, marciapiedi, scalinate, fili, orizzonte e bouganvillea. Prima misurarle per tipo, poi cuocere in static mesh chi pesa di più. Da fare prima di portare la folla nel paese.
-- **Veicoli Panda, Golf, Vespa**: mancano le texture, ma prima vanno riviste le mesh (forse troppo pesanti).
+- **Ape: 974 mila triangoli** (la 500 ne ha 60 mila con le ruote): va alleggerita prima di avere traffico. La Vespa non ha texture.
 
 ## 8. Fonti e licenze
 

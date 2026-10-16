@@ -843,8 +843,10 @@ void AM80PlayerController::PutOnSunglasses(ACharacter* C)
 	G->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	G->SetCastShadow(true);
 	G->RegisterComponent();
-	// The glasses face +Y in their mesh: turn them to the character's forward.
-	G->SetWorldLocationAndRotation(Eyes + Fwd * 2.2f + FVector(0, 0, 0.3f), FRotator(0.f, C->GetActorRotation().Yaw - 90.f, 0.f));
+	// The glasses face +Y in their mesh: turn them to the character's forward. Sized and set off the eyes for Sandro's
+	// face (broader, deeper-set eyes than the sample's Kellan): a little wider and further out, or the lenses sink in.
+	G->SetWorldScale3D(FVector(1.1f));
+	G->SetWorldLocationAndRotation(Eyes + Fwd * 3.6f + FVector(0, 0, 0.5f), FRotator(0.f, C->GetActorRotation().Yaw - 90.f, 0.f));
 	const FName Bone = Face->DoesSocketExist(TEXT("head")) ? FName(TEXT("head")) : FName(TEXT("FACIAL_C_FacialRoot"));
 	G->AttachToComponent(Face, FAttachmentTransformRules::KeepWorldTransform, Bone);
 }

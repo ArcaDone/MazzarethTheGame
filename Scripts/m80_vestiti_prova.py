@@ -2,6 +2,7 @@
 square: the outfits' fit on their source body and, resized by the Creator, on other bodies. The characters are not
 saved (preview only), unless M80_SALVA=1.
 Env M80_CHI=Key1,Key2 (default the cast below). Out: Saved/Mazzarino80/Folla/Vestiti/Prova/<Key>_{fronte,retro,figura}.png
+Env M80_FOLLA=1: the whole crowd in its final outfits (CAST_FOLLA).
 Env M80_GRUPPO=1: instead, the cast and a few adults side by side in one photo (Gruppo.png), to compare heights.
 powershell -File Scripts/run_editor_script.ps1 -Script Scripts/m80_vestiti_prova.py -ForceLit
 """
@@ -65,6 +66,35 @@ CAST = {
     "SandroCamicetta": ("Sandro", ["CS_Camicetta"], False),
     "Donna1Camicia": ("Folla", ["CS_CamiciaGiacca"], False),
 }
+# The whole crowd, final outfits (Env M80_FOLLA=1: dresses these instead of CAST; with M80_SALVA=1 they are saved
+# for Scripts/m80_folla_build.py). City Sample garments (CS_*) plus our coppola, cloak, headscarf, shawl, black dress,
+# flowered dress and tracksuit.
+V_SCARPE, A_SCARPE = "CS_V_Scarpe", "CS_A_Scarpe"
+CAST_FOLLA = {
+    "Anziano1": ("Folla", ["CS_V_Camicia", "CS_V_PantaloniMarroni", "Mantello", "Coppola", V_SCARPE], False),
+    "Anziano2": ("Folla", ["CS_V_Festa", "CS_V_Pantaloni", "Coppola", V_SCARPE], False),
+    "Anziano3": ("Folla", ["CS_V_Giacca", "CS_V_PantaloniMarroni", "Coppola", V_SCARPE], False),
+    "Anziano4": ("Folla", ["CS_V_Gilet", "CS_V_Pantaloni", "Coppola", V_SCARPE], False),
+    "Anziana1": ("Folla", ["AbitoNero", "Fazzoletto", "Scialle", A_SCARPE], True),
+    "Anziana2": ("Folla", ["CS_A_Camicia", "CS_A_Gonna", "Scialle", "Fazzoletto", A_SCARPE], True),
+    "Anziana3": ("Folla", ["AbitoNero", "Fazzoletto", A_SCARPE], True),
+    "Anziana4": ("Folla", ["CS_A_Dolcevita", "CS_A_Gonna", "Scialle", A_SCARPE], False),
+    "Uomo1": ("Folla", ["CS_U_Maglione", "CS_U_Pantaloni", "CS_U_Mocassini"], False),
+    "Uomo2": ("Folla", ["CS_U_Quadri", "CS_U_Jeans", "CS_U_Mocassini"], False),
+    "Uomo3": ("Folla", ["CS_U_Completo", "CS_U_PantaloniGrigi", "CS_U_Stringate"], False),
+    "Uomo4": ("Folla", ["CS_U_Dolcevita", "CS_U_PantaloniGrigi", "CS_U_Mocassini"], False),
+    "Donna1": ("Folla", ["CS_Camicetta", "CS_Gonna", "CS_Ballerine"], False),
+    "Donna2": ("Folla", ["AbitoFiori", "CS_Ballerine"], False),
+    "Donna3": ("Folla", ["CS_D_Dolcevita", "CS_D_Pantaloni", "CS_D_Mocassini"], False),
+    "Ragazzo1": ("Folla", ["TutaGiacca", "TutaPantaloni", "ScarpeGinnastica"], False),
+    "Ragazzo2": ("Folla", ["CS_R_Maglione", "CS_R_Jeans", "ScarpeGinnastica"], False),
+    "Ragazzo3": ("Folla", ["CS_R_Camicia", "CS_R_Jeans", "CS_U_Mocassini"], False),
+    "Ragazza1": ("Folla", ["CS_RA_Giacchino", "CS_RA_Jeans", "CS_Ballerine"], False),
+    "Ragazza2": ("Folla", ["CS_RA_Dolcevita", "CS_RA_Gonna", "CS_Ballerine"], False),
+    "Ragazza3": ("Folla", ["CS_RA_Camicia", "CS_RA_Jeans", "CS_RA_Mocassini"], False),
+}
+if os.environ.get("M80_FOLLA") == "1":
+    CAST = CAST_FOLLA
 # Photo keys that are another outfit on a character: the character's asset name.
 ASSET = {"SandroBianco": "Sandro", "SandroFondina": "Sandro", "SandroCS": "Sandro", "Donna1CS": "Donna1",
          "SandroCamicetta": "Sandro", "Donna1Camicia": "Donna1"}

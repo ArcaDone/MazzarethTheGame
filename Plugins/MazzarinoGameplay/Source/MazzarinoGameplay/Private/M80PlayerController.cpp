@@ -1174,7 +1174,7 @@ void AM80PlayerController::PlayerTick(float DeltaTime)
 	const float E = A * A * (3.f - 2.f * A);
 	USceneComponent* Root = W->GetRootComponent();
 	Root->SetRelativeLocation(FMath::Lerp(SeatStartRel, SeatFor(C), E));
-	Root->SetRelativeRotation(FQuat::Slerp(SeatStartRot.Quaternion(), FQuat::Identity, E));
+	Root->SetRelativeRotation(FQuat::Slerp(SeatStartRot.Quaternion(), FRotator(C->SeatRecline, 0.f, 0.f).Quaternion(), E));
 	if (A >= 1.f)
 	{
 		Possess(C);

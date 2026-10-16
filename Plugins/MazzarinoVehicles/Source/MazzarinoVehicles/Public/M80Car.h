@@ -57,6 +57,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Auto|Guidatore")
 	FVector SeatOffset = FVector(-20, -35, 30);
 
+	/** Degrees the seated driver leans back (low cars: the head goes down and back, the feet up and forward). */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Auto|Guidatore")
+	float SeatRecline = 0.f;
+
 	/** Where the driver stands to get in/out (left side, local space). */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Auto|Guidatore")
 	FVector DoorOffset = FVector(0, -150, 60);
@@ -208,9 +212,6 @@ protected:
 	};
 	void ApplySpec(const FCarSpec& Spec);
 
-	/** A small 80s Fiat (Panda, 127, Uno): 903 cc front engine, front-wheel drive. */
-	static FCarSpec SmallFiatSpec();
-
 	/**
 	 * Cars imported from Blender (Scripts/m80_import_blender_assets.py): skeletal mesh with bones Root +
 	 * Wheel_FL/FR/RL/RR (or Wheel_F/Wheel_R for two-wheelers), wheels animated in code (UM80WheelAnimInstance).
@@ -299,13 +300,14 @@ private:
 	float CartBrake = 0.f;
 };
 
-/** Fiat 126 (1972-2000): 594 cc rear engine, 23 hp, about 580 kg, top speed about 105 km/h. Light and lively, rear-wheel drive. */
-UCLASS(meta = (DisplayName = "Fiat 126 (guidabile)"))
-class MAZZARINOVEHICLES_API AM80CarFiat126 : public AM80Car
+/** Fiat 500 F (1965-72): 499.5 cc rear engine, 18 hp, about 520 kg, rear-wheel drive, top speed about 95 km/h.
+ * The town's common car: a light mesh (40k triangles, Research/Mazzarino80/Blender/m80_fiat500_sorgente.py). */
+UCLASS(meta = (DisplayName = "Fiat 500 (guidabile)"))
+class MAZZARINOVEHICLES_API AM80CarFiat500 : public AM80Car
 {
 	GENERATED_BODY()
 public:
-	AM80CarFiat126();
+	AM80CarFiat500();
 };
 
 /** Piaggio Ape (P501 type, late 70s): 3 wheels, small engine, about 450 kg, top speed about 60 km/h. Slow, short gears, leans in fast turns. */
@@ -315,42 +317,6 @@ class MAZZARINOVEHICLES_API AM80CarApe : public AM80Car
 	GENERATED_BODY()
 public:
 	AM80CarApe();
-};
-
-/** Fiat Panda 45 (1980): 903 cc front engine, 45 hp, about 680 kg, front-wheel drive, top speed about 140 km/h. */
-UCLASS(meta = (DisplayName = "Fiat Panda (guidabile)"))
-class MAZZARINOVEHICLES_API AM80CarPanda : public AM80Car
-{
-	GENERATED_BODY()
-public:
-	AM80CarPanda();
-};
-
-/** Fiat 127 (1971-83): 903 cc, 45 hp, about 705 kg, front-wheel drive, top speed about 140 km/h. */
-UCLASS(meta = (DisplayName = "Fiat 127 (guidabile)"))
-class MAZZARINOVEHICLES_API AM80CarFiat127 : public AM80Car
-{
-	GENERATED_BODY()
-public:
-	AM80CarFiat127();
-};
-
-/** Fiat Uno 45 (1983): 903 cc, 45 hp, about 710 kg, front-wheel drive, top speed about 145 km/h. */
-UCLASS(meta = (DisplayName = "Fiat Uno (guidabile)"))
-class MAZZARINOVEHICLES_API AM80CarFiatUno : public AM80Car
-{
-	GENERATED_BODY()
-public:
-	AM80CarFiatUno();
-};
-
-/** Volkswagen Golf GTI Mk1 (1976-83): 1.6 litres, 110 hp, about 810 kg, front-wheel drive, top speed about 180 km/h. The fast one in town. */
-UCLASS(meta = (DisplayName = "Volkswagen Golf GTI (guidabile)"))
-class MAZZARINOVEHICLES_API AM80CarGolf : public AM80Car
-{
-	GENERATED_BODY()
-public:
-	AM80CarGolf();
 };
 
 /** Vespa 125 (Primavera type): 125 cc two-stroke, 6 hp, about 80 kg, 10 inch wheels, top speed about 80 km/h. Kept upright by the game. */
@@ -363,22 +329,6 @@ public:
 };
 
 /** Wheels: one class per axle and vehicle, values set in the constructors. */
-UCLASS()
-class MAZZARINOVEHICLES_API UM80WheelFiatFront : public UChaosVehicleWheel
-{
-	GENERATED_BODY()
-public:
-	UM80WheelFiatFront();
-};
-
-UCLASS()
-class MAZZARINOVEHICLES_API UM80WheelFiatRear : public UChaosVehicleWheel
-{
-	GENERATED_BODY()
-public:
-	UM80WheelFiatRear();
-};
-
 UCLASS()
 class MAZZARINOVEHICLES_API UM80WheelApeFront : public UChaosVehicleWheel
 {
@@ -396,67 +346,19 @@ public:
 };
 
 UCLASS()
-class MAZZARINOVEHICLES_API UM80WheelPandaFront : public UChaosVehicleWheel
+class MAZZARINOVEHICLES_API UM80Wheel500Front : public UChaosVehicleWheel
 {
 	GENERATED_BODY()
 public:
-	UM80WheelPandaFront();
+	UM80Wheel500Front();
 };
 
 UCLASS()
-class MAZZARINOVEHICLES_API UM80WheelPandaRear : public UChaosVehicleWheel
+class MAZZARINOVEHICLES_API UM80Wheel500Rear : public UChaosVehicleWheel
 {
 	GENERATED_BODY()
 public:
-	UM80WheelPandaRear();
-};
-
-UCLASS()
-class MAZZARINOVEHICLES_API UM80Wheel127Front : public UChaosVehicleWheel
-{
-	GENERATED_BODY()
-public:
-	UM80Wheel127Front();
-};
-
-UCLASS()
-class MAZZARINOVEHICLES_API UM80Wheel127Rear : public UChaosVehicleWheel
-{
-	GENERATED_BODY()
-public:
-	UM80Wheel127Rear();
-};
-
-UCLASS()
-class MAZZARINOVEHICLES_API UM80WheelUnoFront : public UChaosVehicleWheel
-{
-	GENERATED_BODY()
-public:
-	UM80WheelUnoFront();
-};
-
-UCLASS()
-class MAZZARINOVEHICLES_API UM80WheelUnoRear : public UChaosVehicleWheel
-{
-	GENERATED_BODY()
-public:
-	UM80WheelUnoRear();
-};
-
-UCLASS()
-class MAZZARINOVEHICLES_API UM80WheelGolfFront : public UChaosVehicleWheel
-{
-	GENERATED_BODY()
-public:
-	UM80WheelGolfFront();
-};
-
-UCLASS()
-class MAZZARINOVEHICLES_API UM80WheelGolfRear : public UChaosVehicleWheel
-{
-	GENERATED_BODY()
-public:
-	UM80WheelGolfRear();
+	UM80Wheel500Rear();
 };
 
 UCLASS()

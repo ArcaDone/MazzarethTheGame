@@ -81,17 +81,6 @@ void SetupWheel(UChaosVehicleWheel* W, EAxleType Axle, float Radius, float Width
 // ---------------------------------------------------------------------------------------------
 // Wheels
 
-UM80WheelFiatFront::UM80WheelFiatFront()
-{
-	SetupWheel(this, EAxleType::Front, 25.f, 15.f, 38.f, 900.f, 0.f, false, 140.f, 60.f, 0.45f, 8.f, 10.f);
-}
-
-UM80WheelFiatRear::UM80WheelFiatRear()
-{
-	// The engine sits over the rear axle: stiffer springs, more grip at the back so the tail stays put.
-	SetupWheel(this, EAxleType::Rear, 25.f, 15.f, 0.f, 650.f, 1800.f, true, 175.f, 70.f, 0.45f, 8.f, 10.f, 2.7f);
-}
-
 UM80WheelApeFront::UM80WheelApeFront()
 {
 	SetupWheel(this, EAxleType::Front, 27.f, 12.f, 42.f, 450.f, 0.f, false, 110.f, 40.f, 0.5f, 7.f, 9.f);
@@ -105,21 +94,13 @@ UM80WheelApeRear::UM80WheelApeRear()
 namespace
 {
 // Wheel radius and width (cm) of the imported meshes.
-constexpr float WHEEL127R = 29.6f, WHEEL127W = 15.7f;
-constexpr float WHEELUNOR = 28.f, WHEELUNOW = 16.f;
 constexpr float WHEELVESPAR = 23.1f, WHEELVESPAW = 10.f;
 }
 
-// Imported cars: front-wheel drive, the rear axle carries the handbrake and a little more grip.
-// Radius and width measured on the meshes (Saved/Mazzarino80/Import/out/<car>.json).
-UM80WheelPandaFront::UM80WheelPandaFront() { SetupWheel(this, EAxleType::Front, 25.5f, 19.f, 36.f, 1000.f, 0.f, true, 150.f, 60.f, 0.45f, 8.f, 10.f); }
-UM80WheelPandaRear::UM80WheelPandaRear() { SetupWheel(this, EAxleType::Rear, 25.5f, 19.f, 0.f, 700.f, 1800.f, false, 140.f, 60.f, 0.45f, 8.f, 10.f, 2.7f); }
-UM80Wheel127Front::UM80Wheel127Front() { SetupWheel(this, EAxleType::Front, WHEEL127R, WHEEL127W, 36.f, 1000.f, 0.f, true, 150.f, 60.f, 0.45f, 8.f, 10.f); }
-UM80Wheel127Rear::UM80Wheel127Rear() { SetupWheel(this, EAxleType::Rear, WHEEL127R, WHEEL127W, 0.f, 700.f, 1800.f, false, 140.f, 60.f, 0.45f, 8.f, 10.f, 2.7f); }
-UM80WheelUnoFront::UM80WheelUnoFront() { SetupWheel(this, EAxleType::Front, WHEELUNOR, WHEELUNOW, 36.f, 1050.f, 0.f, true, 155.f, 60.f, 0.45f, 8.f, 10.f); }
-UM80WheelUnoRear::UM80WheelUnoRear() { SetupWheel(this, EAxleType::Rear, WHEELUNOR, WHEELUNOW, 0.f, 700.f, 1800.f, false, 145.f, 60.f, 0.45f, 8.f, 10.f, 2.7f); }
-UM80WheelGolfFront::UM80WheelGolfFront() { SetupWheel(this, EAxleType::Front, 26.6f, 20.f, 34.f, 1400.f, 0.f, true, 190.f, 70.f, 0.5f, 7.f, 9.f, 2.4f); }
-UM80WheelGolfRear::UM80WheelGolfRear() { SetupWheel(this, EAxleType::Rear, 26.6f, 20.f, 0.f, 900.f, 2000.f, false, 180.f, 70.f, 0.5f, 7.f, 9.f, 2.8f); }
+// Imported vehicles: radius and width measured on the meshes (Saved/Mazzarino80/Import/out/<key>.json).
+// The 500: rear engine and drive, 125x12 tyres (radius 25.1, width 16 on the mesh).
+UM80Wheel500Front::UM80Wheel500Front() { SetupWheel(this, EAxleType::Front, 25.1f, 16.f, 38.f, 850.f, 0.f, false, 130.f, 55.f, 0.45f, 8.f, 10.f); }
+UM80Wheel500Rear::UM80Wheel500Rear() { SetupWheel(this, EAxleType::Rear, 25.1f, 16.f, 0.f, 600.f, 1700.f, true, 165.f, 65.f, 0.45f, 8.f, 10.f, 2.7f); }
 UM80WheelVespaFront::UM80WheelVespaFront() { SetupWheel(this, EAxleType::Front, WHEELVESPAR, WHEELVESPAW, 30.f, 250.f, 0.f, false, 60.f, 20.f, 0.5f, 6.f, 8.f, 2.4f); }
 UM80WheelVespaRear::UM80WheelVespaRear() { SetupWheel(this, EAxleType::Rear, WHEELVESPAR, WHEELVESPAW, 0.f, 200.f, 500.f, true, 70.f, 25.f, 0.5f, 6.f, 8.f, 2.6f); }
 
@@ -975,51 +956,36 @@ void AM80Car::OnReset()
 }
 
 // ---------------------------------------------------------------------------------------------
-// Fiat 126
+// Fiat 500 F
 
-AM80CarFiat126::AM80CarFiat126()
+AM80CarFiat500::AM80CarFiat500()
 {
-	DisplayName = NSLOCTEXT("M80", "Fiat126", "Fiat 126");
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> MeshAsset(TEXT("/Game/Drive/fiat126/fiat126.fiat126"));
-	static ConstructorHelpers::FClassFinder<UAnimInstance> AnimClass(TEXT("/Game/Drive/Anim/BP_Fiat126"));
-	GetMesh()->SetSkeletalMesh(MeshAsset.Object);
-	GetMesh()->SetAnimInstanceClass(AnimClass.Class);
-	ChaseDistance = 480.f;
-	SeatOffset = FVector(-30.f, -35.f, 85.f);
-	DoorOffset = FVector(-5.f, -165.f, 100.f);
-	MaxHealth = 600.f;
-	EngineOffset = FVector(-125.f, 0.f, 70.f);      // engine at the back
-	HeadlightOffset = FVector(150.f, 48.f, 62.f);
-	TaillightOffset = FVector(-152.f, 52.f, 72.f);
-
-	if (UChaosWheeledVehicleMovementComponent* M = Movement(this))
-	{
-		M->WheelSetups.SetNum(4);
-		M->WheelSetups[0].WheelClass = UM80WheelFiatFront::StaticClass();
-		M->WheelSetups[0].BoneName = TEXT("Wheel_FL");
-		M->WheelSetups[1].WheelClass = UM80WheelFiatFront::StaticClass();
-		M->WheelSetups[1].BoneName = TEXT("Wheel_FR");
-		M->WheelSetups[2].WheelClass = UM80WheelFiatRear::StaticClass();
-		M->WheelSetups[2].BoneName = TEXT("Wheel_RL");
-		M->WheelSetups[3].WheelClass = UM80WheelFiatRear::StaticClass();
-		M->WheelSetups[3].BoneName = TEXT("Wheel_RR");
-	}
+	DisplayName = NSLOCTEXT("M80", "Fiat500", "Fiat 500");
+	SetupImported(TEXT("/Game/Mazzarino80/Vehicles/Fiat500/SK_M80_Fiat500.SK_M80_Fiat500"), UM80Wheel500Front::StaticClass(), UM80Wheel500Rear::StaticClass());
+	ChaseDistance = 460.f;
+	SeatOffset = FVector(15.f, -28.f, 55.f);     // low roof: seated low and leaning back, the head under the highest part
+	SeatRecline = 20.f;
+	DoorOffset = FVector(-5.f, -150.f, 100.f);
+	MaxHealth = 550.f;
+	EngineOffset = FVector(-130.f, 0.f, 60.f);      // engine at the back
+	HeadlightOffset = FVector(138.f, 45.f, 62.f);
+	TaillightOffset = FVector(-154.f, 48.f, 68.f);
 	FCarSpec S;
-	S.MassKg = 650.f;                       // 580 kg + driver
+	S.MassKg = 590.f;                       // 520 kg + driver
 	S.CenterOfMass = FVector(-25, 0, -15);  // engine behind the rear axle
-	S.DragCoefficient = 0.42f;
-	S.ChassisWidth = 138.f;
-	S.ChassisHeight = 134.f;
-	S.MaxTorqueNm = 56.f;                   // 39 Nm real, a bit more so it is not a chore in game
-	S.MaxRPM = 5800.f;
+	S.DragCoefficient = 0.45f;
+	S.ChassisWidth = 132.f;
+	S.ChassisHeight = 132.f;
+	S.MaxTorqueNm = 46.f;                   // 30 Nm real, livelier in game
+	S.MaxRPM = 5400.f;
 	S.IdleRPM = 850.f;
-	S.PeakTorqueRPM = 3400.f;
-	S.Gears = {3.25f, 2.07f, 1.30f, 0.87f};
-	S.ReverseGear = 3.2f;
-	S.FinalRatio = 6.2f;                    // ~108 km/h in 4th at the limiter
-	S.ChangeUpRPM = 5200.f;
-	S.ChangeDownRPM = 1800.f;              // fewer shifts back and forth in bends
-	S.SteerAt30Mph = 0.3f;                  // 38 degrees of lock -> 11 at 50 km/h, 5 at 100
+	S.PeakTorqueRPM = 3200.f;
+	S.Gears = {3.70f, 2.07f, 1.30f, 0.875f};
+	S.ReverseGear = 5.1f;
+	S.FinalRatio = 5.9f;                    // ~100 km/h in 4th at the limiter
+	S.ChangeUpRPM = 4900.f;
+	S.ChangeDownRPM = 1800.f;
+	S.SteerAt30Mph = 0.3f;
 	S.SteerAt60Mph = 0.14f;
 	S.WheelbaseCm = 184.f;
 	S.GripG = 0.85f;
@@ -1081,114 +1047,7 @@ AM80CarApe::AM80CarApe()
 }
 
 // ---------------------------------------------------------------------------------------------
-// Cars imported from Blender (D:/Blender/AssetsMazzarethTheGame, Research/Mazzarino80/Blender/m80_prepare_vehicle.py)
-
-AM80Car::FCarSpec AM80Car::SmallFiatSpec()
-{
-	FCarSpec S;
-	S.MassKg = 760.f;                       // ~690 kg + driver
-	S.CenterOfMass = FVector(25, 0, -10);   // engine in front
-	S.DragCoefficient = 0.42f;
-	S.ChassisWidth = 150.f;
-	S.ChassisHeight = 140.f;
-	S.MaxTorqueNm = 85.f;                   // 64 Nm real, livelier in game (as the 126)
-	S.MaxRPM = 6000.f;
-	S.IdleRPM = 850.f;
-	S.PeakTorqueRPM = 3200.f;
-	S.Gears = {3.91f, 2.06f, 1.30f, 0.89f};
-	S.ReverseGear = 3.7f;
-	S.FinalRatio = 4.4f;                    // ~145 km/h in 4th
-	S.ChangeUpRPM = 5400.f;
-	S.ChangeDownRPM = 1900.f;
-	S.Drive = EVehicleDifferential::FrontWheelDrive;
-	S.SteerAt30Mph = 0.32f;
-	S.SteerAt60Mph = 0.15f;
-	S.WheelbaseCm = 215.f;
-	S.GripG = 0.85f;
-	return S;
-}
-
-AM80CarPanda::AM80CarPanda()
-{
-	DisplayName = NSLOCTEXT("M80", "Panda", "Fiat Panda");
-	SetupImported(TEXT("/Game/Mazzarino80/Vehicles/Panda/SK_M80_Panda.SK_M80_Panda"), UM80WheelPandaFront::StaticClass(), UM80WheelPandaRear::StaticClass());
-	SeatOffset = FVector(-20.f, -35.f, 85.f);
-	DoorOffset = FVector(-5.f, -165.f, 100.f);
-	EngineOffset = FVector(130.f, 0.f, 70.f);
-	HeadlightOffset = FVector(165.f, 55.f, 70.f);
-	TaillightOffset = FVector(-166.f, 58.f, 75.f);
-	FCarSpec S = SmallFiatSpec();
-	S.WheelbaseCm = 210.f;
-	ApplySpec(S);
-}
-
-AM80CarFiat127::AM80CarFiat127()
-{
-	DisplayName = NSLOCTEXT("M80", "Fiat127", "Fiat 127");
-	SetupImported(TEXT("/Game/Mazzarino80/Vehicles/Fiat127/SK_M80_Fiat127.SK_M80_Fiat127"), UM80Wheel127Front::StaticClass(), UM80Wheel127Rear::StaticClass());
-	SeatOffset = FVector(-20.f, -35.f, 80.f);
-	DoorOffset = FVector(-5.f, -160.f, 100.f);
-	EngineOffset = FVector(130.f, 0.f, 65.f);
-	HeadlightOffset = FVector(175.f, 55.f, 65.f);
-	TaillightOffset = FVector(-176.f, 55.f, 70.f);
-	FCarSpec S = SmallFiatSpec();
-	S.MassKg = 780.f;
-	S.Gears = {3.58f, 2.24f, 1.45f, 1.04f};
-	S.FinalRatio = 4.08f;
-	S.WheelbaseCm = 222.f;
-	ApplySpec(S);
-}
-
-AM80CarFiatUno::AM80CarFiatUno()
-{
-	DisplayName = NSLOCTEXT("M80", "FiatUno", "Fiat Uno");
-	SetupImported(TEXT("/Game/Mazzarino80/Vehicles/FiatUno/SK_M80_FiatUno.SK_M80_FiatUno"), UM80WheelUnoFront::StaticClass(), UM80WheelUnoRear::StaticClass());
-	SeatOffset = FVector(-15.f, -35.f, 82.f);
-	DoorOffset = FVector(0.f, -165.f, 100.f);
-	EngineOffset = FVector(135.f, 0.f, 70.f);
-	HeadlightOffset = FVector(178.f, 55.f, 68.f);
-	TaillightOffset = FVector(-178.f, 58.f, 78.f);
-	FCarSpec S = SmallFiatSpec();
-	S.MassKg = 790.f;
-	S.MaxTorqueNm = 90.f;
-	S.Gears = {3.91f, 2.06f, 1.34f, 0.98f};
-	S.FinalRatio = 4.2f;
-	S.DragCoefficient = 0.34f;              // the Uno was a slippery one
-	S.WheelbaseCm = 236.f;
-	ApplySpec(S);
-}
-
-AM80CarGolf::AM80CarGolf()
-{
-	DisplayName = NSLOCTEXT("M80", "Golf", "Volkswagen Golf GTI");
-	SetupImported(TEXT("/Game/Mazzarino80/Vehicles/Golf/SK_M80_Golf.SK_M80_Golf"), UM80WheelGolfFront::StaticClass(), UM80WheelGolfRear::StaticClass());
-	SeatOffset = FVector(-20.f, -35.f, 75.f);
-	DoorOffset = FVector(-5.f, -165.f, 95.f);
-	EngineOffset = FVector(135.f, 0.f, 65.f);
-	HeadlightOffset = FVector(183.f, 50.f, 62.f);
-	TaillightOffset = FVector(-178.f, 55.f, 75.f);
-	FCarSpec S;
-	S.MassKg = 890.f;                       // 810 kg + driver
-	S.CenterOfMass = FVector(25, 0, -12);
-	S.DragCoefficient = 0.40f;
-	S.ChassisWidth = 162.f;
-	S.ChassisHeight = 139.f;
-	S.MaxTorqueNm = 175.f;                  // 140 Nm real
-	S.MaxRPM = 6800.f;
-	S.IdleRPM = 900.f;
-	S.PeakTorqueRPM = 5000.f;
-	S.Gears = {3.45f, 2.12f, 1.44f, 1.13f, 0.91f};
-	S.ReverseGear = 3.4f;
-	S.FinalRatio = 3.9f;                    // ~180 km/h in 5th
-	S.ChangeUpRPM = 6300.f;
-	S.ChangeDownRPM = 2500.f;
-	S.Drive = EVehicleDifferential::FrontWheelDrive;
-	S.SteerAt30Mph = 0.28f;
-	S.SteerAt60Mph = 0.12f;
-	S.WheelbaseCm = 231.f;
-	S.GripG = 0.95f;
-	ApplySpec(S);
-}
+// Vehicles imported from Blender (D:/Blender/AssetsMazzarethTheGame, Research/Mazzarino80/Blender/m80_prepare_vehicle.py)
 
 AM80CarVespa::AM80CarVespa()
 {

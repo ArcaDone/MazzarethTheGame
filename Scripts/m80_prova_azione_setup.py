@@ -1,7 +1,7 @@
 """Small action test map /Game/Mazzarino80/Player/Maps/L_M80_ProvaAzione (classic level, opens in seconds): a real piece of
 Mazzarino, the OSM lots of the densest quarter within M80_PROVA_RAGGIO_M (default 45 m) brought onto a flat floor
 around the origin as live procedural houses (same styles, floors and roofs as the town), the town's atmosphere, the
-player start in the most open spot, weapons on the ground, a Fiat 126, the town game mode. For fighting, weapons
+player start in the most open spot, weapons on the ground, a Fiat 500, the town game mode. For fighting, weapons
 and climbing on houses, balconies and roofs.
 powershell -File Scripts/run_editor_script.ps1 -Script Scripts/m80_prova_azione_setup.py
 Report: Saved/Mazzarino80/Player/prova_azione.json
@@ -170,7 +170,7 @@ def steps():
     car_spots = open_spots(rings, RADIUS * 0.8, 300, 12, 900)
     if len(car_spots) > 6:
         x, y = car_spots[6]
-        car = EAS.spawn_actor_from_class(unreal.M80CarFiat126, V(x, y, 80))
+        car = EAS.spawn_actor_from_class(unreal.M80CarFiat500, V(x, y, 80))
         placed["car"] = [x, y]
     # Climbing blocks of known heights next to the start (tests and practice): 1 m, 2.2 m, 2.9 m (2 m deep, to stand on).
     blocks = []

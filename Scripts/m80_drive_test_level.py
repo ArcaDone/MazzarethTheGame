@@ -3,7 +3,7 @@
 Game mode "Prova guida (Mazzarino)": Play possesses the first car, Tab switches car; HUD with speed,
 gear and rpm. Areas (signs on the ground): 400 m straight, ramps at 10/20/30 %, a 12 % street climb
 like the town, slalom, a 25 m circle, a narrow alley (4 m) with a right-angle bend, speed bumps and a
-patch of uneven paving. Cars: Fiat 126 and Ape (drivable), the old car as a parked prop.
+patch of uneven paving. Cars: Fiat 500, Ape and Vespa (drivable).
 """
 import math
 import os
@@ -154,20 +154,14 @@ def run():
         for j in range(6):
             box("Basolo", (bx + 8000 + i * 110, by - 300 + j * 110, rnd.uniform(-2, 3)), (105, 105, 10), (rnd.uniform(-2, 2), rnd.uniform(-2, 2), 0),
                 mat=mat, folder="Pista/Basolato")
-    # Cars on the start line, facing +X.
-    fiat = EAS.spawn_actor_from_class(unreal.M80CarFiat126, unreal.Vector(0, -350, 60), unreal.Rotator(0, 0, 0))
-    fiat.set_actor_label("A_Fiat126")
+    # Cars on the start line, facing +X: the Fiat 500 (the town's car), the Ape and the Vespa.
+    fiat = EAS.spawn_actor_from_class(unreal.M80CarFiat500, unreal.Vector(0, -350, 60), unreal.Rotator(0, 0, 0))
+    fiat.set_actor_label("A_Fiat500")
     ape = EAS.spawn_actor_from_class(unreal.M80CarApe, unreal.Vector(0, 350, 70), unreal.Rotator(0, 0, 0))
     ape.set_actor_label("B_Ape")
-    # The cars imported from Blender (Scripts/m80_import_blender_assets.py), further along the line.
-    for label, cls, y in (("C_Panda", "M80CarPanda", -1050), ("D_Fiat127", "M80CarFiat127", 1050), ("E_FiatUno", "M80CarFiatUno", -1750),
-                          ("F_Golf", "M80CarGolf", 1750), ("G_Vespa", "M80CarVespa", 2450)):
-        c = getattr(unreal, cls, None)
-        if c:
-            EAS.spawn_actor_from_class(c, unreal.Vector(0, y, 70), unreal.Rotator(0, 0, 0)).set_actor_label(label)
-    old = EAS.spawn_actor_from_class(unreal.EditorAssetLibrary.load_blueprint_class("/Game/Drive/AutoFake/OldCar"), unreal.Vector(-800, -900, 0),
-                                     unreal.Rotator(0, 0, 30))
-    old.set_actor_label("Auto_ferma_OldCar")
+    vespa = getattr(unreal, "M80CarVespa", None)
+    if vespa:
+        EAS.spawn_actor_from_class(vespa, unreal.Vector(0, 1050, 70), unreal.Rotator(0, 0, 0)).set_actor_label("C_Vespa")
     ws = m80_seq.editor_world().get_world_settings()
     ws.set_editor_property("default_game_mode", unreal.M80DriveTestGameMode)
     yield 10

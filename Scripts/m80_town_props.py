@@ -8,7 +8,7 @@
    with it (exclusion zones, "Disattiva").
 3. Neoclassic palaces (NeoClassic_house, built from the NeoclassicBuilding tiles) on a few long lots of
    the main streets: the procedural houses under the palace are switched off ("Disattiva").
-4. Parked along the Corso: the drivable Fiat 126 and Ape (MazzarinoVehicles) and the old car (prop).
+4. Parked along the Corso: the drivable Fiat 500 and Ape (MazzarinoVehicles) and the old car (prop).
 Placed actors carry the tag M80CommonProp and are replaced on every run.
 Env: M80_PROPS_MAP, M80_POSTER_CHANCE (0.22), M80_NEO_MAX (6).
 """
@@ -39,7 +39,7 @@ NEO_CLASS = "/Game/Migrated/Case/NeoClassic_house"
 NEO_SCALE = float(os.environ.get("M80_NEO_SCALE", "0.9"))
 NEO_BOX = (-133.0, -2446.0, 2233.0, 128.0)  # local XY bounds; the main front (door, round window) faces -Y
 # Drivable classes from the MazzarinoVehicles plugin, the old car is a parked prop.
-CARS = ["M80CarFiat126", "M80CarApe", "/Game/Drive/AutoFake/OldCar"]
+CARS = ["M80CarFiat500", "M80CarApe", "/Game/Drive/AutoFake/OldCar"]
 
 
 def trace(world, start, end):

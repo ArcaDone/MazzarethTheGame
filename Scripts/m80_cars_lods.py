@@ -16,7 +16,7 @@ import m80_seq  # noqa: E402
 
 ROOT = Path(unreal.Paths.project_dir())
 OUT = ROOT / "Saved/Mazzarino80/Vehicles/lods_report.json"
-MESHES = ["/Game/Drive/fiat126/fiat126", "/Game/Drive/ApeCar/ApeDrivable"]
+MESHES = ["/Game/Drive/ApeCar/ApeDrivable"]
 
 
 def run():

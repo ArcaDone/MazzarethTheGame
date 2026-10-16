@@ -71,14 +71,15 @@ CAST = {
 # flowered dress and tracksuit.
 V_SCARPE, A_SCARPE = "CS_V_Scarpe", "CS_A_Scarpe"
 CAST_FOLLA = {
-    "Anziano1": ("Folla", ["CS_V_Camicia", "CS_V_PantaloniMarroni", "Mantello", "Coppola", V_SCARPE], False),
+    # Our loft garments (cloak, shawl) look right standing but break up walking: City Sample ones instead, or none.
+    "Anziano1": ("Folla", ["CS_V_Camicia", "CS_V_Gilet", "CS_V_PantaloniMarroni", "Coppola", V_SCARPE], False),
     "Anziano2": ("Folla", ["CS_V_Festa", "CS_V_Pantaloni", "Coppola", V_SCARPE], False),
     "Anziano3": ("Folla", ["CS_V_Giacca", "CS_V_PantaloniMarroni", "Coppola", V_SCARPE], False),
     "Anziano4": ("Folla", ["CS_V_Gilet", "CS_V_Pantaloni", "Coppola", V_SCARPE], False),
-    "Anziana1": ("Folla", ["AbitoNero", "Fazzoletto", "Scialle", A_SCARPE], True),
-    "Anziana2": ("Folla", ["CS_A_Camicia", "CS_A_Gonna", "Scialle", "Fazzoletto", A_SCARPE], True),
+    "Anziana1": ("Folla", ["AbitoNero", "Fazzoletto", A_SCARPE], True),
+    "Anziana2": ("Folla", ["CS_A_Camicia", "CS_A_Gonna", "Fazzoletto", A_SCARPE], True),
     "Anziana3": ("Folla", ["AbitoNero", "Fazzoletto", A_SCARPE], True),
-    "Anziana4": ("Folla", ["CS_A_Dolcevita", "CS_A_Gonna", "Scialle", A_SCARPE], False),
+    "Anziana4": ("Folla", ["CS_A_Dolcevita", "CS_A_Gonna", A_SCARPE], False),
     "Uomo1": ("Folla", ["CS_U_Maglione", "CS_U_Pantaloni", "CS_U_Mocassini"], False),
     "Uomo2": ("Folla", ["CS_U_Quadri", "CS_U_Jeans", "CS_U_Mocassini"], False),
     "Uomo3": ("Folla", ["CS_U_Completo", "CS_U_PantaloniGrigi", "CS_U_Stringate"], False),

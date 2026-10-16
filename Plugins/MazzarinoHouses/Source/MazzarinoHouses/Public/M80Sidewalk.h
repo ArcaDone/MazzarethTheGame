@@ -122,6 +122,9 @@ public:
 	static void RefreshSnappedNear(UWorld* World, const FBox& Area);
 
 private:
+	/** Curbs, slabs or fill already built (saved with the level). */
+	bool HasGeometry() const;
+
 	struct FStation
 	{
 		FVector Pos;   // world, on the ground

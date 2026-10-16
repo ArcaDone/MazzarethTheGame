@@ -99,6 +99,9 @@ public:
 	void Rebuild();
 
 private:
+	/** Pieces or slab already built (saved with the level). */
+	bool HasGeometry() const;
+
 	/** A point of the centre line on the ground. */
 	struct FStation
 	{

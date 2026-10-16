@@ -203,6 +203,9 @@ public:
 	void Rebuild();
 
 private:
+	/** Steps already built (saved with the level). */
+	bool HasGeometry() const;
+
 	/** Height profile of the walking surface along the spline. */
 	struct FTread
 	{

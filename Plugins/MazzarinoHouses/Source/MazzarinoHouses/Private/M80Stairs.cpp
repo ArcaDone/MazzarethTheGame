@@ -281,7 +281,23 @@ AM80Stairs::AM80Stairs()
 void AM80Stairs::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
+	// In game (also Play in the editor, where streamed cells run construction again) the geometry built in the
+	// editor is kept: rebuilding there costs streaming time and traces ground that may not be loaded yet.
+	if (GetWorld() && GetWorld()->IsGameWorld() && HasGeometry())
+	{
+		return;
+	}
 	Rebuild();
+}
+
+bool AM80Stairs::HasGeometry() const
+{
+	int32 Triangles = 0;
+	if (Mesh)
+	{
+		Mesh->ProcessMesh([&Triangles](const UE::Geometry::FDynamicMesh3& M) { Triangles = M.TriangleCount(); });
+	}
+	return Triangles > 0;
 }
 
 double AM80Stairs::GroundAt(const FVector& World) const

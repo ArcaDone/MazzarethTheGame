@@ -50,7 +50,31 @@ AM80Sidewalk::AM80Sidewalk()
 void AM80Sidewalk::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
+	// In game (also Play in the editor, where streamed cells run construction again) the geometry built in the
+	// editor is kept: rebuilding there costs streaming time and traces ground that may not be loaded yet.
+	if (GetWorld() && GetWorld()->IsGameWorld() && HasGeometry())
+	{
+		return;
+	}
 	Rebuild();
+}
+
+bool AM80Sidewalk::HasGeometry() const
+{
+	TInlineComponentArray<USplineMeshComponent*> Pieces(this);
+	for (const USplineMeshComponent* C : Pieces)
+	{
+		if (C && C->ComponentHasTag(GeneratedTag))
+		{
+			return true;
+		}
+	}
+	int32 Triangles = 0;
+	if (Fill)
+	{
+		Fill->ProcessMesh([&Triangles](const UE::Geometry::FDynamicMesh3& Mesh) { Triangles = Mesh.TriangleCount(); });
+	}
+	return Triangles > 0;
 }
 
 double AM80Sidewalk::GroundZ(const FVector& World) const
@@ -362,8 +386,10 @@ void AM80Sidewalk::AddStrip(UStaticMesh* Mesh, UMaterialInterface* Material, con
 		const FVector TA = Tangent(i);
 		const FVector TB = Tangent(i + 1);
 		USplineMeshComponent* Seg = NewObject<USplineMeshComponent>(this, NAME_None, RF_Transactional);
-		Seg->CreationMethod = EComponentCreationMethod::UserConstructionScript;
+		// Instance, not construction script: the pieces are saved and survive construction running again.
+		Seg->CreationMethod = EComponentCreationMethod::Instance;
 		Seg->ComponentTags.Add(GeneratedTag);
+		AddInstanceComponent(Seg);
 		Seg->SetupAttachment(Path);
 		Seg->SetMobility(EComponentMobility::Static);
 		Seg->SetStaticMesh(Mesh);

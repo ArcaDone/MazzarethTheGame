@@ -43,7 +43,28 @@ AM80Road::AM80Road()
 void AM80Road::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
+	// In game (also Play in the editor, where streamed cells run construction again) the geometry built in the
+	// editor is kept: rebuilding there costs streaming time and traces ground that may not be loaded yet.
+	if (GetWorld() && GetWorld()->IsGameWorld() && HasGeometry())
+	{
+		return;
+	}
 	Rebuild();
+}
+
+bool AM80Road::HasGeometry() const
+{
+	TInlineComponentArray<USplineMeshComponent*> Pieces(this);
+	for (const USplineMeshComponent* C : Pieces)
+	{
+		if (C && C->ComponentHasTag(M80Rd::GeneratedTag))
+		{
+			return true;
+		}
+	}
+	int32 Triangles = 0;
+	Slab->ProcessMesh([&Triangles](const UE::Geometry::FDynamicMesh3& Mesh) { Triangles = Mesh.TriangleCount(); });
+	return Triangles > 0;
 }
 
 double AM80Road::GroundZ(const FVector& World) const
@@ -167,8 +188,10 @@ void AM80Road::BuildPieces(UStaticMesh* Mesh)
 	for (int32 i = 0; i < N; ++i)
 	{
 		USplineMeshComponent* Seg = NewObject<USplineMeshComponent>(this, NAME_None, RF_Transactional);
-		Seg->CreationMethod = EComponentCreationMethod::UserConstructionScript;
+		// Instance, not construction script: the pieces are saved and survive construction running again.
+		Seg->CreationMethod = EComponentCreationMethod::Instance;
 		Seg->ComponentTags.Add(M80Rd::GeneratedTag);
+		AddInstanceComponent(Seg);
 		Seg->SetupAttachment(Path);
 		Seg->SetMobility(EComponentMobility::Static);
 		Seg->SetStaticMesh(Mesh);

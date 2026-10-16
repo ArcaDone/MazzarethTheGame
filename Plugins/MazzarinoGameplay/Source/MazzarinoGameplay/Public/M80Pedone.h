@@ -103,6 +103,42 @@ private:
 	FVector Home = FVector::ZeroVector;
 };
 
+/**
+ * A crowd for a level: on Play it puts Quanti townspeople around the level's crowd markers (TargetPoints tagged
+ * M80Folla_..., as in L_M80_ProvaFolla) or, without markers, within Raggio of itself, taking the characters in turn.
+ */
+UCLASS(meta = (DisplayName = "Folla (Mazzarino)"))
+class MAZZARINOGAMEPLAY_API AM80Folla : public AActor
+{
+	GENERATED_BODY()
+
+public:
+	AM80Folla();
+
+	/** How many people. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Folla", meta = (ClampMin = "0", ClampMax = "300"))
+	int32 Quanti = 42;
+
+	/** The characters, in turn (each needs its build: Scripts/m80_folla_build.py). */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Folla")
+	TArray<FName> Personaggi;
+
+	/** Start around the M80Folla_ markers when there are any (otherwise within Raggio of this actor). */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Folla")
+	bool bUsaSegnaposto = true;
+
+	/** How far from this actor they start without markers, and how far each one wanders (cm). */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Folla")
+	float Raggio = 2500.f;
+
+	/** Same seed, same crowd in the same places. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Folla")
+	int32 Seme = 7;
+
+protected:
+	virtual void BeginPlay() override;
+};
+
 /** Walks its pedestrian to random reachable points around its starting place, stopping a few seconds at each. */
 UCLASS()
 class MAZZARINOGAMEPLAY_API AM80PedoneAI : public AAIController

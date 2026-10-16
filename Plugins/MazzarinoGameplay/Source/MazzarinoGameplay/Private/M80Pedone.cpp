@@ -4,7 +4,9 @@
 #include "Animation/AttributesRuntime.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Components/BillboardComponent.h"
 #include "Engine/BlueprintGeneratedClass.h"
+#include "Engine/TargetPoint.h"
 #include "Engine/Engine.h"
 #include "EngineUtils.h"
 #include "NavMesh/NavMeshBoundsVolume.h"
@@ -297,6 +299,69 @@ void AM80Pedone::Dress()
 		else if (S && S != Body && S != GetMesh())
 		{
 			S->AddTickPrerequisiteComponent(Body);   // the face
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------------------------
+// Crowd
+
+AM80Folla::AM80Folla()
+{
+	PrimaryActorTick.bCanEverTick = false;
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+#if WITH_EDITORONLY_DATA
+	if (UBillboardComponent* Icon = CreateEditorOnlyDefaultSubobject<UBillboardComponent>(TEXT("Icona")))
+	{
+		Icon->SetupAttachment(RootComponent);
+	}
+#endif
+	for (const TCHAR* Name : {TEXT("Anziano1"), TEXT("Anziana1"), TEXT("Uomo1"), TEXT("Donna1"), TEXT("Ragazzo1"), TEXT("Ragazza1"),
+							  TEXT("Anziano2"), TEXT("Anziana2"), TEXT("Uomo2"), TEXT("Donna2"), TEXT("Ragazzo2"), TEXT("Ragazza2"),
+							  TEXT("Anziano3"), TEXT("Anziana3"), TEXT("Uomo3"), TEXT("Donna3"), TEXT("Ragazzo3"), TEXT("Ragazza3"),
+							  TEXT("Anziano4"), TEXT("Anziana4"), TEXT("Uomo4")})
+	{
+		Personaggi.Add(Name);
+	}
+}
+
+void AM80Folla::BeginPlay()
+{
+	Super::BeginPlay();
+	if (Personaggi.IsEmpty())
+	{
+		return;
+	}
+	TArray<FVector> Spots;
+	if (bUsaSegnaposto)
+	{
+		for (TActorIterator<ATargetPoint> It(GetWorld()); It; ++It)
+		{
+			if (It->Tags.ContainsByPredicate([](const FName& T) { return T.ToString().StartsWith(TEXT("M80Folla_")); }))
+			{
+				Spots.Add(It->GetActorLocation());
+			}
+		}
+	}
+	FRandomStream Rand(Seme);
+	UNavigationSystemV1* Nav = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+	for (int32 i = 0; i < Quanti; ++i)
+	{
+		FVector At = Spots.Num() > 0
+			? Spots[Rand.RandRange(0, Spots.Num() - 1)] + FVector(Rand.FRandRange(-250.f, 250.f), Rand.FRandRange(-250.f, 250.f), 0.f)
+			: GetActorLocation() + FVector(Rand.GetUnitVector().GetSafeNormal2D() * Rand.FRandRange(0.f, Raggio));
+		FNavLocation OnNav;
+		if (Nav && Nav->ProjectPointToNavigation(At, OnNav, FVector(300.f, 300.f, 500.f)))
+		{
+			At = OnNav.Location;
+		}
+		const FTransform Where(FRotator(0.f, Rand.FRandRange(0.f, 360.f), 0.f), At + FVector(0.f, 0.f, 95.f));
+		AM80Pedone* P = GetWorld()->SpawnActorDeferred<AM80Pedone>(AM80Pedone::StaticClass(), Where, this, nullptr, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn);
+		if (P)
+		{
+			P->Personaggio = Personaggi[i % Personaggi.Num()];
+			P->Raggio = Raggio;
+			P->FinishSpawning(Where);
 		}
 	}
 }

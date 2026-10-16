@@ -6,6 +6,7 @@ Env M80_PASSI=0,21,42,63,84 (pedestrians at each step), M80_MISURA=6 (seconds me
 Out: Saved/Mazzarino80/Folla/Perf/perf.json + *.png
 powershell -File Scripts/run_editor_script.ps1 -Script Scripts/m80_folla_perf.py -ForceLit -TimeoutMinutes 40
 """
+import glob
 import json
 import math
 import os
@@ -29,7 +30,33 @@ CAST = ["Anziano1", "Anziana1", "Uomo1", "Donna1", "Ragazzo1", "Ragazza1", "Anzi
         "Uomo4"]
 STEPS = [int(x) for x in os.environ.get("M80_PASSI", "0,21,42,63,84").split(",")]
 MEASURE = float(os.environ.get("M80_MISURA", "6"))
+CSV_DIR = ROOT / "Saved/Profiling/CSV"
 HALF = 7000.0   # the floor of the test map is about 146 m across
+
+
+def summarize(csv_path):
+    """Means of the CSV profiler's main columns (as m80_termometro.py) and the heaviest game-thread parts."""
+    lines = Path(csv_path).read_text(encoding="utf-8", errors="ignore").splitlines()
+    header = lines[0].split(",")
+    rows = [line.split(",") for line in lines[1:] if line and not line.startswith("[")]
+
+    def mean(i):
+        vals = []
+        for r in rows:
+            try:
+                vals.append(float(r[i]))
+            except (IndexError, ValueError):
+                pass
+        return round(sum(vals) / len(vals), 2) if vals else None
+
+    out = {"csv_frames": len(rows)}
+    for column, key in {"FrameTime": "frame_ms", "GameThreadTime": "game_ms", "RenderThreadTime": "render_ms",
+                        "GPUTime": "gpu_ms", "RHI/DrawCalls": "draw_calls", "RHI/PrimitivesDrawn": "primitives"}.items():
+        if column in header:
+            out[key] = mean(header.index(column))
+    parts = [(c, mean(i)) for i, c in enumerate(header) if c.startswith("Exclusive/GameThread/")]
+    out["game_parts"] = sorted([p for p in parts if p[1]], key=lambda p: -p[1])[:12]
+    return out
 
 
 def now(world):
@@ -56,30 +83,34 @@ def look(world, pc, at, eye, name, report):
 
 
 def ensure_nav(report):
-    if list(unreal.GameplayStatics.get_all_actors_of_class(m80_seq.editor_world(), unreal.NavMeshBoundsVolume)):
+    world = m80_seq.editor_world()
+    if list(unreal.GameplayStatics.get_all_actors_of_class(world, unreal.NavMeshBoundsVolume)):
         report["nav"] = "present"
-        return
-    vol = EAS.spawn_actor_from_class(unreal.NavMeshBoundsVolume, V(0, 0, 300))
-    vol.set_actor_scale3d(V(HALF * 2 / 200.0, HALF * 2 / 200.0, 1500 / 200.0))
-    vol.set_actor_label("Navigazione_Folla")
-    report["nav"] = "made"
-
-
-def spawn(world, name, rng, report):
-    nav = unreal.NavigationSystemV1.get_navigation_system(world)
-    for _ in range(10):
-        p = unreal.NavigationSystemV1.get_random_reachable_point_in_radius(world, V(0, 0, 0), HALF * 0.8)
-        loc = p[1] if isinstance(p, tuple) else p
-        if loc and (abs(loc.x) + abs(loc.y)) > 1:
-            break
     else:
-        loc = V(rng.uniform(-3000, 3000), rng.uniform(-3000, 3000), 0)
+        vol = EAS.spawn_actor_from_class(unreal.NavMeshBoundsVolume, V(0, 0, 300))
+        vol.set_actor_scale3d(V(HALF * 2 / 200.0, HALF * 2 / 200.0, 1500 / 200.0))
+        vol.set_actor_label("Navigazione_Folla")
+        report["nav"] = "made"
+    # Built now and saved with the level: Play has the navigation mesh from the start.
+    report["nav_built"] = unreal.M80Pedone.build_navigation(world)
+
+
+def spots():
+    """Where people start: around the square's marker points (tables, chairs, groups, the walk, the games)."""
+    world = m80_seq.editor_world()
+    out = []
+    for tag in ("M80Folla_Giro", "M80Folla_Gruppo", "M80Folla_Gioco", "M80Folla_Sedia", "M80Folla_Tavolo"):
+        out += [a.get_actor_location() for a in unreal.GameplayStatics.get_all_actors_with_tag(world, tag)]
+    return out or [V(0, 0, 0)]
+
+
+def spawn(world, name, rng, where, report):
+    base = rng.choice(where)
+    loc = V(base.x + rng.uniform(-250, 250), base.y + rng.uniform(-250, 250), base.z)
     t = unreal.Transform(loc + V(0, 0, 95), unreal.Rotator(0, 0, rng.uniform(0, 360)))
-    a = unreal.GameplayStatics.begin_deferred_actor_spawn_from_class(
-        world, unreal.M80Pedone, t, unreal.SpawnActorCollisionHandlingMethod.ADJUST_IF_POSSIBLE_BUT_ALWAYS_SPAWN)
-    a.set_editor_property("personaggio", name)
-    unreal.GameplayStatics.finish_spawning_actor(a, t)
-    report["nav_system"] = bool(nav)
+    a = unreal.M80Pedone.spawn_pedone(world, name, t)
+    if not a:
+        report.setdefault("spawn_failed", []).append(name)
     return a
 
 
@@ -91,10 +122,11 @@ def run():
     unreal.EditorLoadingAndSavingUtils.load_map(MAP)
     yield 60
     ensure_nav(report)
-    yield 600 if report["nav"] == "made" else 30
-    if report["nav"] == "made":
-        unreal.EditorLoadingAndSavingUtils.save_current_level()
-        yield 10
+    yield 30
+    unreal.EditorLoadingAndSavingUtils.save_current_level()
+    yield 10
+    where = spots()
+    report["spots"] = len(where)
     unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).editor_request_begin_play()
     yield 300
     world = unreal.EditorLevelLibrary.get_game_world()
@@ -108,7 +140,7 @@ def run():
     people = []
     for n in STEPS:
         while len(people) < n:
-            people.append(spawn(world, CAST[len(people) % len(CAST)], rng, report))
+            people.append(spawn(world, CAST[len(people) % len(CAST)], rng, where, report))
             if len(people) % 7 == 0:
                 yield 1
         # Settle (streaming, first paths), then measure.
@@ -124,11 +156,19 @@ def run():
             frames.append(t - last)
             last = t
         frames.sort()
+        people = [a for a in people if a]
         walking = sum(1 for a in people if a.get_velocity().length() > 20)
         step = {"people": len(people), "walking": walking, "frames": len(frames),
                 "ms_mean": round(1000 * sum(frames) / max(1, len(frames)), 2),
                 "ms_p95": round(1000 * frames[int(len(frames) * 0.95)], 2) if frames else None}
         step["fps"] = round(1000 / step["ms_mean"], 1) if step["ms_mean"] else None
+        before = set(glob.glob(str(CSV_DIR / "*.csv")))
+        unreal.SystemLibrary.execute_console_command(world, "csvprofile start")
+        yield 120
+        unreal.SystemLibrary.execute_console_command(world, "csvprofile stop")
+        yield 60
+        new = [p for p in glob.glob(str(CSV_DIR / "*.csv")) if p not in before]
+        step.update(summarize(max(new, key=os.path.getmtime)) if new else {"csv": "none"})
         report["steps"].append(step)
         (OUT / "perf.json").write_text(json.dumps(report, indent=1, default=str), encoding="utf-8")
         if len(people) >= 21 and "foto" not in report:

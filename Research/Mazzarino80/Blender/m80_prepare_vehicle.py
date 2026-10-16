@@ -1,7 +1,7 @@
 """Blender 4.3: clean, optimise and export one asset of D:/Blender/AssetsMazzarethTheGame for Unreal.
 
 Run: blender -b <file.blend> --python m80_prepare_vehicle.py -- <key> <out_dir>
-key: Panda | Fiat127 | FiatUno | Golf | Vespa | Poste | Comune | ChiesaComune | Matrice | Castello | Madonna |
+key: Fiat500 | Vespa | Poste | Comune | ChiesaComune | Matrice | Castello | Madonna |
      Cassonetto | Tombino (see ASSETS)
 
 What it does (the source .blend is never saved):
@@ -37,11 +37,11 @@ KEY, OUT = ARGS[0], ARGS[1]
 
 # Real sizes: length bumper to bumper (m). Budgets in triangles.
 ASSETS = {
-    "Panda": {"kind": "car", "length": 3.38, "front": 1},
-    "Fiat127": {"kind": "car", "length": 3.595},
-    "FiatUno": {"kind": "car", "length": 3.645},
-    "Golf": {"kind": "car", "length": 3.705},
     "Vespa": {"kind": "bike", "length": 1.77},
+    # The downloaded 1965 500 F (Research/Mazzarino80/Blender/m80_fiat500_sorgente.py makes its .blend): the town's
+    # common car, so lighter than the others.
+    "Fiat500": {"kind": "car", "length": 2.97, "budget": 40000, "straight": True,   # one door mirror tilts the PCA
+                "wheel_slack": 0.8},   # the steering box on the left would join the left front wheel
     "Poste": {"kind": "building", "scale": 1.0, "split": ["Antenna"]},   # the radio mast is its own mesh
     # Town buildings (Comune and its church are stand-ins until the user rebuilds the Comune).
     "Comune": {"kind": "building", "density": 1500, "budget": 0},
@@ -60,7 +60,7 @@ ASSETS = {
     "Tombino": {"kind": "building", "scale": 0.1},
 }
 CFG = ASSETS[KEY]
-BODY_BUDGET = 70000 if CFG["kind"] == "car" else (50000 if CFG["kind"] == "bike" else CFG.get("budget", 600000))
+BODY_BUDGET = CFG.get("budget", 70000) if CFG["kind"] == "car" else (50000 if CFG["kind"] == "bike" else CFG.get("budget", 600000))
 WHEEL_BUDGET = 5000
 MAX_TEX = 2048
 MAX_NORMAL_TEX = 1024   # normal maps of small details (lights, leather): 1K is plenty
@@ -347,7 +347,8 @@ def build_vehicle(meshes):
     count = 4 if CFG["kind"] == "car" else 2
     # Tyres made of many loose pieces: look at whole objects first, after straightening them all.
     body = join(meshes, "Body")
-    straighten(body)
+    if not CFG.get("straight"):
+        straighten(body)
     parts = separate_loose(body)
     log("loose parts", len(parts))
     wheels = find_wheels(parts, count)
@@ -378,7 +379,7 @@ def build_vehicle(meshes):
         for i, (wc, r, wd, ax) in enumerate(wheels):
             d_plane = math.hypot(c[length_axis] - wc[length_axis], c[2] - wc[2])
             d_axle = abs(c[axle] - wc[axle])
-            if d_plane + 0.5 * max(ext[length_axis], ext[2]) <= 1.08 * r and d_axle <= 1.6 * wd + 0.02:
+            if d_plane + 0.5 * max(ext[length_axis], ext[2]) <= 1.08 * r and d_axle <= CFG.get("wheel_slack", 1.6) * wd + 0.02:
                 owner = i
                 break
         if owner is None and float(lo[2]) < ground0 - 0.1 * r_min:

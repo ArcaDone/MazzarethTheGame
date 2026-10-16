@@ -86,6 +86,14 @@ public:
 	float GetHunch() const { return Hunch >= 0.f ? Hunch : (IsOld() ? 22.f : 0.f); }
 	FVector GetHome() const { return Home; }
 
+	/** Spawns a townsperson already set to InPersonaggio (it dresses on BeginPlay, so the name must come first). */
+	UFUNCTION(BlueprintCallable, Category = "Pedone", meta = (WorldContext = "WorldContext"))
+	static AM80Pedone* SpawnPedone(UObject* WorldContext, FName InPersonaggio, const FTransform& Where);
+
+	/** Builds the navigation mesh inside the world's NavMeshBoundsVolumes now (creating it if missing); false if none. */
+	UFUNCTION(BlueprintCallable, Category = "Pedone", meta = (WorldContext = "WorldContext"))
+	static bool BuildNavigation(UObject* WorldContext);
+
 protected:
 	virtual void BeginPlay() override;
 

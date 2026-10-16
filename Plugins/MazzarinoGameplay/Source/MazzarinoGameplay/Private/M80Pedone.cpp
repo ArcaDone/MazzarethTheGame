@@ -5,6 +5,9 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/BlueprintGeneratedClass.h"
+#include "Engine/Engine.h"
+#include "EngineUtils.h"
+#include "NavMesh/NavMeshBoundsVolume.h"
 #include "Engine/SCS_Node.h"
 #include "Engine/SimpleConstructionScript.h"
 #include "Engine/SkeletalMesh.h"
@@ -118,18 +121,23 @@ bool FM80PedoneProxy::Evaluate(FPoseContext& Output)
 		Output.Pose[I] = T;
 	}
 	Output.Curve.InitFrom(CB);
-	// Old people: the back bent forward (more in the upper back), the head lifted to look ahead.
+	// Old people: the back bent forward (more in the upper back), the head lifted to look ahead. A positive turn about
+	// CSLeft swings a bone hanging down forward (the arms in M80OverlayAnim), so it tips a bone pointing up backward.
 	if (Hunch > 0.f)
 	{
-		Rotate(Output, TEXT("spine_02"), CSLeft, Hunch * 0.2f);
-		Rotate(Output, TEXT("spine_03"), CSLeft, Hunch * 0.3f);
-		Rotate(Output, TEXT("spine_04"), CSLeft, Hunch * 0.3f);
-		Rotate(Output, TEXT("spine_05"), CSLeft, Hunch * 0.2f);
-		Rotate(Output, TEXT("neck_01"), CSLeft, -Hunch * 0.45f);
-		Rotate(Output, TEXT("head"), CSLeft, -Hunch * 0.35f);
-		// Knees a little bent, as old people walk.
-		Rotate(Output, TEXT("calf_l"), CSLeft, Hunch * 0.25f);
-		Rotate(Output, TEXT("calf_r"), CSLeft, Hunch * 0.25f);
+		Rotate(Output, TEXT("spine_02"), CSLeft, -Hunch * 0.2f);
+		Rotate(Output, TEXT("spine_03"), CSLeft, -Hunch * 0.3f);
+		Rotate(Output, TEXT("spine_04"), CSLeft, -Hunch * 0.3f);
+		Rotate(Output, TEXT("spine_05"), CSLeft, -Hunch * 0.2f);
+		Rotate(Output, TEXT("neck_01"), CSLeft, Hunch * 0.45f);
+		Rotate(Output, TEXT("head"), CSLeft, Hunch * 0.35f);
+		// Knees a little bent, as old people walk: thighs forward, shins back, feet level again.
+		for (const TCHAR* Side : {TEXT("_l"), TEXT("_r")})
+		{
+			Rotate(Output, FName(FString(TEXT("thigh")) + Side), CSLeft, Hunch * 0.15f);
+			Rotate(Output, FName(FString(TEXT("calf")) + Side), CSLeft, -Hunch * 0.3f);
+			Rotate(Output, FName(FString(TEXT("foot")) + Side), CSLeft, Hunch * 0.15f);
+		}
 	}
 	return true;
 }
@@ -176,6 +184,40 @@ void AM80Pedone::BeginPlay()
 	Dress();
 }
 
+AM80Pedone* AM80Pedone::SpawnPedone(UObject* WorldContext, FName InPersonaggio, const FTransform& Where)
+{
+	UWorld* World = GEngine->GetWorldFromContextObject(WorldContext, EGetWorldErrorMode::LogAndReturnNull);
+	if (!World)
+	{
+		return nullptr;
+	}
+	AM80Pedone* P = World->SpawnActorDeferred<AM80Pedone>(StaticClass(), Where, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn);
+	if (P)
+	{
+		P->Personaggio = InPersonaggio;
+		P->FinishSpawning(Where);
+	}
+	return P;
+}
+
+bool AM80Pedone::BuildNavigation(UObject* WorldContext)
+{
+	UWorld* World = GEngine->GetWorldFromContextObject(WorldContext, EGetWorldErrorMode::LogAndReturnNull);
+	UNavigationSystemV1* Nav = World ? FNavigationSystem::GetCurrent<UNavigationSystemV1>(World) : nullptr;
+	if (!Nav)
+	{
+		return false;
+	}
+	for (TActorIterator<ANavMeshBoundsVolume> It(World); It; ++It)
+	{
+		Nav->OnNavigationBoundsUpdated(*It);
+	}
+	// A map just opened by a script is still under the async loading lock, which makes Build() do nothing.
+	Nav->RemoveNavigationBuildLock(ENavigationBuildLock::AsyncLoadLock, UNavigationSystemV1::ELockRemovalRebuildAction::NoRebuild);
+	Nav->Build();
+	return Nav->IsNavigationBuilt(World->GetWorldSettings());
+}
+
 void AM80Pedone::Dress()
 {
 	const FString Name = Personaggio.ToString();
@@ -192,6 +234,15 @@ void AM80Pedone::Dress()
 	TMap<FName, USceneComponent*> Made;
 	USkeletalMeshComponent* Body = nullptr;
 	TArray<USCS_Node*> Nodes = Look->SimpleConstructionScript->GetAllNodes();
+	// The tree is in each node's children (ParentComponentOrVariableName only names parents from a parent class).
+	TMap<USCS_Node*, USCS_Node*> ParentOf;
+	for (USCS_Node* Node : Nodes)
+	{
+		for (USCS_Node* Child : Node ? Node->GetChildNodes() : TArray<USCS_Node*>())
+		{
+			ParentOf.Add(Child, Node);
+		}
+	}
 	// Parents first: the construction script lists them in order of the tree.
 	for (USCS_Node* Node : Nodes)
 	{
@@ -211,7 +262,8 @@ void AM80Pedone::Dress()
 			continue;
 		}
 		USceneComponent* C = NewObject<USceneComponent>(this, Template->GetClass(), Node->GetVariableName(), RF_NoFlags, Template);
-		USceneComponent* const* Parent = Made.Find(Node->ParentComponentOrVariableName);
+		USCS_Node* const* ParentNode = ParentOf.Find(Node);
+		USceneComponent* const* Parent = ParentNode ? Made.Find((*ParentNode)->GetVariableName()) : nullptr;
 		C->SetupAttachment(Parent ? *Parent : GetMesh(), Node->AttachToName);
 		Made.Add(Node->GetVariableName(), C);
 		if (USkeletalMeshComponent* S = Cast<USkeletalMeshComponent>(C))
@@ -221,6 +273,8 @@ void AM80Pedone::Dress()
 			if (Node->GetVariableName() == TEXT("Body"))
 			{
 				Body = S;
+				// ABP_GenericRetarget picks its IK Retargeter by the component's first tag; without one it does not move.
+				S->ComponentTags.Insert(TEXT("RTG_UEFN_to_Metahuman_nrw"), 0);
 				S->SetAnimInstanceClass(RetargetAnim);
 				S->SetRelativeTransform(FTransform::Identity);
 			}

@@ -282,6 +282,10 @@ private:
 	float LookIdle = 0.f;
 	bool bClose = false;
 	float UpsideDownTime = 0.f;
+	/** Without a driver and with no ground streamed in under it, the body is held still (not simulated). */
+	void HoldWithoutGround();
+	float GroundCheck = 0.f;
+	bool bHeldNoGround = false;
 	float WheelbaseCm = 220.f;
 	float GripG = 0.85f;
 	bool bHandbrakeHeld = false;

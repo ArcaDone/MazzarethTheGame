@@ -129,6 +129,11 @@ UM80WheelVespaRear::UM80WheelVespaRear() { SetupWheel(this, EAxleType::Rear, WHE
 AM80Car::AM80Car()
 {
 	PrimaryActorTick.bCanEverTick = true;
+#if WITH_EDITORONLY_DATA
+	// World Partition: a car is driven away from where it was parked; tied to that cell it would be unloaded
+	// under the player ~200 m later (the camera stops, the car rolls on without a driver).
+	bIsSpatiallyLoaded = false;
+#endif
 	// Parked cars stay without a controller until the player gets in (no AI driver by default).
 	AutoPossessAI = EAutoPossessAI::Disabled;
 
@@ -660,6 +665,15 @@ void AM80Car::Tick(float DeltaSeconds)
 		}
 	}
 
+	// Cars are always loaded (see the constructor): parked away from the player, the ground under one can be
+	// streamed out or not in yet, and it would fall through the world.
+	GroundCheck -= DeltaSeconds;
+	if (GroundCheck <= 0.f || (bHeldNoGround && GetController()))
+	{
+		GroundCheck = 0.5f;
+		HoldWithoutGround();
+	}
+
 	UpdateCart(DeltaSeconds);
 	StabilityAssist(DeltaSeconds);
 	KeepUpright(DeltaSeconds);
@@ -689,6 +703,26 @@ void AM80Car::Tick(float DeltaSeconds)
 	else
 	{
 		UpsideDownTime = 0.f;
+	}
+}
+
+void AM80Car::HoldWithoutGround()
+{
+	USkeletalMeshComponent* Body = GetMesh();
+	const FVector At = GetActorLocation();
+	FHitResult Hit;
+	const FCollisionQueryParams Params(SCENE_QUERY_STAT(M80CarGround), false, this);
+	const bool bGround = GetController() || GetWorld()->LineTraceSingleByObjectType(Hit, At + FVector(0, 0, 200), At - FVector(0, 0, 5000),
+		FCollisionObjectQueryParams(ECC_WorldStatic), Params);
+	if (!bGround && !bHeldNoGround && Body->IsSimulatingPhysics())
+	{
+		Body->SetSimulatePhysics(false);
+		bHeldNoGround = true;
+	}
+	else if (bGround && bHeldNoGround)
+	{
+		Body->SetSimulatePhysics(true);
+		bHeldNoGround = false;
 	}
 }
 

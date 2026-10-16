@@ -10,6 +10,10 @@ as MetaHuman parametric outfits, in /Game/Mazzarino80/Personaggi/Vestiti/<Key>/:
 - OA_M80_<Key>: a resizable outfit asset (Epic's MakeResizableOutfitTemplate graph) with one size, the cloth asset on
   its source body (the full body m80_vestiti_sonda.py exported), that the Creator fits to any other body;
 - WI_M80_<Key>: the wardrobe item the MetaHuman Characters wear it through.
+Garments from City Sample (Research/Mazzarino80/Blender/m80_citysample_vesti.py, "citysample" in their JSON) wear
+instances of Materiali/M_M80_StoffaCS instead: the same fabric, tiled ColoreScala times over their UV atlas, plus the
+garment's own normal map (seams, wrinkles, buttons) and occlusion (packed A, red), imported once into
+Vestiti/CitySample from Saved/Mazzarino80/CitySample/tex (exported by Scripts/m80_citysample_export.py).
 Env M80_VESTITI=Key1,Key2 (default all). Report: Saved/Mazzarino80/Folla/Vestiti/import_report.json
 powershell -File Scripts/run_editor_script.ps1 -Script Scripts/m80_vestiti_import.py
 """
@@ -33,6 +37,10 @@ TOOLS = unreal.AssetToolsHelpers.get_asset_tools()
 LIB = unreal.M80EditorLibrary
 LODS = ["", "_LOD1", "_LOD2", "_LOD3"]
 MASTER = DEST + "/Materiali/M_M80_Stoffa"
+MASTER_CS = DEST + "/Materiali/M_M80_StoffaCS"
+CS_TEX_SRC = ROOT / "Saved/Mazzarino80/CitySample/tex"
+CS_TEX = DEST + "/CitySample"
+BLEND_NORMALS = "/Engine/Functions/Engine_MaterialFunctions02/Utility/BlendAngleCorrectedNormals"
 MICROS = "/MetaHumanCharacter/Optional/Clothing/Common/Materials/Textures/Clothing/Micros/"
 MEL = unreal.MaterialEditingLibrary
 # Fabric by the Blender material's name prefix: roughness, specular, fuzz (Cloth pin), fuzz colour as a multiple of the
@@ -139,6 +147,142 @@ def master():
     return m
 
 
+def master_cs():
+    """M_M80_StoffaCS: M_M80_Stoffa for City Sample garments. Colore tiled ColoreScala times per UV unit (their UVs
+    are an atlas), darkened in the folds by Pieghe (red: occlusion) by OcclusioneForza; the garment's NormaleCapo
+    with the micro weave (tiled DettaglioScala) blended on top; Cloth shading, fuzz, two-sided."""
+    if EAL.does_asset_exist(MASTER_CS):
+        return unreal.load_asset(MASTER_CS)
+    folder, name = MASTER_CS.rsplit("/", 1)
+    m = TOOLS.create_asset(name, folder, unreal.Material, unreal.MaterialFactoryNew())
+    m.set_editor_property("shading_model", unreal.MaterialShadingModel.MSM_CLOTH)
+    m.set_editor_property("two_sided", True)
+    m.set_editor_property("used_with_skeletal_mesh", True)
+
+    def expr(cls, x, y, **props):
+        e = MEL.create_material_expression(m, cls, x, y)
+        for k, v in props.items():
+            e.set_editor_property(k, v)
+        return e
+
+    def scalar(name, value, x, y):
+        return expr(unreal.MaterialExpressionScalarParameter, x, y, parameter_name=name, default_value=value)
+
+    def tiled(name, value, x, y):
+        uv = expr(unreal.MaterialExpressionTextureCoordinate, x - 200, y)
+        mul = expr(unreal.MaterialExpressionMultiply, x, y)
+        MEL.connect_material_expressions(uv, "", mul, "A")
+        MEL.connect_material_expressions(scalar(name, value, x - 200, y + 80), "", mul, "B")
+        return mul
+
+    white = unreal.load_asset("/Engine/EngineResources/WhiteSquareTexture")
+    colour = expr(unreal.MaterialExpressionTextureSampleParameter2D, -900, -400, parameter_name="Colore", texture=white)
+    MEL.connect_material_expressions(tiled("ColoreScala", 10.0, -1100, -400), "", colour, "UVs")
+    tint = expr(unreal.MaterialExpressionVectorParameter, -900, -200, parameter_name="Tinta",
+                default_value=unreal.LinearColor(1, 1, 1, 1))
+    tinted = expr(unreal.MaterialExpressionMultiply, -650, -350)
+    MEL.connect_material_expressions(colour, "RGB", tinted, "A")
+    MEL.connect_material_expressions(tint, "", tinted, "B")
+    folds = expr(unreal.MaterialExpressionTextureSampleParameter2D, -900, -50, parameter_name="Pieghe",
+                 sampler_type=unreal.MaterialSamplerType.SAMPLERTYPE_MASKS, texture=white)
+    occl = expr(unreal.MaterialExpressionLinearInterpolate, -650, -100)
+    one = expr(unreal.MaterialExpressionConstant, -800, -150)
+    one.set_editor_property("r", 1.0)
+    MEL.connect_material_expressions(one, "", occl, "A")
+    MEL.connect_material_expressions(folds, "R", occl, "B")
+    MEL.connect_material_expressions(scalar("OcclusioneForza", 0.8, -800, 50), "", occl, "Alpha")
+    base = expr(unreal.MaterialExpressionMultiply, -450, -250)
+    MEL.connect_material_expressions(tinted, "", base, "A")
+    MEL.connect_material_expressions(occl, "", base, "B")
+    MEL.connect_material_property(base, "", unreal.MaterialProperty.MP_BASE_COLOR)
+    MEL.connect_material_property(occl, "", unreal.MaterialProperty.MP_AMBIENT_OCCLUSION)
+    fuzz_mul = expr(unreal.MaterialExpressionMultiply, -300, 0)
+    MEL.connect_material_expressions(base, "", fuzz_mul, "A")
+    MEL.connect_material_expressions(scalar("FuzzMolt", 1.3, -450, 50), "", fuzz_mul, "B")
+    fuzz = expr(unreal.MaterialExpressionAdd, -150, 0)
+    MEL.connect_material_expressions(fuzz_mul, "", fuzz, "A")
+    MEL.connect_material_expressions(scalar("FuzzAggiunta", 0.012, -300, 100), "", fuzz, "B")
+    MEL.connect_material_property(fuzz, "", unreal.MaterialProperty.MP_SUBSURFACE_COLOR)
+    LIB.connect_material_input(scalar("Fuzz", 0.5, -150, 150), "", "MP_CustomData0")
+    MEL.connect_material_property(scalar("Ruvidita", 0.9, -150, 220), "", unreal.MaterialProperty.MP_ROUGHNESS)
+    MEL.connect_material_property(scalar("Specular", 0.25, -150, 290), "", unreal.MaterialProperty.MP_SPECULAR)
+    # Normals: the garment's own, then the micro weave on top.
+    garment_n = expr(unreal.MaterialExpressionTextureSampleParameter2D, -900, 400, parameter_name="NormaleCapo",
+                     sampler_type=unreal.MaterialSamplerType.SAMPLERTYPE_NORMAL,
+                     texture=unreal.load_asset("/Engine/EngineMaterials/FlatNormal"))
+    micro = expr(unreal.MaterialExpressionTextureSampleParameter2D, -900, 650, parameter_name="DettaglioNormale",
+                 sampler_type=unreal.MaterialSamplerType.SAMPLERTYPE_NORMAL,
+                 texture=unreal.load_asset(MICROS + "micro_weave_plain_normal"))
+    MEL.connect_material_expressions(tiled("DettaglioScala", 24.0, -1100, 650), "", micro, "UVs")
+    flat = expr(unreal.MaterialExpressionConstant3Vector, -700, 800, constant=unreal.LinearColor(0, 0, 1, 1))
+    micro_mix = expr(unreal.MaterialExpressionLinearInterpolate, -550, 700)
+    MEL.connect_material_expressions(flat, "", micro_mix, "A")
+    MEL.connect_material_expressions(micro, "RGB", micro_mix, "B")
+    MEL.connect_material_expressions(scalar("DettaglioForza", 0.8, -700, 900), "", micro_mix, "Alpha")
+    blend = expr(unreal.MaterialExpressionMaterialFunctionCall, -300, 500)
+    blend.set_material_function(unreal.load_asset(BLEND_NORMALS))
+    MEL.connect_material_expressions(garment_n, "RGB", blend, "BaseNormal")
+    MEL.connect_material_expressions(micro_mix, "", blend, "AdditionalNormal")
+    MEL.connect_material_property(blend, "", unreal.MaterialProperty.MP_NORMAL)
+    MEL.recompile_material(m)
+    EAL.save_loaded_asset(m, False)
+    return m
+
+
+def cs_texture(file_name, normal):
+    """A City Sample texture (TGA from Saved/Mazzarino80/CitySample/tex), imported once into Vestiti/CitySample."""
+    if not file_name:
+        return None
+    stem = file_name.rsplit(".", 1)[0]
+    path = "%s/%s" % (CS_TEX, stem)
+    if EAL.does_asset_exist(path):
+        return unreal.load_asset(path)
+    t = unreal.AssetImportTask()
+    t.set_editor_property("filename", str(CS_TEX_SRC / file_name))
+    t.set_editor_property("destination_path", CS_TEX)
+    t.set_editor_property("automated", True)
+    t.set_editor_property("replace_existing", True)
+    t.set_editor_property("save", False)
+    TOOLS.import_asset_tasks([t])
+    tex = unreal.load_asset(path)
+    if tex:
+        tex.set_editor_property("srgb", False)
+        tex.set_editor_property("compression_settings", unreal.TextureCompressionSettings.TC_NORMALMAP if normal
+                                else unreal.TextureCompressionSettings.TC_MASKS)
+        EAL.save_loaded_asset(tex, False)
+    return tex
+
+
+def fabric_instance_cs(parent, mat_name, texture, cs, dest):
+    """An instance of M_M80_StoffaCS: our fabric preset by name, tiled over the atlas, with the garment's maps."""
+    kind = next((k for k in FABRICS if mat_name.startswith(k)), "Lana")
+    rough, spec, fuzz, fuzz_mul, fuzz_add, micro, scale, strength = FABRICS[kind]
+    path = "%s/MI_M80_%s" % (dest, mat_name)
+    if EAL.does_asset_exist(path):
+        EAL.delete_asset(path)
+    mi = TOOLS.create_asset(path.rsplit("/", 1)[1], dest, unreal.MaterialInstanceConstant,
+                            unreal.MaterialInstanceConstantFactoryNew())
+    mi.set_editor_property("parent", parent)
+    if texture:
+        MEL.set_material_instance_texture_parameter_value(mi, "Colore", texture)
+    # Micro weave: the presets repeat `scale` times per 25 cm (our UV tile); here per UV unit of the atlas.
+    values = (("Ruvidita", rough), ("Specular", spec), ("Fuzz", fuzz), ("FuzzMolt", fuzz_mul), ("FuzzAggiunta", fuzz_add),
+              ("DettaglioScala", scale * cs["metres_per_uv"] / 0.25), ("DettaglioForza", strength),
+              ("ColoreScala", cs["colour_scale"]))
+    for name, value in values:
+        MEL.set_material_instance_scalar_parameter_value(mi, name, value)
+    if micro:
+        MEL.set_material_instance_texture_parameter_value(mi, "DettaglioNormale", unreal.load_asset(MICROS + micro))
+    normal = cs_texture(cs.get("normal"), True)
+    if normal:
+        MEL.set_material_instance_texture_parameter_value(mi, "NormaleCapo", normal)
+    packed = cs_texture(cs.get("packed"), False)
+    if packed:
+        MEL.set_material_instance_texture_parameter_value(mi, "Pieghe", packed)
+    EAL.save_loaded_asset(mi, False)
+    return mi
+
+
 def fabric_instance(parent, mat_name, texture, dest):
     kind = next((k for k in FABRICS if mat_name.startswith(k)), "Lana")
     rough, spec, fuzz, fuzz_mul, fuzz_add, micro, scale, strength = FABRICS[kind]
@@ -198,11 +342,20 @@ def run():
             TOOLS.import_asset_tasks([t])
             a = unreal.load_asset("%s/%s" % (dest, png.stem))
             if a:
+                # A plain light blue looks like a normal map to the importer's guess, which then keeps only red and
+                # green (the shirt came out yellow): fabric textures are colours.
+                a.set_editor_property("compression_settings", unreal.TextureCompressionSettings.TC_DEFAULT)
+                a.set_editor_property("srgb", True)
                 LIB.compress_texture_source_jpeg(a, 90)
                 textures[a.get_name()] = a
         # Every LOD wears the fabric instances (the FBX import's own Phong instances are left unused).
-        parent = master()
-        mats = [fabric_instance(parent, n, textures.get("T_M80_%s_%s" % (key, n)), dest) for n in names]
+        cs = info.get("citysample")
+        if cs:
+            parent = master_cs()
+            mats = [fabric_instance_cs(parent, n, textures.get("T_M80_%s_%s" % (key, n)), cs[n], dest) for n in names]
+        else:
+            parent = master()
+            mats = [fabric_instance(parent, n, textures.get("T_M80_%s_%s" % (key, n)), dest) for n in names]
         rep["materials"] = [m.get_name() for m in mats]
         rep["textures"] = sorted(textures)
         for m in meshes:

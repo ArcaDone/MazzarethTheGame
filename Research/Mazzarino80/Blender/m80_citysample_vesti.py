@@ -41,10 +41,30 @@ LAYERS = {
     "CS_CamiciaGiacca": [("CS_Pantaloni", None, "Lana_Giacca")],
     "CS_Gonna": [("CS_Camicetta", None, None)],
 }
+# The crowd: shirts tucked in; jumpers, waistcoats, jackets and open shirts over the trousers (pairs worn together).
+OLD_TROUSERS = ["CS_V_Pantaloni", "CS_V_PantaloniMarroni"]
+for _k in OLD_TROUSERS:
+    LAYERS[_k] = [("CS_V_Camicia", None, None)] + [(k, "Cotone_Camicia", None) for k in ("CS_V_Festa", "CS_V_Giacca", "CS_V_Gilet")]
+LAYERS["CS_V_Festa"] = [(k, None, slot) for k in OLD_TROUSERS for slot in ("Lana_Gilet", "Lana_Giacca")]
+LAYERS["CS_V_Giacca"] = [(k, None, "Lana_Giacca") for k in OLD_TROUSERS]
+LAYERS["CS_V_Gilet"] = [(k, None, "Lana_Gilet") for k in OLD_TROUSERS]
+LAYERS["CS_A_Gonna"] = [("CS_A_Camicia", None, None), ("CS_A_Dolcevita", None, None)]
+LAYERS["CS_U_PantaloniGrigi"] = [("CS_U_Completo", "Cotone_Camicia", None)]
+LAYERS["CS_U_Completo"] = [("CS_U_PantaloniGrigi", None, "Lana_Giacca")]
+LAYERS["CS_U_Dolcevita"] = [("CS_U_PantaloniGrigi", None, None)]
+LAYERS["CS_U_Maglione"] = [("CS_U_Pantaloni", None, None)]
+LAYERS["CS_U_Quadri"] = [("CS_U_Jeans", None, None)]
+LAYERS["CS_R_Maglione"] = [("CS_R_Jeans", None, None)]
+LAYERS["CS_R_Camicia"] = [("CS_R_Jeans", None, None)]
+LAYERS["CS_D_Dolcevita"] = [("CS_D_Pantaloni", None, None)]
+LAYERS["CS_RA_Giacchino"] = [("CS_RA_Jeans", None, None)]
+LAYERS["CS_RA_Camicia"] = [("CS_RA_Jeans", None, None)]
+LAYERS["CS_RA_Gonna"] = [("CS_RA_Dolcevita", None, None)]
 LAYER_GAP = 0.005
 # Shoes: our MetaHumans' toes are longer and wider than City Sample's feet; moving the joints does not grow a shoe,
 # so its front is grown until it covers the toes (TOE_ROOM inside its surface).
-SHOES = {"CS_Stringate", "CS_Ballerine"}
+SHOES = {"CS_Stringate", "CS_Ballerine", "CS_V_Scarpe", "CS_A_Scarpe", "CS_U_Mocassini", "CS_U_Stringate", "CS_D_Mocassini",
+         "CS_RA_Mocassini"}
 TOE_ROOM = 0.004
 TOES_LEFT = 0.01   # share of toe vertices allowed out: the push out of the skin that follows takes care of them
 LAYER_REACH = 0.03
@@ -75,6 +95,135 @@ GARMENTS = {
     }),
     "CS_Ballerine": ("Donna1", "f_tal_nrw_dressFlats", {
         "": ("Cuoio_Ballerine", "leather", (0.10, 0.07, 0.06), 0.15),
+    }),
+    # --- The whole crowd (fitted on the four reference bodies, resized by the Creator to the others) ---
+    # Old men (Anziano1): white shirts, dark Sunday suits, waistcoats; coppola and cloak come from m80_vestiti.py.
+    "CS_V_Camicia": ("Anziano1", "m_tal_nrw_buttonDown", {
+        "buttonDown": ("Cotone_Camicia", "weave", (0.86, 0.85, 0.80), 0.05),
+    }),
+    "CS_V_Festa": ("Anziano1", "m_tal_nrw_buttonDown_tie_vest_blazer", {
+        "buttonDown": ("Cotone_Camicia", "weave", (0.88, 0.87, 0.83), 0.05),
+        "Suspenders": ("Seta_Cravatta", "regimental", ((0.10, 0.09, 0.09), (0.30, 0.28, 0.26)), 0.12),
+        "vest": ("Lana_Gilet", "tweed", ((0.17, 0.17, 0.18), (0.25, 0.25, 0.26), (0.11, 0.11, 0.12)), 0.12),
+        "blazer": ("Lana_Giacca", "tweed", ((0.17, 0.17, 0.18), (0.25, 0.25, 0.26), (0.11, 0.11, 0.12)), 0.12),
+    }),
+    "CS_V_Giacca": ("Anziano1", "m_tal_nrw_buttonDown_blazer", {
+        "buttonDown": ("Cotone_Camicia", "weave", (0.70, 0.74, 0.78), 0.05),
+        "blazer": ("Lana_Giacca", "tweed", ((0.27, 0.20, 0.14), (0.38, 0.30, 0.21), (0.18, 0.13, 0.09)), 0.12),
+    }),
+    "CS_V_Gilet": ("Anziano1", "m_tal_nrw_buttonDown_tie_vest", {
+        "buttonDown": ("Cotone_Camicia", "weave", (0.90, 0.88, 0.82), 0.05),
+        "Suspenders": ("Seta_Cravatta", "regimental", ((0.07, 0.07, 0.07), (0.22, 0.22, 0.22)), 0.12),
+        "vest": ("Lana_Gilet", "knit", (0.24, 0.18, 0.13), 0.04),
+    }),
+    "CS_V_Pantaloni": ("Anziano1", "m_tal_nrw_slacks_belt", {
+        "slacks": ("Lana_Pantaloni", "weave", (0.16, 0.16, 0.17), 0.04),
+        "socks": ("Maglia_Calze", "knit", (0.05, 0.05, 0.06), 0.04),
+        "belt": ("Cuoio_Cintura", "leather", (0.08, 0.06, 0.05), 0.2),
+    }),
+    "CS_V_PantaloniMarroni": ("Anziano1", "m_tal_nrw_slacks_belt", {
+        "slacks": ("Lana_Pantaloni", "weave", (0.25, 0.19, 0.13), 0.04),
+        "socks": ("Maglia_Calze", "knit", (0.05, 0.05, 0.06), 0.04),
+        "belt": ("Cuoio_Cintura", "leather", (0.15, 0.09, 0.05), 0.2),
+    }),
+    "CS_V_Scarpe": ("Anziano1", "m_tal_nrw_oxfords", {
+        "oxford": ("Cuoio_Scarpe", "leather", (0.05, 0.045, 0.04), 0.15),
+    }),
+    # Old women (Anziana1): all in black; headscarf, shawl and long black dress come from m80_vestiti.py.
+    "CS_A_Camicia": ("Anziana1", "f_tal_nrw_buttonDown", {
+        "buttonDown": ("Cotone_Camicetta", "weave", (0.07, 0.07, 0.075), 0.05),
+    }),
+    "CS_A_Dolcevita": ("Anziana1", "f_tal_nrw_turtleneck", {
+        "turtleneck": ("Lana_Maglia", "knit", (0.10, 0.10, 0.11), 0.04),
+    }),
+    "CS_A_Gonna": ("Anziana1", "f_tal_nrw_skirt", {
+        "skirt": ("Lana_Gonna", "weave", (0.08, 0.08, 0.085), 0.04),
+    }),
+    "CS_A_Scarpe": ("Anziana1", "f_tal_nrw_loafers", {
+        "": ("Cuoio_Scarpe", "leather", (0.05, 0.045, 0.04), 0.15),
+    }),
+    # Men (Uomo2).
+    "CS_U_Maglione": ("Uomo2", "m_tal_nrw_crewneck", {
+        "crewneck": ("Lana_Maglione", "knit", (0.70, 0.62, 0.48), 0.04),
+    }),
+    "CS_U_Quadri": ("Uomo2", "m_tal_nrw_buttonOpen", {
+        "buttonOpen": ("Cotone_Quadri", "tartan", ((0.55, 0.12, 0.10), [(0.0, 0.08, (0.12, 0.12, 0.25), 0.6),
+                                                                       (0.5, 0.03, (0.85, 0.80, 0.70), 0.5)]), 0.12),
+    }),
+    "CS_U_Completo": ("Uomo2", "m_tal_nrw_buttonDown_tie_blazer", {
+        "buttonDown": ("Cotone_Camicia", "weave", (0.90, 0.90, 0.88), 0.05),
+        "Suspenders": ("Seta_Cravatta", "regimental", ((0.10, 0.12, 0.25), (0.55, 0.10, 0.10)), 0.12),
+        "blazer": ("Lana_Giacca", "weave", (0.35, 0.35, 0.36), 0.05),
+    }),
+    "CS_U_Dolcevita": ("Uomo2", "m_tal_nrw_turtleneck_blazer", {
+        "turtleneck": ("Lana_Maglia", "knit", (0.06, 0.06, 0.07), 0.04),
+        "blazer": ("Lana_Giacca", "tweed", ((0.55, 0.42, 0.28), (0.65, 0.52, 0.36), (0.42, 0.31, 0.20)), 0.12),
+    }),
+    "CS_U_Pantaloni": ("Uomo2", "m_tal_nrw_slacks_belt", {
+        "slacks": ("Lana_Pantaloni", "weave", (0.62, 0.55, 0.42), 0.04),
+        "socks": ("Maglia_Calze", "knit", (0.20, 0.15, 0.10), 0.04),
+        "belt": ("Cuoio_Cintura", "leather", (0.20, 0.11, 0.06), 0.2),
+    }),
+    "CS_U_PantaloniGrigi": ("Uomo2", "m_tal_nrw_slacks_belt", {
+        "slacks": ("Lana_Pantaloni", "weave", (0.33, 0.33, 0.34), 0.04),
+        "socks": ("Maglia_Calze", "knit", (0.06, 0.06, 0.07), 0.04),
+        "belt": ("Cuoio_Cintura", "leather", (0.07, 0.06, 0.05), 0.2),
+    }),
+    "CS_U_Jeans": ("Uomo2", "m_tal_nrw_jeans_belt", {
+        "jeans": ("Cotone_Jeans", "weave", (0.17, 0.25, 0.42), 0.04),
+        "socks": ("Maglia_Calze", "knit", (0.85, 0.85, 0.83), 0.04),
+        "belt": ("Cuoio_Cintura", "leather", (0.25, 0.14, 0.07), 0.2),
+    }),
+    "CS_U_Mocassini": ("Uomo2", "m_tal_nrw_loafers", {
+        "": ("Cuoio_Scarpe", "leather", (0.22, 0.12, 0.06), 0.15),
+    }),
+    "CS_U_Stringate": ("Uomo2", "m_tal_nrw_oxfords", {
+        "oxford": ("Cuoio_Scarpe", "leather", (0.05, 0.045, 0.04), 0.15),
+    }),
+    # Young men (Uomo2): bright jumpers and shirts, stonewashed jeans.
+    "CS_R_Maglione": ("Uomo2", "m_tal_nrw_crewneck", {
+        "crewneck": ("Lana_Maglione", "knit", (0.70, 0.10, 0.10), 0.04),
+    }),
+    "CS_R_Camicia": ("Uomo2", "m_tal_nrw_buttonOpen", {
+        "buttonOpen": ("Cotone_Camicia", "weave", (0.35, 0.70, 0.70), 0.05),
+    }),
+    "CS_R_Jeans": ("Uomo2", "m_tal_nrw_jeansLong_belt", {
+        "jeans": ("Cotone_Jeans", "weave", (0.32, 0.42, 0.58), 0.04),
+        "socks": ("Maglia_Calze", "knit", (0.85, 0.85, 0.83), 0.04),
+        "belt": ("Cuoio_Cintura", "leather", (0.10, 0.07, 0.05), 0.2),
+    }),
+    # Women (Donna1).
+    "CS_D_Dolcevita": ("Donna1", "f_tal_nrw_turtleneck_blazer", {
+        "turtleneck": ("Lana_Maglia", "knit", (0.85, 0.80, 0.70), 0.04),
+        "blazer": ("Lana_Giacca", "weave", (0.10, 0.13, 0.25), 0.05),
+    }),
+    "CS_D_Pantaloni": ("Donna1", "f_tal_nrw_slacks_belt", {
+        "slacks": ("Lana_Pantaloni", "weave", (0.55, 0.50, 0.42), 0.04),
+        "belt": ("Cuoio_Cintura", "leather", (0.30, 0.07, 0.08), 0.2),
+    }),
+    "CS_D_Mocassini": ("Donna1", "f_tal_nrw_loafers", {
+        "": ("Cuoio_Scarpe", "leather", (0.30, 0.07, 0.08), 0.15),
+    }),
+    # Young women (Donna1).
+    "CS_RA_Giacchino": ("Donna1", "f_tal_nrw_scoopneck_croppedJacket", {
+        "scoopneck": ("Lana_Maglia", "knit", (0.88, 0.45, 0.60), 0.04),
+        "croppedJacket": ("Cotone_Jeans", "weave", (0.30, 0.42, 0.62), 0.04),
+    }),
+    "CS_RA_Jeans": ("Donna1", "f_tal_nrw_jeans_belt", {
+        "jeans": ("Cotone_Jeans", "weave", (0.20, 0.30, 0.50), 0.04),
+        "belt": ("Cuoio_Cintura", "leather", (0.85, 0.83, 0.80), 0.2),
+    }),
+    "CS_RA_Dolcevita": ("Donna1", "f_tal_nrw_turtleneck", {
+        "turtleneck": ("Lana_Maglia", "knit", (0.90, 0.75, 0.20), 0.04),
+    }),
+    "CS_RA_Gonna": ("Donna1", "f_tal_nrw_skirt", {
+        "skirt": ("Cotone_Jeans", "weave", (0.22, 0.32, 0.52), 0.04),
+    }),
+    "CS_RA_Camicia": ("Donna1", "f_tal_nrw_buttonOpen", {
+        "buttonOpen": ("Cotone_Camicetta", "weave", (0.70, 0.60, 0.82), 0.05),
+    }),
+    "CS_RA_Mocassini": ("Donna1", "f_tal_nrw_loafers", {
+        "": ("Cuoio_Scarpe", "leather", (0.85, 0.83, 0.80), 0.15),
     }),
 }
 

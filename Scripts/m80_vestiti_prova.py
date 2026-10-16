@@ -40,6 +40,9 @@ DONNA_JEANS = ["Camicetta", "JeansDonna", "ScarpeBasse"]
 SANDRO_CLASSICO = ["CamiciaSandro", "CravattaSandro", "GiaccaSandro", "PantaloniSandro", "ScarpeSandro"]
 SANDRO_BIANCO = ["CamiciaRosa", "Fondina", "GiaccaBianca", "PantaloniBianchi", "ScarpeChiare", "Orologio"]
 SANDRO_FONDINA = ["CamiciaRosa", "Fondina", "PantaloniBianchi", "ScarpeChiare", "Orologio"]
+# City Sample garments fitted on our bodies (Research/Mazzarino80/Blender/m80_citysample_vesti.py), for comparison.
+SANDRO_CS = ["CS_CamiciaGiacca", "CS_Pantaloni", "CS_Stringate"]
+DONNA_CS = ["CS_Camicetta", "CS_Gonna", "CS_Ballerine"]
 # key: (folder, garments, hide the hair: the headscarf covers it)
 CAST = {
     "Anziana1": ("Folla", VECCHIA_SCIALLE, True),
@@ -56,9 +59,15 @@ CAST = {
     "Sandro": ("Sandro", SANDRO_CLASSICO, False),
     "SandroBianco": ("Sandro", SANDRO_BIANCO, False),
     "SandroFondina": ("Sandro", SANDRO_FONDINA, False),
+    "SandroCS": ("Sandro", SANDRO_CS, False),
+    "Donna1CS": ("Folla", DONNA_CS, False),
+    # Swapped shirts: is a wrong colour the garment's or the character's?
+    "SandroCamicetta": ("Sandro", ["CS_Camicetta"], False),
+    "Donna1Camicia": ("Folla", ["CS_CamiciaGiacca"], False),
 }
 # Photo keys that are another outfit on a character: the character's asset name.
-ASSET = {"SandroBianco": "Sandro", "SandroFondina": "Sandro"}
+ASSET = {"SandroBianco": "Sandro", "SandroFondina": "Sandro", "SandroCS": "Sandro", "Donna1CS": "Donna1",
+         "SandroCamicetta": "Sandro", "Donna1Camicia": "Donna1"}
 # Adults beside the old for the group photo, as they are.
 ADULTS = {"Uomo2": ("Folla", [], False), "Donna1": ("Folla", [], False)}
 

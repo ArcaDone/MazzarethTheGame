@@ -89,6 +89,14 @@ def run():
     for s in look(world, pc, around(car, 0, 0, 60), around(car, 420, -380, 220), "01_parcheggiata", r, pawn):
         yield s
 
+    # The player's face and clothes, standing.
+    head = pawn.get_editor_property("mesh").get_socket_location("head")
+    fwd = pawn.get_actor_forward_vector()
+    for s in look(world, pc, head + V(0, 0, 5), head + fwd * 70 + V(0, 0, 8), "00_viso", r, pawn):
+        yield s
+    for s in look(world, pc, head - V(0, 0, 70), head + fwd * 260 + V(0, 0, -40), "00_figura", r, pawn):
+        yield s
+
     # 1) Walk up to the door and get in.
     door = car.get_actor_transform().transform_location(car.get_editor_property("door_offset"))
     pawn.set_actor_location(door - car.get_actor_right_vector() * 60 + V(0, 0, 60), False, True)

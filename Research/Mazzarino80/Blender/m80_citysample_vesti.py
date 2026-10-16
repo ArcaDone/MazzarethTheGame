@@ -42,6 +42,11 @@ LAYERS = {
     "CS_Gonna": [("CS_Camicetta", None, None)],
 }
 LAYER_GAP = 0.005
+# Shoes: our MetaHumans' toes are longer and wider than City Sample's feet; moving the joints does not grow a shoe,
+# so its front is grown until it covers the toes (TOE_ROOM inside its surface).
+SHOES = {"CS_Stringate", "CS_Ballerine"}
+TOE_ROOM = 0.004
+TOES_LEFT = 0.01   # share of toe vertices allowed out: the push out of the skin that follows takes care of them
 LAYER_REACH = 0.03
 CACHE = {}      # key -> [(slot, vertices, faces)] of the garments built in this run, world space
 
@@ -156,6 +161,67 @@ def layer_out(me, key):
     return done
 
 
+def fit_toes(co, faces, body):
+    """Grows the front of each shoe (front = -Y), longer, a little wider and taller towards the tip, by the smallest step that
+    leaves every toe vertex of our body inside it (by TOE_ROOM); returns the growth per side and the toes left out."""
+    from mathutils import Vector
+    from mathutils.bvhtree import BVHTree
+    out = {}
+    for side in ("l", "r"):
+        ankle, ball = body.joint.get("foot_" + side), body.joint.get("ball_" + side)
+        if ankle is None or ball is None:
+            continue
+        d = ball - ankle
+        d[2] = 0.0
+        d /= np.linalg.norm(d)
+        across = np.array([-d[1], d[0], 0.0])
+        near = lambda pts: np.linalg.norm((pts - ball)[:, :2], axis=1) < 0.16  # noqa: E731
+        foot = body.co[near(body.co) & (body.co[:, 2] < ball[2] + 0.06)]
+        foot = foot[(foot - ankle) @ d > float((ball - ankle) @ d)]   # the toes: ahead of the ball joint
+        shoe = near(co) & (co[:, 2] < ball[2] + 0.12)
+        if not len(foot) or not shoe.any():
+            continue
+        base = co[shoe].copy()
+        t = (base - ankle) @ d
+        w = (base - ankle) @ across
+        t_max = max(float(t.max()), 1e-3)
+        sole = float(base[:, 2].min())
+        idx = np.nonzero(shoe)[0]
+        sub = {int(i): n for n, i in enumerate(idx)}
+        polys = [f for f in faces if all(int(v) in sub for v in f)]
+
+        def outside(k):
+            grow = np.clip(t / t_max, 0.0, 1.0)[:, None]
+            moved = base + np.outer(np.maximum(t, 0.0) * (k - 1.0), d) + grow * np.outer(w * (k - 1.0) * 0.6, across)
+            moved[:, 2] += grow[:, 0] * (base[:, 2] - sole) * (k - 1.0) * 0.8   # a taller toe box too
+            tree = BVHTree.FromPolygons([Vector(v) for v in moved], [[sub[int(v)] for v in f] for f in polys])
+            # A toe vertex is inside when the shoe is in front of it, on both sides and above it (a lining makes the
+            # nearest-face test useless); TOE_ROOM: the shoe must not be closer than that ahead.
+            dirs = [Vector(d), Vector(across), Vector(-across), Vector((0.0, 0.0, 1.0))]
+            left = 0
+            for p in foot:
+                v = Vector(p)
+                for n, ray in enumerate(dirs):
+                    hit = tree.ray_cast(v, ray, 0.25)
+                    if hit[0] is None or (n == 0 and hit[3] < TOE_ROOM):
+                        left += 1
+                        break
+            return moved, left
+
+        best = None
+        trail = []
+        for k in np.arange(1.0, 1.31, 0.02):
+            moved, left = outside(float(k))
+            trail.append(left)
+            if best is None or left < best[2]:
+                best = (float(k), moved, left)
+            if left <= TOES_LEFT * len(foot):
+                break
+        co[shoe] = best[1]
+        out[side] = {"growth": round(best[0], 2), "toes_out": best[2], "toe_vertices": len(foot), "out_by_step": trail}
+    return out
+
+
 def build(key, target, source, fabrics, rep):
     body = V.Body(target)
     tgt = dict(body.joint)
@@ -203,9 +269,11 @@ def build(key, target, source, fabrics, rep):
         if tot > 0:
             move[v.index] = acc / tot
     co += move
+    toes = fit_toes(co, [tuple(p.vertices) for p in me.polygons], body) if key in SHOES else None
     me.vertices.foreach_set("co", co.ravel())
     me.update()
-    rep_key = {"source": source, "body": target, "moved_mm_max": round(float(np.linalg.norm(move, axis=1).max()) * 1000, 1)}
+    rep_key = {"source": source, "body": target, "moved_mm_max": round(float(np.linalg.norm(move, axis=1).max()) * 1000, 1),
+               "toe_stretch": toes}
 
     bm = bmesh.new()
     bm.from_mesh(me)

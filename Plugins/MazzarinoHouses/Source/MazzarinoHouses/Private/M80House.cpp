@@ -78,6 +78,12 @@ void AM80House::BeginPlay()
 	}
 }
 
+void AM80House::PostLoad()
+{
+	Super::PostLoad();
+	bAdoptInputHash = IsBaked();
+}
+
 bool AM80House::IsBaked() const
 {
 	return Baked && Baked->GetStaticMesh() != nullptr;
@@ -106,6 +112,8 @@ void AM80House::ApplyBakedMesh(UStaticMesh* Mesh)
 	Shell->SetVisibility(false);
 	Shell->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	BuildInfo += TEXT(" | cotta in ") + Mesh->GetName();
+	// The bake matches the current inputs: loading the level must not throw it away.
+	LastInputHash = ComputeInputHash();
 	SetExcludedVisuals(IsExcluded());
 }
 
@@ -127,8 +135,19 @@ uint32 AM80House::ComputeInputHash() const
 void AM80House::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
-	// The editor also runs construction when a level loads: skip if nothing changed.
-	if (bLiveRebuild && !IsExcluded() && (ComputeInputHash() != LastInputHash || NeedsRebuild()))
+	// The editor also runs construction when a level loads: skip if nothing changed. In game (also Play in
+	// the editor, where streamed cells run construction again) a baked house is final: rebuilding it there
+	// would drop the bake for a live mesh and stall streaming.
+	const bool bGame = GetWorld() && GetWorld()->IsGameWorld();
+	if (bAdoptInputHash)
+	{
+		bAdoptInputHash = false;
+		if (IsBaked())
+		{
+			LastInputHash = ComputeInputHash();
+		}
+	}
+	if (bLiveRebuild && !IsExcluded() && !(bGame && IsBaked()) && (ComputeInputHash() != LastInputHash || NeedsRebuild()))
 	{
 		Rebuild();
 		// Sidewalks with the magnet follow the facades of the house just changed.

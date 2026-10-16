@@ -49,6 +49,7 @@ public:
 
 	virtual void OnConstruction(const FTransform& Transform) override;
 	virtual void BeginPlay() override;
+	virtual void PostLoad() override;
 
 	/** True when nothing would be drawn: no baked mesh (e.g. not in this checkout) and an empty preview. */
 	UFUNCTION(BlueprintCallable, Category = "Casa")
@@ -147,6 +148,10 @@ private:
 	uint32 LastInputHash = 0;
 
 	uint32 ComputeInputHash() const;
+
+	/** Set by PostLoad on a baked house: its first construction takes the inputs as they are (a hash saved by an
+	 *  older engine or build no longer matches) instead of throwing the bake away for a 0.5 s live rebuild. */
+	bool bAdoptInputHash = false;
 
 	struct FGroundGrid
 	{

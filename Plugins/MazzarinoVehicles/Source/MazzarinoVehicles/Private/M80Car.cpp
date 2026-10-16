@@ -963,8 +963,8 @@ AM80CarFiat500::AM80CarFiat500()
 	DisplayName = NSLOCTEXT("M80", "Fiat500", "Fiat 500");
 	SetupImported(TEXT("/Game/Mazzarino80/Vehicles/Fiat500/SK_M80_Fiat500.SK_M80_Fiat500"), UM80Wheel500Front::StaticClass(), UM80Wheel500Rear::StaticClass());
 	ChaseDistance = 460.f;
-	SeatOffset = FVector(15.f, -28.f, 55.f);     // low roof: seated low and leaning back, the head under the highest part
-	SeatRecline = 20.f;
+	SeatOffset = FVector(20.f, -22.f, 45.f);     // low roof: seated low and leaning back, the head under the highest part, elbows in
+	SeatRecline = 24.f;
 	DoorOffset = FVector(-5.f, -150.f, 100.f);
 	MaxHealth = 550.f;
 	EngineOffset = FVector(-130.f, 0.f, 60.f);      // engine at the back

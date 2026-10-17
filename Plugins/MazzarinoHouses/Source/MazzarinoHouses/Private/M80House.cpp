@@ -1,4 +1,5 @@
 #include "M80House.h"
+#include "DrawDebugHelpers.h"
 #include "M80HouseBuilder.h"
 #include "M80Polygon.h"
 #include "M80ExclusionZone.h"
@@ -7,6 +8,7 @@
 #include "Components/DynamicMeshComponent.h"
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/PointLightComponent.h"
 #include "Engine/StaticMesh.h"
 #include "DynamicMesh/DynamicMesh3.h"
 #include "Engine/World.h"
@@ -129,6 +131,11 @@ uint32 AM80House::ComputeInputHash() const
 	const FTransform& T = GetActorTransform();
 	Hash = HashCombineFast(Hash, GetTypeHash(T.GetLocation()));
 	Hash = HashCombineFast(Hash, GetTypeHash(T.GetRotation().Rotator().Yaw));
+	// Shops only count when there are some (the houses without keep their hash, and their bake).
+	for (const FM80NegozioScelto& N : Negozi)
+	{
+		Hash = HashCombineFast(Hash, GetTypeHash(FString::Printf(TEXT("%d %s %.3f %.0f"), N.Lato, N.Prototipo ? *N.Prototipo->GetPathName() : TEXT("-"), N.Posizione, N.Larghezza)));
+	}
 	return Hash;
 }
 
@@ -880,6 +887,30 @@ void AM80House::RefreshProps()
 		}
 	}
 	PropComponents.Reset();
+	for (UPointLightComponent* L : LightComponents)
+	{
+		if (L)
+		{
+			L->DestroyComponent();
+		}
+	}
+	LightComponents.Reset();
+	// The shops' ceiling lights: warm, no shadows (cheap), only as far as the room.
+	for (const FVector& At : ShopLights)
+	{
+		UPointLightComponent* L = NewObject<UPointLightComponent>(this, NAME_None, RF_Transient);
+		L->SetupAttachment(Footprint);
+		L->SetMobility(EComponentMobility::Movable);
+		L->SetRelativeLocation(At);
+		L->SetIntensityUnits(ELightUnits::Lumens);
+		L->SetIntensity(1800.f);
+		L->SetUseTemperature(true);
+		L->SetTemperature(3000.f);
+		L->SetAttenuationRadius(900.f);
+		L->SetCastShadows(false);
+		L->RegisterComponent();
+		LightComponents.Add(L);
+	}
 	TMap<UStaticMesh*, UInstancedStaticMeshComponent*> ByMesh;
 	for (const FM80SavedProp& Prop : SavedProps)
 	{
@@ -980,6 +1011,7 @@ void AM80House::Rebuild()
 
 	FM80MeshBuffer Mesh;
 	TArray<FM80PropPlacement> Props;
+	TArray<FM80ShopRoomOut> Rooms;
 	int32 Openings = 0, Balconies = 0, Courtyards = 0, Stairs = 0, SplitTops = 0, Abandoned = 0;
 	double Floor0Min = TNumericLimits<double>::Max(), Floor0Max = -Floor0Min;
 	LastEaveZ = -TNumericLimits<double>::Max();
@@ -1077,6 +1109,7 @@ void AM80House::Rebuild()
 			M80BuildHouse(Input, Out);
 			Mesh.Append(Out.Mesh);
 			Props.Append(Out.Props);
+			Rooms.Append(Out.Rooms);
 			Openings += Out.Openings;
 			Balconies += Out.Balconies;
 			Stairs += Out.bStair;
@@ -1147,6 +1180,7 @@ void AM80House::Rebuild()
 			In.Params.Floors -= 1;
 			In.Params.RoofType = EM80RoofType::Terrace;
 			In.KeepOut = Upper.Footprint;
+			AddShopRooms(In, Local, Front);
 			const FM80BuildOutput Lower = Emit(In);
 			const double TerraceZ = Lower.EaveZ;
 			Upper.Ground = [TerraceZ](const FVector2D&) { return TerraceZ - 12.0; };
@@ -1164,6 +1198,7 @@ void AM80House::Rebuild()
 		}
 		else
 		{
+			AddShopRooms(In, Local, Front);
 			Emit(In);
 		}
 	}
@@ -1250,6 +1285,21 @@ void AM80House::Rebuild()
 			Saved.bArchitecture = Prop.bArchitecture;
 		}
 	}
+	// The shops' rooms, furnished.
+	NegoziCostruiti.Reset();
+	ShopLights.Reset();
+	for (const FM80ShopRoomOut& Room : Rooms)
+	{
+		// One light every ~20 m2 down the middle of the room, under the ceiling.
+		const int32 NL = FMath::Clamp(FMath::RoundToInt(Room.Width * Room.Depth / 200000.0), 1, 3);
+		for (int32 l = 0; l < NL; ++l)
+		{
+			ShopLights.Add(Room.Frame.TransformPosition(FVector(-Room.Depth * (l + 0.5) / NL, 0.0, Room.Height - 40.0)));
+		}
+		const UM80PrototipoNegozio* Proto = Negozi.IsValidIndex(Room.Shop) ? Negozi[Room.Shop].Prototipo.Get() : nullptr;
+		const int32 Pieces = Proto ? ArredaNegozio(Proto, Room.Frame, Room.Width, Room.Depth, Room.Height, House.Seed * 31 + Room.Shop, SavedProps) : 0;
+		NegoziCostruiti.Add(FString::Printf(TEXT("%s %.0fx%.0f cm, %d pezzi"), Proto ? *Proto->Nome : TEXT("?"), Room.Width, Room.Depth, Pieces));
+	}
 	RefreshProps();
 
 	int32 Party = 0;
@@ -1282,5 +1332,86 @@ void AM80House::RebuildWithNeighbours()
 		{
 			It->Rebuild();
 		}
+	}
+}
+
+void AM80House::AddShopRooms(FM80BuildInput& In, const TArray<FVector2D>& Lot, int32 LotFront) const
+{
+	In.ShopRooms.Reset();
+	const int32 Num = In.Footprint.Num();
+	for (int32 k = 0; k < Negozi.Num(); ++k)
+	{
+		const FM80NegozioScelto& N = Negozi[k];
+		const int32 o = N.Lato >= 0 ? N.Lato : LotFront;
+		if (!N.Prototipo || !Lot.IsValidIndex(o))
+		{
+			continue;
+		}
+		const FVector2D LA = Lot[o], LB = Lot[(o + 1) % Lot.Num()];
+		const double LL = FVector2D::Distance(LA, LB);
+		if (LL < 300)
+		{
+			continue;
+		}
+		const FVector2D LU = (LB - LA) / LL;
+		// As wide as asked, else as the prototype wants (up to 1.4 times its smallest room), within the side.
+		const double Wanted = N.Larghezza > 0 ? N.Larghezza : FMath::Max(N.Prototipo->StanzaMin.X, FMath::Min(LL * 0.7, N.Prototipo->StanzaMin.X * 1.4));
+		const double Wd = FMath::Min(Wanted, LL - 100.0);
+		const double C = FMath::Clamp(N.Posizione * LL, Wd * 0.5 + 50.0, LL - Wd * 0.5 - 50.0);
+		const FVector2D PA = LA + LU * (C - Wd * 0.5), PB = LA + LU * (C + Wd * 0.5);
+		for (int32 e = 0; e < Num; ++e)
+		{
+			const FVector2D A = In.Footprint[e], B = In.Footprint[(e + 1) % Num];
+			// A side of this unit that lies on the chosen side of the lot.
+			if (M80Poly::SegmentDistance(A, LA, LB) > 2.0 || M80Poly::SegmentDistance(B, LA, LB) > 2.0)
+			{
+				continue;
+			}
+			const double L = FVector2D::Distance(A, B);
+			const FVector2D U = (B - A) / FMath::Max(L, 1e-6);
+			double X0 = FVector2D::DotProduct(PA - A, U), X1 = FVector2D::DotProduct(PB - A, U);
+			if (X0 > X1)
+			{
+				Swap(X0, X1);
+			}
+			X0 = FMath::Max(X0, 40.0);
+			X1 = FMath::Min(X1, L - 40.0);
+			if (X1 - X0 < 200)
+			{
+				continue;
+			}
+			FM80ShopRoom& Room = In.ShopRooms.AddDefaulted_GetRef();
+			Room.Edge = e;
+			Room.X0 = X0;
+			Room.X1 = X1;
+			Room.Depth = FMath::Max(N.Prototipo->StanzaMin.Y, 400.0);
+			Room.Shop = k;
+			while (In.Uses.Num() < Num)
+			{
+				In.Uses.Add(EM80GroundUse::Home);
+			}
+			In.Uses[e] = N.Prototipo->bBar ? EM80GroundUse::Bar : EM80GroundUse::Shop;
+		}
+	}
+}
+
+void AM80House::MostraNumeriLati()
+{
+	UWorld* World = GetWorld();
+	if (!World)
+	{
+		return;
+	}
+	TArray<FVector2D> Local = LocalFootprint();
+	M80Poly::Clean(Local);
+	const FTransform T = GetActorTransform();
+	for (int32 i = 0; i < Local.Num(); ++i)
+	{
+		const FVector2D A = Local[i], B = Local[(i + 1) % Local.Num()];
+		const FVector2D Mid = (A + B) * 0.5;
+		const FVector P = T.TransformPosition(FVector(Mid.X, Mid.Y, LastEaveZ > 0 ? LastEaveZ * 0.5 : 400.0));
+		const bool bFront = i == ResolvedFrontEdge;
+		DrawDebugString(World, P, FString::Printf(TEXT("Lato %d%s"), i, bFront ? TEXT(" (facciata)") : TEXT("")), nullptr, bFront ? FColor::Yellow : FColor::White, 30.f, true, 1.6f);
+		DrawDebugLine(World, T.TransformPosition(FVector(A.X, A.Y, 300.0)), T.TransformPosition(FVector(B.X, B.Y, 300.0)), bFront ? FColor::Yellow : FColor::Cyan, false, 30.f, 0, 8.f);
 	}
 }

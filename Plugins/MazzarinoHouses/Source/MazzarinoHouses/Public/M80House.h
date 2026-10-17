@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "M80HouseTypes.h"
+#include "M80Negozio.h"
 #include "M80House.generated.h"
 
 class USplineComponent;
@@ -10,6 +11,7 @@ class UDynamicMeshComponent;
 class UInstancedStaticMeshComponent;
 class UStaticMeshComponent;
 class UStaticMesh;
+struct FM80BuildInput;
 
 /** A prop or plant instance of the last build, saved with the level so baked houses keep them. */
 USTRUCT()
@@ -68,6 +70,22 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Casa", meta = (ShowOnlyInnerProperties))
 	FM80HouseParams House;
+
+	/**
+	 * Shops behind its facades: for each, the side (see "Mostra numeri dei lati"), the kind of shop (a prototype made from
+	 * the shop packages: Alimentari, Bar Sport, Tabaccheria...) and where along the side. The ground floor there becomes a
+	 * real room, open to the street, furnished by the prototype's rules.
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Negozi", meta = (DisplayName = "Negozi"))
+	TArray<FM80NegozioScelto> Negozi;
+
+	/** Writes each side's number on the house for half a minute (the "Lato" of the shops). */
+	UFUNCTION(BlueprintCallable, CallInEditor, Category = "Negozi", meta = (DisplayName = "Mostra numeri dei lati"))
+	void MostraNumeriLati();
+
+	/** Shop rooms of the last build: "<shop> <width>x<depth> cm, <pieces> pezzi" (for the tests). */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Negozi", meta = (DisplayName = "Negozi costruiti"))
+	TArray<FString> NegoziCostruiti;
 
 	/** Switch this house off (e.g. replaced by a hand-made building). See also "Zona senza case procedurali". */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Casa", meta = (DisplayName = "Disattiva (sostituita da un edificio fatto a mano)"))
@@ -134,6 +152,13 @@ private:
 	UPROPERTY()
 	TArray<FM80SavedProp> SavedProps;
 
+	/** Ceiling lights of the shops (local space), lit by RefreshProps. */
+	UPROPERTY()
+	TArray<FVector> ShopLights;
+
+	UPROPERTY(Transient)
+	TArray<TObjectPtr<class UPointLightComponent>> LightComponents;
+
 	/** Recreates the instanced components from SavedProps (one per mesh). */
 	void RefreshProps();
 
@@ -169,4 +194,9 @@ private:
 	void ResolveEdges(const TArray<FVector2D>& Local, TArray<EM80EdgeKind>& OutKinds, int32& OutFront) const;
 	void SplitIntoUnits(const TArray<FVector2D>& Local, const TArray<EM80EdgeKind>& Kinds, int32 Front, TArray<FM80Unit>& OutUnits) const;
 	void ApplyMaterials(const UM80HouseStyle* Style);
+	/** The rooms of the shops on the sides of a unit's (or block's) footprint. */
+	void AddShopRooms(FM80BuildInput& In, const TArray<FVector2D>& Lot, int32 LotFront) const;
+	/** Furnishes a shop room (frame and size as built, see FM80ShopRoomOut) by its prototype's rules. */
+	static int32 ArredaNegozio(const UM80PrototipoNegozio* P, const FTransform& Frame, double Width, double Depth, double Height, int32 Seed,
+		TArray<FM80SavedProp>& Out);
 };

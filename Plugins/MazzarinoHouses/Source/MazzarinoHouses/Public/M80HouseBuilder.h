@@ -4,6 +4,26 @@
 #include "M80HouseTypes.h"
 #include "M80MeshBuffer.h"
 
+/** A shop's room behind a stretch [X0, X1] of a facade's ground floor (edge-local, cm from the edge's start). */
+struct MAZZARINOHOUSES_API FM80ShopRoom
+{
+	int32 Edge = 0;
+	double X0 = 0, X1 = 0;
+	/** Depth the shop wants (less if the house is shallower). */
+	double Depth = 600;
+	/** Index of the shop in the house's list. */
+	int32 Shop = 0;
+};
+
+/** The room actually built for a shop: Frame's origin on the floor in the middle of the inside of the facade, X towards
+ *  the street, Z up; the room spans X in [-Depth, 0], Y in [-Width/2, Width/2]. */
+struct MAZZARINOHOUSES_API FM80ShopRoomOut
+{
+	int32 Shop = 0;
+	FTransform Frame;
+	double Width = 0, Depth = 0, Height = 0;
+};
+
 /** Everything the generator needs, already resolved by the actor. Local space, cm. */
 struct MAZZARINOHOUSES_API FM80BuildInput
 {
@@ -40,6 +60,8 @@ struct MAZZARINOHOUSES_API FM80BuildInput
 	TArray<FVector2D> KeepOut;
 	/** UV1 per-unit data: palette position and decay. */
 	FVector2f UnitData = FVector2f(0.5f, 0.35f);
+	/** Real shop rooms behind parts of the ground floor (their shop fronts open, no painted interior). */
+	TArray<FM80ShopRoom> ShopRooms;
 };
 
 struct MAZZARINOHOUSES_API FM80PropPlacement
@@ -80,6 +102,7 @@ struct MAZZARINOHOUSES_API FM80BuildOutput
 	int32 Openings = 0;
 	int32 Balconies = 0;
 	bool bStair = false;
+	TArray<FM80ShopRoomOut> Rooms;
 };
 
 MAZZARINOHOUSES_API void M80BuildHouse(const FM80BuildInput& In, FM80BuildOutput& Out);

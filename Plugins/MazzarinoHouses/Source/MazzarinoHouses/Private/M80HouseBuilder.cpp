@@ -108,6 +108,7 @@ public:
 		{
 			EmitOpening(O);
 		}
+		EmitShopRooms();
 		if (In.bUnfinished)
 		{
 			EmitUnfinished();
@@ -363,6 +364,19 @@ private:
 			if (UseOf(e) != EM80GroundUse::Home && NB == 1)
 			{
 				DoorBay = -1; // a narrow shop house: the whole ground floor is the shop
+			}
+			// The house door never opens into a shop's room: to the nearest bay outside it, or none.
+			if (DoorBay >= 0 && InShopRoom(e, Centers[DoorBay] - 50, Centers[DoorBay] + 50))
+			{
+				int32 Best = -1;
+				for (int32 i = 0; i < NB; ++i)
+				{
+					if (!InShopRoom(e, Centers[i] - 50, Centers[i] + 50) && (Best < 0 || FMath::Abs(i - DoorBay) < FMath::Abs(Best - DoorBay)))
+					{
+						Best = i;
+					}
+				}
+				DoorBay = Best;
 			}
 			int32 GarageBay = -1;
 			if (bFront && NB >= 2 && Spacing >= 270 && Rng.FRand() < R.GarageChance)
@@ -1250,22 +1264,31 @@ private:
 		const FVec U3 = E[e].U3(), N3 = E[e].N3();
 		const double Wd = O.Width(), Mid = O.Mid(), D = R.RevealDepth;
 		const bool bBar = UseOf(e) == EM80GroundUse::Bar;
+		// In front of a real shop room: open for business (shutter up, no painted interior, no middle posts).
+		const bool bRoom = InShopRoom(e, O.X0, O.X1);
 		double ShutterBottom = O.Z1;
-		if (!bBar && O.Rand < 0.3f)
+		if (!bBar && !bRoom && O.Rand < 0.3f)
 		{
 			ShutterBottom = O.Z0;
 		}
-		else if (!bBar && O.Rand < 0.5f)
+		else if (!bBar && !bRoom && O.Rand < 0.5f)
 		{
 			ShutterBottom = FMath::Lerp(O.Z0, O.Z1, 0.55);
 		}
 		if (ShutterBottom > O.Z0 + 1)
 		{
 			const double Hg = O.Z1 - O.Z0;
-			M.WallBox(M80Slot::Wood, W(e, Mid, O.Z0 + 20, D - 4), U3, N3, FVec(Wd * 0.5, 3, 20), false);
-			Pane(e, O.X0, O.X1, O.Z0 + 40, O.Z1, D - 2, bBar ? 0.95f : 0.7f + O.Rand * 0.19f, LevelZ(0), H.GroundFloorHeight, FMath::Max(Wd + 140, 420.0));
+			if (!bRoom)
+			{
+				M.WallBox(M80Slot::Wood, W(e, Mid, O.Z0 + 20, D - 4), U3, N3, FVec(Wd * 0.5, 3, 20), false);
+				Pane(e, O.X0, O.X1, O.Z0 + 40, O.Z1, D - 2, bBar ? 0.95f : 0.7f + O.Rand * 0.19f, LevelZ(0), H.GroundFloorHeight, FMath::Max(Wd + 140, 420.0));
+			}
 			for (double X : {O.X0 + 3.0, O.X1 - 3.0, Mid - Wd * 0.2, Mid + Wd * 0.2})
 			{
+				if (bRoom && FMath::Abs(X - Mid) < Wd * 0.4)
+				{
+					continue;
+				}
 				M.WallBox(M80Slot::Wood, W(e, X, O.Z0 + Hg * 0.5, D - 5), U3, N3, FVec(3, 4, Hg * 0.5), false);
 			}
 			M.WallBox(M80Slot::Wood, W(e, Mid, O.Z1 - 45, D - 5), U3, N3, FVec(Wd * 0.5, 4, 3), false);
@@ -1315,6 +1338,138 @@ private:
 			{
 				M.Tube(M80Slot::Iron, {W(e, X, Za - 95, -1), W(e, X, Za - Drop, -Reach + 4)}, 1.0, 4);
 			}
+		}
+	}
+
+	bool InShopRoom(int32 e, double X0, double X1) const
+	{
+		for (const FM80ShopRoom& Room : In.ShopRooms)
+		{
+			if (Room.Edge == e && X1 > Room.X0 + 20 && X0 < Room.X1 - 20)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/** How far the house goes in from point X of edge e (along the inward normal) before another wall. */
+	double InnerDepth(int32 e, double X) const
+	{
+		const FVector2D O = E[e].A + E[e].U * X, Dir = -E[e].N;
+		double Best = 3000.0;
+		for (int32 j = 0; j < E.Num(); ++j)
+		{
+			if (j == e)
+			{
+				continue;
+			}
+			const FVector2D A = E[j].A, S = E[j].B - E[j].A;
+			const double Den = Dir.X * S.Y - Dir.Y * S.X;
+			if (FMath::Abs(Den) < 1e-6)
+			{
+				continue;
+			}
+			const FVector2D W0 = A - O;
+			const double T = (W0.X * S.Y - W0.Y * S.X) / Den;
+			const double U = (W0.X * Dir.Y - W0.Y * Dir.X) / Den;
+			if (T > 1.0 && U >= 0.0 && U <= 1.0)
+			{
+				Best = FMath::Min(Best, T);
+			}
+		}
+		return Best;
+	}
+
+	/**
+	 * The shops' rooms: floor, ceiling, side and back walls, and the inside of the facade with the openings cut out, all
+	 * facing in; the actor furnishes them (FM80BuildOutput::Rooms).
+	 */
+	void EmitShopRooms()
+	{
+		for (const FM80ShopRoom& Room : In.ShopRooms)
+		{
+			const int32 e = Room.Edge;
+			if (!E.IsValidIndex(e) || Room.X1 - Room.X0 < 200)
+			{
+				continue;
+			}
+			// Wide enough to take in every ground-floor opening it overlaps (otherwise one would look into nothing).
+			double X0 = Room.X0, X1 = Room.X1;
+			for (const FOpening& O : Openings)
+			{
+				if (O.Edge == e && O.Level == 0 && O.X1 > X0 + 20 && O.X0 < X1 - 20)
+				{
+					X0 = FMath::Max(15.0, FMath::Min(X0, O.X0 - 15));
+					X1 = FMath::Min(E[e].L - 15.0, FMath::Max(X1, O.X1 + 15));
+				}
+			}
+			const double Xm = (X0 + X1) * 0.5;
+			const double Avail = FMath::Min(InnerDepth(e, X0 + 30), FMath::Min(InnerDepth(e, Xm), InnerDepth(e, X1 - 30)));
+			const double Df = R.RevealDepth + 1.0, Db = FMath::Max(Df + 250.0, FMath::Min(Room.Depth + Df, Avail - 35.0));
+			const FVec U3 = E[e].U3(), N3 = E[e].N3();
+			// The floor above the ground anywhere in the room (on a slope the street rises along the house): a step in at the
+			// door when it is higher than the ground floor's level.
+			double GroundTop = -1e9;
+			for (double Gx = X0; Gx <= X1 + 1; Gx += 50)
+			{
+				for (double Gd = Df; Gd <= Db + 1; Gd += 50)
+				{
+					const FVec Q = W(e, FMath::Min(Gx, X1), 0, FMath::Min(Gd, Db));
+					GroundTop = FMath::Max(GroundTop, G(FVector2D(Q.X, Q.Y)));
+				}
+			}
+			const double Z0 = FMath::Max(LevelZ(0), GroundTop + 3.0), Z1 = LevelZ(1) - 18.0;
+			M.ElementRandom = 0.5f;
+			if (Z0 > LevelZ(0) + 1)
+			{
+				M.QuadProjected(M80Slot::Trim, W(e, X0, LevelZ(0), R.RevealDepth - 1), W(e, X1, LevelZ(0), R.RevealDepth - 1), W(e, X1, Z0, R.RevealDepth - 1), W(e, X0, Z0, R.RevealDepth - 1), -N3);
+				M.QuadProjected(M80Slot::Trim, W(e, X0, Z0, R.RevealDepth - 1), W(e, X1, Z0, R.RevealDepth - 1), W(e, X1, Z0, Df), W(e, X0, Z0, Df), Up);
+			}
+			// Floor (tiles), ceiling, back wall, the two sides.
+			M.QuadProjected(M80Slot::Majolica, W(e, X0, Z0, Df), W(e, X1, Z0, Df), W(e, X1, Z0, Db), W(e, X0, Z0, Db), Up);
+			// The threshold through the wall's thickness, so the ground never shows in the openings.
+			M.QuadProjected(M80Slot::Trim, W(e, X0, Z0, 0), W(e, X1, Z0, 0), W(e, X1, Z0, Df), W(e, X0, Z0, Df), Up);
+			M.QuadProjected(M80Slot::WallPlaster, W(e, X0, Z1, Df), W(e, X1, Z1, Df), W(e, X1, Z1, Db), W(e, X0, Z1, Db), -Up);
+			M.QuadProjected(M80Slot::WallPlaster, W(e, X0, Z0, Db), W(e, X1, Z0, Db), W(e, X1, Z1, Db), W(e, X0, Z1, Db), N3);
+			M.QuadProjected(M80Slot::WallPlaster, W(e, X0, Z0, Df), W(e, X0, Z0, Db), W(e, X0, Z1, Db), W(e, X0, Z1, Df), U3);
+			M.QuadProjected(M80Slot::WallPlaster, W(e, X1, Z0, Df), W(e, X1, Z0, Db), W(e, X1, Z1, Db), W(e, X1, Z1, Df), -U3);
+			// The inside of the facade, around the ground-floor openings of this stretch, and the openings' inner sides.
+			TArray<const FOpening*> Holes;
+			for (const FOpening& O : Openings)
+			{
+				if (O.Edge == e && O.Level == 0 && O.X1 > X0 && O.X0 < X1)
+				{
+					Holes.Add(&O);
+				}
+			}
+			Holes.Sort([](const FOpening& A, const FOpening& B) { return A.X0 < B.X0; });
+			double X = X0;
+			auto InsideFace = [&](double A, double B, double Za, double Zb)
+			{
+				if (B - A > 1 && Zb - Za > 1)
+				{
+					M.QuadProjected(M80Slot::WallPlaster, W(e, A, Za, Df), W(e, B, Za, Df), W(e, B, Zb, Df), W(e, A, Zb, Df), -N3);
+				}
+			};
+			for (const FOpening* O : Holes)
+			{
+				const double A = FMath::Max(O->X0, X0), B = FMath::Min(O->X1, X1);
+				InsideFace(X, A, Z0, Z1);
+				InsideFace(A, B, FMath::Min(O->Z1, Z1), Z1);
+				InsideFace(A, B, Z0, FMath::Max(O->Z0, Z0));
+				M.QuadProjected(M80Slot::WallPlaster, W(e, A, O->Z0, R.RevealDepth), W(e, A, O->Z0, Df), W(e, A, O->Z1, Df), W(e, A, O->Z1, R.RevealDepth), U3);
+				M.QuadProjected(M80Slot::WallPlaster, W(e, B, O->Z0, R.RevealDepth), W(e, B, O->Z0, Df), W(e, B, O->Z1, Df), W(e, B, O->Z1, R.RevealDepth), -U3);
+				X = B;
+			}
+			InsideFace(X, X1, Z0, Z1);
+
+			FM80ShopRoomOut& Done = Out.Rooms.AddDefaulted_GetRef();
+			Done.Shop = Room.Shop;
+			Done.Frame = FTransform(FRotationMatrix::MakeFromXZ(FVector(N3), FVector::UpVector).ToQuat(), FVector(W(e, Xm, Z0, Df)));
+			Done.Width = X1 - X0;
+			Done.Depth = Db - Df;
+			Done.Height = Z1 - Z0;
 		}
 	}
 

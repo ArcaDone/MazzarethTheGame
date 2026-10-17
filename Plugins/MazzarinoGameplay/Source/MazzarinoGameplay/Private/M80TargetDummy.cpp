@@ -15,7 +15,7 @@ T* Load(const TCHAR* Path)
 	return LoadObject<T>(nullptr, Path, nullptr, LOAD_NoWarn);
 }
 const TCHAR* const MeshPath = TEXT("/Game/Characters/UEFN_Mannequin/Meshes/SKM_UEFN_Mannequin.SKM_UEFN_Mannequin");
-const TCHAR* const IdlePath = TEXT("/Game/Characters/UEFN_Mannequin/Animations/Idle/M_Neutral_Stand_Idle_Loop.M_Neutral_Stand_Idle_Loop");
+const TCHAR* const DummyIdlePath = TEXT("/Game/Characters/UEFN_Mannequin/Animations/Idle/M_Neutral_Stand_Idle_Loop.M_Neutral_Stand_Idle_Loop");
 const TCHAR* const UpBackPath = TEXT("/Game/Mazzarino80/Player/Anim/A_M80_Rialzati_Schiena.A_M80_Rialzati_Schiena");
 const TCHAR* const UpFrontPath = TEXT("/Game/Mazzarino80/Player/Anim/A_M80_Rialzati_Pancia.A_M80_Rialzati_Pancia");
 }
@@ -48,7 +48,7 @@ void AM80TargetDummy::BeginPlay()
 
 void AM80TargetDummy::Stand()
 {
-	if (UAnimSequence* Idle = Load<UAnimSequence>(IdlePath))
+	if (UAnimSequence* Idle = Load<UAnimSequence>(DummyIdlePath))
 	{
 		GetMesh()->PlayAnimation(Idle, true);
 	}

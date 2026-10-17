@@ -33,7 +33,7 @@
 namespace
 {
 // Component space of the UEFN mannequin: the character looks along +Y, +X is its left, +Z up.
-const FVector CSLeft(1.f, 0.f, 0.f);
+const FVector PedCSLeft(1.f, 0.f, 0.f);
 const TCHAR* const MannequinPath = TEXT("/Game/Characters/UEFN_Mannequin/Meshes/SKM_UEFN_Mannequin.SKM_UEFN_Mannequin");
 const TCHAR* const RetargetAnimPath = TEXT("/Game/Blueprints/RetargetedCharacters/ABP_GenericRetarget.ABP_GenericRetarget_C");
 const TCHAR* const WalkPath = TEXT("/Game/Characters/UEFN_Mannequin/Animations/Walk/M_Neutral_Walk_Loop_F.M_Neutral_Walk_Loop_F");
@@ -468,19 +468,19 @@ bool FM80PedoneProxy::Evaluate(FPoseContext& Output)
 		}
 	}
 	// Old people: the back bent forward (more in the upper back), the head lifted to look ahead. A positive turn about
-	// CSLeft swings a bone hanging down forward (the arms in M80OverlayAnim), so it tips a bone pointing up backward.
+	// PedCSLeft swings a bone hanging down forward (the arms in M80OverlayAnim), so it tips a bone pointing up backward.
 	if (Bend > 0.f)
 	{
-		Rotate(Output, TEXT("spine_02"), CSLeft, -Bend * 0.2f);
-		Rotate(Output, TEXT("spine_03"), CSLeft, -Bend * 0.3f);
-		Rotate(Output, TEXT("spine_04"), CSLeft, -Bend * 0.3f);
-		Rotate(Output, TEXT("spine_05"), CSLeft, -Bend * 0.2f);
+		Rotate(Output, TEXT("spine_02"), PedCSLeft, -Bend * 0.2f);
+		Rotate(Output, TEXT("spine_03"), PedCSLeft, -Bend * 0.3f);
+		Rotate(Output, TEXT("spine_04"), PedCSLeft, -Bend * 0.3f);
+		Rotate(Output, TEXT("spine_05"), PedCSLeft, -Bend * 0.2f);
 		// The head back up to look ahead, by less than the back bends (looking at the sky otherwise); the old man's
 		// walk already looks ahead.
 		if (!Legs)
 		{
-			Rotate(Output, TEXT("neck_01"), CSLeft, Bend * 0.3f);
-			Rotate(Output, TEXT("head"), CSLeft, Bend * 0.15f);
+			Rotate(Output, TEXT("neck_01"), PedCSLeft, Bend * 0.3f);
+			Rotate(Output, TEXT("head"), PedCSLeft, Bend * 0.15f);
 		}
 		// Knees a little bent, as old people walk: thighs forward, shins back, feet level again (not over the
 		// mannequin's legs: their short steps are the point).
@@ -490,17 +490,17 @@ bool FM80PedoneProxy::Evaluate(FPoseContext& Output)
 			{
 				break;
 			}
-			Rotate(Output, FName(FString(TEXT("thigh")) + Side), CSLeft, Bend * 0.15f);
-			Rotate(Output, FName(FString(TEXT("calf")) + Side), CSLeft, -Bend * 0.3f);
-			Rotate(Output, FName(FString(TEXT("foot")) + Side), CSLeft, Bend * 0.15f);
+			Rotate(Output, FName(FString(TEXT("thigh")) + Side), PedCSLeft, Bend * 0.15f);
+			Rotate(Output, FName(FString(TEXT("calf")) + Side), PedCSLeft, -Bend * 0.3f);
+			Rotate(Output, FName(FString(TEXT("foot")) + Side), PedCSLeft, Bend * 0.15f);
 		}
 	}
 	// A blow: the chest and the head jerk back for a moment.
 	if (Flinch > 0.f)
 	{
-		Rotate(Output, TEXT("spine_03"), CSLeft, 9.f * Flinch);
-		Rotate(Output, TEXT("spine_05"), CSLeft, 7.f * Flinch);
-		Rotate(Output, TEXT("head"), CSLeft, 10.f * Flinch);
+		Rotate(Output, TEXT("spine_03"), PedCSLeft, 9.f * Flinch);
+		Rotate(Output, TEXT("spine_05"), PedCSLeft, 7.f * Flinch);
+		Rotate(Output, TEXT("head"), PedCSLeft, 10.f * Flinch);
 	}
 	RelaxFingers(Output);
 	if (GripWeight > 0.f)

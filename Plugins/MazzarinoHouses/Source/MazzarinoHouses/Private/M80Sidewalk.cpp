@@ -547,15 +547,15 @@ void AM80Sidewalk::BuildSlab(const TArray<FStation>& St, double Lateral, double 
 		}
 	}
 	FM80MeshBuffer Mesh;
-	const FVector3d Up(0, 0, 1);
+	const FVector3d SlabUp(0, 0, 1);
 	const FVector3d Down(0, 0, Top + Depth);
 	const bool bLoop = Path->IsClosedLoop();
 	for (int32 i = 0; i + 1 < St.Num(); ++i)
 	{
-		Mesh.Quad(0, L[i], R[i], R[i + 1], L[i + 1], UL[i], UR[i], UR[i + 1], UL[i + 1], Up);
+		Mesh.Quad(0, L[i], R[i], R[i + 1], L[i + 1], UL[i], UR[i], UR[i + 1], UL[i + 1], SlabUp);
 		// Sides: lava stone down into the ground, mapped on their own plane.
 		const FVector3d Along = (R[i + 1] + L[i + 1] - R[i] - L[i]).GetSafeNormal();
-		const FVector3d Out = FVector3d::CrossProduct(Along, Up).GetSafeNormal();   // towards the left edge
+		const FVector3d Out = FVector3d::CrossProduct(Along, SlabUp).GetSafeNormal();   // towards the left edge
 		Mesh.QuadProjected(1, L[i] - Down, L[i + 1] - Down, L[i + 1], L[i], Out);
 		Mesh.QuadProjected(1, R[i + 1] - Down, R[i] - Down, R[i], R[i + 1], -Out);
 	}

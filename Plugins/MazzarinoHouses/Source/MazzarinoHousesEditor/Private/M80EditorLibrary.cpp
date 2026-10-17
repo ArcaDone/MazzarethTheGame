@@ -1300,3 +1300,24 @@ bool UM80EditorLibrary::ConnectMaterialInput(UMaterialExpression* Expression, co
 	return Expression && Value != INDEX_NONE
 		&& UMaterialEditingLibrary::ConnectMaterialProperty(Expression, OutputName, static_cast<EMaterialProperty>(Value));
 }
+
+int32 UM80EditorLibrary::SetSkeletalLODScreenSizes(USkeletalMesh* Mesh, const TArray<float>& ScreenSizes)
+{
+	if (!Mesh)
+	{
+		return 0;
+	}
+	int32 Set = 0;
+	Mesh->Modify();
+	for (int32 i = 1; i < ScreenSizes.Num() && i < Mesh->GetLODNum(); ++i)
+	{
+		if (FSkeletalMeshLODInfo* Info = Mesh->GetLODInfo(i))
+		{
+			Info->ScreenSize = FPerPlatformFloat(ScreenSizes[i]);
+			++Set;
+		}
+	}
+	Mesh->PostEditChange();
+	Mesh->MarkPackageDirty();
+	return Set;
+}

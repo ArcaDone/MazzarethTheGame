@@ -1,4 +1,4 @@
-"""Blender 4.3: clean, optimise and export one asset of D:/Blender/AssetsMazzarethTheGame for Unreal.
+"""Blender 4.3: clean, optimise and export one asset of D:/Mazzarino80_Sorgenti (Edifici, Auto, Arredo_Urbano...) for Unreal.
 
 Run: blender -b <file.blend> --python m80_prepare_vehicle.py -- <key> <out_dir>
 key: Fiat500 | Mini | Maggiolino | Golf | M3 | Vespa | Poste | Comune | ChiesaComune | Matrice | Castello | Madonna |
@@ -42,7 +42,10 @@ ASSETS = {
     # common car, so lighter than the others.
     # "budget": 0 = no decimation (the user: decimated bodies look bad), "keep_normals": the file's normals, no smoothing.
     "Fiat500": {"kind": "car", "length": 2.97, "budget": 0, "keep_normals": True, "straight": True,   # one door mirror tilts the PCA
-                "wheel_slack": 0.8},   # the steering box on the left would join the left front wheel
+                "wheel_slack": 0.8,   # the steering box on the left would join the left front wheel
+                # LOD0 the full 242k; lighter LODs made here, not by Unreal (whose reduction bent the wheels): [screen
+                # size, ratio of the body, of the cabin inside, of the wheels]. LOD1 keeps the wheels whole.
+                "lods": [[0.35, 0.35, 0.2, 1.0], [0.15, 0.1, 0.05, 0.15], [0.05, 0.03, 0.0, 0.05]]},
     # Downloaded game-ready cars (Research/Mazzarino80/Blender/m80_auto_sorgente.py makes their .blend), front at -Y.
     "Mini": {"kind": "car", "length": 3.05, "budget": 0, "keep_normals": True, "straight": True, "front": -1},
     "Maggiolino": {"kind": "car", "length": 4.07, "budget": 0, "keep_normals": True, "straight": True, "front": -1},
@@ -96,7 +99,8 @@ def world_bbox(o):
 
 
 # Images linked from another disk (the old E:\BitBucket copy): look for them on D: or by name.
-IMAGE_ROOTS = [r"D:\BitBucket\mazzareththegame\Assets", r"D:\Blender\AssetsMazzarethTheGame", r"D:\Blender"]
+# Where a texture the .blend lost is looked for by name (the old Unity project still holds most of them).
+IMAGE_ROOTS = [r"D:\BitBucket\mazzareththegame\Assets", r"D:\Mazzarino80_Sorgenti", r"D:\Blender"]
 
 
 def relink_images():
@@ -706,6 +710,68 @@ def export(objs, arm=None, name=None):
     log("exported", path)
 
 
+INSIDE = ("Interni", "Pelle_Nera", "Sedili", "Moquette", "Cruscotto")
+
+
+def decimate_ratio(o, ratio):
+    if ratio >= 1.0:
+        return
+    m = o.modifiers.new("M80Dec", "DECIMATE")
+    m.decimate_type = "COLLAPSE"
+    m.ratio = max(0.01, ratio)
+    m.use_collapse_triangulate = True
+    bpy.ops.object.select_all(action="DESELECT")
+    o.select_set(True)
+    bpy.context.view_layer.objects.active = o
+    bpy.ops.object.modifier_apply(modifier=m.name)
+
+
+def lod_copies(objs, body_r, inside_r, wheel_r):
+    """Copies of the rigged body and tyres reduced for a distance LOD: the cabin inside (seen only through the windows)
+    by inside_r (0 = left out), glass and small parts kept, the rest of the body by body_r, the tyres by wheel_r.
+    Their normals come from the angle (the file's custom normals do not survive a collapse)."""
+    out = []
+    for o in objs:
+        c = o.copy()
+        c.data = o.data.copy()
+        bpy.context.scene.collection.objects.link(c)
+        if o.name.startswith("Tyre_"):
+            decimate_ratio(c, wheel_r)
+            parts = [c]
+        else:
+            bpy.ops.object.select_all(action="DESELECT")
+            c.select_set(True)
+            bpy.context.view_layer.objects.active = c
+            bpy.ops.object.mode_set(mode="EDIT")
+            bpy.ops.mesh.select_all(action="SELECT")
+            bpy.ops.mesh.separate(type="MATERIAL")
+            bpy.ops.object.mode_set(mode="OBJECT")
+            parts = []
+            for p in list(bpy.context.selected_objects):
+                slot = p.material_slots[p.data.polygons[0].material_index] if p.data.polygons else None
+                mat = slot.material.name if slot and slot.material else ""
+                r = inside_r if mat.startswith(INSIDE) else body_r
+                if r <= 0:
+                    bpy.data.objects.remove(p)
+                    continue
+                if tri_count(p) > 300 and "Vetro" not in mat:
+                    decimate_ratio(p, r)
+                parts.append(p)
+        lod = join(parts, o.name + "_LOD")
+        if body_r < 1.0:
+            for poly in lod.data.polygons:
+                poly.use_smooth = True
+            try:
+                bpy.ops.object.select_all(action="DESELECT")
+                lod.select_set(True)
+                bpy.context.view_layer.objects.active = lod
+                bpy.ops.object.shade_smooth_by_angle(angle=math.radians(35))
+            except Exception:  # noqa: BLE001
+                pass
+        out.append(lod)
+    return out
+
+
 def smooth(o):
     if CFG.get("keep_normals"):
         return
@@ -752,7 +818,17 @@ def main():
         for o in objs:
             smooth(o)
         # Cars and two-wheelers alike: skeleton Root + Wheel_XX, drivable in the game.
-        export(objs, make_rig(body, to_centimetres(objs, wheels)))
+        arm = make_rig(body, to_centimetres(objs, wheels))
+        export(objs, arm)
+        # Distance LODs on the same skeleton: <key>_LOD1.fbx... (imported as LODs by m80_import_blender_assets.py).
+        REPORT["lods"] = []
+        for i, (screen, body_r, inside_r, wheel_r) in enumerate(CFG.get("lods", []), 1):
+            lod = lod_copies(objs, body_r, inside_r, wheel_r)
+            export(lod, arm, "%s_LOD%d" % (KEY, i))
+            REPORT["lods"].append({"file": "%s_LOD%d.fbx" % (KEY, i), "screen_size": screen,
+                                   "triangles": sum(tri_count(o) for o in lod)})
+            for o in lod:
+                bpy.data.objects.remove(o)
     elif CFG["kind"] == "static":
         decimate(body, BODY_BUDGET)
         REPORT["materials"] = export_materials([body])

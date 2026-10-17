@@ -217,6 +217,13 @@ public:
 	 * the cloth asset made on a source body and that body (a MetaHuman full body, *_FullBody / *CombinedSkelMesh).
 	 * Rebuilds the outfit. Returns false if the asset's graph has no SizedOutfitSource variable.
 	 */
+	/**
+	 * Screen size at which each LOD of a skeletal mesh is switched in (index i = LOD i; LOD 0 is ignored). For LODs
+	 * imported from files (Python cannot reach the LOD info). Not saved. Returns the number of LODs set.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Veicoli")
+	static int32 SetSkeletalLODScreenSizes(USkeletalMesh* Mesh, const TArray<float>& ScreenSizes);
+
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Personaggi")
 	static bool SetOutfitSizes(UObject* Outfit, const TArray<UObject*>& ClothAssets, const TArray<FString>& SizeNames,
 		const TArray<USkeletalMesh*>& Bodies);

@@ -49,8 +49,9 @@ BUILDING_TEXTURES = "/Game/Mazzarino80/Buildings/Textures"
 NO_NANITE = ["Poste"]   # thin slats and lattices that Nanite's simplification bends
 ONLY = [k for k in os.environ.get("M80_IMPORT_ONLY", "").split(",") if k]
 PHYSICS_ONLY = os.environ.get("M80_PHYSICS_ONLY", "") == "1"
-# Downloaded game-ready cars: one LOD, the full mesh (the generated LODs bent the wheels out of shape as the camera moved
-# away, and the user does not want them decimated). M80_LOD_ONLY=1 only removes the LODs of the imported ones.
+# Downloaded game-ready cars: LOD0 is the full mesh (the user does not want them decimated) and Unreal makes no LODs (its
+# reduction bent the wheels out of shape as the camera moved away); the distance LODs, if the car has them, come from
+# Blender (custom_lods). M80_LOD_ONLY=1 only redoes the LODs of the imported ones.
 FULL_MESH = ["Fiat500", "Mini", "Maggiolino", "Golf", "M3"]
 LOD_ONLY = os.environ.get("M80_LOD_ONLY", "") == "1"
 
@@ -63,6 +64,23 @@ def single_lod(sk, mesh):
         except AttributeError:
             sk.regenerate_lod(mesh, 1, True, False)
     return sk.get_lod_count(mesh)
+
+
+def custom_lods(sk, mesh, info):
+    """Distance LODs made in Blender (m80_prepare_vehicle.py "lods": <key>_LOD<i>.fbx on the same skeleton) after
+    LOD0, each switched in at its screen size: the full mesh stays for close views, the wheels are not bent."""
+    lods = info.get("lods", [])
+    done = []
+    for i, lod in enumerate(lods, 1):
+        path = str(SRC / lod["file"])
+        try:
+            n = sk.import_lod(mesh, i, path)
+        except AttributeError:
+            n = unreal.EditorSkeletalMeshLibrary.import_lod(mesh, i, path)
+        done.append(n)
+    if lods:
+        done.append(unreal.M80EditorLibrary.set_skeletal_lod_screen_sizes(mesh, [1.0] + [l["screen_size"] for l in lods]))
+    return done
 
 
 def norm(name):
@@ -346,6 +364,8 @@ def run():
                 r["physics"] = physics(key, mesh, info)
             if mesh and LOD_ONLY and key in FULL_MESH:
                 r["lods"] = single_lod(sk, mesh)
+                r["custom_lods"] = custom_lods(sk, mesh, info)
+                r["verts"] = [sk.get_num_verts(mesh, i) for i in range(sk.get_lod_count(mesh))]
                 EAL.save_loaded_asset(mesh)
             if mesh:
                 report[key] = r
@@ -360,6 +380,8 @@ def run():
             r["missing_materials"] = assign(mesh, mis, True)
             r["physics"] = physics(key, mesh, info)
             r["lods"] = single_lod(sk, mesh) if key in FULL_MESH else sk.regenerate_lod(mesh, 3, True, False)
+            if key in FULL_MESH:
+                r["custom_lods"] = custom_lods(sk, mesh, info)
             r["bones"] = [str(mesh.get_editor_property("skeleton").get_name())]
             EAL.save_loaded_asset(mesh)
             r["verts"] = [sk.get_num_verts(mesh, i) for i in range(sk.get_lod_count(mesh))]

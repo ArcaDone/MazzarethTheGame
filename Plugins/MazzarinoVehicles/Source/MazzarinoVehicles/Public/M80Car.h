@@ -301,13 +301,50 @@ private:
 };
 
 /** Fiat 500 F (1965-72): 499.5 cc rear engine, 18 hp, about 520 kg, rear-wheel drive, top speed about 95 km/h.
- * The town's common car: a light mesh (40k triangles, Research/Mazzarino80/Blender/m80_fiat500_sorgente.py). */
+ * The town's common car (Research/Mazzarino80/Blender/m80_fiat500_sorgente.py: engine under the lid dropped, not decimated). */
 UCLASS(meta = (DisplayName = "Fiat 500 (guidabile)"))
 class MAZZARINOVEHICLES_API AM80CarFiat500 : public AM80Car
 {
 	GENERATED_BODY()
 public:
 	AM80CarFiat500();
+};
+
+/** Mini Cooper S (1965): 1275 cc front engine, 76 hp, about 650 kg, front-wheel drive, 10 inch wheels, top speed about
+ * 160 km/h. Downloaded game-ready model, not decimated (Research/Mazzarino80/Blender/m80_auto_sorgente.py). */
+UCLASS(meta = (DisplayName = "Mini Cooper S (guidabile)"))
+class MAZZARINOVEHICLES_API AM80CarMini : public AM80Car
+{
+	GENERATED_BODY()
+public:
+	AM80CarMini();
+};
+
+/** Volkswagen Maggiolino 1500 (1968): flat-four rear engine, 44 hp, about 840 kg, rear-wheel drive, top speed about 125 km/h. */
+UCLASS(meta = (DisplayName = "Maggiolino (guidabile)"))
+class MAZZARINOVEHICLES_API AM80CarMaggiolino : public AM80Car
+{
+	GENERATED_BODY()
+public:
+	AM80CarMaggiolino();
+};
+
+/** Volkswagen Golf GTI (1976): 1588 cc, 110 hp, about 810 kg, front-wheel drive, top speed about 182 km/h. */
+UCLASS(meta = (DisplayName = "Golf GTI (guidabile)"))
+class MAZZARINOVEHICLES_API AM80CarGolf : public AM80Car
+{
+	GENERATED_BODY()
+public:
+	AM80CarGolf();
+};
+
+/** BMW M3 E30 Evolution II (1988): 2.3 l four, 220 hp, about 1200 kg, rear-wheel drive, top speed about 245 km/h. */
+UCLASS(meta = (DisplayName = "BMW M3 (guidabile)"))
+class MAZZARINOVEHICLES_API AM80CarM3 : public AM80Car
+{
+	GENERATED_BODY()
+public:
+	AM80CarM3();
 };
 
 /** Piaggio Ape (P501 type, late 70s): 3 wheels, small engine, about 450 kg, top speed about 60 km/h. Slow, short gears, leans in fast turns. */
@@ -359,6 +396,70 @@ class MAZZARINOVEHICLES_API UM80Wheel500Rear : public UChaosVehicleWheel
 	GENERATED_BODY()
 public:
 	UM80Wheel500Rear();
+};
+
+UCLASS()
+class MAZZARINOVEHICLES_API UM80WheelMiniFront : public UChaosVehicleWheel
+{
+	GENERATED_BODY()
+public:
+	UM80WheelMiniFront();
+};
+
+UCLASS()
+class MAZZARINOVEHICLES_API UM80WheelMiniRear : public UChaosVehicleWheel
+{
+	GENERATED_BODY()
+public:
+	UM80WheelMiniRear();
+};
+
+UCLASS()
+class MAZZARINOVEHICLES_API UM80WheelMaggiolinoFront : public UChaosVehicleWheel
+{
+	GENERATED_BODY()
+public:
+	UM80WheelMaggiolinoFront();
+};
+
+UCLASS()
+class MAZZARINOVEHICLES_API UM80WheelMaggiolinoRear : public UChaosVehicleWheel
+{
+	GENERATED_BODY()
+public:
+	UM80WheelMaggiolinoRear();
+};
+
+UCLASS()
+class MAZZARINOVEHICLES_API UM80WheelGolfFront : public UChaosVehicleWheel
+{
+	GENERATED_BODY()
+public:
+	UM80WheelGolfFront();
+};
+
+UCLASS()
+class MAZZARINOVEHICLES_API UM80WheelGolfRear : public UChaosVehicleWheel
+{
+	GENERATED_BODY()
+public:
+	UM80WheelGolfRear();
+};
+
+UCLASS()
+class MAZZARINOVEHICLES_API UM80WheelM3Front : public UChaosVehicleWheel
+{
+	GENERATED_BODY()
+public:
+	UM80WheelM3Front();
+};
+
+UCLASS()
+class MAZZARINOVEHICLES_API UM80WheelM3Rear : public UChaosVehicleWheel
+{
+	GENERATED_BODY()
+public:
+	UM80WheelM3Rear();
 };
 
 UCLASS()

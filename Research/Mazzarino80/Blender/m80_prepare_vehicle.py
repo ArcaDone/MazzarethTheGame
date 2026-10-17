@@ -1,7 +1,7 @@
 """Blender 4.3: clean, optimise and export one asset of D:/Blender/AssetsMazzarethTheGame for Unreal.
 
 Run: blender -b <file.blend> --python m80_prepare_vehicle.py -- <key> <out_dir>
-key: Fiat500 | Vespa | Poste | Comune | ChiesaComune | Matrice | Castello | Madonna |
+key: Fiat500 | Mini | Maggiolino | Golf | M3 | Vespa | Poste | Comune | ChiesaComune | Matrice | Castello | Madonna |
      Cassonetto | Tombino (see ASSETS)
 
 What it does (the source .blend is never saved):
@@ -40,8 +40,18 @@ ASSETS = {
     "Vespa": {"kind": "bike", "length": 1.77},
     # The downloaded 1965 500 F (Research/Mazzarino80/Blender/m80_fiat500_sorgente.py makes its .blend): the town's
     # common car, so lighter than the others.
-    "Fiat500": {"kind": "car", "length": 2.97, "budget": 40000, "straight": True,   # one door mirror tilts the PCA
+    # "budget": 0 = no decimation (the user: decimated bodies look bad), "keep_normals": the file's normals, no smoothing.
+    "Fiat500": {"kind": "car", "length": 2.97, "budget": 0, "keep_normals": True, "straight": True,   # one door mirror tilts the PCA
                 "wheel_slack": 0.8},   # the steering box on the left would join the left front wheel
+    # Downloaded game-ready cars (Research/Mazzarino80/Blender/m80_auto_sorgente.py makes their .blend), front at -Y.
+    "Mini": {"kind": "car", "length": 3.05, "budget": 0, "keep_normals": True, "straight": True, "front": -1},
+    "Maggiolino": {"kind": "car", "length": 4.07, "budget": 0, "keep_normals": True, "straight": True, "front": -1},
+    # Its tyres come in many loose pieces (and the rims would pass for wheels): taken by name.
+    "Golf": {"kind": "car", "length": 3.71, "budget": 0, "keep_normals": True, "straight": True, "front": -1,
+             "wheel_names": r"Tire_High|WheelFL6"},
+    # Two headlight pieces of the file sit 60 cm ahead of the bumper (they made the car 0.88 times too small).
+    "M3": {"kind": "car", "length": 4.345, "budget": 0, "keep_normals": True, "straight": True, "front": -1,
+           "exclude": ["BMW:HeadLightL6_Mesh_020_M_Light_Max_004", "HeadLightR6_Mesh_021_M_Light_Max_004"]},
     "Poste": {"kind": "building", "scale": 1.0, "split": ["Antenna"]},   # the radio mast is its own mesh
     # Town buildings (Comune and its church are stand-ins until the user rebuilds the Comune).
     "Comune": {"kind": "building", "density": 1500, "budget": 0},
@@ -61,7 +71,7 @@ ASSETS = {
 }
 CFG = ASSETS[KEY]
 BODY_BUDGET = CFG.get("budget", 70000) if CFG["kind"] == "car" else (50000 if CFG["kind"] == "bike" else CFG.get("budget", 600000))
-WHEEL_BUDGET = 5000
+WHEEL_BUDGET = 5000 if CFG.get("budget", 1) else 0
 MAX_TEX = 2048
 MAX_NORMAL_TEX = 1024   # normal maps of small details (lights, leather): 1K is plenty
 os.makedirs(os.path.join(OUT, "Textures"), exist_ok=True)
@@ -211,7 +221,7 @@ def drop_scenery_and_duplicates(meshes):
         flat = ext[2] < 0.02 * max(ext[0], ext[1], 1e-6)
         ground = flat and t <= 400 and hi[2] <= zmin + 0.02 * float(max(ext)) and float(max(ext[0], ext[1])) > 2 * med
         sky = t <= 64 and float(max(ext)) > 5 * med
-        if ground or sky:
+        if (ground or sky) and not CFG.get("keep_normals"):   # downloaded game-ready cars bring no scenery
             log("drop scenery", o.name, [round(float(v), 2) for v in ext], t)
             bpy.data.objects.remove(o, do_unlink=True)
             continue
@@ -345,6 +355,9 @@ def straighten(o):
 
 def build_vehicle(meshes):
     count = 4 if CFG["kind"] == "car" else 2
+    if CFG.get("wheel_names"):
+        body, wheel_objs, wheels, length_axis = wheels_by_name(meshes, count)
+        return place_vehicle(body, wheel_objs, wheels, length_axis, np.array([w[0] for w in wheels]))
     # Tyres made of many loose pieces: look at whole objects first, after straightening them all.
     body = join(meshes, "Body")
     if not CFG.get("straight"):
@@ -390,6 +403,41 @@ def build_vehicle(meshes):
     log("wheel parts", [len(groups[i]) for i in groups], "body parts", len(body_parts))
     body = join(body_parts, "Body")
     wheel_objs = [join(groups[i], "Wheel%d" % i) for i in range(len(wheels))]
+    return place_vehicle(body, wheel_objs, wheels, length_axis, centres)
+
+
+def wheels_by_name(meshes, count):
+    """Wheels named in the source ("wheel_names", a pattern on the object names: tyres and rims of game-ready models,
+    whose tyres come in many loose pieces the round-part search cannot see): their pieces are split into the four
+    corners around their common centre, one wheel each; everything else is the body."""
+    pat = re.compile(CFG["wheel_names"])
+    named = [o for o in meshes if pat.search(o.name)]
+    rest = [o for o in meshes if o not in named]
+    parts = separate_loose(join(named, "WheelsAll"))
+    lo = np.min([world_bbox(p)[0] for p in parts], 0)
+    hi = np.max([world_bbox(p)[1] for p in parts], 0)
+    c = (lo + hi) / 2
+    length_axis = 0 if (hi - lo)[0] > (hi - lo)[1] else 1   # the four wheels spread more along the car
+    axle = 1 - length_axis
+    quads = {}
+    for p in parts:
+        pl, ph = world_bbox(p)
+        pc = (pl + ph) / 2
+        quads.setdefault((bool(pc[length_axis] > c[length_axis]), bool(pc[axle] > c[axle])), []).append(p)
+    if len(quads) != count:
+        raise RuntimeError("named wheels: %d corners" % len(quads))
+    wheel_objs, wheels = [], []
+    for i, ps in enumerate(quads.values()):
+        o = join(ps, "Wheel%d" % i)
+        wl, wh = world_bbox(o)
+        wheels.append(((wl + wh) / 2, float(wh[2] - wl[2]) / 2, float((wh - wl)[axle]), axle))
+        wheel_objs.append(o)
+    log("named wheels", [len(v) for v in quads.values()], "radius", [round(w[1], 3) for w in wheels])
+    body = join(rest, "Body")
+    return body, wheel_objs, wheels, length_axis
+
+
+def place_vehicle(body, wheel_objs, wheels, length_axis, centres):
     # Scale to the real length, then orientation and placement.
     lo, hi = world_bbox(body)
     s = CFG["length"] / float(hi[length_axis] - lo[length_axis])
@@ -442,7 +490,7 @@ def front_sign(body, length_axis, centre):
 
 def decimate(o, budget):
     t = tri_count(o)
-    if t <= budget:
+    if budget <= 0 or t <= budget:
         return t
     m = o.modifiers.new("M80Dec", "DECIMATE")
     m.decimate_type = "COLLAPSE"
@@ -659,6 +707,8 @@ def export(objs, arm=None, name=None):
 
 
 def smooth(o):
+    if CFG.get("keep_normals"):
+        return
     for p in o.data.polygons:
         p.use_smooth = True
     try:

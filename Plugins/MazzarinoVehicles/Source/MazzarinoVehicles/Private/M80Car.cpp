@@ -101,6 +101,15 @@ constexpr float WHEELVESPAR = 23.1f, WHEELVESPAW = 10.f;
 // The 500: rear engine and drive, 125x12 tyres (radius 25.1, width 16 on the mesh).
 UM80Wheel500Front::UM80Wheel500Front() { SetupWheel(this, EAxleType::Front, 25.1f, 16.f, 38.f, 850.f, 0.f, false, 130.f, 55.f, 0.45f, 8.f, 10.f); }
 UM80Wheel500Rear::UM80Wheel500Rear() { SetupWheel(this, EAxleType::Rear, 25.1f, 16.f, 0.f, 600.f, 1700.f, true, 165.f, 65.f, 0.45f, 8.f, 10.f, 2.7f); }
+// The downloaded cars (radius on the mesh; width the tyre's, the mesh's wheel group also holds the brakes).
+UM80WheelMiniFront::UM80WheelMiniFront() { SetupWheel(this, EAxleType::Front, 24.5f, 14.f, 38.f, 1000.f, 0.f, true, 160.f, 60.f, 0.45f, 8.f, 10.f, 2.4f); }
+UM80WheelMiniRear::UM80WheelMiniRear() { SetupWheel(this, EAxleType::Rear, 24.5f, 14.f, 0.f, 600.f, 1700.f, false, 130.f, 50.f, 0.45f, 8.f, 10.f, 2.4f); }
+UM80WheelMaggiolinoFront::UM80WheelMaggiolinoFront() { SetupWheel(this, EAxleType::Front, 32.3f, 15.f, 36.f, 1000.f, 0.f, false, 150.f, 55.f, 0.45f, 8.f, 10.f); }
+UM80WheelMaggiolinoRear::UM80WheelMaggiolinoRear() { SetupWheel(this, EAxleType::Rear, 33.1f, 15.f, 0.f, 700.f, 2000.f, true, 200.f, 75.f, 0.45f, 8.f, 10.f, 2.6f); }
+UM80WheelGolfFront::UM80WheelGolfFront() { SetupWheel(this, EAxleType::Front, 27.9f, 18.f, 38.f, 1300.f, 0.f, true, 190.f, 70.f, 0.45f, 8.f, 10.f, 2.6f); }
+UM80WheelGolfRear::UM80WheelGolfRear() { SetupWheel(this, EAxleType::Rear, 27.9f, 18.f, 0.f, 800.f, 2000.f, false, 150.f, 55.f, 0.45f, 8.f, 10.f, 2.6f); }
+UM80WheelM3Front::UM80WheelM3Front() { SetupWheel(this, EAxleType::Front, 31.1f, 21.f, 36.f, 1800.f, 0.f, false, 260.f, 90.f, 0.45f, 8.f, 10.f, 2.6f); }
+UM80WheelM3Rear::UM80WheelM3Rear() { SetupWheel(this, EAxleType::Rear, 30.f, 21.f, 0.f, 1200.f, 2600.f, true, 280.f, 95.f, 0.45f, 8.f, 10.f, 2.8f); }
 UM80WheelVespaFront::UM80WheelVespaFront() { SetupWheel(this, EAxleType::Front, WHEELVESPAR, WHEELVESPAW, 30.f, 250.f, 0.f, false, 60.f, 20.f, 0.5f, 6.f, 8.f, 2.4f); }
 UM80WheelVespaRear::UM80WheelVespaRear() { SetupWheel(this, EAxleType::Rear, WHEELVESPAR, WHEELVESPAW, 0.f, 200.f, 500.f, true, 70.f, 25.f, 0.5f, 6.f, 8.f, 2.6f); }
 
@@ -993,6 +1002,147 @@ AM80CarFiat500::AM80CarFiat500()
 }
 
 // ---------------------------------------------------------------------------------------------
+// Downloaded cars (Research/Mazzarino80/Blender/m80_auto_sorgente.py): sizes from Saved/Mazzarino80/Import/out/<key>.json
+
+AM80CarMini::AM80CarMini()
+{
+	DisplayName = NSLOCTEXT("M80", "Mini", "Mini Cooper S");
+	SetupImported(TEXT("/Game/Mazzarino80/Vehicles/Mini/SK_M80_Mini.SK_M80_Mini"), UM80WheelMiniFront::StaticClass(), UM80WheelMiniRear::StaticClass());
+	ChaseDistance = 450.f;
+	SeatOffset = FVector(-25.f, -28.f, 45.f);
+	SeatRecline = 18.f;
+	DoorOffset = FVector(-20.f, -150.f, 100.f);
+	MaxHealth = 550.f;
+	EngineOffset = FVector(110.f, 0.f, 60.f);
+	HeadlightOffset = FVector(140.f, 50.f, 70.f);
+	TaillightOffset = FVector(-152.f, 55.f, 70.f);
+	FCarSpec S;
+	S.MassKg = 720.f;                      // 650 kg + driver
+	S.CenterOfMass = FVector(20, 0, -15);  // engine and gearbox over the front wheels
+	S.DragCoefficient = 0.42f;
+	S.ChassisWidth = 141.f;
+	S.ChassisHeight = 135.f;
+	S.MaxTorqueNm = 110.f;
+	S.MaxRPM = 6500.f;
+	S.IdleRPM = 850.f;
+	S.PeakTorqueRPM = 3000.f;
+	S.Gears = {3.2f, 1.9f, 1.35f, 1.0f};
+	S.ReverseGear = 3.2f;
+	S.FinalRatio = 3.44f;
+	S.ChangeUpRPM = 6000.f;
+	S.ChangeDownRPM = 2500.f;
+	S.Drive = EVehicleDifferential::FrontWheelDrive;
+	S.SteerAt30Mph = 0.5f;
+	S.SteerAt60Mph = 0.3f;
+	S.WheelbaseCm = 201.f;
+	S.GripG = 0.95f;                       // the go-kart of the rallies
+	ApplySpec(S);
+}
+
+AM80CarMaggiolino::AM80CarMaggiolino()
+{
+	DisplayName = NSLOCTEXT("M80", "Maggiolino", "Maggiolino");
+	SetupImported(TEXT("/Game/Mazzarino80/Vehicles/Maggiolino/SK_M80_Maggiolino.SK_M80_Maggiolino"), UM80WheelMaggiolinoFront::StaticClass(), UM80WheelMaggiolinoRear::StaticClass());
+	ChaseDistance = 520.f;
+	SeatOffset = FVector(-10.f, -30.f, 52.f);
+	SeatRecline = 10.f;
+	DoorOffset = FVector(-10.f, -160.f, 100.f);
+	MaxHealth = 650.f;
+	EngineOffset = FVector(-180.f, 0.f, 60.f);
+	HeadlightOffset = FVector(175.f, 55.f, 80.f);
+	TaillightOffset = FVector(-208.f, 58.f, 75.f);
+	FCarSpec S;
+	S.MassKg = 920.f;
+	S.CenterOfMass = FVector(-30, 0, -10);  // engine behind the rear axle
+	S.DragCoefficient = 0.48f;
+	S.ChassisWidth = 154.f;
+	S.ChassisHeight = 150.f;
+	S.MaxTorqueNm = 120.f;
+	S.MaxRPM = 4800.f;
+	S.IdleRPM = 800.f;
+	S.PeakTorqueRPM = 2600.f;
+	S.Gears = {3.8f, 2.06f, 1.26f, 0.89f};
+	S.ReverseGear = 3.88f;
+	S.FinalRatio = 4.125f;
+	S.ChangeUpRPM = 4300.f;
+	S.ChangeDownRPM = 1800.f;
+	S.SteerAt30Mph = 0.45f;
+	S.SteerAt60Mph = 0.25f;
+	S.WheelbaseCm = 242.f;
+	S.GripG = 0.85f;
+	ApplySpec(S);
+}
+
+AM80CarGolf::AM80CarGolf()
+{
+	DisplayName = NSLOCTEXT("M80", "Golf", "Golf GTI");
+	SetupImported(TEXT("/Game/Mazzarino80/Vehicles/Golf/SK_M80_Golf.SK_M80_Golf"), UM80WheelGolfFront::StaticClass(), UM80WheelGolfRear::StaticClass());
+	ChaseDistance = 500.f;
+	SeatOffset = FVector(-25.f, -32.f, 45.f);
+	SeatRecline = 12.f;
+	DoorOffset = FVector(-20.f, -165.f, 100.f);
+	MaxHealth = 650.f;
+	EngineOffset = FVector(150.f, 0.f, 60.f);
+	HeadlightOffset = FVector(185.f, 52.f, 70.f);
+	TaillightOffset = FVector(-176.f, 55.f, 80.f);
+	FCarSpec S;
+	S.MassKg = 890.f;
+	S.CenterOfMass = FVector(25, 0, -15);
+	S.DragCoefficient = 0.42f;
+	S.ChassisWidth = 161.f;
+	S.ChassisHeight = 139.f;
+	S.MaxTorqueNm = 155.f;
+	S.MaxRPM = 6800.f;
+	S.IdleRPM = 900.f;
+	S.PeakTorqueRPM = 5000.f;
+	S.Gears = {3.45f, 2.12f, 1.44f, 1.13f, 0.91f};
+	S.ReverseGear = 3.17f;
+	S.FinalRatio = 3.9f;
+	S.ChangeUpRPM = 6300.f;
+	S.ChangeDownRPM = 2800.f;
+	S.Drive = EVehicleDifferential::FrontWheelDrive;
+	S.SteerAt30Mph = 0.5f;
+	S.SteerAt60Mph = 0.28f;
+	S.WheelbaseCm = 237.f;
+	S.GripG = 0.95f;
+	ApplySpec(S);
+}
+
+AM80CarM3::AM80CarM3()
+{
+	DisplayName = NSLOCTEXT("M80", "M3", "BMW M3");
+	SetupImported(TEXT("/Game/Mazzarino80/Vehicles/M3/SK_M80_M3.SK_M80_M3"), UM80WheelM3Front::StaticClass(), UM80WheelM3Rear::StaticClass());
+	ChaseDistance = 540.f;
+	SeatOffset = FVector(-35.f, -35.f, 45.f);
+	SeatRecline = 15.f;
+	DoorOffset = FVector(-30.f, -170.f, 100.f);
+	MaxHealth = 750.f;
+	EngineOffset = FVector(150.f, 0.f, 55.f);
+	HeadlightOffset = FVector(198.f, 55.f, 65.f);
+	TaillightOffset = FVector(-228.f, 60.f, 85.f);
+	FCarSpec S;
+	S.MassKg = 1280.f;
+	S.CenterOfMass = FVector(5, 0, -20);
+	S.DragCoefficient = 0.38f;
+	S.ChassisWidth = 168.f;
+	S.ChassisHeight = 137.f;
+	S.MaxTorqueNm = 260.f;
+	S.MaxRPM = 7200.f;
+	S.IdleRPM = 900.f;
+	S.PeakTorqueRPM = 4750.f;
+	S.Gears = {3.72f, 2.40f, 1.77f, 1.26f, 1.0f};
+	S.ReverseGear = 4.23f;
+	S.FinalRatio = 3.25f;
+	S.ChangeUpRPM = 6900.f;
+	S.ChangeDownRPM = 3200.f;
+	S.SteerAt30Mph = 0.45f;
+	S.SteerAt60Mph = 0.25f;
+	S.WheelbaseCm = 253.f;
+	S.GripG = 1.0f;
+	ApplySpec(S);
+}
+
+// ---------------------------------------------------------------------------------------------
 // Ape
 
 AM80CarApe::AM80CarApe()
@@ -1088,7 +1238,7 @@ AM80CarVespa::AM80CarVespa()
 }
 
 // ---------------------------------------------------------------------------------------------
-// Soapbox carts (D:/BlenderTest/carretti, Research/Mazzarino80/Blender/m80_carretti_gioco.py)
+// Soapbox carts (D:/Mazzarino80_Sorgenti/Carretti, Research/Mazzarino80/Blender/m80_carretti_gioco.py)
 
 UM80WheelCuscinetto::UM80WheelCuscinetto()
 {

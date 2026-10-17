@@ -1,8 +1,9 @@
 """Imports the assets prepared by Research/Mazzarino80/Blender/m80_prepare_vehicle.py
 (Saved/Mazzarino80/Import/out/<Key>.fbx + <Key>.json + Textures/) into Unreal.
 
-- The Fiat 500 and the Vespa: skeletal mesh /Game/Mazzarino80/Vehicles/<Key>/SK_M80_<Key>
-  (skeleton Root + Wheel_FL/FR/RL/RR), physics asset of two boxes (UM80EditorLibrary), 3 LODs.
+- The cars (Fiat 500, Mini, Maggiolino, Golf, M3) and the Vespa: skeletal mesh /Game/Mazzarino80/Vehicles/<Key>/SK_M80_<Key>
+  (skeleton Root + Wheel_FL/FR/RL/RR), physics asset of two boxes (UM80EditorLibrary); the downloaded cars one LOD
+  (the full mesh), the others 3.
 - Vespa: drivable too, skeletal mesh /Game/Mazzarino80/Vehicles/Vespa/SK_M80_Vespa (Root + Wheel_F/Wheel_R).
 - Poste: static meshes /Game/Mazzarino80/Buildings/Poste/SM_M80_Poste and SM_M80_Poste_Antenna, without Nanite
   (it turns the thin round slats of the facade into crooked wedges) and with 3 LODs instead.
@@ -35,7 +36,7 @@ EAL = unreal.EditorAssetLibrary
 MEL = unreal.MaterialEditingLibrary
 TOOLS = unreal.AssetToolsHelpers.get_asset_tools()
 MASTERS = "/Game/Mazzarino80/Vehicles/Materials"
-CARS = ["Fiat500", "Vespa"]   # drivable (the Vespa too: two wheels)
+CARS = ["Fiat500", "Mini", "Maggiolino", "Golf", "M3", "Vespa"]   # drivable (the Vespa too: two wheels)
 DEST = {k: "/Game/Mazzarino80/Vehicles/" + k for k in CARS}
 DEST["Poste"] = "/Game/Mazzarino80/Buildings/Poste"
 BUILDINGS = ["Comune", "ChiesaComune", "Matrice", "Castello", "Madonna"]
@@ -48,6 +49,20 @@ BUILDING_TEXTURES = "/Game/Mazzarino80/Buildings/Textures"
 NO_NANITE = ["Poste"]   # thin slats and lattices that Nanite's simplification bends
 ONLY = [k for k in os.environ.get("M80_IMPORT_ONLY", "").split(",") if k]
 PHYSICS_ONLY = os.environ.get("M80_PHYSICS_ONLY", "") == "1"
+# Downloaded game-ready cars: one LOD, the full mesh (the generated LODs bent the wheels out of shape as the camera moved
+# away, and the user does not want them decimated). M80_LOD_ONLY=1 only removes the LODs of the imported ones.
+FULL_MESH = ["Fiat500", "Mini", "Maggiolino", "Golf", "M3"]
+LOD_ONLY = os.environ.get("M80_LOD_ONLY", "") == "1"
+
+
+def single_lod(sk, mesh):
+    n = sk.get_lod_count(mesh)
+    if n > 1:
+        try:
+            sk.remove_lo_ds(mesh, list(range(1, n)))
+        except AttributeError:
+            sk.regenerate_lod(mesh, 1, True, False)
+    return sk.get_lod_count(mesh)
 
 
 def norm(name):
@@ -325,10 +340,14 @@ def run():
             continue
         info = json.loads(jf.read_text(encoding="utf-8"))
         r = {}
-        if PHYSICS_ONLY:
+        if PHYSICS_ONLY or LOD_ONLY:
             mesh = unreal.load_asset("%s/SK_M80_%s" % (DEST[key], key)) if key in CARS else None
-            if mesh:
+            if mesh and PHYSICS_ONLY:
                 r["physics"] = physics(key, mesh, info)
+            if mesh and LOD_ONLY and key in FULL_MESH:
+                r["lods"] = single_lod(sk, mesh)
+                EAL.save_loaded_asset(mesh)
+            if mesh:
                 report[key] = r
             continue
         mis = make_instances(key, info, mats)
@@ -340,7 +359,7 @@ def run():
                 continue
             r["missing_materials"] = assign(mesh, mis, True)
             r["physics"] = physics(key, mesh, info)
-            r["lods"] = sk.regenerate_lod(mesh, 3, True, False)
+            r["lods"] = single_lod(sk, mesh) if key in FULL_MESH else sk.regenerate_lod(mesh, 3, True, False)
             r["bones"] = [str(mesh.get_editor_property("skeleton").get_name())]
             EAL.save_loaded_asset(mesh)
             r["verts"] = [sk.get_num_verts(mesh, i) for i in range(sk.get_lod_count(mesh))]

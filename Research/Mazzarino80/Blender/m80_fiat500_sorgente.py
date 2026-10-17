@@ -1,4 +1,4 @@
-"""Blender 5.2: turns the downloaded Fiat 500 F (D:/BlenderTest/AutoDaImportare/1965-fiat-500f, a game-ready FBX
+"""Blender 5.2: turns the downloaded Fiat 500 F (D:/Mazzarino80_Sorgenti/Auto/1965-fiat-500f, a game-ready FBX
 with D/N/RME textures) into a .blend that m80_prepare_vehicle.py takes like the other cars (key Fiat500).
 
 - scales it from 1:100 to real size;

@@ -1,5 +1,6 @@
-"""The crowd's Mixamo clips (D:/animations: old man's walk and idle, sad walk, walking with a shopping bag, zombie walks for
-the dragging legs of the old, talking, arguing, telling a secret, yelling, tripping) retargeted onto the UEFN mannequin
+"""The crowd's Mixamo clips (D:/Mazzarino80_Sorgenti/Animazioni/Mixamo_Folla: old man's walk and idle, sad walk, walking with a
+shopping bag, zombie walks, talking, arguing, telling a secret, yelling, tripping, getting up, run over, getting in and out
+of a car, sitting down, sitting, standing up) retargeted onto the UEFN mannequin
 that AM80Pedone animates.
 Their skeleton is not the climbing clips' one (SK_M80_Mixamo, Scripts/m80_animazioni_import.py: legs 44 cm a bone,
 these 32 cm): through that one the hips read as crouched and the feet as lifted (squatting old, badly placed feet).
@@ -35,7 +36,12 @@ REPORT = os.path.join(unreal.Paths.project_dir(), "Saved/Mazzarino80/Folla/anima
 NAMES = {"OldManIdle": "VecchioFermo", "OldManWalk": "VecchioCammina", "SadWalk": "CamminaTriste",
          "StandingArguing": "Litigare", "Talking": "Parlare", "Talking1": "Parlare2", "TellingASecret": "Segreto",
          "Tripping": "Inciampo", "WalkingWithShoppingBag": "CamminaSpesa", "Walkingzombie2": "Trascina2",
-         "Yelling": "Urlare", "ZombieWalk": "Trascina"}
+         "Yelling": "Urlare", "ZombieWalk": "Trascina",
+         # 2026-10-17: getting up, getting in and out of a car, run over, sitting down, sitting, standing up.
+         "GettingUp": "Rialzati", "EnteringCar": "Sale", "ExitingCar": "Scende", "HitByCar": "Investito",
+         "MaleSittingPose": "SedutoPosa", "StandToSit": "Siediti", "SitToStand": "Alzati", "Sitting": "Seduto",
+         "SittingTalking": "Seduto_Parla", "SittingLaughing": "Seduto_Ride", "SittingDisbelief": "Seduto_Incredulo",
+         "SittingGunMotion": "Seduto_Pistola"}
 EAL = unreal.EditorAssetLibrary
 TOOLS = unreal.AssetToolsHelpers.get_asset_tools()
 report = {"clips": {}, "missing": [], "notes": []}

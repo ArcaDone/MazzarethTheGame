@@ -1,4 +1,4 @@
-"""The crowd's Mixamo animations (D:/animations, skeleton only) made ready for Unreal, where they are retargeted to the UEFN
+"""The crowd's Mixamo animations (D:/Mazzarino80_Sorgenti/Animazioni/Mixamo_Folla, subfolders too, skeleton only) made ready for Unreal, where they are retargeted to the UEFN
 mannequin (Scripts/m80_folla_animazioni.py). Their skeleton is not the one of the climbing clips (SK_M80_Mixamo: legs
 44 cm a bone, these 32 cm): retargeted through that one the hips read as crouched and the feet as lifted. So:
 - SK_M80_MixamoFolla.fbx: this skeleton in its rest pose with a dummy mesh (a box per bone), since Unreal needs a
@@ -16,7 +16,7 @@ import bpy
 import bmesh
 from mathutils import Vector
 
-SRC = "D:/animations"
+SRC = "D:/Mazzarino80_Sorgenti/Animazioni/Mixamo_Folla"
 OUT = "D:/UE5Projects/GameAnimationSample/Saved/Mazzarino80/Folla/Animazioni"
 
 
@@ -75,7 +75,7 @@ def export(path, objects, anim):
 
 def main():
     os.makedirs(OUT, exist_ok=True)
-    files = sorted(glob.glob(SRC + "/*.fbx"))
+    files = sorted(glob.glob(SRC + "/**/*.fbx", recursive=True))
     report = {}
     # The skeleton with its dummy mesh, in the rest pose, from the first file (all share the Mixamo rig).
     arm = load(files[0])

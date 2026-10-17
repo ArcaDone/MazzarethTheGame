@@ -90,6 +90,9 @@ L'arrampicata funziona su qualsiasi geometria, perché cerca i bordi sulla colli
 | **Auto Mazzarino** | Fiat 500 F, Mini Cooper S, Maggiolino, Golf GTI, BMW M3: modelli scaricati, **non decimati** (la 500 ha 242 mila triangoli, le altre 36-85 mila), un solo LOD (`m80_auto_sorgente.py`, `m80_fiat500_sorgente.py`, `m80_prepare_vehicle.py`). Poi Ape e Vespa. 126, Panda, 127, Uno e la Golf vecchia tolte il 16/10/2026: troppo pesanti per il traffico. |
 | **Carretti** | *Carretto a cuscinetti* (sdraiati sul petto, mani sulla barra davanti), *a triangolo* e *con la cassetta* (seduti come in un go-kart, talloni sull'asse, corda in mano), *persiana* (seduti, braccia sul manico di scopa come su un chopper). Niente motore: si spingono piano e corrono in discesa (circa 22 km/h in fondo a 30 m al 10%). |
 | **Bouganvillea (Mazzarino)** | Pianta procedurale che cresce lungo una spline. Regole d'uso nella sezione qui sotto. |
+| **Negozi di una casa** | Nella casa, sezione *Negozi*: per ogni negozio il lato (premi *Mostra numeri dei lati*; -1 = facciata principale), il prototipo (`/Game/Mazzarino/Prototipi`: Alimentari, Bar Sport, Tabaccheria, Frutta, Ferramenta, Farmacia, Abbigliamento, Edicola, Officina, Negozio chiuso) e la posizione lungo il lato. Quel tratto del piano terra diventa una stanza vera aperta sulla strada, arredata con le regole del pacchetto, con una luce debole e calda. |
+| **Strade per la navigazione** | Una per mappa col traffico: la parte centrale delle strade costa ai pedoni, che restano lungo le case e attraversano dove serve. |
+| **Parcheggio (Mazzarino)** | Stallo: le auto degli NPC a fine giro ci parcheggiano e il guidatore scende. |
 
 ### La bouganvillea (spline)
 
@@ -217,6 +220,9 @@ powershell -ExecutionPolicy Bypass -File Scripts/run_editor_script.ps1 -Script S
 | `m80_folla_animazioni.py` + `Blender/m80_mixamo_folla.py` | Le clip Mixamo della folla (`D:\Mazzarino80_Sorgenti\Animazioni\Mixamo_Folla`) sul loro scheletro, retargettate sul manichino: camminate, chiacchiere, cadute, rialzarsi, investimento, salire e scendere dall'auto, sedersi, stare seduti, alzarsi. |
 | `m80_folla_auto.py`, `m80_folla_sedie.py` | Parcheggiano le 5 auto nella piazza di `L_M80_ProvaFolla`; rendono fisici sedie, tavoli e carte (tag `M80Sedia`, `M80Tavolo`). |
 | `m80_folla_azioni.py` | Prova in Play di quello che fa la folla, con foto: mani, anziani, caduta, investimento, sedia, guida, pugni (difesa o fuga), spavento per uno sparo, il giocatore che si siede e che entra/esce dall'auto, sedie spinte (`M80_AZIONI=...` per farne solo alcune). |
+| `m80_negozi_prototipi.py` | I `prototipo_*.json` dei pacchetti dei negozi diventano gli asset `DA_Negozio_*` che le case usano nei *Negozi*. |
+| `m80_prova_matrice.py` | Mappa di prova del traffico `Traffico/Maps/L_M80_ProvaMatrice`: la Matrice e 150 m intorno copiati da `L_M80_Paese_WP` (si rifà da capo e segue le modifiche del paese), il terreno rifatto con le stesse quote e le strade dipinte, la navigazione, auto che girano, folla, negozi. `M80_SOLO_TRAFFICO=1` rifà solo auto e parcheggi, `M80_SOLO_NEGOZI=1` solo i negozi (con foto). |
+| `m80_prova_matrice_test.py` | Prova in Play del mini-paese: per 3 minuti registra cosa fa ogni auto e quanti pedoni sono in mezzo alla strada o aspettano sul bordo; foto dietro le auto e degli attraversamenti. |
 | `m80_negozi_import.py` | Importa i pacchetti di `D:\Mazzarino80_Sorgenti\Interni_e_Negozi` (Kit Bottega, Bar Sport, Tabaccheria, Edicola, Cabina SIP) con i loro script e li dispone nella mappa di prova `Negozi/Maps/L_M80_ProvaNegozi`. Le lampade dei pacchetti al 15% dei loro lumen e calde (2800 K); `M80_SOLO_LUCI=1` rifà solo le luci. |
 
 I circa 220 script `mazzarino80_*.py` sono della prima versione basata su PCG (settembre 2026): restano solo come archivio e non servono più.
@@ -329,7 +335,8 @@ Sull'altro PC:
 - **Paese buio di notte da lontano** con la griglia nuova: i lampioni lontani non sono caricati. Tenerli sempre caricati costa troppo (3 fps): da rivedere.
 - **DynamicMesh in Play: 2,5 GB di RAM** (691 oggetti, 5.8 con la griglia nuova; erano 6,7 GB in 5.5). Le producono case non cotte, strade, marciapiedi, scalinate, fili, orizzonte e bouganvillea. Prima misurarle per tipo, poi cuocere in static mesh chi pesa di più. Da fare prima di portare la folla nel paese.
 - **Ape: 974 mila triangoli**: va alleggerita prima di avere traffico. La Vespa non ha texture. La 500 non decimata ne ha 242 mila (richiesta dell'utente: niente decimazione sulle auto scaricate).
-- **Folla nel paese** (da fare quando ci si porta la gente): i pedoni devono stare sui marciapiedi e vicino alle case e attraversare solo a strada libera; le auto degli NPC devono restare sulle strade (seguire le spline delle strade). Nella piazza di prova le auto degli NPC seguono la navigazione dei pedoni con un controllo d'ingombro, e vanno piano.
+- **Traffico** (mini-paese della Matrice, 17/10): corsie ricavate dalle strade OSM (a destra; incroci e stradine strette un'auto alla volta), adattate allo spazio libero tra cordoli e muri; le auto si fermano per pedoni e auto davanti e sorpassano quelle parcheggiate; i pedoni restano lungo le case e aspettano sul bordo. Da migliorare: alcune auto si incastrano ancora nelle curve strette o contro gli spigoli; parcheggi solo dove la strada è abbastanza larga (nel mini-paese nessuno). Da portare nel paese vero quando si sceglierà il senso di marcia.
+- **Negozi**: mancano le stanze secondarie dei prototipi (bagno, magazzino, saletta), i tavolini fuori e le insegne dei pacchetti; un negozio a cavallo di due case attaccate lascia un po' di terreno a vista.
 - **Licenze delle auto scaricate**: i nomi delle texture fanno pensare a modelli presi da giochi commerciali; prima di pubblicare vanno sostituite o verificate.
 
 ## 8. Fonti e licenze

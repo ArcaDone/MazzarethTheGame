@@ -1,5 +1,5 @@
 """Animations for climbing, fists and aiming, retargeted onto the player's skeleton (UEFN mannequin):
-- the user's Mixamo clips (D:/BlenderTest/animazioni: braced hang, shimmy, climb up, drop, jumps to hang, punch combo,
+- the user's Mixamo clips (D:/Mazzarino80_Sorgenti/Animazioni/Mixamo_Giocatore: braced hang, shimmy, climb up, drop, jumps to hang, punch combo,
   rifle aiming), imported with their own skeleton into Player/Anim/Mixamo/Sorgenti, an IK rig made by Unreal's
   auto-characterisation (IK_M80_Mixamo) and a retargeter onto IK_UEFN_Mannequin (RTG_M80_Mixamo_to_UEFN, chains
   mapped automatically, root motion generated from the pelvis: the clips have no root bone);
@@ -18,7 +18,7 @@ import unreal
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import m80_seq  # noqa: E402
 
-SRC = "D:/BlenderTest/animazioni"
+SRC = "D:/Mazzarino80_Sorgenti/Animazioni/Mixamo_Giocatore"
 ANIM = "/Game/Mazzarino80/Player/Anim"
 MIX = ANIM + "/Mixamo/Sorgenti"
 REPORT = os.path.join(unreal.Paths.project_dir(), "Saved/Mazzarino80/Player/animazioni.json")

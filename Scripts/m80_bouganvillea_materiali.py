@@ -1,5 +1,5 @@
 """Textures and materials of the procedural bougainvillea (AM80Bougainvillea, plugin MazzarinoHouses) in
-/Game/Mazzarino80/Vegetazione/Bouganvillea, from the textures in D:/BlenderTest/Bouganvillea:
+/Game/Mazzarino80/Vegetazione/Bouganvillea, from the textures in D:/Mazzarino80_Sorgenti/Vegetazione/Bouganvillea:
 - M_M80_BGV_Card: masked, two-sided foliage card; colour x Tinta, a little lighter or darker per card (vertex colour
   B), light through it (subsurface), cut by the texture's alpha, swaying in the wind by vertex colour G.
 - M_M80_BGV_Legno: bark colour, OpenGL normal and roughness on the branches' UVs (20 cm per unit), same wind.
@@ -16,7 +16,7 @@ import unreal
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import m80_seq  # noqa: E402
 
-SRC = "D:/BlenderTest/Bouganvillea"
+SRC = "D:/Mazzarino80_Sorgenti/Vegetazione/Bouganvillea"
 DEST = "/Game/Mazzarino80/Vegetazione/Bouganvillea"
 TEX = DEST + "/Textures"
 WIND = "/Engine/Functions/Engine_MaterialFunctions01/WorldPositionOffset/SimpleGrassWind"

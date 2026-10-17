@@ -1,4 +1,4 @@
-"""Imports the Italian phone booth package (D:/BlenderTest/Da importare/parte4/Cabina_Telefonica) into
+"""Imports the Italian phone booth package (D:/Mazzarino80_Sorgenti/Arredo_Urbano/Cabina_Telefonica) into
 /Game/Mazzarino80/Kit/CabinaTelefonica with the package's own importer (unreal/import_cabina.py: skeletal mesh with the
 folding door, four condition variants on the same skeleton, open/close clips, weathered PBR materials, five sounds),
 then stores the colour and ORM sources as JPEG (normals stay lossless) to keep the repository light.
@@ -14,7 +14,7 @@ import unreal
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import m80_seq  # noqa: E402
 
-PKG = "D:/BlenderTest/Da importare/parte4/Cabina_Telefonica"
+PKG = "D:/Mazzarino80_Sorgenti/Arredo_Urbano/Cabina_Telefonica"
 DEST = "/Game/Mazzarino80/Kit/CabinaTelefonica"
 LIGHT = os.path.join(unreal.Paths.project_dir(), "Saved/Mazzarino80/Cabina/exports")
 EAL = unreal.EditorAssetLibrary

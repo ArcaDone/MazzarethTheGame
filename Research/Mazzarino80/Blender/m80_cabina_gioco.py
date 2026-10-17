@@ -13,7 +13,7 @@ import os
 
 import bpy
 
-PKG = "D:/BlenderTest/Da importare/parte4/Cabina_Telefonica"
+PKG = "D:/Mazzarino80_Sorgenti/Arredo_Urbano/Cabina_Telefonica"
 ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 OUT = os.path.join(ROOT, "Saved", "Mazzarino80", "Cabina", "exports")
 TARGET = 25000

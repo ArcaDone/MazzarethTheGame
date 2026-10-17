@@ -1,4 +1,4 @@
-"""Blender 5.2: the four soapbox carts of D:/BlenderTest/carretti for the game, each with the pose of its rider.
+"""Blender 5.2: the four soapbox carts of D:/Mazzarino80_Sorgenti/Carretti for the game, each with the pose of its rider.
 
 Run (one cart at a time, Blender 5.2: the files are too new for 4.3):
   blender -b <carretto_x.blend> --python m80_carretti_gioco.py -- <key> <out_dir> <SKM_UEFN_Mannequin.fbx>

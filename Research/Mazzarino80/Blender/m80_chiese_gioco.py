@@ -1,4 +1,4 @@
-"""Churches (and the other hand-made buildings delivered as Blender packages in D:/BlenderTest/Da importare) made ready for
+"""Churches (and the other hand-made buildings delivered as Blender packages in D:/Mazzarino80_Sorgenti/Chiese and /Edifici) made ready for
 the game the way Palazzo Bartoli was (m80_bartoli_gioco.py): the package's low-poly geometry on the town's tiling texture
 sets instead of its own baked atlases (a package's 11-17 atlases at 4096 px would weigh hundreds of MB a church; the sets
 are shared by every building), a small dirt map per building (ambient occlusion + damp rising from the ground, 1024 px on
@@ -40,7 +40,7 @@ import m80_arch_kit as K  # noqa: E402
 import m80_arch_facade as A  # noqa: E402
 
 ROOT = os.path.normpath(os.path.join(HERE, "..", "..", ".."))
-PKG = "D:/BlenderTest/Da importare"
+PKG = "D:/Mazzarino80_Sorgenti/Chiese"
 SAVED = os.path.join(ROOT, "Saved", "Mazzarino80", "Chiese")
 DIRT_TEX = os.path.join(HERE, "Textures", "Chiese")
 PLAN = os.path.join(ROOT, "Research", "Mazzarino80", "building_footprint_plan.json")
@@ -98,7 +98,7 @@ DETAIL_SLOTS = {"Ferro", "Vetro", "Bronzo", "Oro"}
 
 CHIESE = {
     "Immacolata": {
-        "blend": PKG + "/parte 1/Chiesa_Immacolata_Concezione_Mazzarino/Chiesa_Immacolata_Concezione_Mazzarino.blend",
+        "blend": PKG + "/Chiesa_Immacolata_Concezione_Mazzarino/Chiesa_Immacolata_Concezione_Mazzarino.blend",
         "collections": ["02 "],
         "osm": "372573560",
         # Facade to the west (the bell tower at the back stands on Via Marino, east of the lot).
@@ -109,8 +109,8 @@ CHIESE = {
         "decimate": {"Pietrame": 0.12},
     },
     "Lacrima": {
-        "blend": PKG + "/parte 1/Chiesa_Maria_SS_della_Lacrima_Mazzarino/lowpoly/Chiesa_Lacrima_LOW_POLY.blend",
-        "atlas_dir": PKG + "/parte 1/Chiesa_Maria_SS_della_Lacrima_Mazzarino/lowpoly/textures",
+        "blend": PKG + "/Chiesa_Maria_SS_della_Lacrima_Mazzarino/lowpoly/Chiesa_Lacrima_LOW_POLY.blend",
+        "atlas_dir": PKG + "/Chiesa_Maria_SS_della_Lacrima_Mazzarino/lowpoly/textures",
         "collections": ["07"], "exclude": ["Coppo_Modulo"],
         "osm": "375814227",
         # The convex facade and its stair stand at the corner of Via Pozzillo and Via delle Lacrime, west of the lot.
@@ -118,8 +118,8 @@ CHIESE = {
         "decimate": {"Coppi": 0.5},
     },
     "SantaLucia": {
-        "blend": PKG + "/parte2/Chiesa_Santa_Lucia_Mazzarino_Invecchiata/lowpoly/Chiesa_Santa_Lucia_LOW_POLY.blend",
-        "atlas_dir": PKG + "/parte2/Chiesa_Santa_Lucia_Mazzarino_Invecchiata/lowpoly/textures",
+        "blend": PKG + "/Chiesa_Santa_Lucia_Mazzarino_Invecchiata/lowpoly/Chiesa_Santa_Lucia_LOW_POLY.blend",
+        "atlas_dir": PKG + "/Chiesa_Santa_Lucia_Mazzarino_Invecchiata/lowpoly/textures",
         "collections": ["07"], "exclude": ["Coppo_Modulo"],
         "osm": "372574906",
         # Facade on Corso Vittorio Emanuele (Street View 127-162 Corso), the east end of the lot by the Corso.
@@ -127,8 +127,8 @@ CHIESE = {
         "decimate": {"Coppi": 0.4},
     },
     "SpiritoSanto": {
-        "blend": PKG + "/parte3/Chiesa_Spirito_Santo_Addolorata_Mazzarino/lowpoly/Chiesa_Spirito_Santo_LOW_POLY.blend",
-        "atlas_dir": PKG + "/parte3/Chiesa_Spirito_Santo_Addolorata_Mazzarino/lowpoly/textures",
+        "blend": PKG + "/Chiesa_Spirito_Santo_Addolorata_Mazzarino/lowpoly/Chiesa_Spirito_Santo_LOW_POLY.blend",
+        "atlas_dir": PKG + "/Chiesa_Spirito_Santo_Addolorata_Mazzarino/lowpoly/textures",
         "collections": ["07"], "exclude": ["Coppo_Modulo"],
         "osm": "375814238",
         # The rubble apse on the rounded east end of the footprint, the facade with the bell gable to the west.
@@ -138,14 +138,14 @@ CHIESE = {
         "decimate": {"Bronzo": 0.3},
     },
     "Olmo": {
-        "blend": PKG + "/parte2/Chiesa_Olmo_Mazzarino/Chiesa_Olmo_Mazzarino.blend",
+        "blend": PKG + "/Chiesa_Olmo_Mazzarino/Chiesa_Olmo_Mazzarino.blend",
         "collections": ["01", "02", "03", "04", "05", "06"],
         "osm": "372597217",
         # This older package has its facade towards -Y: turned so it looks east, to the road along the lot.
         "rotation_deg": 91, "facade_dir_deg": 270,
     },
     "SanGiuseppe": {
-        "blend": PKG + "/parte4/San_Giuseppe_Mazzarino/San_Giuseppe_Mazzarino.blend",
+        "blend": PKG + "/San_Giuseppe_Mazzarino/San_Giuseppe_Mazzarino.blend",
         "collections": ["01", "02", "03", "04", "05", "06", "07", "08"],
         "osm": "375814268",
         # Its roof tiles are called "Cotto 00-05" in this package: coppi.
@@ -154,7 +154,7 @@ CHIESE = {
         "rotation_deg": 84, "facade_dir_deg": 270,
     },
     "SantIgnazio": {
-        "blend": PKG + "/parte3/Complesso_Oratorio_Chiostro_SantIgnazio_Mazzarino/lowpoly/Complesso_LOW_POLY.blend",
+        "blend": PKG + "/Complesso_Oratorio_Chiostro_SantIgnazio_Mazzarino/lowpoly/Complesso_LOW_POLY.blend",
         "collections": ["07"], "exclude": ["Coppo_Modulo"],
         "osm": "1249067242",
         "rotation_deg": 71,

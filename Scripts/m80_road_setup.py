@@ -1,5 +1,5 @@
 """Roads kit: the full material of the secondary lava paving (T_Basalto_* in
-/Game/Mazzarino80/Kit/Stairs/Textures/LavicaSecondaria, from D:/BlenderTest/Pavimento_Basalto_PBR) and test roads
+/Game/Mazzarino80/Kit/Stairs/Textures/LavicaSecondaria, from D:/Mazzarino80_Sorgenti/Materiali/Pavimento_Basalto_PBR) and test roads
 of the "Strada (Mazzarino)" actor added to /Game/Mazzarino80/Kit/Stairs/L_M80_ProvaScalinate (the stairs already
 there are left alone; the roads, folder "Strade", and their test terrain are remade each run).
 Renders go to Saved/Mazzarino80/Roads/Render.

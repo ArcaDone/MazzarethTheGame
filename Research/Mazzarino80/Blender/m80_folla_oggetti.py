@@ -1,6 +1,6 @@
 """Blender 5.2: the objects people carry or use in the crowd test (1980s Sicily), one FBX each, ready for Unreal.
 
-- Downloaded (Sketchfab, D:/BlenderTest/Folla/sketchfab/<folder>, see README "Fonti e licenze"): brought to real size
+- Downloaded (Sketchfab, D:/Mazzarino80_Sorgenti/Personaggi/Oggetti_Sketchfab/<folder>, see README "Fonti e licenze"): brought to real size
   (their files come in cm, m or arbitrary units), the parts not needed left out (the shawl's mannequin, the umbrella
   stand), textures cut to MAX_PX and written next to the FBX.
 - Made here (nothing suitable found): flat caps (coppola) in three cloths, an old lady's black handbag, prescription
@@ -25,7 +25,7 @@ from mathutils import Matrix, Vector
 
 ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 OUT = os.path.join(ROOT, "Saved", "Mazzarino80", "Folla", "Oggetti")
-SKETCHFAB = "D:/BlenderTest/Folla/sketchfab"
+SKETCHFAB = "D:/Mazzarino80_Sorgenti/Personaggi/Oggetti_Sketchfab"
 MAX_PX = 1024
 ARGS = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
 ONLY = [k for k in (ARGS[0].split(",") if ARGS else []) if k]

@@ -10,7 +10,7 @@
 #
 # -Transfer: a clean copy to move the project to another PC, in <Dest>\Trasferimento with the same
 # layout as D:\ (UE5Projects\GameAnimationSample, UE5Projects\Comune, Blender\AssetsMazzarethTheGame,
-# BlenderTest, HDRI, Audio_Music), plus ClaudeMemory (Claude Code's notes, from the user profile).
+# Mazzarino80_Sorgenti, HDRI, Audio_Music), plus ClaudeMemory (Claude Code's notes, from the user profile).
 # It mirrors D: exactly (files deleted on D: are deleted from the copy too, so removed World
 # Partition actors do not come back) and includes .git (with the LFS files) and the compiled
 # Binaries, so the project opens without Visual Studio on a PC with the same Unreal version.
@@ -59,9 +59,9 @@ $Jobs = @(
         XD  = @()
         XF  = @('*.blend1', '*.blend2')
     },
-    @{  # Reference photos and Blender work files (Palazzo Bartoli, Chiesa dell'Olmo, San Giuseppe...)
-        Src = 'D:\BlenderTest'
-        Dst = "$Dest\BlenderTest"
+    @{  # Every source file brought into the game, by kind (animations, cars, churches, interiors, references...)
+        Src = 'D:\Mazzarino80_Sorgenti'
+        Dst = "$Dest\Mazzarino80_Sorgenti"
         XD  = @()
         XF  = @('*.blend1', '*.blend2')
     },
@@ -107,8 +107,8 @@ if ($Transfer) {
             XF  = @('*.blend1', '*.blend2')
         },
         @{
-            Src = 'D:\BlenderTest'
-            Dst = "$Root\BlenderTest"
+            Src = 'D:\Mazzarino80_Sorgenti'
+            Dst = "$Root\Mazzarino80_Sorgenti"
             XD  = @()
             XF  = @('*.blend1', '*.blend2')
         },

@@ -72,7 +72,8 @@ CAST = {
 V_SCARPE, A_SCARPE = "CS_V_Scarpe", "CS_A_Scarpe"
 CAST_FOLLA = {
     # Our loft garments (cloak, shawl) look right standing but break up walking: City Sample ones instead, or none.
-    "Anziano1": ("Folla", ["CS_V_Camicia", "CS_V_Gilet", "CS_V_PantaloniMarroni", "Coppola", V_SCARPE], False),
+    # Not the shirt under the waistcoat: walking, it came through the waistcoat (white patches) and the trousers (bare thighs).
+    "Anziano1": ("Folla", ["CS_V_Festa", "CS_V_PantaloniMarroni", "Coppola", V_SCARPE], False),
     "Anziano2": ("Folla", ["CS_V_Festa", "CS_V_Pantaloni", "Coppola", V_SCARPE], False),
     "Anziano3": ("Folla", ["CS_V_Giacca", "CS_V_PantaloniMarroni", "Coppola", V_SCARPE], False),
     "Anziano4": ("Folla", ["CS_V_Gilet", "CS_V_Pantaloni", "Coppola", V_SCARPE], False),

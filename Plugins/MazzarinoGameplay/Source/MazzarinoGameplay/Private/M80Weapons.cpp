@@ -1,5 +1,6 @@
 #include "M80Weapons.h"
 #include "M80Vitals.h"
+#include "M80Pedone.h"
 #include "AnimationRuntime.h"
 #include "Engine/SkeletalMesh.h"
 #include "Components/DecalComponent.h"
@@ -519,6 +520,8 @@ void UM80WeaponInventory::FireRanged(const FM80WeaponSpec& S, const FVector& Aim
 	{
 		P->MakeNoise(1.f, P, Muzzle, 5000.f, TEXT("Sparo"));
 	}
+	// The townspeople around run away from the shot.
+	AM80Pedone::Spaventa(this, Muzzle, 3000.f, GetOwner());
 }
 
 void UM80WeaponInventory::FireMelee(const FM80WeaponSpec& S)

@@ -506,16 +506,72 @@ double AM80Sidewalk::BuildFill(double Top)
 	{
 		const FVector2D Out = M80Poly::EdgeNormal(Outline, i);
 		const FVector3d A = Drape(Outline[i]), B = Drape(Outline[(i + 1) % Outline.Num()]);
-		Mesh.QuadProjected(0, A - Down, B - Down, B, A, FVector3d(Out.X, Out.Y, 0));
+		Mesh.QuadProjected(1, A - Down, B - Down, B, A, FVector3d(Out.X, Out.Y, 0));
 	}
 
 	UE::Geometry::FDynamicMesh3 Dyn;
 	Mesh.ToDynamicMesh(Dyn);
 	Fill->SetMesh(MoveTemp(Dyn));
-	Fill->ConfigureMaterialSet({SlabMaterial ? SlabMaterial.Get() : UMaterial::GetDefaultMaterial(MD_Surface)});
+	SetFillMaterials();
+	return Inside;
+}
+
+void AM80Sidewalk::SetFillMaterials()
+{
+	UMaterialInterface* Default = UMaterial::GetDefaultMaterial(MD_Surface);
+	UMaterialInterface* Sides = CurbMaterial ? CurbMaterial.Get() : (CurbMesh ? CurbMesh->GetMaterial(0) : nullptr);
+	Fill->ConfigureMaterialSet({SlabMaterial ? SlabMaterial.Get() : Default, Sides ? Sides : Default});
 	Fill->SetComplexAsSimpleCollisionEnabled(bCollision, true);
 	Fill->SetCollisionProfileName(bCollision ? TEXT("BlockAll") : TEXT("NoCollision"));
-	return Inside;
+}
+
+void AM80Sidewalk::BuildSlab(const TArray<FStation>& St, double Lateral, double Width, double Top, double Depth)
+{
+	if (St.Num() < 2 || Width <= 1.0)
+	{
+		return;
+	}
+	const FTransform& T = Path->GetComponentTransform();
+	// Each station: both edges on the ground (the slab tilts with a street sloping across), in local space.
+	TArray<FVector3d> L, R;
+	TArray<FVector2f> UL, UR;
+	for (const FStation& S : St)
+	{
+		for (const double Side : {-1.0, 1.0})
+		{
+			FVector W = S.Pos + S.Right * (Lateral + Side * Width / 2);
+			W.Z = GroundZ(W) + Top;
+			(Side < 0 ? L : R).Add(T.InverseTransformPosition(W));
+			// The top material maps the tiles from above in world space; these UVs are for anything else.
+			(Side < 0 ? UL : UR).Add(FVector2f(W.X / 100.0, W.Y / 100.0));
+		}
+	}
+	FM80MeshBuffer Mesh;
+	const FVector3d Up(0, 0, 1);
+	const FVector3d Down(0, 0, Top + Depth);
+	const bool bLoop = Path->IsClosedLoop();
+	for (int32 i = 0; i + 1 < St.Num(); ++i)
+	{
+		Mesh.Quad(0, L[i], R[i], R[i + 1], L[i + 1], UL[i], UR[i], UR[i + 1], UL[i + 1], Up);
+		// Sides: lava stone down into the ground, mapped on their own plane.
+		const FVector3d Along = (R[i + 1] + L[i + 1] - R[i] - L[i]).GetSafeNormal();
+		const FVector3d Out = FVector3d::CrossProduct(Along, Up).GetSafeNormal();   // towards the left edge
+		Mesh.QuadProjected(1, L[i] - Down, L[i + 1] - Down, L[i + 1], L[i], Out);
+		Mesh.QuadProjected(1, R[i + 1] - Down, R[i] - Down, R[i], R[i + 1], -Out);
+	}
+	if (!bLoop)
+	{
+		// The two ends.
+		const int32 E = St.Num() - 1;
+		const FVector3d Back = (L[0] + R[0] - L[1] - R[1]).GetSafeNormal();
+		Mesh.QuadProjected(1, R[0] - Down, L[0] - Down, L[0], R[0], Back);
+		const FVector3d Front = (L[E] + R[E] - L[E - 1] - R[E - 1]).GetSafeNormal();
+		Mesh.QuadProjected(1, L[E] - Down, R[E] - Down, R[E], L[E], Front);
+	}
+	UE::Geometry::FDynamicMesh3 Dyn;
+	Mesh.ToDynamicMesh(Dyn);
+	Fill->SetMesh(MoveTemp(Dyn));
+	SetFillMaterials();
 }
 
 void AM80Sidewalk::Rebuild()
@@ -629,7 +685,7 @@ void AM80Sidewalk::Rebuild()
 	{
 		SlabMin += CW * 0.8;
 	}
-	AddStrip(SlabMesh, SlabMaterial, Slab, (SlabMin + SlabMax) / 2, SlabMax - SlabMin, Top, 30.0);
+	BuildSlab(Sample(FMath::Clamp<double>(SlabPieceCm, 10.0, 50.0)), (SlabMin + SlabMax) / 2, SlabMax - SlabMin, Top, 30.0);
 
 	if (CurbMesh && Curbs)
 	{

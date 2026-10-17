@@ -22,7 +22,9 @@ enum class EM80CurbSide : uint8
 /**
  * Sidewalk drawn with a spline (the centre line): a paved slab (tiles of the hand-made "Marciapiede"
  * material, mapped in world space) plus the lava-stone curb of the "marciapiede" blueprints on the road side.
- * It sits on the ground (landscape) and follows slopes; houses ignore it when they look for the ground.
+ * The slab is one mesh laid on the ground every half metre, at both its edges (it follows slopes along and
+ * across); its sides are lava stone mapped on their own plane (the tiles, mapped from above, streaked down them).
+ * Houses ignore it when they look for the ground.
  * "Destra" is the right-hand side walking along the spline from the first point.
  * With "Spline chiusa" the path becomes a ring (e.g. around a block); with "Riempi l'interno" the whole
  * inside is paved (a piazza), draped on the ground, and the curb runs along the outline on the inside.
@@ -42,7 +44,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Marciapiede")
 	TObjectPtr<USplineComponent> Path;
 
-	/** Paved inside of a closed spline. */
+	/** The slab (or the paved inside of a closed spline). */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Marciapiede")
 	TObjectPtr<UDynamicMeshComponent> Fill;
 
@@ -94,10 +96,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Case", meta = (DisplayName = "Stato aggancio"))
 	FString SnapStatus;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Marciapiede", meta = (DisplayName = "Lunghezza pezzi lastra (cm)", ClampMin = "50", ClampMax = "2000"))
-	float SlabPieceCm = 300.f;
+	/** How often the slab is laid on the ground along the spline (at most every 50 cm). */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Marciapiede", meta = (DisplayName = "Passo lastra sul terreno (cm)", ClampMin = "10", ClampMax = "2000"))
+	float SlabPieceCm = 50.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh", meta = (DisplayName = "Mesh lastra"))
+	/** Not used any more (the slab is built as its own mesh); kept so saved sidewalks load. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh", meta = (DisplayName = "Mesh lastra (non usata)"))
 	TObjectPtr<UStaticMesh> SlabMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh", meta = (DisplayName = "Mesh cordolo"))
@@ -140,4 +144,8 @@ private:
 	void AddStrip(UStaticMesh* Mesh, UMaterialInterface* Material, const TArray<FStation>& St, double Lateral, double Width, double Top, double Depth, bool bWrap = true);
 	/** Paves the inside of the closed spline; returns +1/-1, the side ("Right" sign) where the inside lies. */
 	double BuildFill(double Top);
+	/** The slab between Lateral -/+ Width/2 of the stations, on the ground at both edges, sides down Depth below. */
+	void BuildSlab(const TArray<FStation>& St, double Lateral, double Width, double Top, double Depth);
+	/** Top tiles, then the sides (the curb's lava stone). */
+	void SetFillMaterials();
 };

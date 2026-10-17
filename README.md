@@ -258,8 +258,7 @@ Script: `Tools/Backup/MTGBackup.ps1`.
   - il progetto, senza `.git`, cache, `Binaries` e `Intermediate`;
   - `Saved/Autosaves` e `Saved/Mazzarino80` (report, foto, copie delle mappe);
   - il progetto `D:\UE5Projects\Comune`;
-  - i sorgenti Blender in `D:\Blender\AssetsMazzarethTheGame`;
-  - le foto di riferimento e i lavori Blender in `D:\Mazzarino80_Sorgenti`, più le immagini ricevute in chat (in `Saved/Mazzarino80/Riferimenti`);
+  - tutti i sorgenti in `D:\Mazzarino80_Sorgenti` (anche i file Blender storici che stavano in `D:\Blender\AssetsMazzarethTheGame`, spostati il 17/10/2026), più le immagini ricevute in chat (in `Saved/Mazzarino80/Riferimenti`);
   - `D:\HDRI` e `D:\Audio_Music`;
   - gli appunti di Claude Code sul progetto (in `ClaudeMemory`, da rimettere in `C:\Users\<utente>\.claude\projects\D--UE5Projects-GameAnimationSample\memory`).
 - Lanciarlo a mano (meglio con l'editor chiuso):
@@ -284,7 +283,7 @@ powershell -ExecutionPolicy Bypass -File Tools\Backup\MTGBackup.ps1 -Transfer -D
 - Scrive in `<Dest>\Trasferimento\` con la stessa struttura di D:
   - `UE5Projects\GameAnimationSample`
   - `UE5Projects\Comune`
-  - `Blender\AssetsMazzarethTheGame`
+  - `Mazzarino80_Sorgenti`
 - È uno **specchio**: quello che non c'è più su D: viene tolto anche dalla copia (solo dentro `Trasferimento`). Le volte successive copia solo le differenze.
 - Include `.git` con i file LFS (circa 5,4 GB): sull'altro PC il repository funziona subito, senza clonare.
 - Include anche le **Binaries** già compilate dei plugin.

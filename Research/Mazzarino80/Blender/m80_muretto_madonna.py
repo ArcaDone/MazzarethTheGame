@@ -1,4 +1,4 @@
-"""Blender 4.3: the Madonna's railing (object MurettoMadonna in D:/Blender/AssetsMazzarethTheGame/Madonna.blend: a stone
+"""Blender 4.3: the Madonna's railing (object MurettoMadonna in D:/Mazzarino80_Sorgenti/Edifici/Madonna/Madonna.blend: a stone
 post with a vase-shaped cap and three iron rails with a middle bar, 3.5 m, made to stand on top of a wall) as two
 pieces the walls of AM80Stairs repeat along their spline (fence kind "Ringhiera della Madonna"):
 - MurettoMadonna_Pilastrino: the stone post (material MainMaterial), pivot at its plan centre, bottom.

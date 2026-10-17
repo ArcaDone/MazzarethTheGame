@@ -9,8 +9,8 @@
 # with the 5.5 backups kept in <Dest>\GameAnimationSample (nothing is deleted, stale files would pile up).
 #
 # -Transfer: a clean copy to move the project to another PC, in <Dest>\Trasferimento with the same
-# layout as D:\ (UE5Projects\GameAnimationSample, UE5Projects\Comune, Blender\AssetsMazzarethTheGame,
-# Mazzarino80_Sorgenti, HDRI, Audio_Music), plus ClaudeMemory (Claude Code's notes, from the user profile).
+# layout as D:\ (UE5Projects\GameAnimationSample, UE5Projects\Comune, Mazzarino80_Sorgenti (since 2026-10-17 also
+# the old Blender\AssetsMazzarethTheGame, sorted by kind and in Blender_Storico), HDRI, Audio_Music), plus ClaudeMemory (Claude Code's notes, from the user profile).
 # It mirrors D: exactly (files deleted on D: are deleted from the copy too, so removed World
 # Partition actors do not come back) and includes .git (with the LFS files) and the compiled
 # Binaries, so the project opens without Visual Studio on a PC with the same Unreal version.
@@ -53,13 +53,8 @@ $Jobs = @(
         XD  = @('Binaries', 'Intermediate', 'DerivedDataCache', 'Saved')
         XF  = @('*.tmp')
     },
-    @{  # Blender sources (CaseSoluzione.blend etc.)
-        Src = 'D:\Blender\AssetsMazzarethTheGame'
-        Dst = "$Dest\Blender_AssetsMazzarethTheGame"
-        XD  = @()
-        XF  = @('*.blend1', '*.blend2')
-    },
-    @{  # Every source file brought into the game, by kind (animations, cars, churches, interiors, references...)
+    @{  # Every source file brought into the game, by kind (animations, cars, buildings, interiors, references...), and
+        # the old D:\Blender\AssetsMazzarethTheGame (moved here 2026-10-17: Blender_Storico and the kind folders)
         Src = 'D:\Mazzarino80_Sorgenti'
         Dst = "$Dest\Mazzarino80_Sorgenti"
         XD  = @()
@@ -99,12 +94,6 @@ if ($Transfer) {
             Dst = "$Root\UE5Projects\Comune"
             XD  = @('Intermediate', 'DerivedDataCache', 'Saved')
             XF  = @('*.tmp')
-        },
-        @{
-            Src = 'D:\Blender\AssetsMazzarethTheGame'
-            Dst = "$Root\Blender\AssetsMazzarethTheGame"
-            XD  = @()
-            XF  = @('*.blend1', '*.blend2')
         },
         @{
             Src = 'D:\Mazzarino80_Sorgenti'

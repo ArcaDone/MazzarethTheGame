@@ -51,6 +51,18 @@ public:
 	static ALandscape* CreateLandscapeFromTerrain(AActor* Terrain, FVector2D Center, float QuadSizeCm, int32 ComponentsX, int32 ComponentsY, UMaterialInterface* Material);
 
 	/**
+	 * Heights of the landscape of the open editor world (only the landscape: what stands on it is ignored) on the grid a
+	 * landscape of ComponentsX x ComponentsY components (126 quads each, one every QuadSizeCm, centred on Center) would
+	 * have, written to File for CreateLandscapeFromHeightsFile. Only the loaded landscape is seen. False if nothing was hit.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Terreno")
+	static bool SampleLandscapeHeights(FVector2D Center, float QuadSizeCm, int32 ComponentsX, int32 ComponentsY, const FString& File);
+
+	/** A new landscape in the open editor world from the heights written by SampleLandscapeHeights (same Center and size). */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Terreno")
+	static ALandscape* CreateLandscapeFromHeightsFile(FVector2D Center, float QuadSizeCm, const FString& File, UMaterialInterface* Material);
+
+	/**
 	 * Captures the editor world around Location into a new (or replaced) HDR TextureCube asset at
 	 * PackagePath, e.g. /Game/Mazzarino80/Rooms/TC_M80_Room_Kitchen. Used to bake parallax interiors.
 	 * The asset is created but not saved.

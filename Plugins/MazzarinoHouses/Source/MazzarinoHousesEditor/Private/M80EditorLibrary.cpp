@@ -1,4 +1,5 @@
 #include "M80EditorLibrary.h"
+#include "Misc/FileHelper.h"
 #include "Engine/Texture.h"
 #include "Interfaces/ITargetPlatform.h"
 #include "Interfaces/ITargetPlatformManagerModule.h"
@@ -343,6 +344,112 @@ UStaticMesh* UM80EditorLibrary::BakeHouse(AM80House* House, const FString& Folde
 	return StaticMesh;
 }
 
+namespace
+{
+	/** A landscape of SizeX x SizeY vertices from Origin, one every QuadSizeCm; Heights row by row (Lowest = unknown: filled
+	 *  from the neighbours). Two sections of 63 quads per component. */
+	ALandscape* LandscapeFromHeights(UWorld* World, FVector2D Origin, double QuadSizeCm, int32 SizeX, int32 SizeY, TArray<float> Heights,
+		UMaterialInterface* Material)
+	{
+		constexpr int32 QuadsPerSection = 63;
+		constexpr int32 SectionsPerComponent = 2;
+		// Fill holes (outside the mesh) by spreading valid neighbours, then clamp what is left.
+		double MinZ = TNumericLimits<double>::Max(), MaxZ = TNumericLimits<double>::Lowest();
+		int32 Missing = 0;
+		for (float H : Heights)
+		{
+			if (H > TNumericLimits<float>::Lowest())
+			{
+				MinZ = FMath::Min<double>(MinZ, H);
+				MaxZ = FMath::Max<double>(MaxZ, H);
+			}
+			else
+			{
+				++Missing;
+			}
+		}
+		if (MinZ > MaxZ)
+		{
+			return nullptr;
+		}
+		for (int32 Pass = 0; Pass < 64 && Missing > 0; ++Pass)
+		{
+			TArray<float> Next = Heights;
+			Missing = 0;
+			for (int32 Y = 0; Y < SizeY; ++Y)
+			{
+				for (int32 X = 0; X < SizeX; ++X)
+				{
+					if (Heights[Y * SizeX + X] > TNumericLimits<float>::Lowest())
+					{
+						continue;
+					}
+					double Sum = 0;
+					int32 Count = 0;
+					const int32 N[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+					for (const auto& D : N)
+					{
+						const int32 NX = X + D[0], NY = Y + D[1];
+						if (NX >= 0 && NY >= 0 && NX < SizeX && NY < SizeY && Heights[NY * SizeX + NX] > TNumericLimits<float>::Lowest())
+						{
+							Sum += Heights[NY * SizeX + NX];
+							++Count;
+						}
+					}
+					if (Count)
+					{
+						Next[Y * SizeX + X] = Sum / Count;
+					}
+					else
+					{
+						++Missing;
+					}
+				}
+			}
+			Heights = MoveTemp(Next);
+		}
+	
+		for (float& H : Heights)
+		{
+			if (H <= TNumericLimits<float>::Lowest())
+			{
+				H = MinZ; // far outside the source terrain
+			}
+		}
+	
+		// uint16 heights: Z = ActorZ + (H - 32768) / 128 * ScaleZ. Pick ScaleZ so the range fits with margin for sculpting.
+		const double MidZ = (MinZ + MaxZ) * 0.5;
+		const double HalfRange = FMath::Max(25600.0, (MaxZ - MinZ) * 0.5 + 20000.0); // at least +-256 m, plus 200 m headroom
+		const double ScaleZ = HalfRange / 256.0;
+		TArray<uint16> Data;
+		Data.SetNumUninitialized(SizeX * SizeY);
+		for (int32 i = 0; i < Heights.Num(); ++i)
+		{
+			const double Value = 32768.0 + (Heights[i] - MidZ) * 128.0 / ScaleZ;
+			Data[i] = uint16(FMath::Clamp(FMath::RoundToInt(Value), 0, 65535));
+		}
+	
+		ALandscape* Landscape = World->SpawnActor<ALandscape>(FVector(Origin.X, Origin.Y, MidZ), FRotator::ZeroRotator);
+		Landscape->LandscapeMaterial = Material;
+		Landscape->SetActorRelativeScale3D(FVector(QuadSizeCm, QuadSizeCm, ScaleZ));
+		Landscape->StaticLightingLOD = FMath::DivideAndRoundUp(FMath::CeilLogTwo((SizeX * SizeY) / (2048 * 2048) + 1), (uint32)2);
+	
+		TMap<FGuid, TArray<uint16>> HeightPerLayer;
+		HeightPerLayer.Add(FGuid(), MoveTemp(Data));
+		TMap<FGuid, TArray<FLandscapeImportLayerInfo>> MaterialLayers;
+		MaterialLayers.Add(FGuid(), TArray<FLandscapeImportLayerInfo>());
+		Landscape->Import(FGuid::NewGuid(), 0, 0, SizeX - 1, SizeY - 1, SectionsPerComponent, QuadsPerSection, HeightPerLayer, TEXT(""), MaterialLayers,
+			ELandscapeImportAlphamapType::Additive, TArrayView<const FLandscapeLayer>());
+		Landscape->SetActorLabel(TEXT("M80_Landscape"));
+		if (ULandscapeInfo* Info = Landscape->GetLandscapeInfo())
+		{
+			Info->UpdateLayerInfoMap(Landscape);
+		}
+		return Landscape;
+	}
+	
+}
+
 ALandscape* UM80EditorLibrary::CreateLandscapeFromTerrain(AActor* Terrain, FVector2D Center, float QuadSizeCm, int32 ComponentsX, int32 ComponentsY, UMaterialInterface* Material)
 {
 	if (!Terrain || !Terrain->GetWorld() || QuadSizeCm <= 0 || ComponentsX < 1 || ComponentsY < 1)
@@ -395,100 +502,68 @@ ALandscape* UM80EditorLibrary::CreateLandscapeFromTerrain(AActor* Terrain, FVect
 		}
 	}
 
-	// Fill holes (outside the mesh) by spreading valid neighbours, then clamp what is left.
-	double MinZ = TNumericLimits<double>::Max(), MaxZ = TNumericLimits<double>::Lowest();
-	int32 Missing = 0;
-	for (float H : Heights)
+	return LandscapeFromHeights(Terrain->GetWorld(), Origin, QuadSizeCm, SizeX, SizeY, MoveTemp(Heights), Material);
+}
+
+bool UM80EditorLibrary::SampleLandscapeHeights(FVector2D Center, float QuadSizeCm, int32 ComponentsX, int32 ComponentsY, const FString& File)
+{
+	UWorld* World = GEditor ? GEditor->GetEditorWorldContext().World() : nullptr;
+	if (!World || QuadSizeCm <= 0 || ComponentsX < 1 || ComponentsY < 1)
 	{
-		if (H > TNumericLimits<float>::Lowest())
-		{
-			MinZ = FMath::Min<double>(MinZ, H);
-			MaxZ = FMath::Max<double>(MaxZ, H);
-		}
-		else
-		{
-			++Missing;
-		}
+		return false;
 	}
-	if (MinZ > MaxZ)
+	const int32 SizeX = ComponentsX * 126 + 1, SizeY = ComponentsY * 126 + 1;
+	const FVector2D Origin = Center - FVector2D((SizeX - 1) * 0.5 * QuadSizeCm, (SizeY - 1) * 0.5 * QuadSizeCm);
+	TArray<float> Heights;
+	Heights.Init(TNumericLimits<float>::Lowest(), SizeX * SizeY);
+	FCollisionQueryParams Params(SCENE_QUERY_STAT(M80LandscapeHeights), true);
+	int32 Found = 0;
+	for (int32 Y = 0; Y < SizeY; ++Y)
 	{
-		return nullptr;
-	}
-	for (int32 Pass = 0; Pass < 64 && Missing > 0; ++Pass)
-	{
-		TArray<float> Next = Heights;
-		Missing = 0;
-		for (int32 Y = 0; Y < SizeY; ++Y)
+		for (int32 X = 0; X < SizeX; ++X)
 		{
-			for (int32 X = 0; X < SizeX; ++X)
+			const FVector2D Q = Origin + FVector2D(X, Y) * QuadSizeCm;
+			TArray<FHitResult> Hits;
+			World->LineTraceMultiByObjectType(Hits, FVector(Q.X, Q.Y, 300000.0), FVector(Q.X, Q.Y, -300000.0), FCollisionObjectQueryParams(ECC_WorldStatic), Params);
+			for (const FHitResult& H : Hits)
 			{
-				if (Heights[Y * SizeX + X] > TNumericLimits<float>::Lowest())
+				// Only the landscape: houses, roads and steps on it are not the ground.
+				if (Cast<ALandscapeProxy>(H.GetActor()))
 				{
-					continue;
-				}
-				double Sum = 0;
-				int32 Count = 0;
-				const int32 N[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-				for (const auto& D : N)
-				{
-					const int32 NX = X + D[0], NY = Y + D[1];
-					if (NX >= 0 && NY >= 0 && NX < SizeX && NY < SizeY && Heights[NY * SizeX + NX] > TNumericLimits<float>::Lowest())
-					{
-						Sum += Heights[NY * SizeX + NX];
-						++Count;
-					}
-				}
-				if (Count)
-				{
-					Next[Y * SizeX + X] = Sum / Count;
-				}
-				else
-				{
-					++Missing;
+					Heights[Y * SizeX + X] = H.ImpactPoint.Z;
+					++Found;
+					break;
 				}
 			}
 		}
-		Heights = MoveTemp(Next);
 	}
+	TArray<uint8> Bytes;
+	Bytes.Append(reinterpret_cast<const uint8*>(&SizeX), sizeof(int32));
+	Bytes.Append(reinterpret_cast<const uint8*>(&SizeY), sizeof(int32));
+	Bytes.Append(reinterpret_cast<const uint8*>(Heights.GetData()), Heights.Num() * sizeof(float));
+	return Found > 0 && FFileHelper::SaveArrayToFile(Bytes, *File);
+}
 
-	for (float& H : Heights)
+ALandscape* UM80EditorLibrary::CreateLandscapeFromHeightsFile(FVector2D Center, float QuadSizeCm, const FString& File, UMaterialInterface* Material)
+{
+	UWorld* World = GEditor ? GEditor->GetEditorWorldContext().World() : nullptr;
+	TArray<uint8> Bytes;
+	if (!World || !FFileHelper::LoadFileToArray(Bytes, *File) || Bytes.Num() < 8)
 	{
-		if (H <= TNumericLimits<float>::Lowest())
-		{
-			H = MinZ; // far outside the source terrain
-		}
+		return nullptr;
 	}
-
-	// uint16 heights: Z = ActorZ + (H - 32768) / 128 * ScaleZ. Pick ScaleZ so the range fits with margin for sculpting.
-	const double MidZ = (MinZ + MaxZ) * 0.5;
-	const double HalfRange = FMath::Max(25600.0, (MaxZ - MinZ) * 0.5 + 20000.0); // at least +-256 m, plus 200 m headroom
-	const double ScaleZ = HalfRange / 256.0;
-	TArray<uint16> Data;
-	Data.SetNumUninitialized(SizeX * SizeY);
-	for (int32 i = 0; i < Heights.Num(); ++i)
+	int32 SizeX = 0, SizeY = 0;
+	FMemory::Memcpy(&SizeX, Bytes.GetData(), 4);
+	FMemory::Memcpy(&SizeY, Bytes.GetData() + 4, 4);
+	if (SizeX < 2 || SizeY < 2 || Bytes.Num() != 8 + SizeX * SizeY * 4)
 	{
-		const double Value = 32768.0 + (Heights[i] - MidZ) * 128.0 / ScaleZ;
-		Data[i] = uint16(FMath::Clamp(FMath::RoundToInt(Value), 0, 65535));
+		return nullptr;
 	}
-
-	UWorld* World = Terrain->GetWorld();
-	ALandscape* Landscape = World->SpawnActor<ALandscape>(FVector(Origin.X, Origin.Y, MidZ), FRotator::ZeroRotator);
-	Landscape->LandscapeMaterial = Material;
-	Landscape->SetActorRelativeScale3D(FVector(QuadSizeCm, QuadSizeCm, ScaleZ));
-	Landscape->StaticLightingLOD = FMath::DivideAndRoundUp(FMath::CeilLogTwo((SizeX * SizeY) / (2048 * 2048) + 1), (uint32)2);
-
-	TMap<FGuid, TArray<uint16>> HeightPerLayer;
-	HeightPerLayer.Add(FGuid(), MoveTemp(Data));
-	TMap<FGuid, TArray<FLandscapeImportLayerInfo>> MaterialLayers;
-	MaterialLayers.Add(FGuid(), TArray<FLandscapeImportLayerInfo>());
-	Landscape->Import(FGuid::NewGuid(), 0, 0, SizeX - 1, SizeY - 1, SectionsPerComponent, QuadsPerSection, HeightPerLayer, TEXT(""), MaterialLayers,
-		ELandscapeImportAlphamapType::Additive, TArrayView<const FLandscapeLayer>());
-	Landscape->SetActorLabel(TEXT("M80_Landscape"));
-	if (ULandscapeInfo* Info = Landscape->GetLandscapeInfo())
-	{
-		Info->UpdateLayerInfoMap(Landscape);
-	}
-	return Landscape;
+	TArray<float> Heights;
+	Heights.SetNumUninitialized(SizeX * SizeY);
+	FMemory::Memcpy(Heights.GetData(), Bytes.GetData() + 8, Heights.Num() * 4);
+	const FVector2D Origin = Center - FVector2D((SizeX - 1) * 0.5 * QuadSizeCm, (SizeY - 1) * 0.5 * QuadSizeCm);
+	return LandscapeFromHeights(World, Origin, QuadSizeCm, SizeX, SizeY, MoveTemp(Heights), Material);
 }
 
 UTextureCube* UM80EditorLibrary::CaptureRoomCube(FVector Location, int32 Size, const FString& PackagePath)

@@ -53,7 +53,8 @@ Altre mappe:
 | Armi | 1-4 settore, Q o croce destra/sinistra arma successiva, R / X ricarica, G / croce giù lascia l'arma. |
 | Saltare e arrampicarsi | Spazio / A. Davanti a un ostacolo di 0,5-2,5 m (muretto, auto, balcone basso) ci sale sopra. Più in alto (cornicioni, balconi, davanzali, tetti) salta e si aggrappa al bordo. |
 | Appeso | Sinistra/destra lungo il bordo; Spazio / A sale sopra se c'è posto, oppure salta al bordo più in alto, oppure si stacca dal muro (indietro + salto). C, Ctrl o B si lascia cadere. |
-| Auto, mappa, pausa | E / Y sale o scende; M mappa; P / Start pausa con la mappa del paese. |
+| Auto, mappa, pausa | E / Y sale o scende (sulle auto a quattro ruote con l'animazione: apre, si china, si siede; scende dal lato guida); M mappa; P / Start pausa con la mappa del paese. |
+| Sedie | E / Y vicino a una sedia (tag `M80Sedia`) ci si siede; E di nuovo ci si alza. Sedie, tavoli e carte di `L_M80_ProvaFolla` sono oggetti fisici: si spostano urtandoli a piedi o in auto. |
 | Carretti | E / Y sale o scende. W / RT spinge (piano, al massimo 13 km/h), in discesa va da solo. S / LT frena coi piedi; da fermo lo fa arretrare. A / D sterzano, Spazio i talloni a terra. |
 
 L'arrampicata funziona su qualsiasi geometria, perché cerca i bordi sulla collisione complessa. Non servono marcature sulle case.
@@ -79,14 +80,14 @@ L'arrampicata funziona su qualsiasi geometria, perché cerca i bordi sulla colli
 | **Isolato da riempire** | Disegni il perimetro di un isolato con una spline chiusa e premi *Genera case*: crea una schiera tutto intorno con un cortile al centro (profondità, piani, stile, seed). *Elimina case generate* le toglie. Serve per riempire le zone dove OSM non ha case. |
 | **Zona senza case procedurali** | Perimetro a spline: le case con il centro dentro spariscono, per lasciare posto agli edifici fatti a mano (Matrice, Comune, Poste…). Spegnendo o spostando la zona le case tornano. |
 | **Strada Mazzarino (spline)** | Strade OSM (1016): larghezza, quote, pavimentazione. Sul landscape le strade sono dipinte (layer "Strada"); le spline servono da guida a case, marciapiedi e lampioni. |
-| **Marciapiede** | Spline con lastra e cordolo in pietra lavica: aperto, ad anello o piazza piena. |
+| **Marciapiede** | Spline con lastra e cordolo in pietra lavica: aperto, ad anello o piazza piena. La lastra è una mesh unica posata sul terreno ogni 50 cm ai due bordi (segue le pendenze lungo e di traverso), con i fianchi in pietra lavica. Prova: `m80_marciapiede_prova.py`; per rifare quelli del paese `m80_marciapiedi_ricostruisci.py`. |
 | **Scalinata** | Spline per gradini, cordonate e scalinate (anche in curva, in salita o in discesa) in pietra lavica e basolato, piene fino a terra o a soletta, con pianerottoli, muri laterali e staccionate (ferro battuto, tubolare, legno, canne). Prova: `L_M80_ProvaScalinate` (`Scripts/m80_stairs_setup.py`). |
 | **Strada (Mazzarino)** | Spline per strade che si appoggiano al terreno come i marciapiedi e si inclinano di lato col pendio. *Superficie*: Lavica principale (`LowPoly`), Lavica bombata (`Lavica_curved`), Lastra con materiale (default `MI_M80_Lavica_secondaria`, mappata in metri) o mesh personalizzata. Le mesh si ripetono a pezzi proporzionati. Prova: `L_M80_ProvaScalinate`, cartella *Strade* (`Scripts/m80_road_setup.py`). |
 | **Fili tra le case** | Cavi elettrici che attraversano la strada tra case vicine. |
 | **Lampione (Mazzarino)** | Tipo *Muro* (lanterna esagonale a braccio) o *Palo* (candelabro in ghisa a tre luci). Modellati in Blender dalle foto dei lampioni veri. Si accendono da soli al tramonto. Opzioni *Spento (guasto)* e *Modello* per cambiare mesh. |
 | **Atmosfera (Mazzarino)** | Sole nella posizione reale per Mazzarino (latitudine, giorno dell'anno, ora), luna, cielo, nuvole, foschia nelle valli, ora blu, notte. Meteo: Sereno, Afa estiva, Scirocco, Nuvoloso. In gioco l'ora avanza. |
 | **Orizzonte (colline ed Etna)** | Anello di colline lontane con il profilo dell'Etna. |
-| **Auto Mazzarino** | Fiat 500 F (l'auto comune del paese: 40 mila triangoli, `m80_fiat500_sorgente.py` + `m80_prepare_vehicle.py`), Ape, Vespa. 126, Panda, 127, Uno e Golf tolte il 16/10/2026: troppo pesanti per il traffico. |
+| **Auto Mazzarino** | Fiat 500 F, Mini Cooper S, Maggiolino, Golf GTI, BMW M3: modelli scaricati, **non decimati** (la 500 ha 242 mila triangoli, le altre 36-85 mila), un solo LOD (`m80_auto_sorgente.py`, `m80_fiat500_sorgente.py`, `m80_prepare_vehicle.py`). Poi Ape e Vespa. 126, Panda, 127, Uno e la Golf vecchia tolte il 16/10/2026: troppo pesanti per il traffico. |
 | **Carretti** | *Carretto a cuscinetti* (sdraiati sul petto, mani sulla barra davanti), *a triangolo* e *con la cassetta* (seduti come in un go-kart, talloni sull'asse, corda in mano), *persiana* (seduti, braccia sul manico di scopa come su un chopper). Niente motore: si spingono piano e corrono in discesa (circa 22 km/h in fondo a 30 m al 10%). |
 | **Bouganvillea (Mazzarino)** | Pianta procedurale che cresce lungo una spline. Regole d'uso nella sezione qui sotto. |
 
@@ -127,7 +128,7 @@ L'arrampicata funziona su qualsiasi geometria, perché cerca i bordi sulla colli
 
 | Script | Cosa fa |
 |---|---|
-| `m80_bouganvillea_materiali.py` | Texture (da `D:\BlenderTest\Bouganvillea`) e materiali in `Vegetazione/Bouganvillea`: card con trasparenza, vento, traslucenza, corteccia. |
+| `m80_bouganvillea_materiali.py` | Texture (da `D:\Mazzarino80_Sorgenti\Vegetazione\Bouganvillea`) e materiali in `Vegetazione/Bouganvillea`: card con trasparenza, vento, traslucenza, corteccia. |
 | `m80_bouganvillea_paese.py` | Mette le piante nel 5% delle case, vicino a un angolo della facciata principale dove il muro è pieno (non davanti a porte o vetrine). Dove una casa ha un muro di fronte a 2,5-13 m, metà delle piante attraversa la strada con le regole sopra. Ogni pianta viene cotta e salvata da sola. Si può rilanciare: salta le case che hanno già una pianta e ricuoce quelle senza mesh. Variabili: `M80_BGV_QUOTA`, `M80_BGV_PASSAGGI`, `M80_BGV_TRIANGOLI`, `M80_BGV_CENTRO`, `M80_BGV_FOTO=1` (foto dalla strada), `M80_BGV_PROVA=1` (non salva). |
 | `m80_bouganvillea_prova.py` | Quattro piante di prova lontano dalle case (cubo, sfera, cespuglio, muro) con le foto. |
 
@@ -206,13 +207,17 @@ powershell -ExecutionPolicy Bypass -File Scripts/run_editor_script.ps1 -Script S
 | `m80_prova_azione_setup.py` | Rifà da zero la mappa di prova `L_M80_ProvaAzione`. |
 | `m80_combattimento_test.py`, `m80_arrampicata_test.py` | Test in `L_M80_ProvaAzione`, con foto dalla camera del giocatore e di lato. Il primo prova mira, pose delle armi, errore della canna, ruota, pugni, aggancio e bersagli. Il secondo prova la salita sull'auto e sui blocchi, l'aggrappo, lo spostamento lungo il bordo, la salita sul tetto e la caduta. |
 | `m80_weapons_setup.py` | Importa le armi da Blender (`M80_ARMI=Fucile` per importarne solo alcune), i materiali dei colpi e le animazioni ALS per rialzarsi. |
-| `m80_carretti_import.py` + `Blender/m80_carretti_gioco.py` | I carretti di `D:\BlenderTest\carretti` (Blender 5.2) con lo scheletro guidabile e la posa del guidatore per ciascuno; import in `Vehicles/Carretti` e `Player/Anim`. |
+| `m80_carretti_import.py` + `Blender/m80_carretti_gioco.py` | I carretti di `D:\Mazzarino80_Sorgenti\Carretti` (Blender 5.2) con lo scheletro guidabile e la posa del guidatore per ciascuno; import in `Vehicles/Carretti` e `Player/Anim`. |
 | `m80_carretti_prova_setup.py`, `m80_carretti_test.py` | Mappa di prova dei carretti e test: salita, foto, mani e piedi sui punti di presa, spinta, sterzo, freno, retromarcia, rampa, discesa. |
 | `m80_animazioni_import.py` | Animazioni Mixamo (aggrappo, salita, pugni) e pose ALS di pistola e fucile, retargettate sul manichino del sample. |
 | `m80_icone_armi.py` + `Blender/m80_icone_alpha.py` | Icone grigie delle armi per la ruota, fotografate di lato. |
 | `m80_vito_crea.py` | Vito diventa un MetaHuman modificabile della 5.8 (`Personaggi/Vito/MHC_Vito`): il viso si adatta ai vertici di testa, occhi e denti del suo DNA, letto dal progetto Comune. Il DNA del vecchio Creator online non passa l'import diretto della 5.8 (rig diverso). |
 | `m80_prova_folla_setup.py` | Rifà da zero la mappa di prova della folla `Personaggi/Maps/L_M80_ProvaFolla`: case vere attorno a una piazza lastricata, tavoli con sedie e carte siciliane, sedie impagliate davanti alle porte e i punti dove mettere la gente (tavolo, sedia, gruppi, giro della piazza, gioco dei bambini). |
 | `m80_folla_sonda.py` | Cosa offre il MetaHuman Creator della 5.8: preset (altezza, corporatura, se hanno il rig), vestiti e capelli, pipeline normali e della folla. |
+| `m80_folla_animazioni.py` + `Blender/m80_mixamo_folla.py` | Le clip Mixamo della folla (`D:\Mazzarino80_Sorgenti\Animazioni\Mixamo_Folla`) sul loro scheletro, retargettate sul manichino: camminate, chiacchiere, cadute, rialzarsi, investimento, salire e scendere dall'auto, sedersi, stare seduti, alzarsi. |
+| `m80_folla_auto.py`, `m80_folla_sedie.py` | Parcheggiano le 5 auto nella piazza di `L_M80_ProvaFolla`; rendono fisici sedie, tavoli e carte (tag `M80Sedia`, `M80Tavolo`). |
+| `m80_folla_azioni.py` | Prova in Play di quello che fa la folla, con foto: mani, anziani, caduta, investimento, sedia, guida, pugni (difesa o fuga), spavento per uno sparo, il giocatore che si siede e che entra/esce dall'auto, sedie spinte (`M80_AZIONI=...` per farne solo alcune). |
+| `m80_negozi_import.py` | Importa i pacchetti di `D:\Mazzarino80_Sorgenti\Interni_e_Negozi` (Kit Bottega, Bar Sport, Tabaccheria, Edicola, Cabina SIP) con i loro script e li dispone nella mappa di prova `Negozi/Maps/L_M80_ProvaNegozi`. Le lampade dei pacchetti al 15% dei loro lumen e calde (2800 K); `M80_SOLO_LUCI=1` rifà solo le luci. |
 
 I circa 220 script `mazzarino80_*.py` sono della prima versione basata su PCG (settembre 2026): restano solo come archivio e non servono più.
 
@@ -221,7 +226,8 @@ I circa 220 script `mazzarino80_*.py` sono della prima versione basata su PCG (s
 - Si lanciano con `blender -b --factory-startup --python <script>.py`.
 - Poi si importano in Unreal con lo script `m80_*_setup.py` corrispondente.
 - **Carretti:** `m80_carretti_gioco.py` (Blender 5.2) + `m80_carretti_import.py`. Ossa: `Steer` (asse o manico che sterza), ruote, `Sella` (dove va l'origine del giocatore), `Mano_L/R` e `Piede_L/R` (polsi e caviglie, figli di `Steer` se tengono lo sterzo).
-- **Veicoli:** `m80_prepare_vehicle.py` + `m80_import_blender_assets.py`. Vanno rispettati i nomi delle ossa delle ruote, l'orientamento e la scala in cm, altrimenti Chaos si rompe.
+- **Veicoli:** `m80_prepare_vehicle.py` + `m80_import_blender_assets.py`. Vanno rispettati i nomi delle ossa delle ruote, l'orientamento e la scala in cm, altrimenti Chaos si rompe. Auto scaricate: prima `m80_auto_sorgente.py <chiave> <fbx> <blend>` (scala 1:100 → vera, materiali rinominati), poi le stesse due; `"budget": 0` = niente decimazione, `"wheel_names"` se le gomme sono fatte di tanti pezzi.
+- **Sorgenti:** tutti i file importati stanno in `D:\Mazzarino80_Sorgenti`, divisi per tipo (vedi il suo `LEGGIMI.md`). I file nuovi vanno messi lì.
 
 ---
 
@@ -253,7 +259,7 @@ Script: `Tools/Backup/MTGBackup.ps1`.
   - `Saved/Autosaves` e `Saved/Mazzarino80` (report, foto, copie delle mappe);
   - il progetto `D:\UE5Projects\Comune`;
   - i sorgenti Blender in `D:\Blender\AssetsMazzarethTheGame`;
-  - le foto di riferimento e i lavori Blender in `D:\BlenderTest`, più le immagini ricevute in chat (in `Saved/Mazzarino80/Riferimenti`);
+  - le foto di riferimento e i lavori Blender in `D:\Mazzarino80_Sorgenti`, più le immagini ricevute in chat (in `Saved/Mazzarino80/Riferimenti`);
   - `D:\HDRI` e `D:\Audio_Music`;
   - gli appunti di Claude Code sul progetto (in `ClaudeMemory`, da rimettere in `C:\Users\<utente>\.claude\projects\D--UE5Projects-GameAnimationSample\memory`).
 - Lanciarlo a mano (meglio con l'editor chiuso):
@@ -309,6 +315,7 @@ Sull'altro PC:
 | 12 ott | Bouganvillea procedurale a spline nel paese. **Combattimento e arrampicata** (punto 1 del piano GTA) nella mappa `L_M80_ProvaAzione`: camera sopra la spalla, pose delle armi di ALS con la canna sul mirino, ruota delle armi come GTA V, fucile da caccia, combo di pugni, aggancio con il gamepad, bersagli umani, arrampicata su muri, balconi, tetti e auto. |
 | 12 ott (sera) | **Carretti a cuscinetti** guidabili: quattro modelli da Blender, ognuno con la sua posa del guidatore (sdraiato, go-kart, chopper) e mani e piedi che seguono lo sterzo; spinta lenta, discesa per gravità; mappa `L_M80_ProvaCarretti`. |
 | 13-14 ott | **Passaggio a Unreal 5.8.3** (per MetaHuman Creator nell'editor e le prestazioni): copia di prova, stessi test e misure di 5.5 e 5.8. Griglia di World Partition del paese a celle di 64 m caricate fino a 192 m: Play pronto in 136 s invece di 229, 58-76 fps invece di 49-68, 10 GB di RAM in meno. Gli edifici recuperati (Madonna, Scuola, Salesiane, Liardo, Castello, San Domenico, Matrice) resi *Static* per vederli negli HLOD. |
+| 16-17 ott | **Folla** in `L_M80_ProvaFolla`: 21 MetaHuman vestiti anni '80 che camminano (anziani curvi col bastone, anziane, borse), chiacchierano, si siedono sulle sedie, inciampano e si rialzano, vengono investiti, si difendono o scappano, scappano dagli spari, si scansano dalle auto, prendono le auto parcheggiate e le guidano. Il giocatore si siede e sale/scende dalle auto con l'animazione. Sedie e tavoli fisici. Quattro auto nuove non decimate (Mini, Maggiolino, Golf GTI, BMW M3) e la 500 rifatta. Marciapiedi che seguono il terreno. Sorgenti riuniti in `D:\Mazzarino80_Sorgenti`. Pacchetti dei negozi importati (`L_M80_ProvaNegozi`). |
 
 ---
 
@@ -322,7 +329,9 @@ Sull'altro PC:
 - `.git_old` (38 GB) va spostato o cancellato quando non serve più.
 - **Paese buio di notte da lontano** con la griglia nuova: i lampioni lontani non sono caricati. Tenerli sempre caricati costa troppo (3 fps): da rivedere.
 - **DynamicMesh in Play: 2,5 GB di RAM** (691 oggetti, 5.8 con la griglia nuova; erano 6,7 GB in 5.5). Le producono case non cotte, strade, marciapiedi, scalinate, fili, orizzonte e bouganvillea. Prima misurarle per tipo, poi cuocere in static mesh chi pesa di più. Da fare prima di portare la folla nel paese.
-- **Ape: 974 mila triangoli** (la 500 ne ha 60 mila con le ruote): va alleggerita prima di avere traffico. La Vespa non ha texture.
+- **Ape: 974 mila triangoli**: va alleggerita prima di avere traffico. La Vespa non ha texture. La 500 non decimata ne ha 242 mila (richiesta dell'utente: niente decimazione sulle auto scaricate).
+- **Folla nel paese** (da fare quando ci si porta la gente): i pedoni devono stare sui marciapiedi e vicino alle case e attraversare solo a strada libera; le auto degli NPC devono restare sulle strade (seguire le spline delle strade). Nella piazza di prova le auto degli NPC seguono la navigazione dei pedoni con un controllo d'ingombro, e vanno piano.
+- **Licenze delle auto scaricate**: i nomi delle texture fanno pensare a modelli presi da giochi commerciali; prima di pubblicare vanno sostituite o verificate.
 
 ## 8. Fonti e licenze
 

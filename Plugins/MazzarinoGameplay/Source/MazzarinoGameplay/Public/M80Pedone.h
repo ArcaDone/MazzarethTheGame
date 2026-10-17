@@ -8,6 +8,7 @@
 #include "M80Pedone.generated.h"
 
 class AM80Car;
+class AM80Parcheggio;
 class ATargetPoint;
 class UAnimSequence;
 class UStaticMeshComponent;
@@ -296,6 +297,8 @@ public:
 	/** Walks to Car, gets in, drives it about for Seconds, parks and gets out; false if it cannot get there. */
 	UFUNCTION(BlueprintCallable, Category = "Pedone")
 	bool VaiAGuidare(AM80Car* Car, float Seconds = 60.f);
+	/** Already at the wheel of Car (the traffic at the start of the game): drives off at once for Seconds. */
+	bool MettiAlVolante(AM80Car* Car, float Seconds = 120.f);
 
 	/** Gets out of the car it drives (at once if bSubito: pulled out by the player, it then runs away). */
 	void Scendi(bool bSubito);
@@ -416,6 +419,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Folla", meta = (ClampMin = "0", ClampMax = "1"))
 	float VogliaDiGuidare = 0.08f;
 
+	/** The cars tagged M80Traffico get a townsperson at the wheel at the start and drive about the level's lanes. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Folla")
+	bool bAutoInGiro = true;
+
 protected:
 	virtual void BeginPlay() override;
 };
@@ -431,8 +438,14 @@ class MAZZARINOGAMEPLAY_API AM80PedoneAI : public AAIController
 	GENERATED_BODY()
 
 public:
+	AM80PedoneAI();
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result) override;
+	virtual void Tick(float DeltaSeconds) override;
+
+	/** Stopped at the kerb, waiting for the cars to pass before crossing. */
+	UFUNCTION(BlueprintCallable, Category = "Folla")
+	bool IsAtKerb() const { return bAtKerb; }
 
 	/** Free and waiting between two walks (can be called for a chat). */
 	bool IsWaiting() const;
@@ -448,6 +461,10 @@ private:
 	bool TryDrive();
 	FTimerHandle Wait;
 	FTimerHandle ChatEnd;
+	float CrossCheck = 0.f;
+	bool bAtKerb = false;
+	float KerbWait = 0.f;
+	FVector CrossAt = FVector::ZeroVector;
 };
 
 /**
@@ -471,6 +488,11 @@ public:
 	/** Cruising speed (km/h): a town in the 80s. */
 	float Kmh = 28.f;
 
+	/** On the level's lanes (UM80Traffico), when it has roads: right-hand traffic, junctions and narrow streets taken
+	 *  one car at a time, parking in a free AM80Parcheggio at the end. Otherwise along the people's navigation. */
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = "Autista")
+	bool bTraffico = false;
+
 	/** What it is doing, for the tests (path point, speeds, inputs, blocked/stuck timers). */
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = "Autista")
 	FString Diario;
@@ -490,4 +512,19 @@ private:
 	float HornWait = 0.f;
 	bool bParking = false;
 	bool bParked = false;
+
+	// Traffic
+	bool InitRoute(AM80Car* Car);
+	bool TrafficTarget(AM80Car* Car, float DeltaSeconds, FVector& OutGoal, float& OutKmh);
+	void LeaveLane(int32 Lane);
+	TArray<int32> Route;
+	float S = 0.f;
+	TArray<int32> Holding;
+	FRandomStream Rand;
+	TWeakObjectPtr<AM80Parcheggio> Spot;
+	bool bExit = false;
+	float HoldWait = 0.f;
+	/** A parked car (or cart) in the way being passed on the left. */
+	TWeakObjectPtr<AActor> PassBy;
+	float PassTime = 0.f;
 };

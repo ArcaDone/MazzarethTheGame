@@ -22,6 +22,7 @@
 #include "GameFramework/DamageType.h"
 #include "Kismet/GameplayStatics.h"
 #include "M80Car.h"
+#include "M80Traffico.h"
 #include "M80Vitals.h"
 #include "NavMesh/NavMeshBoundsVolume.h"
 #include "Navigation/PathFollowingComponent.h"
@@ -1438,6 +1439,35 @@ bool AM80Pedone::VaiAGuidare(AM80Car* Car, float Seconds)
 	return true;
 }
 
+bool AM80Pedone::MettiAlVolante(AM80Car* Car, float Seconds)
+{
+	if (!Car || Car->bWrecked || Car->GetController() || Stato != EM80Stato::Libero)
+	{
+		return false;
+	}
+	if (AM80PedoneAI* AI = BrainOf(this))
+	{
+		AI->StopMovement();
+	}
+	Auto = Car;
+	GuidaSecondi = Seconds;
+	Stato = EM80Stato::InAuto;
+	Capsula(false);
+	AttachToComponent(Car->GetMesh(), FAttachmentTransformRules::KeepWorldTransform);
+	GetRootComponent()->SetRelativeLocationAndRotation(Car->SeatOffset, FRotator(Car->SeatRecline, 0.f, 0.f));
+	// Past the slide onto the seat (TickAuto would start the drive at its end): already seated, driving now.
+	StateTime = SlideIn + 1.f;
+	UAnimSequence* Pose = Car->RidePose.IsNull() ? Asset(DrivePath) : Cast<UAnimSequence>(Car->RidePose.LoadSynchronous());
+	if (Pose)
+	{
+		FM80Mossa Sit = Step(Pose, 0.f, -1.f, -1.f);
+		Sit.bLoop = true;
+		Recita({Sit});
+	}
+	Guida();
+	return true;
+}
+
 void AM80Pedone::Sali()
 {
 	AM80Car* Car = Auto.Get();
@@ -1821,10 +1851,127 @@ void AM80Folla::BeginPlay()
 			P->FinishSpawning(Where);
 		}
 	}
+	if (!bAutoInGiro)
+	{
+		return;
+	}
+	// The traffic: someone at the wheel of each car tagged M80Traffico, driving off a moment after the start.
+	int32 k = Quanti;
+	for (TActorIterator<AM80Car> It(GetWorld()); It; ++It)
+	{
+		AM80Car* Car = *It;
+		if (!Car->ActorHasTag(TEXT("M80Traffico")) || Car->GetController())
+		{
+			continue;
+		}
+		const FTransform Where(Car->GetActorRotation(), Car->GetActorLocation() + Car->GetActorRightVector() * -250.f + FVector(0.f, 0.f, 100.f));
+		AM80Pedone* P = GetWorld()->SpawnActorDeferred<AM80Pedone>(AM80Pedone::StaticClass(), Where, this, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+		if (!P)
+		{
+			continue;
+		}
+		P->Personaggio = Personaggi[k++ % Personaggi.Num()];
+		P->Raggio = Raggio;
+		P->CadutePerMinuto = 0.f;
+		P->VogliaDiParlare = VogliaDiParlare;
+		P->VogliaDiSedersi = VogliaDiSedersi;
+		P->VogliaDiGuidare = VogliaDiGuidare;
+		P->FinishSpawning(Where);
+		TWeakObjectPtr<AM80Pedone> WP(P);
+		TWeakObjectPtr<AM80Car> WC(Car);
+		const float Seconds = Rand.FRandRange(90.f, 240.f);
+		FTimerHandle H;
+		GetWorldTimerManager().SetTimer(H, FTimerDelegate::CreateWeakLambda(this, [WP, WC, Seconds]()
+		{
+			if (WP.IsValid() && WC.IsValid())
+			{
+				WP->MettiAlVolante(WC.Get(), Seconds);
+			}
+		}), Rand.FRandRange(0.5f, 2.5f), false);
+	}
 }
 
 // ---------------------------------------------------------------------------------------------
 // Walking about
+
+AM80PedoneAI::AM80PedoneAI()
+{
+	PrimaryActorTick.bCanEverTick = true;
+}
+
+void AM80PedoneAI::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	CrossCheck -= DeltaSeconds;
+	if (bAtKerb)
+	{
+		KerbWait += DeltaSeconds;
+	}
+	if (CrossCheck > 0.f)
+	{
+		return;
+	}
+	CrossCheck = 0.15f;
+	AM80Pedone* P = Cast<AM80Pedone>(GetPawn());
+	UM80Traffico* T = UM80Traffico::Get(this);
+	UPathFollowingComponent* PF = GetPathFollowingComponent();
+	if (!P || !T || !PF || !T->HasLanes())
+	{
+		return;
+	}
+	const bool bWalking = P->Stato == EM80Stato::Libero || P->Stato == EM80Stato::VaAParlare || P->Stato == EM80Stato::VaASedersi
+		|| P->Stato == EM80Stato::VaAllAuto;
+	// Waiting at the kerb: across when no car is near or coming (or after a long wait: it is a small town).
+	if (bAtKerb)
+	{
+		if (!bWalking || PF->GetStatus() != EPathFollowingStatus::Paused)
+		{
+			bAtKerb = false;
+		}
+		else if (!T->CarComing(CrossAt, 1000.f, 4.f) || KerbWait > 25.f)
+		{
+			bAtKerb = false;
+			PF->ResumeMove();
+		}
+		return;
+	}
+	if (!bWalking || PF->GetStatus() != EPathFollowingStatus::Moving)
+	{
+		return;
+	}
+	const FVector Pos = P->GetActorLocation();
+	if (T->IsOnRoad(Pos, 110.f))
+	{
+		return;   // already crossing: on, quickly
+	}
+	// About to step onto the roadway (a couple of metres ahead along the path) with a car near or coming: stops.
+	const FNavPathSharedPtr Path = PF->GetPath();
+	if (!Path.IsValid())
+	{
+		return;
+	}
+	const TArray<FNavPathPoint>& Pts = Path->GetPathPoints();
+	FVector Prev = Pos, Q = Pos;
+	float Left = 220.f;
+	for (int32 k = int32(PF->GetCurrentPathIndex()) + 1; k < Pts.Num(); ++k)
+	{
+		const float D = FVector::Dist2D(Prev, Pts[k].Location);
+		if (D >= Left)
+		{
+			Q = Prev + (Pts[k].Location - Prev).GetSafeNormal2D() * Left;
+			break;
+		}
+		Left -= D;
+		Prev = Q = Pts[k].Location;
+	}
+	if (T->IsOnRoad(Q, 110.f) && T->CarComing(Q, 1000.f, 4.f))
+	{
+		PF->PauseMove();
+		bAtKerb = true;
+		KerbWait = 0.f;
+		CrossAt = Q;
+	}
+}
 
 void AM80PedoneAI::OnPossess(APawn* InPawn)
 {
@@ -2051,8 +2198,16 @@ void AM80PedoneAI::Next()
 	{
 		return;
 	}
+	// Somewhere off the roadway when the level has roads (people stand by the houses, not in the middle of the street).
+	UM80Traffico* T = UM80Traffico::Get(this);
+	const bool bRoads = T && T->HasLanes();
 	FNavLocation To;
-	if (Nav->GetRandomReachablePointInRadius(P->GetHome(), P->Raggio, To))
+	bool bFound = false;
+	for (int32 Try = 0; Try < 8 && !bFound; ++Try)
+	{
+		bFound = Nav->GetRandomReachablePointInRadius(P->GetHome(), P->Raggio, To) && (!bRoads || Try == 7 || !T->IsOnRoad(To.Location, 110.f));
+	}
+	if (bFound)
 	{
 		MoveToLocation(To.Location, 60.f, true, true, false, false);
 	}
@@ -2081,12 +2236,26 @@ void AM80AutistaAI::Guida(AM80Car* Car, AM80Pedone* InDriver, float Seconds, flo
 	{
 		M->SetHandbrakeInput(false);
 	}
-	NewGoal();
+	Rand.Initialize(GetUniqueID());
+	UM80Traffico* T = UM80Traffico::Get(this);
+	bTraffico = T && T->HasLanes();
+	if (!bTraffico)
+	{
+		NewGoal();
+	}
 }
 
 void AM80AutistaAI::OnUnPossess()
 {
 	Super::OnUnPossess();
+	if (UM80Traffico* T = UM80Traffico::Get(this))
+	{
+		T->ReleaseAll(this);
+	}
+	if (AM80Parcheggio* P = Spot.Get(); P && P->Prenotato.Get() == GetPawn())
+	{
+		P->Prenotato.Reset();
+	}
 	// Taken by someone else (the player pulling the driver out): the driver gets out at once.
 	if (!bParked)
 	{
@@ -2180,6 +2349,200 @@ void AM80AutistaAI::NewGoal()
 	}
 }
 
+bool AM80AutistaAI::InitRoute(AM80Car* Car)
+{
+	UM80Traffico* T = UM80Traffico::Get(this);
+	for (const int32 K : Holding)
+	{
+		T->Release(K, this);
+	}
+	Holding.Reset();
+	Route.Reset();
+	const int32 L = T->NearestLane(Car->GetActorLocation(), Car->GetActorForwardVector(), 1200.f, S);
+	if (L < 0)
+	{
+		return false;
+	}
+	Route.Add(L);
+	// Off the lane (a parking place, the side of a square): pulls out when nobody is coming.
+	bExit = FVector::Dist2D(T->Lane(L).At(S), Car->GetActorLocation()) > 150.f;
+	return true;
+}
+
+void AM80AutistaAI::LeaveLane(int32 LaneIndex)
+{
+	UM80Traffico* T = UM80Traffico::Get(this);
+	const FM80Corsia& L = T->Lane(LaneIndex);
+	const int32 Key = L.Node >= 0 ? L.Node : L.bStretta ? 1000000 + L.Edge : -1;
+	if (Key >= 0 && Holding.Remove(Key) > 0)
+	{
+		T->Release(Key, this);
+	}
+}
+
+bool AM80AutistaAI::TrafficTarget(AM80Car* Car, float DeltaSeconds, FVector& OutGoal, float& OutKmh)
+{
+	UM80Traffico* T = UM80Traffico::Get(this);
+	if (!T || (Route.Num() == 0 && !InitRoute(Car)))
+	{
+		return false;
+	}
+	const FVector Pos = Car->GetActorLocation();
+	const float Speed = Car->GetSpeedKmh();
+	// Along the route: lanes left behind give back what they held.
+	S = T->Lane(Route[0]).Project(Pos, S, 700.f);
+	while (Route.Num() > 1 && S >= T->Lane(Route[0]).Length() - 40.f)
+	{
+		LeaveLane(Route[0]);
+		Route.RemoveAt(0);
+		S = T->Lane(Route[0]).Project(Pos, 0.f, 600.f);
+	}
+	while (Route.Num() < 6)
+	{
+		const int32 N = T->PickNext(Route.Last(), Rand);
+		if (N < 0)
+		{
+			break;
+		}
+		Route.Add(N);
+	}
+	auto Along = [&](float D, FVector* Dir)
+	{
+		int32 k = 0;
+		float d = S + D;
+		while (k < Route.Num() - 1 && d > T->Lane(Route[k]).Length())
+		{
+			d -= T->Lane(Route[k]).Length();
+			++k;
+		}
+		return T->Lane(Route[k]).At(FMath::Min(d, T->Lane(Route[k]).Length()), Dir);
+	};
+	const FM80Corsia& Cur = T->Lane(Route[0]);
+	float Cruise = Cur.Node >= 0 ? 14.f : Cur.bStretta ? 20.f : Kmh;
+	// Slower before a bend: the heading now against the one 15 m on.
+	FVector D0, D1;
+	Along(0.f, &D0);
+	Along(1500.f, &D1);
+	const float Turn = FMath::RadiansToDegrees(FMath::Acos(FMath::Clamp(float(FVector::DotProduct(D0, D1)), -1.f, 1.f)));
+	Cruise = FMath::Min(Cruise, FMath::Lerp(Kmh, 12.f, FMath::Clamp(Turn / 70.f, 0.f, 1.f)));
+	OutGoal = Along(380.f + FMath::Max(Speed, 0.f) * 7.f, nullptr);
+
+	// Pulling out of a parking place: onto the lane a few metres on, once nobody is coming along it.
+	if (bExit)
+	{
+		const FVector OnLane = Cur.At(S);
+		if (FVector::Dist2D(OnLane, Pos) < 90.f)
+		{
+			bExit = false;
+		}
+		else
+		{
+			OutGoal = Cur.At(FMath::Min(S + 900.f, Cur.Length()));
+			OutKmh = T->CarComing(OnLane, 1500.f, 4.f, Car) ? 0.f : 9.f;
+			return true;
+		}
+	}
+
+	// A junction or a narrow street ahead is taken one car at a time: the next junction and, when the street after it
+	// is narrow, that street too (both or neither: two cars never wait for each other inside).
+	HoldWait = FMath::Max(HoldWait - DeltaSeconds * 0.5f, 0.f);
+	auto KeyOf = [&](int32 l) { const FM80Corsia& L = T->Lane(l); return L.Node >= 0 ? L.Node : L.bStretta ? 1000000 + L.Edge : -1; };
+	if (Cur.bStretta && !Holding.Contains(KeyOf(Route[0])))
+	{
+		// Started on a narrow street: it must be free.
+		if (T->Reserve(KeyOf(Route[0]), this))
+		{
+			Holding.Add(KeyOf(Route[0]));
+		}
+		else
+		{
+			OutKmh = 0.f;
+			return true;
+		}
+	}
+	float Gone = Cur.Length() - S;
+	for (int32 k = 1; k < Route.Num() && Gone < 1300.f; ++k)
+	{
+		const int32 Key = KeyOf(Route[k]);
+		if (Key < 0 || Holding.Contains(Key))
+		{
+			Gone += T->Lane(Route[k]).Length();
+			continue;
+		}
+		TArray<int32> Want = {Key};
+		if (T->Lane(Route[k]).Node >= 0 && k + 1 < Route.Num() && KeyOf(Route[k + 1]) >= 0)
+		{
+			Want.Add(KeyOf(Route[k + 1]));
+		}
+		TArray<int32> Got;
+		for (const int32 W : Want)
+		{
+			if (Holding.Contains(W) || T->Reserve(W, this))
+			{
+				Got.Add(W);
+			}
+		}
+		if (Got.Num() == Want.Num())
+		{
+			for (const int32 W : Got)
+			{
+				Holding.AddUnique(W);
+			}
+		}
+		else
+		{
+			for (const int32 W : Got)
+			{
+				if (!Holding.Contains(W))
+				{
+					T->Release(W, this);
+				}
+			}
+			// Waits at the line (2.5 m before it); after a long wait goes anyway, slowly.
+			HoldWait += DeltaSeconds * 1.5f;
+			if (HoldWait < 25.f)
+			{
+				Cruise = FMath::Min(Cruise, FMath::Max(0.f, (Gone - 250.f) / 60.f));
+			}
+		}
+		break;
+	}
+
+	// The drive is over: to the first free parking place ahead, in, stop (the driver gets out).
+	if (Time > MaxTime && !Spot.IsValid())
+	{
+		int32 Index = 0;
+		float SpotS = 0.f;
+		if (AM80Parcheggio* P = T->SpotAhead(Route, S, 15000.f, Car, Index, SpotS))
+		{
+			Spot = P;
+			P->Prenotato = Car;
+		}
+	}
+	if (AM80Parcheggio* P = Spot.Get())
+	{
+		const FVector Place = P->GetActorLocation();
+		const float D = FVector::Dist2D(Place, Pos);
+		if (D < 1300.f && FVector::DotProduct((Place - Pos).GetSafeNormal2D(), Car->GetActorForwardVector()) > 0.2f)
+		{
+			OutGoal = Place + P->GetActorForwardVector() * 150.f;
+			Cruise = FMath::Min(Cruise, FMath::Max(4.f, D / 120.f));
+			if (D < 160.f)
+			{
+				bParking = true;
+			}
+		}
+		else if (D > 600.f && FVector::DotProduct((Place - Pos).GetSafeNormal2D(), Car->GetActorForwardVector()) < -0.2f)
+		{
+			// Gone past it (a car in the way, a bend): another one further on.
+			P->Prenotato.Reset();
+			Spot.Reset();
+		}
+	}
+	OutKmh = Cruise;
+	return true;
+}
+
 void AM80AutistaAI::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
@@ -2199,9 +2562,9 @@ void AM80AutistaAI::Tick(float DeltaSeconds)
 		M->SetHandbrakeInput(true);
 		return;
 	}
-	if (Time > MaxTime)
+	if (Time > MaxTime && !bTraffico)
 	{
-		bParking = true;
+		bParking = true;   // in traffic it looks for a parking place first (TrafficTarget)
 	}
 	if (bParking)
 	{
@@ -2220,31 +2583,67 @@ void AM80AutistaAI::Tick(float DeltaSeconds)
 		}
 		return;
 	}
-	if (Point >= Path.Num())
+	FVector Goal;
+	float Cruise = Kmh;
+	if (bTraffico)
 	{
-		NewGoal();
-		if (Path.Num() == 0)
+		if (!TrafficTarget(Car, DeltaSeconds, Goal, Cruise))
 		{
 			M->SetThrottleInput(0.f);
-			M->SetBrakeInput(0.f);
-			M->SetHandbrakeInput(true);
-			Diario = TEXT("no path");
+			M->SetBrakeInput(FMath::Abs(Speed) > 1.5f ? 1.f : 0.f);
+			M->SetHandbrakeInput(FMath::Abs(Speed) <= 1.5f);
+			Diario = TEXT("no lane");
 			return;
 		}
+		if (bParking)
+		{
+			return;   // reached its parking place: stops next tick
+		}
+		// Passing a parked car: a lane's width to the left until it is behind.
+		if (const AActor* P = PassBy.Get())
+		{
+			PassTime += DeltaSeconds;
+			const float X = Car->GetActorTransform().InverseTransformPositionNoScale(P->GetActorLocation()).X;
+			if (X < -450.f || PassTime > 12.f)
+			{
+				PassBy.Reset();
+			}
+			else
+			{
+				Goal -= Car->GetActorRightVector() * 230.f;
+				Cruise = FMath::Min(Cruise, 10.f);
+			}
+		}
 	}
-	// Aim at the first point of the path a few metres ahead (looking further when faster).
-	const FVector Pos = Car->GetActorLocation();
-	const float Ahead = 550.f + FMath::Max(Speed, 0.f) * 8.f;
-	while (Point < Path.Num() - 1 && FVector::Dist2D(Pos, Path[Point]) < Ahead)
+	else
 	{
-		++Point;
+		if (Point >= Path.Num())
+		{
+			NewGoal();
+			if (Path.Num() == 0)
+			{
+				M->SetThrottleInput(0.f);
+				M->SetBrakeInput(0.f);
+				M->SetHandbrakeInput(true);
+				Diario = TEXT("no path");
+				return;
+			}
+		}
+		// Aim at the first point of the path a few metres ahead (looking further when faster).
+		const FVector Pos = Car->GetActorLocation();
+		const float Ahead = 550.f + FMath::Max(Speed, 0.f) * 8.f;
+		while (Point < Path.Num() - 1 && FVector::Dist2D(Pos, Path[Point]) < Ahead)
+		{
+			++Point;
+		}
+		if (Point == Path.Num() - 1 && FVector::Dist2D(Pos, Path[Point]) < 450.f)
+		{
+			NewGoal();
+			return;
+		}
+		Goal = Path[Point];
 	}
-	if (Point == Path.Num() - 1 && FVector::Dist2D(Pos, Path[Point]) < 450.f)
-	{
-		NewGoal();
-		return;
-	}
-	const FVector Local = Car->GetActorTransform().InverseTransformPositionNoScale(Path[Point]);
+	const FVector Local = Car->GetActorTransform().InverseTransformPositionNoScale(Goal);
 	const float Angle = FMath::RadiansToDegrees(FMath::Atan2(Local.Y, Local.X));
 	M->SetHandbrakeInput(false);
 	const FBox Box = Car->GetMesh()->CalcBounds(FTransform::Identity).GetBox();
@@ -2273,6 +2672,11 @@ void AM80AutistaAI::Tick(float DeltaSeconds)
 			return;
 		}
 		Reverse -= DeltaSeconds;
+		// Backed off enough once the way ahead is about straight again (a three-point turn in a narrow street).
+		if (Reverse < 2.2f && FMath::Abs(Angle) < 20.f)
+		{
+			Reverse = 0.f;
+		}
 		Diario = FString::Printf(TEXT("reversing %.1f s, %.0f km/h"), Reverse, Speed);
 		// Reverse gear and a little throttle (not the brake held at a standstill: the gearbox would stay in reverse).
 		if (M->GetCurrentGear() >= 0)
@@ -2284,12 +2688,20 @@ void AM80AutistaAI::Tick(float DeltaSeconds)
 		M->SetSteeringInput(Angle > 0.f ? -1.f : 1.f);
 		if (Reverse <= 0.f)
 		{
-			NewGoal();
+			if (bTraffico && Route.Num() && FVector::Dist2D(UM80Traffico::Get(this)->Lane(Route[0]).At(S), Car->GetActorLocation()) > 450.f)
+			{
+				Route.Reset();   // far off its lane: back on the lanes from where it is now
+			}
+			else
+			{
+				NewGoal();
+			}
 		}
 		return;
 	}
 	const float Steer = FMath::Clamp(Angle / 35.f, -1.f, 1.f);
-	float Target = Kmh * (1.f - 0.65f * FMath::Clamp(FMath::Abs(Angle) / 70.f, 0.f, 1.f));
+	// On the lanes the bends are already in Cruise; along a path only the angle to the next point tells.
+	float Target = Cruise * (1.f - (bTraffico ? 0.35f : 0.65f) * FMath::Clamp(FMath::Abs(Angle) / 70.f, 0.f, 1.f));
 	// Someone in front (people, the player): slows down and stops; they step aside; honks at whoever stays there.
 	const float Look = 300.f + FMath::Max(Speed, 0.f) * 14.f;
 	TArray<FOverlapResult> Hits;
@@ -2301,11 +2713,58 @@ void AM80AutistaAI::Tick(float DeltaSeconds)
 			P->Scansati(Car);
 		}
 	}
-	if (bSomeone)
+	// A car in front: keeps its distance, stops behind it.
+	float CarGap = TNumericLimits<float>::Max();
+	{
+		TArray<FOverlapResult> Ahead;
+		const FVector Centre = Car->GetActorTransform().TransformPosition(FVector(Box.Max.X + Look * 0.5f, 0.f, 90.f));
+		FCollisionObjectQueryParams Cars;
+		Cars.AddObjectTypesToQuery(ECC_Vehicle);
+		Cars.AddObjectTypesToQuery(ECC_PhysicsBody);
+		Cars.AddObjectTypesToQuery(ECC_WorldDynamic);
+		GetWorld()->OverlapMultiByObjectType(Ahead, Centre, Car->GetActorQuat(), Cars,
+			FCollisionShape::MakeBox(FVector(Look * 0.5f, FMath::Max(Box.Max.Y, 80.f) - 10.f, 80.f)), Q);
+		const AM80Car* Nearest = nullptr;
+		for (const FOverlapResult& H : Ahead)
+		{
+			const AM80Car* Other = Cast<AM80Car>(H.GetActor());
+			if (Other && Other != Car && Other != PassBy.Get())
+			{
+				const float X = Car->GetActorTransform().InverseTransformPositionNoScale(Other->GetActorLocation()).X;
+				if (X - Box.Max.X - 220.f < CarGap)
+				{
+					CarGap = X - Box.Max.X - 220.f;
+					Nearest = Other;
+				}
+			}
+		}
+		// A parked car (nobody driving, standing) a few metres ahead on the lanes: pass it on the left when the way there
+		// is free (nothing standing, no car coming within 25 m).
+		if (bTraffico && Nearest && !Nearest->GetController() && FMath::Abs(Nearest->GetSpeedKmh()) < 1.f && CarGap < 700.f && !PassBy.IsValid())
+		{
+			const FVector Left = Car->GetActorLocation() - Car->GetActorRightVector() * 230.f + Car->GetActorForwardVector() * 300.f + FVector(0.f, 0.f, 90.f);
+			FCollisionObjectQueryParams Solid;
+			Solid.AddObjectTypesToQuery(ECC_WorldStatic);
+			Solid.AddObjectTypesToQuery(ECC_Vehicle);
+			Solid.AddObjectTypesToQuery(ECC_PhysicsBody);
+			const bool bRoom = !GetWorld()->OverlapAnyTestByObjectType(Left, Car->GetActorQuat(), Solid, FCollisionShape::MakeBox(FVector(300.f, 85.f, 60.f)), Q);
+			UM80Traffico* T = UM80Traffico::Get(this);
+			if (bRoom && !(T && T->CarComing(Left + Car->GetActorForwardVector() * 1200.f, 900.f, 3.f, Car)))
+			{
+				PassBy = const_cast<AM80Car*>(Nearest);
+				PassTime = 0.f;
+			}
+		}
+	}
+	if (CarGap < TNumericLimits<float>::Max())
+	{
+		Target = FMath::Min(Target, FMath::Max(0.f, (CarGap - 300.f) / 25.f));
+	}
+	if (bSomeone || CarGap < 350.f)
 	{
 		Target = 0.f;
 		Blocked += DeltaSeconds;
-		if (Blocked > 2.f && HornWait <= 0.f)
+		if (Blocked > (bSomeone ? 2.f : 8.f) && HornWait <= 0.f)
 		{
 			Car->Horn();
 			HornWait = 3.f;
@@ -2338,18 +2797,19 @@ void AM80AutistaAI::Tick(float DeltaSeconds)
 		Throttle = 0.15f;
 	}
 	// Against a wall (throttle well on, not moving, after the start): backs off and looks for another way.
-	Stuck = (Time > 4.f && Throttle >= 0.25f && FMath::Abs(Speed) < 3.f) ? Stuck + DeltaSeconds : 0.f;
+	Stuck = (Time > 4.f && Throttle >= 0.25f && FMath::Abs(Speed) < 3.f && !bSomeone && CarGap > 600.f) ? Stuck + DeltaSeconds : 0.f;
 	if (Stuck > 2.f)
 	{
 		Stuck = 0.f;
-		Reverse = 1.8f;
+		Reverse = bTraffico ? 3.5f : 1.8f;
 	}
 	int32 OnGround = 0;
 	for (int32 i = 0; i < M->Wheels.Num(); ++i)
 	{
 		OnGround += M->GetWheelState(i).bInContact ? 1 : 0;
 	}
-	Diario = FString::Printf(TEXT("point %d/%d angle %.0f target %.0f speed %.0f throttle %.2f brake %.2f people %d blocked %.1f stuck %.1f gear %d rpm %.0f handbrake %d wheels %d sim %d"),
+	Diario = FString::Printf(TEXT("%s point %d/%d angle %.0f target %.0f speed %.0f throttle %.2f brake %.2f people %d blocked %.1f stuck %.1f gear %d rpm %.0f handbrake %d wheels %d sim %d"),
+		bTraffico ? *FString::Printf(TEXT("lane %d s %.0f route %d holding %d exit %d spot %d"), Route.Num() ? Route[0] : -1, S, Route.Num(), Holding.Num(), bExit ? 1 : 0, Spot.IsValid() ? 1 : 0) : TEXT("nav"),
 		Point, Path.Num(), Angle, Target, Speed, Throttle, Brake, Hits.Num(), Blocked, Stuck, M->GetCurrentGear(), M->GetEngineRotationSpeed(),
 		M->GetHandbrakeInput() ? 1 : 0, OnGround, Car->GetMesh()->IsSimulatingPhysics());
 	// Forward again after backing off (the automatic gearbox stays in reverse with the throttle on).

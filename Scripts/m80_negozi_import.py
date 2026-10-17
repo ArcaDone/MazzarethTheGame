@@ -4,7 +4,8 @@ material library /Game/Mazzarino/Libreria, meshes in /Game/Mazzarino/<Package>),
 lays their reference layouts side by side in a small test map, /Game/Mazzarino80/Negozi/Maps/L_M80_ProvaNegozi (floor,
 sun and sky; each package along the X axis, its facade line at its origin), and photographs them.
 powershell -File Scripts/run_editor_script.ps1 -Script Scripts/m80_negozi_import.py -ForceLit -TimeoutMinutes 90
-Env M80_SOLO_MAPPA=1: only the map and photos (packages already imported).
+Env M80_SOLO_MAPPA=1: only the map and photos (packages already imported). M80_SOLO_LUCI=1: only the lights' strength
+(M80_LUCI_SCALA, default 0.15 of the packages' lumens: at full strength they looked too bright; white lamps made warm) and the photos.
 Report: Saved/Mazzarino80/Negozi/negozi.json, photos in Saved/Mazzarino80/Negozi
 """
 import json
@@ -40,8 +41,57 @@ def run_package_script(pkg, name):
         return traceback.format_exc().splitlines()[-1]
 
 
+SCALE = float(os.environ.get("M80_LUCI_SCALA", "0.15"))
+WARM_K = 2800.0    # colour temperature of the white lamps (user: warm, not cold)
+
+
+def dim_lights():
+    """The packages' lights at SCALE of their lumens; the original value kept in a tag, so runs do not add up."""
+    n = warm = 0
+    for a in EAS.get_all_level_actors():
+        comp = a.get_component_by_class(unreal.LocalLightComponent)
+        if not comp or not str(a.get_folder_path()).startswith("Mazzarino"):
+            continue
+        orig = next((float(str(t)[6:]) for t in a.tags if str(t).startswith("M80Lm_")), None)
+        if orig is None:
+            orig = comp.get_editor_property("intensity")
+            a.tags = list(a.tags) + [unreal.Name("M80Lm_%g" % orig)]
+        comp.set_editor_property("intensity", orig * SCALE)
+        # White or cold lamps made warm (incandescent): only the coloured ones (signs, indicators) keep their colour.
+        c = comp.get_editor_property("light_color")
+        if max(c.r, c.g, c.b) - min(c.r, c.g, c.b) < 60:
+            comp.set_editor_property("light_color", unreal.Color(255, 255, 255, 255))
+            comp.set_editor_property("use_temperature", True)
+            comp.set_editor_property("temperature", WARM_K)
+            warm += 1
+        n += 1
+    report["lights_scaled"] = [n, SCALE, warm, WARM_K]
+
+
+def photos():
+    cap = m80_seq.ViewCapture(1280, 720, 70)
+    for i, pkg in enumerate(ORDER):
+        o = V(i * SPACING, 0, 0)
+        for name, eye, at in (("strada", o + V(900, -600, 300), o + V(-200, 0, 150)),
+                              ("dentro", o + V(-150, -450, 170), o + V(-450, 200, 100)),
+                              ("alto", o + V(600, 0, 1300), o + V(-500, 0, 0))):
+            cap.capture(eye, unreal.MathLibrary.find_look_at_rotation(eye, at), str(OUT / ("%s_%s.png" % (pkg, name))))
+            yield 5
+    cap.destroy()
+
+
 def steps():
     OUT.mkdir(parents=True, exist_ok=True)
+    if os.environ.get("M80_SOLO_LUCI"):
+        unreal.EditorLoadingAndSavingUtils.load_map(MAP)
+        yield 40
+        dim_lights()
+        unreal.EditorLoadingAndSavingUtils.save_current_level()
+        yield 10
+        for s in photos():
+            yield s
+        (OUT / "negozi.json").write_text(json.dumps(report, indent=1), encoding="utf-8")
+        return
     if not os.environ.get("M80_SOLO_MAPPA"):
         for pkg in ORDER:
             report["import"][pkg] = run_package_script(pkg, "import_pacchetto.py")
@@ -86,18 +136,12 @@ def steps():
         report["layouts"][pkg].append(len(EAS.get_all_level_actors()) - before)
         yield 5
     EAS.set_selected_level_actors([])
+    dim_lights()
     unreal.EditorLoadingAndSavingUtils.save_current_level()
     yield 20
     # Photos: from the street (X is towards the street) and from inside each layout.
-    cap = m80_seq.ViewCapture(1280, 720, 70)
-    for i, pkg in enumerate(ORDER):
-        o = V(i * SPACING, 0, 0)
-        for name, eye, at in (("strada", o + V(900, -600, 300), o + V(-200, 0, 150)),
-                              ("dentro", o + V(-150, -450, 170), o + V(-450, 200, 100)),
-                              ("alto", o + V(600, 0, 1300), o + V(-500, 0, 0))):
-            cap.capture(eye, unreal.MathLibrary.find_look_at_rotation(eye, at), str(OUT / ("%s_%s.png" % (pkg, name))))
-            yield 5
-    cap.destroy()
+    for s in photos():
+        yield s
     (OUT / "negozi.json").write_text(json.dumps(report, indent=1), encoding="utf-8")
     yield 2
 

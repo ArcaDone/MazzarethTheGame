@@ -7,6 +7,7 @@
 class ACharacter;
 class AM80Car;
 class UAnimSequenceBase;
+class UAnimSequence;
 class UInputAction;
 class UM80VitalsComponent;
 class UM80WeaponInventory;
@@ -22,7 +23,8 @@ enum class EM80PlayerState : uint8
 	Driving,
 	GettingOut,
 	Dead,
-	KnockedDown   // on the ground after a car or a blast, gets up by itself
+	KnockedDown,  // on the ground after a car or a blast, gets up by itself
+	Sitting       // on a chair (E near one; E again to stand up)
 };
 
 /**
@@ -235,6 +237,18 @@ private:
 	void UpdateStreetName();
 	void ShowHint(const FString& Text);
 	FVector DoorWorld(const AM80Car* C) const;
+	/** Four-wheeled cars: getting in and out is acted out (the townspeople's clips); carts and two-wheelers jump on. */
+	bool ActsCar(const AM80Car* C) const;
+	/** Where getting in starts: the clip walks the body from there into the seat. */
+	FVector EnterStart(const AM80Car* C) const;
+	/** A clip played on the character's mesh, its root's travel moving the character; then Then. */
+	void PlayWithRoot(UAnimSequence* Clip, float From, float To, TFunction<void()> Then);
+	void TickClip(float DeltaTime);
+	/** Back to the sample's animation and walking, after a clip or sitting. */
+	void BackOnFoot();
+	AActor* FindChairInReach() const;
+	void SitDown(AActor* OnChair);
+	void StandUp();
 
 	TWeakObjectPtr<ACharacter> Walker;
 	TWeakObjectPtr<AM80Car> Car;
@@ -272,4 +286,11 @@ private:
 	FTransform MeshRelative;
 	FName MeshProfile;
 	TWeakObjectPtr<UM80OverlayAnimInstance> Overlay;
+	UPROPERTY(Transient)
+	TObjectPtr<UAnimSequence> ClipNow;
+	float ClipTo = 0.f;
+	float ClipTime = 0.f;
+	float ClipDrop = 0.f;
+	TFunction<void()> ClipThen;
+	TWeakObjectPtr<AActor> Chair;
 };

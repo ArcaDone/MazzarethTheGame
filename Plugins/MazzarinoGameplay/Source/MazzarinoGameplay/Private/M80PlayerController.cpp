@@ -8,6 +8,9 @@
 #include "M80Vitals.h"
 #include "M80Weapons.h"
 #include "M80OverlayAnim.h"
+#include "M80Pedone.h"
+#include "Animation/AnimSequence.h"
+#include "Animation/AnimSingleNodeInstance.h"
 #include "MazzarinoRoadSpline.h"
 #include "Animation/AnimInstance.h"
 #include "Animation/AnimSequenceBase.h"
@@ -505,6 +508,10 @@ void AM80PlayerController::OnPossess(APawn* InPawn)
 		V->OnDamaged.AddUniqueDynamic(this, &AM80PlayerController::OnWalkerDamaged);
 		MeshRelative = C->GetMesh()->GetRelativeTransform();
 		MeshProfile = C->GetMesh()->GetCollisionProfileName();
+		// Walking into a chair or a table moves it; into a parked car does not (the default push, 7500 N, shoved cars).
+		C->GetCharacterMovement()->bEnablePhysicsInteraction = true;
+		C->GetCharacterMovement()->PushForceFactor = 60000.f;
+		C->GetCharacterMovement()->InitialPushForceFactor = 100.f;
 		if (!C->FindComponentByClass<UM80ClimbComponent>())
 		{
 			NewObject<UM80ClimbComponent>(C, TEXT("M80Arrampicata"))->RegisterComponent();
@@ -930,9 +937,24 @@ void AM80PlayerController::Interact()
 {
 	if (State == EM80PlayerState::OnFoot)
 	{
-		if (AM80Car* Target = FindCarInReach())
+		// The nearer of a car's door and a chair.
+		AM80Car* Target = FindCarInReach();
+		AActor* Seat = FindChairInReach();
+		const ACharacter* W = Walker.Get();
+		if (Seat && (!Target || (W && FVector::Dist2D(Seat->GetActorLocation(), W->GetActorLocation()) < FVector::Dist2D(DoorWorld(Target), W->GetActorLocation()))))
+		{
+			SitDown(Seat);
+		}
+		else if (Target)
 		{
 			StartGetIn(Target);
+		}
+	}
+	else if (State == EM80PlayerState::Sitting)
+	{
+		if (!ClipNow)
+		{
+			StandUp();
 		}
 	}
 	else if (State == EM80PlayerState::Driving)
@@ -1027,6 +1049,30 @@ void AM80PlayerController::StartGetOut(bool bJump)
 		}
 	}
 	const float Yaw = C->GetActorRotation().Yaw;
+	UAnimSequence* OutClip = LoadObject<UAnimSequence>(nullptr, TEXT("/Game/Mazzarino80/Personaggi/Animazioni/A_M80_Folla_Scende.A_M80_Folla_Scende"), nullptr, LOAD_NoWarn);
+	if (!bJump && OutClip && ActsCar(C) && FMath::Abs(C->GetSpeedKmh()) < 3.f && FVector::Dist2D(Exit, T.TransformPosition(D)) < 1.f)
+	{
+		// Driver's door free: gets out acted (from the seat, to the left, the door shut), then walks.
+		State = EM80PlayerState::GettingOut;
+		Possess(W);
+		W->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		FVector Seat = C->GetMesh()->GetComponentTransform().TransformPosition(C->SeatOffset);
+		Seat.Z = C->GetActorLocation().Z + Half + 2.f;
+		W->SetActorLocationAndRotation(Seat, FRotator(0, Yaw, 0), false, nullptr, ETeleportType::TeleportPhysics);
+		SetControlRotation(FRotator(-10.f, Yaw, 0));
+		SetViewTargetWithBlend(W, 0.6f, VTBlend_EaseInOut, 2.f);
+		SetIgnoreLookInput(false);
+		SetIgnoreMoveInput(true);
+		Car.Reset();
+		// The clip's seat is 81 cm from the ground, ours lower: down at first, back up as the feet come out.
+		ClipDrop = FMath::Clamp(81.f - float(C->SeatOffset.Z), 0.f, 45.f);
+		PlayWithRoot(OutClip, 0.f, 3.4f, [this]()
+		{
+			ClipDrop = 0.f;
+			BackOnFoot();
+		});
+		return;
+	}
 	State = EM80PlayerState::GettingOut;
 	Possess(W);
 	W->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
@@ -1062,6 +1108,7 @@ void AM80PlayerController::PlayerTick(float DeltaTime)
 	HintAge += DeltaTime;
 	RespawnAge += DeltaTime;
 
+	TickClip(DeltaTime);
 	if (State == EM80PlayerState::KnockedDown)
 	{
 		KnockTime += DeltaTime;
@@ -1144,13 +1191,19 @@ void AM80PlayerController::PlayerTick(float DeltaTime)
 		return;
 	}
 	PhaseTime += DeltaTime;
+	if (ClipNow)
+	{
+		return;   // getting in, acted out (TickClip)
+	}
 	if (SeatStartRel.IsZero() && !W->IsAttachedTo(C))
 	{
-		// 1) Walk to the driver door (the character's own locomotion animates it).
-		const FVector Door = DoorWorld(C);
+		// 1) Walk to the driver door (the character's own locomotion animates it); for the acted getting in, to
+		// where the clip starts.
+		const bool bActs = ActsCar(C);
+		const FVector Door = bActs ? EnterStart(C) : DoorWorld(C);
 		FVector To = Door - W->GetActorLocation();
 		To.Z = 0.f;
-		if (To.Size() > 45.f && PhaseTime < WalkToDoorMax)
+		if (To.Size() > (bActs ? 25.f : 45.f) && PhaseTime < WalkToDoorMax)
 		{
 			W->AddMovementInput(To.GetSafeNormal(), To.Size() < 150.f ? 0.5f : 1.f);
 			return;
@@ -1165,6 +1218,25 @@ void AM80PlayerController::PlayerTick(float DeltaTime)
 		if (BreakWait > 0.f)
 		{
 			BreakWait -= DeltaTime;
+			return;
+		}
+		if (bActs)
+		{
+			// Facing the car, opens the door, ducks in and sits; then onto the seat as before.
+			W->GetCharacterMovement()->StopMovementImmediately();
+			W->GetCharacterMovement()->DisableMovement();
+			W->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			W->SetActorRotation(FRotator(0.f, C->GetActorRotation().Yaw + 90.f, 0.f));
+			if (UM80OverlayAnimInstance* O = Overlay.Get())
+			{
+				O->bEnabled = false;
+			}
+			UAnimSequence* In = LoadObject<UAnimSequence>(nullptr, TEXT("/Game/Mazzarino80/Personaggi/Animazioni/A_M80_Folla_Sale.A_M80_Folla_Sale"), nullptr, LOAD_NoWarn);
+			PlayWithRoot(In, 0.9f, 3.15f, [this]()
+			{
+				FinishGetIn();
+				PhaseTime = 0.f;
+			});
 			return;
 		}
 		FinishGetIn();
@@ -1226,4 +1298,192 @@ void AM80PlayerController::UpdateStreetName()
 		StreetName = Best;
 		StreetNameAge = 0.f;
 	}
+}
+
+// ---------------------------------------------------------------------------------------------
+// Acted moves: getting in and out of a car, sitting down and standing up (the townspeople's clips)
+
+bool AM80PlayerController::ActsCar(const AM80Car* C) const
+{
+	return C && !C->bCart && C->RidePose.IsNull() && C->GetMesh() && C->GetMesh()->DoesSocketExist(TEXT("Wheel_FL"));
+}
+
+FVector AM80PlayerController::EnterStart(const AM80Car* C) const
+{
+	// The clip from the door to the seat (0.9-3.15 s) walks the body towards the car's right and turns it to its
+	// front: it starts that far from the seat, facing the car.
+	const ACharacter* W = Walker.Get();
+	UAnimSequence* In = LoadObject<UAnimSequence>(nullptr, TEXT("/Game/Mazzarino80/Personaggi/Animazioni/A_M80_Folla_Sale.A_M80_Folla_Sale"), nullptr, LOAD_NoWarn);
+	const FVector Seat = C->GetMesh()->GetComponentTransform().TransformPosition(C->SeatOffset);
+	if (!W || !In)
+	{
+		return DoorWorld(C);
+	}
+	const FTransform D = In->ExtractRootMotionFromRange(0.9f, 3.15f, FAnimExtractContext());
+	FVector Travel = MeshRelative.TransformVector(D.GetTranslation());
+	Travel.Z = 0.f;
+	FVector Start = Seat - FRotator(0.f, C->GetActorRotation().Yaw + 90.f, 0.f).RotateVector(Travel);
+	Start.Z = W->GetActorLocation().Z;
+	return Start;
+}
+
+void AM80PlayerController::PlayWithRoot(UAnimSequence* Clip, float From, float To, TFunction<void()> Then)
+{
+	ACharacter* W = Walker.Get();
+	if (!W || !Clip)
+	{
+		if (Then)
+		{
+			Then();
+		}
+		return;
+	}
+	ClipNow = Clip;
+	ClipTo = To < 0.f ? Clip->GetPlayLength() - 0.01f : FMath::Min(To, Clip->GetPlayLength() - 0.01f);
+	ClipTime = From;
+	ClipThen = MoveTemp(Then);
+	W->GetMesh()->PlayAnimation(Clip, false);
+	if (UAnimSingleNodeInstance* S = W->GetMesh()->GetSingleNodeInstance())
+	{
+		S->SetPlayRate(0.f);
+		S->SetPosition(From, false);
+	}
+}
+
+void AM80PlayerController::TickClip(float DeltaTime)
+{
+	ACharacter* W = Walker.Get();
+	if (!ClipNow || !W)
+	{
+		return;
+	}
+	const float T0 = ClipTime;
+	ClipTime = FMath::Min(ClipTime + DeltaTime, ClipTo);
+	if (!W->GetAttachParentActor())
+	{
+		// The character follows the clip's root (the clips' root is locked in the pose: the body stays on the capsule).
+		const FTransform D = ClipNow->ExtractRootMotionFromRange(T0, ClipTime, FAnimExtractContext());
+		FVector Move = W->GetMesh()->GetComponentTransform().TransformVector(D.GetTranslation());
+		Move.Z = 0.f;
+		W->AddActorWorldOffset(Move, false);
+		const float Yaw = D.GetRotation().Rotator().Yaw;
+		if (!FMath::IsNearlyZero(Yaw))
+		{
+			W->AddActorWorldRotation(FRotator(0.f, Yaw, 0.f));
+		}
+	}
+	if (UAnimSingleNodeInstance* S = W->GetMesh()->GetSingleNodeInstance())
+	{
+		S->SetPosition(ClipTime, false);
+	}
+	if (ClipDrop > 0.f)
+	{
+		const float Up = FMath::Clamp((ClipTime - 0.6f) / 1.8f, 0.f, 1.f);
+		W->GetMesh()->SetRelativeLocation(MeshRelative.GetLocation() - FVector(0.f, 0.f, ClipDrop * (1.f - Up)));
+	}
+	if (ClipTime >= ClipTo)
+	{
+		ClipNow = nullptr;
+		TFunction<void()> Then = MoveTemp(ClipThen);
+		ClipThen = nullptr;
+		if (Then)
+		{
+			Then();
+		}
+	}
+}
+
+void AM80PlayerController::BackOnFoot()
+{
+	ACharacter* W = Walker.Get();
+	if (!W)
+	{
+		return;
+	}
+	W->GetMesh()->SetRelativeTransform(MeshRelative);
+	W->GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
+	W->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	W->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+	if (UM80OverlayAnimInstance* O = Overlay.Get())
+	{
+		O->bEnabled = true;
+	}
+	ResetIgnoreMoveInput();
+	State = EM80PlayerState::OnFoot;
+}
+
+AActor* AM80PlayerController::FindChairInReach() const
+{
+	const ACharacter* W = Walker.Get();
+	if (!W)
+	{
+		return nullptr;
+	}
+	AActor* Best = nullptr;
+	float BestDist = 160.f;
+	for (TActorIterator<AActor> It(GetWorld()); It; ++It)
+	{
+		if (!It->ActorHasTag(TEXT("M80Sedia")))
+		{
+			continue;
+		}
+		const float Dist = FVector::Dist2D(It->GetActorLocation(), W->GetActorLocation());
+		if (Dist < BestDist && AM80Pedone::SediaLibera(*It) && FMath::Abs(It->GetActorLocation().Z - W->GetActorLocation().Z) < 200.f)
+		{
+			Best = *It;
+			BestDist = Dist;
+		}
+	}
+	return Best;
+}
+
+void AM80PlayerController::SitDown(AActor* OnChair)
+{
+	ACharacter* W = Walker.Get();
+	UAnimSequence* Down = LoadObject<UAnimSequence>(nullptr, TEXT("/Game/Mazzarino80/Personaggi/Animazioni/A_M80_Folla_Siediti.A_M80_Folla_Siediti"), nullptr, LOAD_NoWarn);
+	if (!W || !OnChair || !Down)
+	{
+		return;
+	}
+	Chair = OnChair;
+	State = EM80PlayerState::Sitting;
+	bFireHeld = false;
+	SetIgnoreMoveInput(true);
+	if (UM80OverlayAnimInstance* O = Overlay.Get())
+	{
+		O->bEnabled = false;
+	}
+	if (UM80WeaponInventory* Inv = GetInventory())
+	{
+		Inv->HideWeapon();
+	}
+	// In front of the chair, back to it: sitting down steps back onto the seat.
+	W->GetCharacterMovement()->StopMovementImmediately();
+	W->GetCharacterMovement()->DisableMovement();
+	W->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	AM80Pedone::TieniSedia(OnChair, true);
+	W->SetActorLocationAndRotation(AM80Pedone::DoveSedersi(OnChair, W, Down, 2.2f), FRotator(0.f, OnChair->GetActorRotation().Yaw, 0.f),
+		false, nullptr, ETeleportType::TeleportPhysics);
+	PlayWithRoot(Down, 0.f, 2.2f, [this]()
+	{
+		if (ACharacter* Me = Walker.Get())
+		{
+			if (UAnimSequence* Sit = LoadObject<UAnimSequence>(nullptr, TEXT("/Game/Mazzarino80/Personaggi/Animazioni/A_M80_Folla_Seduto.A_M80_Folla_Seduto"), nullptr, LOAD_NoWarn))
+			{
+				Me->GetMesh()->PlayAnimation(Sit, true);
+			}
+		}
+		ShowHint(TEXT("E: alzati"));
+	});
+}
+
+void AM80PlayerController::StandUp()
+{
+	UAnimSequence* Up = LoadObject<UAnimSequence>(nullptr, TEXT("/Game/Mazzarino80/Personaggi/Animazioni/A_M80_Folla_Alzati.A_M80_Folla_Alzati"), nullptr, LOAD_NoWarn);
+	PlayWithRoot(Up, 0.f, 2.2f, [this]()
+	{
+		AM80Pedone::TieniSedia(Chair.Get(), false);
+		Chair.Reset();
+		BackOnFoot();
+	});
 }

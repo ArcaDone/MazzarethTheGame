@@ -895,18 +895,19 @@ void AM80House::RefreshProps()
 		}
 	}
 	LightComponents.Reset();
-	// The shops' ceiling lights: warm, no shadows (cheap), only as far as the room.
+	// The shops' ceiling light: one, weak (half a street lamp, AM80StreetLight's 40 cd), warm, no shadows, only as far as
+	// the room (the user: the shop lights must be dim, not huge).
 	for (const FVector& At : ShopLights)
 	{
 		UPointLightComponent* L = NewObject<UPointLightComponent>(this, NAME_None, RF_Transient);
 		L->SetupAttachment(Footprint);
 		L->SetMobility(EComponentMobility::Movable);
 		L->SetRelativeLocation(At);
-		L->SetIntensityUnits(ELightUnits::Lumens);
-		L->SetIntensity(1800.f);
+		L->SetIntensityUnits(ELightUnits::Candelas);
+		L->SetIntensity(20.f);
 		L->SetUseTemperature(true);
-		L->SetTemperature(3000.f);
-		L->SetAttenuationRadius(900.f);
+		L->SetTemperature(2800.f);
+		L->SetAttenuationRadius(650.f);
 		L->SetCastShadows(false);
 		L->RegisterComponent();
 		LightComponents.Add(L);
@@ -1290,12 +1291,8 @@ void AM80House::Rebuild()
 	ShopLights.Reset();
 	for (const FM80ShopRoomOut& Room : Rooms)
 	{
-		// One light every ~20 m2 down the middle of the room, under the ceiling.
-		const int32 NL = FMath::Clamp(FMath::RoundToInt(Room.Width * Room.Depth / 200000.0), 1, 3);
-		for (int32 l = 0; l < NL; ++l)
-		{
-			ShopLights.Add(Room.Frame.TransformPosition(FVector(-Room.Depth * (l + 0.5) / NL, 0.0, Room.Height - 40.0)));
-		}
+		// One light in the middle of the room, under the ceiling.
+		ShopLights.Add(Room.Frame.TransformPosition(FVector(-Room.Depth * 0.5, 0.0, Room.Height - 40.0)));
 		const UM80PrototipoNegozio* Proto = Negozi.IsValidIndex(Room.Shop) ? Negozi[Room.Shop].Prototipo.Get() : nullptr;
 		const int32 Pieces = Proto ? ArredaNegozio(Proto, Room.Frame, Room.Width, Room.Depth, Room.Height, House.Seed * 31 + Room.Shop, SavedProps) : 0;
 		NegoziCostruiti.Add(FString::Printf(TEXT("%s %.0fx%.0f cm, %d pezzi"), Proto ? *Proto->Nome : TEXT("?"), Room.Width, Room.Depth, Pieces));

@@ -4,13 +4,12 @@ material library /Game/Mazzarino/Libreria, meshes in /Game/Mazzarino/<Package>),
 lays their reference layouts side by side in a small test map, /Game/Mazzarino80/Negozi/Maps/L_M80_ProvaNegozi (floor,
 sun and sky; each package along the X axis, its facade line at its origin), and photographs them.
 powershell -File Scripts/run_editor_script.ps1 -Script Scripts/m80_negozi_import.py -ForceLit -TimeoutMinutes 90
-Env M80_SOLO_MAPPA=1: only the map and photos (packages already imported). M80_SOLO_LUCI=1: only the lights' strength
+Env M80_SOLO_MAPPA=1: only the map and photos (packages already imported; with M80_CABINA=1 the booth skeletal too). M80_SOLO_LUCI=1: only the lights' strength
 (M80_LUCI_SCALA, default 0.15 of the packages' lumens: at full strength they looked too bright; white lamps made warm) and the photos.
 Report: Saved/Mazzarino80/Negozi/negozi.json, photos in Saved/Mazzarino80/Negozi
 """
 import json
 import os
-import runpy
 import sys
 import traceback
 from pathlib import Path
@@ -30,15 +29,52 @@ report = {"import": {}, "layouts": {}, "assets": {}}
 SPACING = 2500.0   # cm between the packages' reference layouts
 
 
+# The phone booth package builds on the original booth's skeleton, clips and materials, which this project keeps
+# in /Game/Mazzarino80/Kit/CabinaTelefonica (Scripts/m80_cabina_import.py), not in /Game/CabinaTelefonica.
+REMAP = {"/Game/CabinaTelefonica/": "/Game/Mazzarino80/Kit/CabinaTelefonica/"}
+
+
 def run_package_script(pkg, name):
     path = os.path.join(SRC, pkg, "unreal", name)
     if not os.path.isfile(path):
         return "missing"
     try:
-        runpy.run_path(path, run_name="__main__")
+        code = open(path, encoding="utf-8").read()
+        for a, b in REMAP.items():
+            code = code.replace(a, b)
+        exec(compile(code, path, "exec"), {"__name__": "__main__", "__file__": path})
         return "ok"
     except Exception:  # noqa: BLE001 - noted, the next package goes on
         return traceback.format_exc().splitlines()[-1]
+
+
+def booth_graphics(path):
+    """The package's importer sets the graphics' slots on copies of the slot array (Python hands out copies), so the
+    sign, instructions, tariff and emergency plate stayed empty (default grid material): each empty M_G_* slot gets its
+    MI_G_* of the shared library, the slot put back into the array. Their base material is flagged for skeletal use."""
+    sk = unreal.load_asset(path)
+    slots = sk.get_editor_property("materials") if sk else []
+    done = []
+    for i in range(len(slots)):
+        s = slots[i]
+        name = str(s.get_editor_property("material_slot_name"))
+        if s.get_editor_property("material_interface") or not name.startswith("M_G_"):
+            continue
+        mi = unreal.load_asset("/Game/Mazzarino/Libreria/Materiali/MI_" + name[2:])
+        if not mi:
+            continue
+        base = mi.get_base_material()
+        if base and not base.get_editor_property("used_with_skeletal_mesh"):
+            base.set_editor_property("used_with_skeletal_mesh", True)
+            unreal.MaterialEditingLibrary.recompile_material(base)
+            unreal.EditorAssetLibrary.save_loaded_asset(base)
+        s.set_editor_property("material_interface", mi)
+        slots[i] = s
+        done.append(name)
+    if done:
+        sk.set_editor_property("materials", slots)
+        unreal.EditorAssetLibrary.save_loaded_asset(sk)
+    return done
 
 
 SCALE = float(os.environ.get("M80_LUCI_SCALA", "0.15"))
@@ -72,9 +108,14 @@ def photos():
     cap = m80_seq.ViewCapture(1280, 720, 70)
     for i, pkg in enumerate(ORDER):
         o = V(i * SPACING, 0, 0)
-        for name, eye, at in (("strada", o + V(900, -600, 300), o + V(-200, 0, 150)),
-                              ("dentro", o + V(-150, -450, 170), o + V(-450, 200, 100)),
-                              ("alto", o + V(600, 0, 1300), o + V(-500, 0, 0))):
+        views = (("strada", o + V(900, -600, 300), o + V(-200, 0, 150)),
+                 ("dentro", o + V(-150, -450, 170), o + V(-450, 200, 100)),
+                 ("alto", o + V(600, 0, 1300), o + V(-500, 0, 0)))
+        if pkg == "Cabina_SIP_Mazzarino":   # a booth of about 1 m: close views (street, phone, roof sign)
+            views = (("strada", o + V(260, -170, 190), o + V(0, 0, 120)),
+                     ("dentro", o + V(150, 25, 165), o + V(0, 0, 140)),
+                     ("alto", o + V(230, -120, 330), o + V(0, 0, 240)))
+        for name, eye, at in views:
             cap.capture(eye, unreal.MathLibrary.find_look_at_rotation(eye, at), str(OUT / ("%s_%s.png" % (pkg, name))))
             yield 5
     cap.destroy()
@@ -96,8 +137,10 @@ def steps():
         for pkg in ORDER:
             report["import"][pkg] = run_package_script(pkg, "import_pacchetto.py")
             yield 5
-        # The phone booth's own skeletal mesh (glass that breaks on its bones).
+    if not os.environ.get("M80_SOLO_MAPPA") or os.environ.get("M80_CABINA"):
+        # The phone booth's own skeletal mesh (glass that breaks on its bones), on the original booth's skeleton.
         report["import"]["Cabina_SIP_sk"] = run_package_script("Cabina_SIP_Mazzarino", "import_cabina_sip.py")
+        report["import"]["Cabina_SIP_grafiche"] = booth_graphics("/Game/Mazzarino/CabinaSIP/Cabina/SK_CS_Cabina_SIP")
         yield 5
     for pkg in ORDER:
         n = len(unreal.EditorAssetLibrary.list_assets("/Game/Mazzarino/" + pkg.replace("_Mazzarino", ""), True, False)) \
@@ -132,7 +175,8 @@ def steps():
         anchor.set_actor_label("Origine_" + pkg)
         EAS.set_selected_level_actors([anchor])
         before = len(EAS.get_all_level_actors())
-        report["layouts"][pkg] = [run_package_script(pkg, "piazza_riferimento.py")]
+        layout = "monta_cabina_sip.py" if pkg == "Cabina_SIP_Mazzarino" else "piazza_riferimento.py"
+        report["layouts"][pkg] = [run_package_script(pkg, layout)]
         report["layouts"][pkg].append(len(EAS.get_all_level_actors()) - before)
         yield 5
     EAS.set_selected_level_actors([])

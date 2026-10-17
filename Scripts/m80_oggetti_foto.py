@@ -19,7 +19,7 @@ OUT = ROOT / "Saved/Mazzarino80/Oggetti/Foto"
 EAS = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
 MESHES = {"Ospedale": "/Game/Mazzarino80/Buildings/Ospedale/SM_M80_Ospedale",
           "Banca": "/Game/Mazzarino80/Buildings/Banca/SM_M80_Banca",
-          "Cabina": "/Game/Mazzarino80/Kit/CabinaTelefonica/Meshes/SK_Cabina_Telefonica"}
+          "Cabina": "/Game/Mazzarino/CabinaSIP/Cabina/SK_CS_Cabina_SIP"}
 SPOT = unreal.Vector(-300000, -300000, 60000)
 
 

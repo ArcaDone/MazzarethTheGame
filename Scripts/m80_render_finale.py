@@ -41,7 +41,7 @@ UNPLACED = {"Poste": [("/Game/Mazzarino80/Buildings/Poste/SM_M80_Poste", (0, 0, 
                       ("/Game/Mazzarino80/Buildings/Poste/SM_M80_Poste_Antenna", (-1864.1, -1911.6, 16.5))],
             "Banca": [("/Game/Mazzarino80/Buildings/Banca/SM_M80_Banca", (0, 0, 0))],
             "Ospedale": [("/Game/Mazzarino80/Buildings/Ospedale/SM_M80_Ospedale", (0, 0, 0))],
-            "Cabina": [("/Game/Mazzarino80/Kit/CabinaTelefonica/Meshes/SK_Cabina_Telefonica", (0, 0, 0))]}
+            "Cabina": [("/Game/Mazzarino/CabinaSIP/Cabina/SK_CS_Cabina_SIP", (0, 0, 0))]}
 
 
 def label(a):

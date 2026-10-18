@@ -77,6 +77,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino")
 	void Drop();
 
+	/** Lets go of anything held at once and catches no ledge for Seconds (the player in a vehicle, getting in or out, down). */
+	void Suspend(float Seconds);
+
 	UFUNCTION(BlueprintPure, Category = "Mazzarino")
 	EM80ClimbState GetState() const { return State; }
 

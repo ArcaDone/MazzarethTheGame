@@ -227,6 +227,35 @@ void UM80ClimbComponent::Drop()
 	}
 }
 
+void UM80ClimbComponent::Suspend(float Seconds)
+{
+	GrabCooldown = FMath::Max(GrabCooldown, Seconds);
+	ACharacter* C = Owner();
+	if (!C || State == EM80ClimbState::None)
+	{
+		return;
+	}
+	if (State == EM80ClimbState::Mantling)
+	{
+		if (AActor* A = Ledge.Actor.Get())
+		{
+			C->GetCapsuleComponent()->IgnoreActorWhenMoving(A, false);
+		}
+	}
+	else if (!C->GetMesh()->IsSimulatingPhysics())
+	{
+		RestoreBody();
+	}
+	else
+	{
+		// Down as a ragdoll: leave the body to the physics, only give back the mesh's tick settings.
+		C->GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption(MeshTickOption);
+		C->GetMesh()->bEnableUpdateRateOptimizations = bMeshURO;
+		Clip.Reset();
+	}
+	State = EM80ClimbState::None;
+}
+
 void UM80ClimbComponent::StartMantle(const FM80Ledge& L)
 {
 	ACharacter* C = Owner();

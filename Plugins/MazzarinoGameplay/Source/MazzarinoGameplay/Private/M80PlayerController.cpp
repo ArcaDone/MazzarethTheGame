@@ -623,6 +623,11 @@ void AM80PlayerController::Ragdoll(ACharacter* W, const FVector& Velocity)
 	W->GetCharacterMovement()->DisableMovement();
 	W->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	USkeletalMeshComponent* M = W->GetMesh();
+	// The capsule follows the body while it lies (the camera is on it): the mesh must not be dragged along with it.
+	const FTransform T = M->GetComponentTransform();
+	M->SetUsingAbsoluteLocation(true);
+	M->SetUsingAbsoluteRotation(true);
+	M->SetWorldLocationAndRotation(T.GetLocation(), T.GetRotation());
 	M->SetCollisionProfileName(TEXT("Ragdoll"));
 	M->SetAllBodiesSimulatePhysics(true);
 	M->SetSimulatePhysics(true);
@@ -678,6 +683,8 @@ void AM80PlayerController::GetUp()
 	}
 	M->SetSimulatePhysics(false);
 	M->SetAllBodiesSimulatePhysics(false);
+	M->SetUsingAbsoluteLocation(false);
+	M->SetUsingAbsoluteRotation(false);
 	M->SetCollisionProfileName(MeshProfile);
 	// The capsule stands where the body lies, on the ground.
 	const float Half = W->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
@@ -1154,6 +1161,8 @@ void AM80PlayerController::StartGetOut(bool bJump)
 		// Driver's door free: gets out acted (from the seat, to the left, the door shut), then walks.
 		State = EM80PlayerState::GettingOut;
 		Possess(W);
+		// Possess restarts the pawn walking: it stays put (the clip moves it) until the clip ends.
+		W->GetCharacterMovement()->DisableMovement();
 		W->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 		FVector Seat = C->GetMesh()->GetComponentTransform().TransformPosition(C->SeatOffset);
 		Seat.Z = C->GetActorLocation().Z + Half + 2.f;
@@ -1208,6 +1217,15 @@ void AM80PlayerController::PlayerTick(float DeltaTime)
 	RespawnAge += DeltaTime;
 
 	TickClip(DeltaTime);
+	// Climbing is for the character on foot: in a vehicle, getting in or out, seated or down it catches no ledge (put
+	// down by the door it once caught the car itself, and the capsule pulled into the car threw it into the air).
+	if (State != EM80PlayerState::OnFoot)
+	{
+		if (UM80ClimbComponent* Cl = GetClimb())
+		{
+			Cl->Suspend(0.6f);
+		}
+	}
 	if (State == EM80PlayerState::KnockedDown)
 	{
 		KnockTime += DeltaTime;

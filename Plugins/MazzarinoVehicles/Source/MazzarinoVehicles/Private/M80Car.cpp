@@ -91,12 +91,6 @@ UM80WheelApeRear::UM80WheelApeRear()
 	SetupWheel(this, EAxleType::Rear, 27.f, 14.f, 0.f, 450.f, 1200.f, true, 150.f, 60.f, 0.5f, 7.f, 9.f, 2.6f);
 }
 
-namespace
-{
-// Wheel radius and width (cm) of the imported meshes.
-constexpr float WHEELVESPAR = 23.1f, WHEELVESPAW = 10.f;
-}
-
 // Imported vehicles: radius and width measured on the meshes (Saved/Mazzarino80/Import/out/<key>.json).
 // The 500: rear engine and drive, 125x12 tyres (radius 25.1, width 16 on the mesh).
 UM80Wheel500Front::UM80Wheel500Front() { SetupWheel(this, EAxleType::Front, 25.1f, 16.f, 38.f, 850.f, 0.f, false, 130.f, 55.f, 0.45f, 8.f, 10.f); }
@@ -110,8 +104,16 @@ UM80WheelGolfFront::UM80WheelGolfFront() { SetupWheel(this, EAxleType::Front, 27
 UM80WheelGolfRear::UM80WheelGolfRear() { SetupWheel(this, EAxleType::Rear, 27.9f, 18.f, 0.f, 800.f, 2000.f, false, 150.f, 55.f, 0.45f, 8.f, 10.f, 2.6f); }
 UM80WheelM3Front::UM80WheelM3Front() { SetupWheel(this, EAxleType::Front, 31.1f, 21.f, 36.f, 1800.f, 0.f, false, 260.f, 90.f, 0.45f, 8.f, 10.f, 2.6f); }
 UM80WheelM3Rear::UM80WheelM3Rear() { SetupWheel(this, EAxleType::Rear, 30.f, 21.f, 0.f, 1200.f, 2600.f, true, 280.f, 95.f, 0.45f, 8.f, 10.f, 2.8f); }
-UM80WheelVespaFront::UM80WheelVespaFront() { SetupWheel(this, EAxleType::Front, WHEELVESPAR, WHEELVESPAW, 30.f, 250.f, 0.f, false, 60.f, 20.f, 0.5f, 6.f, 8.f, 2.4f); }
-UM80WheelVespaRear::UM80WheelVespaRear() { SetupWheel(this, EAxleType::Rear, WHEELVESPAR, WHEELVESPAW, 0.f, 200.f, 500.f, true, 70.f, 25.f, 0.5f, 6.f, 8.f, 2.6f); }
+// The Piaggio Si: 2.25x16 tyres (radius 25.1, width 7 on the mesh), drum brakes, soft telescopic fork and rear shocks.
+// A two-wheeler's wheel touches the road under its centre (a sphere cast), not where a ray along the leaning frame meets it
+// (that is out on the low side, and the springs there stood the moped up again like a wide foot); no anti-roll bar.
+static void SetupTwoWheel(UChaosVehicleWheel* W)
+{
+	W->SweepShape = ESweepShape::Spherecast;
+	W->RollbarScaling = 0.f;
+}
+UM80WheelSiFront::UM80WheelSiFront() { SetupWheel(this, EAxleType::Front, 25.1f, 7.f, 35.f, 160.f, 0.f, false, 45.f, 15.f, 0.5f, 6.f, 8.f, 2.4f); SetupTwoWheel(this); }
+UM80WheelSiRear::UM80WheelSiRear() { SetupWheel(this, EAxleType::Rear, 25.1f, 7.f, 0.f, 130.f, 300.f, true, 55.f, 20.f, 0.5f, 5.f, 7.f, 2.6f); SetupTwoWheel(this); }
 
 // ---------------------------------------------------------------------------------------------
 // Base car
@@ -163,6 +165,8 @@ void AM80Car::BeginPlay()
 	Health = MaxHealth;
 	USkeletalMeshComponent* Body = GetMesh();
 	Body->OnComponentHit.AddUniqueDynamic(this, &AM80Car::OnBodyHit);
+	// On every body of its physics asset (the component's own flag does not reach them): crashes are felt.
+	Body->SetNotifyRigidBodyCollision(true);
 	if (bCart)
 	{
 		return;   // no lights, no engine
@@ -231,6 +235,11 @@ void AM80Car::OnBodyHit(UPrimitiveComponent* HitComp, AActor* Other, UPrimitiveC
 	// Change of speed in the crash (cm/s): nothing under ~18 km/h, a 60 km/h crash into a wall ~70.
 	const float Mass = FMath::Max(100.f, GetMesh()->GetMass());
 	const float DeltaV = NormalImpulse.Size() / Mass;
+	if (IsTwoWheeler() && DeltaV > 200.f)
+	{
+		UE_LOG(LogTemp, Log, TEXT("%s: hit %s, change of speed %.0f cm/s (sideways %.0f), %.0f km/h"), *GetName(), Other ? *Other->GetName() : TEXT("?"),
+			DeltaV, FVector(NormalImpulse.X, NormalImpulse.Y, 0.f).Size() / Mass, GetSpeedKmh());
+	}
 	if (DeltaV < 500.f)
 	{
 		return;
@@ -239,6 +248,14 @@ void AM80Car::OnBodyHit(UPrimitiveComponent* HitComp, AActor* Other, UPrimitiveC
 	if (!bCart)
 	{
 		Health = FMath::Max(0.f, Health - (DeltaV - 500.f) * 0.06f);
+	}
+	// Thrown off by what it runs into (a wall, a car), not by the road (a hard landing, the tail touching in a wheelie).
+	const float SideDeltaV = FVector(NormalImpulse.X, NormalImpulse.Y, 0.f).Size() / Mass;
+	if (IsTwoWheeler() && SideDeltaV > ThrowDeltaV && GetController())
+	{
+		// Into something hard: the rider goes on over the handlebar with the speed the moped had.
+		ThrowRider(LastVelocity * 0.8f + FVector(0.f, 0.f, 250.f), 8.f + (DeltaV - ThrowDeltaV) * 0.035f,
+			*FString::Printf(TEXT("urto %.0f cm/s contro %s"), SideDeltaV, Other ? *Other->GetName() : TEXT("?")));
 	}
 	UGameplayStatics::PlaySoundAtLocation(this, LoadPath<USoundBase>(CrashSound), Hit.ImpactPoint, FMath::Clamp(DeltaV / 1500.f, 0.3f, 1.5f), 0.6f);
 }
@@ -465,6 +482,17 @@ void AM80Car::ApplySpec(const FCarSpec& S)
 	M->BrakeInputRate.FallRate = S.BrakeFall;
 	M->HandbrakeInputRate.RiseRate = 12.f;
 	M->HandbrakeInputRate.FallRate = 12.f;
+	if (MaxLeanDeg > 0.f)
+	{
+		// Two wheels: no reverse gear (S held at a standstill walks it back, UpdateFootBack), and no braking by itself
+		// when stopped without throttle (it would hold against the feet).
+		M->bReverseAsBrake = false;
+		M->SleepThreshold = 0.f;   // nor put to sleep while the feet push it
+		if (FFloatProperty* Stop = FindFProperty<FFloatProperty>(UChaosVehicleMovementComponent::StaticClass(), TEXT("StopThreshold")))
+		{
+			Stop->SetPropertyValue_InContainer(M, 0.f);
+		}
+	}
 }
 
 void AM80Car::SetupImported(const TCHAR* MeshPath, TSubclassOf<UChaosVehicleWheel> Front, TSubclassOf<UChaosVehicleWheel> Rear, bool bTwoWheels)
@@ -586,8 +614,9 @@ void AM80Car::UpdateCart(float DeltaSeconds)
 
 void AM80Car::KeepUpright(float DeltaSeconds)
 {
-	// Two wheels: Chaos would let it fall over. A spring-damper on the roll holds it up and leans it
-	// into the bend (more lean with more speed and more steering), like a rider would.
+	// Two wheels: Chaos would let it fall over. A spring-damper on the roll holds it up and leans it into the bend as a
+	// real one leans: the angle that balances the turn, tan(lean) = speed x turning rate / g. Slow it stays almost upright
+	// however much the handlebar is turned; fast, a gentle bend already leans it well over.
 	USkeletalMeshComponent* Body = GetMesh();
 	UChaosWheeledVehicleMovementComponent* M = Movement(this);
 	if (MaxLeanDeg <= 0.f || !Body->IsSimulatingPhysics() || !M)
@@ -595,12 +624,237 @@ void AM80Car::KeepUpright(float DeltaSeconds)
 		return;
 	}
 	const FVector Fwd = GetActorForwardVector();
-	const float Speed = FMath::Abs(GetSpeedKmh());
-	const float Lean = -M->GetSteeringInput() * MaxLeanDeg * FMath::Clamp(Speed / 40.f, 0.f, 1.f);
+	if (bFallen)
+	{
+		return;   // nobody holds it up: UpdateLayDown
+	}
+	// Knocked over on its side (a crash from the side, a kerb taken badly): the rider comes off, it lies down.
+	TipTime = FMath::Abs(GetActorRightVector().Z) > 0.82f ? TipTime + DeltaSeconds : 0.f;
+	if (TipTime > 0.35f)
+	{
+		bFallen = true;
+		if (GetController())
+		{
+			ThrowRider(GetVelocity() * 0.7f + FVector(0.f, 0.f, 150.f), 6.f, TEXT("sul fianco"));
+		}
+		return;
+	}
+	const float Speed = M->GetForwardSpeed() / 100.f;   // m/s
+	const float YawRate = Body->GetPhysicsAngularVelocityInRadians().Z;   // + turning right
+	const float Balance = -FMath::RadiansToDegrees(FMath::Atan(Speed * YawRate / 9.81f));
+	LeanNow = FMath::FInterpTo(LeanNow, FMath::Clamp(Balance, -MaxLeanDeg, MaxLeanDeg), DeltaSeconds, 6.f);
+	const float Lean = LeanNow;
 	const float Roll = FMath::RadiansToDegrees(FMath::Asin(FMath::Clamp(GetActorRightVector().Z, -1.f, 1.f)));
 	const float RollRate = FMath::RadiansToDegrees(Body->GetPhysicsAngularVelocityInRadians() | Fwd);
 	const float Accel = (Lean - Roll) * 40.f - RollRate * 7.f;   // deg/s^2
 	Body->AddTorqueInDegrees(Fwd * Accel, NAME_None, true);
+}
+
+void AM80Car::Wheelie()
+{
+	if (IsTwoWheeler() && WheelieClock < 0.f && !bFallen)
+	{
+		WheelieClock = 0.f;
+		bPulled = false;
+	}
+}
+
+void AM80Car::UpdateWheelie(float DeltaSeconds)
+{
+	USkeletalMeshComponent* Body = GetMesh();
+	UChaosWheeledVehicleMovementComponent* M = Movement(this);
+	if (!IsTwoWheeler() || !M || M->Wheels.Num() < 2 || !Body->IsSimulatingPhysics() || bFallen)
+	{
+		RiderLean = WheelieDeg = 0.f;
+		WheelieClock = -1.f;
+		return;
+	}
+	const FVector Fwd = GetActorForwardVector();
+	const FVector Up = GetActorUpVector();
+	const float Pitch = FMath::RadiansToDegrees(FMath::Asin(FMath::Clamp(Fwd.Z, -1.f, 1.f)));
+	const bool bFront = M->GetWheelState(0).bInContact;   // Wheel_F, then Wheel_R (SetupImported)
+	const bool bRear = M->GetWheelState(1).bInContact;
+	// The slope it rides on, measured with both wheels down: the wheelie is the nose's rise over it.
+	if (bFront && bRear)
+	{
+		GroundPitch = FMath::FInterpTo(GroundPitch, Pitch, DeltaSeconds, 5.f);
+	}
+	WheelieDeg = bFront ? 0.f : FMath::Max(0.f, Pitch - GroundPitch);
+	const FVector Axis = FVector::CrossProduct(Fwd, Up).GetSafeNormal();   // turning about it lifts the nose
+	const float Throttle = M->GetThrottleInput();
+	float LeanTarget = 0.f;
+	if (WheelieClock >= 0.f)
+	{
+		WheelieClock += DeltaSeconds;
+		if (WheelieClock < 0.22f)
+		{
+			LeanTarget = 14.f;   // over the handlebar, loading the fork
+		}
+		else
+		{
+			if (!bPulled)
+			{
+				// The pull: the body thrown back, the front lifts (more with the throttle open and some speed).
+				bPulled = true;
+				const float Kmh = FMath::Abs(GetSpeedKmh());
+				if (bRear)
+				{
+					PitchAboutRear(WheelieKick * (0.35f + 0.65f * Throttle) * FMath::Clamp(0.4f + Kmh / 15.f, 0.4f, 1.f), true);
+				}
+			}
+			LeanTarget = -16.f;
+			if (WheelieClock > 0.7f && WheelieDeg < 1.5f)
+			{
+				WheelieClock = -1.f;   // back on both wheels
+			}
+		}
+	}
+	if (WheelieDeg > 1.5f)
+	{
+		LeanTarget = FMath::Min(LeanTarget, -6.f - WheelieDeg * 0.3f);   // leaning back against it
+		// The rear wheel's drive pushes the front up, the rear brake drops it; gravity does the rest (Chaos). A little
+		// damping so that a steady hand on the throttle can hold it.
+		const float PitchRate = FMath::RadiansToDegrees(Body->GetPhysicsAngularVelocityInRadians() | Axis);
+		// Held wide open, the engine revs up and pulls harder and harder: about a second of that and it goes over; a hand
+		// that eases off keeps it.
+		WheelieRev = Throttle > 0.9f ? WheelieRev + DeltaSeconds * 1.2f : FMath::Max(0.f, WheelieRev - DeltaSeconds * 2.f);
+		const float Lift = bRear ? Throttle * WheelieThrottle * (1.f + WheelieRev) : 0.f;
+		PitchAboutRear(Lift - M->GetBrakeInput() * 600.f - PitchRate * 1.2f, false);
+		if (WheelieDeg > WheelieLoopDeg)
+		{
+			// Over backwards: the rider slides off the back, the moped goes over.
+			bFallen = true;
+			if (GetController())
+			{
+				ThrowRider(GetVelocity() * 0.6f - Fwd * 200.f + FVector(0.f, 0.f, 200.f), 12.f,
+					*FString::Printf(TEXT("impennata oltre %.0f gradi"), WheelieDeg));
+			}
+		}
+	}
+	if (WheelieDeg <= 1.5f)
+	{
+		WheelieRev = 0.f;
+	}
+	RiderLean = FMath::FInterpTo(RiderLean, LeanTarget, DeltaSeconds, WheelieClock >= 0.f && WheelieClock < 0.4f ? 14.f : 5.f);
+}
+
+void AM80Car::PitchAboutRear(float DegreesPerSecond, bool bImpulse)
+{
+	USkeletalMeshComponent* Body = GetMesh();
+	const FVector Up = GetActorUpVector();
+	const FVector Axis = FVector::CrossProduct(GetActorForwardVector(), Up).GetSafeNormal();
+	const FVector Contact = Body->GetSocketLocation(TEXT("Wheel_R")) - Up * 25.f;
+	// The centre of mass goes round the contact with the body: its velocity (or acceleration) is the turn x the arm.
+	const FVector Turn = Axis * FMath::DegreesToRadians(DegreesPerSecond);
+	const FVector Along = FVector::CrossProduct(Turn, Body->GetCenterOfMass() - Contact);
+	// Only its upward part: going on, the drive of the rear wheel (Chaos) keeps the speed; the backward part of turning
+	// about the contact would brake it to a stop while the wheelie is held.
+	const FVector Lift(0.f, 0.f, Along.Z);
+	if (bImpulse)
+	{
+		Body->AddAngularImpulseInRadians(Turn, NAME_None, true);
+		Body->AddImpulse(Lift, NAME_None, true);
+	}
+	else
+	{
+		Body->AddTorqueInRadians(Turn, NAME_None, true);
+		Body->AddForce(Lift, NAME_None, true);
+	}
+}
+
+void AM80Car::UpdateFootBack(float DeltaSeconds)
+{
+	UChaosWheeledVehicleMovementComponent* M = Movement(this);
+	USkeletalMeshComponent* Body = GetMesh();
+	if (!IsTwoWheeler() || !M || !GetController() || bFallen || !Body->IsSimulatingPhysics())
+	{
+		bBacking = false;
+		return;
+	}
+	// S held at a standstill (or already going back): the rider walks it back with both feet, a step at a time, at most
+	// about 3 km/h; going forward S is the brake as usual.
+	const float Kmh = GetSpeedKmh();
+	const bool bWas = bBacking;
+	bBacking = CartBrake > 0.1f && Kmh < (bBacking ? 1.f : 0.5f) && M->GetThrottleInput() < 0.05f;
+	if (bBacking != bWas)
+	{
+		M->SetTargetGear(bBacking ? 0 : 1, true);   // in neutral while pushed: the engine does not hold it
+	}
+	if (!bBacking)
+	{
+		return;
+	}
+	M->SetBrakeInput(0.f);
+	M->SetHandbrakeInput(false);
+	M->SetSleeping(false);
+	const float Step = 0.55f + 0.45f * FMath::Sin(GetWorld()->GetTimeSeconds() * 2.f * PI * 1.2f);
+	const float Push = CartBrake * 400.f * Step * FMath::Clamp((3.f + Kmh) / 1.5f, 0.f, 1.f);
+	Body->AddForce(-GetActorForwardVector() * Push, NAME_None, true);
+}
+
+void AM80Car::UpdateRiderless(float DeltaSeconds)
+{
+	// A two-wheeler left by its rider while moving (thrown off in a crash or a wheelie, jumped off): nobody holds it any
+	// more, no keeping it upright (KeepUpright), a free body. The wheels still roll it on and gravity takes it over onto its
+	// side, the more it leans the harder (as gravity on a body standing on a line: with the sine of the lean); balanced
+	// exactly upright nothing in the simulation would ever tip it, so it starts to the side it leant to. Down on its side
+	// it lies there until it is picked up. Got off standing still, it stays up (bFallen is not set).
+	USkeletalMeshComponent* Body = GetMesh();
+	if (!IsTwoWheeler() || !bFallen || bPickingUp || GetController() || !Body->IsSimulatingPhysics())
+	{
+		return;
+	}
+	SinceThrown += DeltaSeconds;
+	const float Rolled = FMath::RadiansToDegrees(FMath::Asin(FMath::Clamp(GetActorRightVector().Z, -1.f, 1.f)));
+	if (FMath::Abs(Rolled) > 60.f)
+	{
+		return;   // down
+	}
+	Body->WakeAllRigidBodies();   // a body at rest sleeps and would not feel the pull
+	// Stronger than gravity alone: the Chaos wheels (springs and tyres on traces) still hold a leaning moped up a little.
+	const float Pull = 900.f + 3000.f * FMath::Sin(FMath::DegreesToRadians(FMath::Abs(Rolled)));
+	Body->AddTorqueInDegrees(GetActorForwardVector() * -ToppleSide * Pull, NAME_None, true);
+}
+
+void AM80Car::GripLoose(bool bLoose)
+{
+	// The Chaos tyre is a trace from the moped down to the road: leaning over, the trace's foot slides sideways with the
+	// moped, the tyre takes that for a skid and its grip stands the moped up again (an upturned pendulum held at its
+	// foot). With nobody on it most of that grip goes: the wheels still carry it and roll on, gravity lays it down.
+	UChaosWheeledVehicleMovementComponent* M = Movement(this);
+	if (!M)
+	{
+		return;
+	}
+	if (WheelGrip.Num() != M->Wheels.Num())
+	{
+		WheelGrip.SetNum(M->Wheels.Num());
+		for (int32 i = 0; i < M->Wheels.Num(); ++i)
+		{
+			WheelGrip[i] = M->Wheels[i] ? M->Wheels[i]->FrictionForceMultiplier : 2.f;
+		}
+	}
+	for (int32 i = 0; i < M->Wheels.Num(); ++i)
+	{
+		M->SetWheelFrictionMultiplier(i, bLoose ? 0.1f : WheelGrip[i]);
+	}
+}
+
+void AM80Car::ThrowRider(const FVector& Velocity, float Damage, const TCHAR* Why)
+{
+	bFallen = true;
+	GripLoose(true);
+	ThrowReason = Why;
+	SinceThrown = 0.f;
+	UE_LOG(LogTemp, Log, TEXT("%s: rider thrown (%s), %.0f km/h"), *GetName(), Why, GetSpeedKmh());
+	// Down on the side it leans to (either, if upright).
+	const float Rz = GetActorRightVector().Z;
+	ToppleSide = FMath::Abs(Rz) > 0.03f ? (Rz < 0.f ? 1.f : -1.f) : (FMath::RandBool() ? 1.f : -1.f);
+	// A nudge to the side it goes: from upright gravity alone would take its time.
+	GetMesh()->AddAngularImpulseInDegrees(GetActorForwardVector() * -ToppleSide * 25.f, NAME_None, true);
+	WheelieClock = -1.f;
+	RiderLean = 0.f;
+	OnRiderThrown.Broadcast(this, Velocity, Damage);
 }
 
 float AM80Car::GetSpeedKmh() const
@@ -621,8 +875,63 @@ float AM80Car::GetEngineRPM() const
 	return M ? M->GetEngineRotationSpeed() : 0.f;
 }
 
+FTransform AM80Car::GetUprightTransform() const
+{
+	FVector F = GetActorForwardVector();
+	F.Z = 0.f;
+	return FTransform(F.IsNearlyZero() ? FRotator(0.f, GetActorRotation().Yaw, 0.f) : F.Rotation(), GetActorLocation());
+}
+
+void AM80Car::BeginPickUp()
+{
+	UE_LOG(LogTemp, Log, TEXT("%s: being picked up"), *GetName());
+	bPickingUp = true;
+	PickFrom = GetActorQuat();
+	PickTo = GetUprightTransform().GetRotation();
+	GetMesh()->SetSimulatePhysics(false);
+}
+
+void AM80Car::SetPickUp(float Alpha)
+{
+	if (bPickingUp)
+	{
+		SetActorRotation(FQuat::Slerp(PickFrom, PickTo, FMath::Clamp(Alpha, 0.f, 1.f)), ETeleportType::TeleportPhysics);
+	}
+}
+
+void AM80Car::EndPickUp()
+{
+	if (!bPickingUp)
+	{
+		return;
+	}
+	bPickingUp = false;
+	SetActorRotation(PickTo, ETeleportType::TeleportPhysics);
+	USkeletalMeshComponent* Body = GetMesh();
+	Body->SetSimulatePhysics(true);
+	Body->SetPhysicsLinearVelocity(FVector::ZeroVector);
+	Body->SetPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
+	if (UChaosWheeledVehicleMovementComponent* M = Movement(this))
+	{
+		M->ResetVehicle();
+	}
+	bFallen = false;
+	TipTime = 0.f;
+	LeanNow = 0.f;
+	GripLoose(false);
+	UE_LOG(LogTemp, Log, TEXT("%s: picked up"), *GetName());
+}
+
 void AM80Car::PutBackOnWheels()
 {
+	UE_LOG(LogTemp, Log, TEXT("%s: put back on its wheels"), *GetName());
+	if (bFallen && IsTwoWheeler())
+	{
+		GripLoose(false);
+	}
+	bFallen = false;
+	TipTime = 0.f;
+	LeanNow = 0.f;
 	const FRotator Upright(0.f, GetActorRotation().Yaw, 0.f);
 	SetActorLocationAndRotation(GetActorLocation() + FVector(0, 0, 80), Upright, false, nullptr, ETeleportType::TeleportPhysics);
 	GetMesh()->SetPhysicsLinearVelocity(FVector::ZeroVector);
@@ -658,7 +967,7 @@ void AM80Car::Tick(float DeltaSeconds)
 	// Cars are always loaded (see the constructor): parked away from the player, the ground under one can be
 	// streamed out or not in yet, and it would fall through the world.
 	GroundCheck -= DeltaSeconds;
-	if (GroundCheck <= 0.f || (bHeldNoGround && GetController()))
+	if (!bPickingUp && (GroundCheck <= 0.f || (bHeldNoGround && GetController())))
 	{
 		GroundCheck = 0.5f;
 		HoldWithoutGround();
@@ -667,6 +976,10 @@ void AM80Car::Tick(float DeltaSeconds)
 	UpdateCart(DeltaSeconds);
 	StabilityAssist(DeltaSeconds);
 	KeepUpright(DeltaSeconds);
+	UpdateWheelie(DeltaSeconds);
+	UpdateFootBack(DeltaSeconds);
+	UpdateRiderless(DeltaSeconds);
+	LastVelocity = GetVelocity();
 	UpdateDamage(DeltaSeconds);
 	UpdateLightsAndSound(DeltaSeconds);
 
@@ -681,8 +994,8 @@ void AM80Car::Tick(float DeltaSeconds)
 	const float Speed = FMath::Abs(GetSpeedKmh());
 	Camera->SetFieldOfView(FMath::FInterpTo(Camera->FieldOfView, 78.f + FMath::Min(Speed, 100.f) * 0.1f, DeltaSeconds, 2.f));
 
-	// Stuck on its side or roof: put it back after a few seconds.
-	if (GetActorUpVector().Z < 0.25f && Speed < 5.f)
+	// Stuck on its side or roof: put it back after a few seconds (not a moped: it lies there until picked up).
+	if (!IsTwoWheeler() && GetActorUpVector().Z < 0.25f && Speed < 5.f)
 	{
 		UpsideDownTime += DeltaSeconds;
 		if (UpsideDownTime > 3.f)
@@ -720,7 +1033,9 @@ void AM80Car::StabilityAssist(float DeltaSeconds)
 {
 	UChaosWheeledVehicleMovementComponent* M = Movement(this);
 	USkeletalMeshComponent* Body = GetMesh();
-	if (!bStabilityAssist || bHandbrakeHeld || !M || !Body->IsSimulatingPhysics() || GetActorUpVector().Z < 0.8f)
+	// Not on a two-wheeler its rider has left: catching its sideways slide would catch it falling over too (it rocked and
+	// stood up again).
+	if (!bStabilityAssist || bHandbrakeHeld || !M || !Body->IsSimulatingPhysics() || GetActorUpVector().Z < 0.8f || (IsTwoWheeler() && bFallen))
 	{
 		return;
 	}
@@ -796,6 +1111,7 @@ void AM80Car::BuildInput()
 	HornAction = MakeAction(EInputActionValueType::Boolean);
 	LightsAction = MakeAction(EInputActionValueType::Boolean);
 	LookBackAction = MakeAction(EInputActionValueType::Boolean);
+	WheelieAction = MakeAction(EInputActionValueType::Boolean);
 
 	Mapping = NewObject<UInputMappingContext>(this);
 	auto Negated = [this](FEnhancedActionKeyMapping& Map) { Map.Modifiers.Add(NewObject<UInputModifierNegate>(this)); };
@@ -825,6 +1141,8 @@ void AM80Car::BuildInput()
 	Mapping->MapKey(LightsAction, EKeys::Gamepad_DPad_Up);
 	Mapping->MapKey(LookBackAction, EKeys::B);
 	Mapping->MapKey(LookBackAction, EKeys::Gamepad_RightShoulder);
+	Mapping->MapKey(WheelieAction, EKeys::LeftShift);
+	Mapping->MapKey(WheelieAction, EKeys::Gamepad_FaceButton_Left);
 }
 
 void AM80Car::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -851,6 +1169,7 @@ void AM80Car::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Input->BindAction(LightsAction, ETriggerEvent::Started, this, &AM80Car::ToggleLights);
 	Input->BindAction(LookBackAction, ETriggerEvent::Started, this, &AM80Car::OnLookBack);
 	Input->BindAction(LookBackAction, ETriggerEvent::Completed, this, &AM80Car::OnLookBack);
+	Input->BindAction(WheelieAction, ETriggerEvent::Started, this, &AM80Car::Wheelie);
 }
 
 void AM80Car::NotifyControllerChanged()
@@ -868,6 +1187,12 @@ void AM80Car::NotifyControllerChanged()
 	}
 	if (APlayerController* PC = Cast<APlayerController>(GetController()))
 	{
+		if (bFallen && IsTwoWheeler())
+		{
+			GripLoose(false);
+		}
+		bFallen = false;   // a rider on it again holds it up
+		TipTime = 0.f;
 		if (UEnhancedInputLocalPlayerSubsystem* Sub = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
 		{
 			Sub->AddMappingContext(Mapping, 0);
@@ -887,6 +1212,14 @@ void AM80Car::NotifyControllerChanged()
 		M->SetSteeringInput(0.f);
 		CartPush = CartBrake = 0.f;
 		bCoasting = FMath::Abs(GetSpeedKmh()) > 8.f;
+		if (IsTwoWheeler() && !bFallen && FMath::Abs(GetSpeedKmh()) > 5.f)
+		{
+			// Jumped off it moving: nobody holds it up any more (UpdateRiderless).
+			bFallen = true;
+			GripLoose(true);
+			SinceThrown = 0.f;
+			ToppleSide = GetActorRightVector().Z < 0.f ? 1.f : -1.f;
+		}
 		M->SetHandbrakeInput(!bCoasting);
 		SteerTarget = 0.f;
 	}
@@ -920,6 +1253,10 @@ void AM80Car::OnBrake(const FInputActionValue& Value)
 	{
 		CartBrake = FMath::Clamp(Value.Get<float>(), 0.f, 1.f);
 		return;
+	}
+	if (IsTwoWheeler())
+	{
+		CartBrake = FMath::Clamp(Value.Get<float>(), 0.f, 1.f);   // also walking it back once stopped (UpdateFootBack)
 	}
 	if (UChaosWheeledVehicleMovementComponent* M = Movement(this))
 	{
@@ -1197,43 +1534,50 @@ AM80CarApe::AM80CarApe()
 }
 
 // ---------------------------------------------------------------------------------------------
-// Vehicles imported from Blender (D:/Blender/AssetsMazzarethTheGame, Research/Mazzarino80/Blender/m80_prepare_vehicle.py)
+// Two-wheelers (D:/Mazzarino80_Sorgenti/Auto/Piaggio_Si, Research/Mazzarino80/Blender/m80_motorino_gioco.py)
 
-AM80CarVespa::AM80CarVespa()
+AM80CarPiaggioSi::AM80CarPiaggioSi()
 {
-	DisplayName = NSLOCTEXT("M80", "Vespa", "Vespa Piaggio");
-	SetupImported(TEXT("/Game/Mazzarino80/Vehicles/Vespa/SK_M80_Vespa.SK_M80_Vespa"), UM80WheelVespaFront::StaticClass(), UM80WheelVespaRear::StaticClass(), true);
-	ChaseDistance = 380.f;
-	CloseDistance = 240.f;
-	SeatOffset = FVector(-25.f, 0.f, 120.f); // on the saddle
-	DoorOffset = FVector(-10.f, -110.f, 95.f);
-	MaxHealth = 250.f;
-	EngineOffset = FVector(-50.f, 15.f, 35.f); // under the right side cowl
-	HeadlightOffset = FVector(55.f, 0.f, 105.f);
-	TaillightOffset = FVector(-85.f, 0.f, 70.f);
+	DisplayName = NSLOCTEXT("M80", "PiaggioSi", "Piaggio Si");
+	SetupImported(TEXT("/Game/Mazzarino80/Vehicles/PiaggioSi/SK_M80_PiaggioSi.SK_M80_PiaggioSi"), UM80WheelSiFront::StaticClass(), UM80WheelSiRear::StaticClass(), true);
+	// The rider: astride (Sella bone), the hands on the grips and the feet on the pedals (Mano_*, Piede_*), got on from the left.
+	RidePose = TSoftObjectPtr<UAnimSequenceBase>(FSoftObjectPath(TEXT("/Game/Mazzarino80/Player/Anim/A_M80_Motorino_Guida.A_M80_Motorino_Guida")));
+	MountClip = TSoftObjectPtr<UAnimSequenceBase>(FSoftObjectPath(TEXT("/Game/Mazzarino80/Player/Anim/A_M80_Motorino_Sale.A_M80_Motorino_Sale")));
+	PickUpClip = TSoftObjectPtr<UAnimSequenceBase>(FSoftObjectPath(TEXT("/Game/Mazzarino80/Player/Anim/A_M80_Motorino_Raccoglie.A_M80_Motorino_Raccoglie")));
+	DismountClip = TSoftObjectPtr<UAnimSequenceBase>(FSoftObjectPath(TEXT("/Game/Mazzarino80/Player/Anim/A_M80_Motorino_Scende.A_M80_Motorino_Scende")));
+	ChaseDistance = 360.f;
+	CloseDistance = 230.f;
+	SpringArm->SetRelativeLocation(FVector(0.f, 0.f, 95.f));
+	SeatOffset = FVector(-35.f, 0.f, 75.f);    // the saddle
+	DoorOffset = FVector(-23.f, -45.f, 60.f);  // where the getting-on clip starts (PiaggioSi.json "mount_from_cm")
+	MaxHealth = 200.f;
+	EngineOffset = FVector(-20.f, 8.f, 30.f);  // under the frame, by the pedals
+	HeadlightOffset = FVector(36.f, 0.f, 86.f);
+	TaillightOffset = FVector(-84.f, 0.f, 62.f);
 	LockedChance = 0.f;
 	FCarSpec S;
-	S.MassKg = 160.f;                       // ~85 kg + rider
-	S.CenterOfMass = FVector(-10, 0, -15);
+	S.MassKg = 130.f;                          // ~55 kg + rider
+	S.CenterOfMass = FVector(-10.f, 0.f, -10.f);
 	S.DragCoefficient = 0.6f;
-	S.ChassisWidth = 70.f;
-	S.ChassisHeight = 115.f;
-	S.MaxTorqueNm = 14.f;
-	S.MaxRPM = 7000.f;
-	S.IdleRPM = 1400.f;
+	S.ChassisWidth = 60.f;
+	S.ChassisHeight = 120.f;
+	S.MaxTorqueNm = 6.f;                       // with the variator's low ratios at start: 0-40 km/h in about 8 s
+	S.MaxRPM = 6500.f;
+	S.IdleRPM = 1500.f;
 	S.PeakTorqueRPM = 5000.f;
-	S.RevUpMOI = 1.5f;
-	S.Gears = {3.0f, 1.9f, 1.35f, 1.0f};
-	S.ReverseGear = 3.0f;
-	S.FinalRatio = 7.0f;                    // ~80 km/h flat out
-	S.ChangeUpRPM = 6500.f;
-	S.ChangeDownRPM = 2800.f;
+	S.EngineBrake = 0.04f;
+	S.RevUpMOI = 1.0f;
+	S.Gears = {1.0f};                          // the variator: one ratio
+	S.ReverseGear = 3.0f;                      // no reverse on a moped: backing it with the feet, slowly
+	S.FinalRatio = 13.0f;                      // ~47 km/h flat out
+	S.ChangeUpRPM = 6400.f;
+	S.ChangeDownRPM = 2000.f;
 	S.Drive = EVehicleDifferential::RearWheelDrive;
-	S.SteerAt30Mph = 0.35f;
-	S.SteerAt60Mph = 0.2f;
-	S.WheelbaseCm = 120.f;
+	S.SteerAt30Mph = 0.4f;
+	S.SteerAt60Mph = 0.25f;
+	S.WheelbaseCm = 108.f;
 	S.GripG = 0.8f;
-	S.MaxLeanDeg = 25.f;
+	S.MaxLeanDeg = 35.f;
 	ApplySpec(S);
 }
 

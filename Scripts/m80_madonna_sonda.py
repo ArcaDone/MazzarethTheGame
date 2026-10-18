@@ -143,7 +143,7 @@ def steps():
     report["madonna_descs"] = [{"label": label(d), "class": str(prop(d, "native_class").get_name()), "center": xyz(m80_seq.desc_center(d)),
                                 "size": size(d)} for d in madonna]
     for key, test in (("player_start", lambda d: m80_seq.desc_class_is(d, "PlayerStart")),
-                      ("vehicles", lambda d: any(k in label(d).lower() for k in ("ape", "vespa", "panda", "golf", "carrett", "vehicle")))):
+                      ("vehicles", lambda d: any(k in label(d).lower() for k in ("ape", "piaggio", "panda", "golf", "carrett", "vehicle")))):
         report[key] = [{"label": label(d), "center": xyz(m80_seq.desc_center(d))} for d in descs if test(d)]
     corso = [r for r in json.loads(ROADS_JSON.read_text(encoding="utf-8")) if CORSO in r["name"] or "Salita Madonna" in r["name"]]
     corso_pts = [q for r in corso for q in r["points_cm"]]

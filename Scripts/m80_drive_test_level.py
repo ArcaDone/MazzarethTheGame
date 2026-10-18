@@ -3,7 +3,7 @@
 Game mode "Prova guida (Mazzarino)": Play possesses the first car, Tab switches car; HUD with speed,
 gear and rpm. Areas (signs on the ground): 400 m straight, ramps at 10/20/30 %, a 12 % street climb
 like the town, slalom, a 25 m circle, a narrow alley (4 m) with a right-angle bend, speed bumps and a
-patch of uneven paving. Cars: Fiat 500, Ape and Vespa (drivable).
+patch of uneven paving. Cars: Fiat 500, Ape and Piaggio Si (drivable).
 """
 import math
 import os
@@ -154,14 +154,12 @@ def run():
         for j in range(6):
             box("Basolo", (bx + 8000 + i * 110, by - 300 + j * 110, rnd.uniform(-2, 3)), (105, 105, 10), (rnd.uniform(-2, 2), rnd.uniform(-2, 2), 0),
                 mat=mat, folder="Pista/Basolato")
-    # Cars on the start line, facing +X: the Fiat 500 (the town's car), the Ape and the Vespa.
+    # Cars on the start line, facing +X: the Fiat 500 (the town's car), the Ape and the Piaggio Si.
     fiat = EAS.spawn_actor_from_class(unreal.M80CarFiat500, unreal.Vector(0, -350, 60), unreal.Rotator(0, 0, 0))
     fiat.set_actor_label("A_Fiat500")
     ape = EAS.spawn_actor_from_class(unreal.M80CarApe, unreal.Vector(0, 350, 70), unreal.Rotator(0, 0, 0))
     ape.set_actor_label("B_Ape")
-    vespa = getattr(unreal, "M80CarVespa", None)
-    if vespa:
-        EAS.spawn_actor_from_class(vespa, unreal.Vector(0, 1050, 70), unreal.Rotator(0, 0, 0)).set_actor_label("C_Vespa")
+    EAS.spawn_actor_from_class(unreal.M80CarPiaggioSi, unreal.Vector(0, 1050, 70), unreal.Rotator(0, 0, 0)).set_actor_label("C_PiaggioSi")
     ws = m80_seq.editor_world().get_world_settings()
     ws.set_editor_property("default_game_mode", unreal.M80DriveTestGameMode)
     yield 10

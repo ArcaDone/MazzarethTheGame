@@ -20,7 +20,7 @@ TAG = os.environ.get("M80_HANDLING_TAG", "")
 OUT = ROOT / "Saved/Mazzarino80/Vehicles" / ("handling%s.json" % ("_" + TAG if TAG else ""))
 # Every run starts here: open ground, far from the ramps, walls and cones of the test track.
 START = unreal.Vector(60000, 15000, 100)
-SPEEDS = {"Fiat500": [40, 60, 80], "Ape": [30, 45], "Vespa": [30, 50]}
+SPEEDS = {"Fiat500": [40, 60, 80], "Ape": [30, 45], "PiaggioSi": [25, 40]}
 
 
 def mv(c):

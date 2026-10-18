@@ -66,13 +66,15 @@ bool FM80WheelAnimProxy::Evaluate(FPoseContext& Output)
 	FCSPose<FCompactPose> CS;
 	CS.InitPose(Output.Pose);
 	TArray<FBoneTransform> Out;
-	// The steering part turns about its bolt; the steered wheels on it go round with it.
+	// The steering part turns about its bolt (about the bone's Z: upright on the carts, along the raked head of a moped's
+	// fork); the steered wheels on it go round with it.
 	FVector Pivot = FVector::ZeroVector;
-	const FQuat SteerRot(FVector::UpVector, FMath::DegreesToRadians(SteerYaw));
+	FQuat SteerRot(FVector::UpVector, FMath::DegreesToRadians(SteerYaw));
 	if (SteerIndex.IsValid())
 	{
 		FTransform T = CS.GetComponentSpaceTransform(SteerIndex);
 		Pivot = T.GetLocation();
+		SteerRot = FQuat(T.GetRotation().GetAxisZ(), FMath::DegreesToRadians(SteerYaw));
 		T.SetRotation(SteerRot * T.GetRotation());
 		Out.Add(FBoneTransform(SteerIndex, T));
 	}
@@ -88,7 +90,8 @@ bool FM80WheelAnimProxy::Evaluate(FPoseContext& Output)
 			T.SetLocation(Pivot + SteerRot.RotateVector(T.GetLocation() - Pivot));
 		}
 		T.AddToTranslation(FVector(0.f, 0.f, W.Offset));
-		T.SetRotation(FQuat(FRotator(W.Spin, W.Steer, 0.f)) * T.GetRotation());
+		T.SetRotation(SteerIndex.IsValid() && W.bSteered ? SteerRot * FQuat(FRotator(W.Spin, 0.f, 0.f)) * T.GetRotation()
+			: FQuat(FRotator(W.Spin, W.Steer, 0.f)) * T.GetRotation());
 		Out.Add(FBoneTransform(W.Index, T));
 	}
 	Out.Sort(FCompareBoneTransformIndex());

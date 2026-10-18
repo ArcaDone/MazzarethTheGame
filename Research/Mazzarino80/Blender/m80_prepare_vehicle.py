@@ -1,7 +1,7 @@
 """Blender 4.3: clean, optimise and export one asset of D:/Mazzarino80_Sorgenti (Edifici, Auto, Arredo_Urbano...) for Unreal.
 
 Run: blender -b <file.blend> --python m80_prepare_vehicle.py -- <key> <out_dir>
-key: Fiat500 | Mini | Maggiolino | Golf | M3 | Vespa | Poste | Comune | ChiesaComune | Matrice | Castello | Madonna |
+key: Fiat500 | Mini | Maggiolino | Golf | M3 | Poste | Comune | ChiesaComune | Matrice | Castello | Madonna |
      Cassonetto | Tombino (see ASSETS)
 
 What it does (the source .blend is never saved):
@@ -37,7 +37,6 @@ KEY, OUT = ARGS[0], ARGS[1]
 
 # Real sizes: length bumper to bumper (m). Budgets in triangles.
 ASSETS = {
-    "Vespa": {"kind": "bike", "length": 1.77},
     # The downloaded 1965 500 F (Research/Mazzarino80/Blender/m80_fiat500_sorgente.py makes its .blend): the town's
     # common car, so lighter than the others.
     # "budget": 0 = no decimation (the user: decimated bodies look bad), "keep_normals": the file's normals, no smoothing.

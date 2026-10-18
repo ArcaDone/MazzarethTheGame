@@ -1,10 +1,10 @@
 """Imports the assets prepared by Research/Mazzarino80/Blender/m80_prepare_vehicle.py
 (Saved/Mazzarino80/Import/out/<Key>.fbx + <Key>.json + Textures/) into Unreal.
 
-- The cars (Fiat 500, Mini, Maggiolino, Golf, M3) and the Vespa: skeletal mesh /Game/Mazzarino80/Vehicles/<Key>/SK_M80_<Key>
+- The cars (Fiat 500, Mini, Maggiolino, Golf, M3): skeletal mesh /Game/Mazzarino80/Vehicles/<Key>/SK_M80_<Key>
   (skeleton Root + Wheel_FL/FR/RL/RR), physics asset of two boxes (UM80EditorLibrary); the downloaded cars one LOD
   (the full mesh), the others 3.
-- Vespa: drivable too, skeletal mesh /Game/Mazzarino80/Vehicles/Vespa/SK_M80_Vespa (Root + Wheel_F/Wheel_R).
+- Two-wheelers: Scripts/m80_motorino_import.py (the Piaggio Si).
 - Poste: static meshes /Game/Mazzarino80/Buildings/Poste/SM_M80_Poste and SM_M80_Poste_Antenna, without Nanite
   (it turns the thin round slats of the facade into crooked wedges) and with 3 LODs instead.
 - Town buildings: /Game/Mazzarino80/Buildings/<Key>/SM_M80_<Key> (+ pieces) for Comune, ChiesaComune (stand-ins
@@ -36,7 +36,7 @@ EAL = unreal.EditorAssetLibrary
 MEL = unreal.MaterialEditingLibrary
 TOOLS = unreal.AssetToolsHelpers.get_asset_tools()
 MASTERS = "/Game/Mazzarino80/Vehicles/Materials"
-CARS = ["Fiat500", "Mini", "Maggiolino", "Golf", "M3", "Vespa"]   # drivable (the Vespa too: two wheels)
+CARS = ["Fiat500", "Mini", "Maggiolino", "Golf", "M3"]   # drivable
 DEST = {k: "/Game/Mazzarino80/Vehicles/" + k for k in CARS}
 DEST["Poste"] = "/Game/Mazzarino80/Buildings/Poste"
 BUILDINGS = ["Comune", "ChiesaComune", "Matrice", "Castello", "Madonna"]

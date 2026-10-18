@@ -35,7 +35,7 @@ def run():
         p = c.get_actor_location()
         f = c.get_actor_forward_vector()
         r = c.get_actor_right_vector()
-        size = 520 if "Vespa" not in name else 300
+        size = 520 if "Piaggio" not in name else 300
         look(cap, p + f * size * 0.8 - r * size * 0.7 + unreal.Vector(0, 0, 160), p + unreal.Vector(0, 0, 60), name + "_34")
         yield 3
         look(cap, p - f * size * 0.8 + r * size * 0.7 + unreal.Vector(0, 0, 140), p + unreal.Vector(0, 0, 60), name + "_retro")

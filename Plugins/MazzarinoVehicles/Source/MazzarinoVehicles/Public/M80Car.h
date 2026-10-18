@@ -16,6 +16,8 @@ class UAnimSequenceBase;
 class AM80Car;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FM80CarExploded, AM80Car*, Car);
+/** A two-wheeler's rider thrown off: the speed the body flies off with (cm/s) and the harm of the fall. */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FM80RiderThrown, AM80Car*, Car, FVector, Velocity, float, Damage);
 class UInputAction;
 class UInputMappingContext;
 struct FInputActionValue;
@@ -121,6 +123,79 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Auto|Guidatore")
 	TSoftObjectPtr<UAnimSequenceBase> RidePose;
 
+	/**
+	 * Two-wheelers: getting on and off (UEFN mannequin), played with the rider attached to the vehicle, the mesh origin on the
+	 * Sella bone (the clip carries the body from where it stands, DoorOffset, onto the saddle and back).
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Auto|Guidatore", meta = (DisplayName = "Clip salita (due ruote)"))
+	TSoftObjectPtr<UAnimSequenceBase> MountClip;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Auto|Guidatore", meta = (DisplayName = "Clip discesa (due ruote)"))
+	TSoftObjectPtr<UAnimSequenceBase> DismountClip;
+
+	/** Two-wheelers: picking it up from the ground, played standing where getting on starts (DoorOffset). */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Auto|Guidatore", meta = (DisplayName = "Clip raccolta (due ruote)"))
+	TSoftObjectPtr<UAnimSequenceBase> PickUpClip;
+
+	/** A two-wheeler down on its side (fallen, its rider thrown): it has to be picked up before getting on. */
+	UFUNCTION(BlueprintPure, Category = "Auto")
+	bool IsLyingDown() const { return IsTwoWheeler() && GetActorUpVector().Z < 0.8f; }
+
+	/** Where it stands as if upright: its place and heading, not its roll and pitch (a moped lying on its side). */
+	FTransform GetUprightTransform() const;
+
+	/** Picking it up: physics held, turned from where it lies to upright by Alpha (0..1), then on its wheels again. */
+	void BeginPickUp();
+	void SetPickUp(float Alpha);
+	void EndPickUp();
+
+	/** A two-wheeler (moped): got on astride with MountClip, leaned into the bends. */
+	UFUNCTION(BlueprintPure, Category = "Auto")
+	bool IsTwoWheeler() const { return !MountClip.IsNull(); }
+
+	/**
+	 * Two-wheelers: the wheelie (Shift, pad X). The rider leans over the handlebar, then pulls back hard and the front comes
+	 * up; from then on it is all physics: gravity brings it down, the throttle holds it up (too much and it goes over
+	 * backwards, the rider falls off), the brake puts it down. Pulled slow or without throttle it hardly lifts.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Auto|Impennata")
+	void Wheelie();
+
+	/** Nose-up turn the pull gives (degrees per second, at full throttle). */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Auto|Impennata")
+	float WheelieKick = 180.f;
+
+	/** Nose-up turn the throttle adds while the front is up (deg/s2 at full throttle); gravity pulls the other way. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Auto|Impennata")
+	float WheelieThrottle = 800.f;
+
+	/** Beyond this it goes over backwards. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Auto|Impennata")
+	float WheelieLoopDeg = 60.f;
+
+	/** Change of speed in a crash (cm/s) that throws the rider off a two-wheeler (~20 km/h). */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Auto|Impennata")
+	float ThrowDeltaV = 550.f;
+
+	/** The rider's torso: degrees forward (+) or back (-), for the rider's animation. */
+	UFUNCTION(BlueprintPure, Category = "Auto|Impennata")
+	float GetRiderLean() const { return RiderLean; }
+
+	/** Two-wheelers have no reverse: S held while stopped walks it back with the feet, slowly. */
+	UFUNCTION(BlueprintPure, Category = "Auto")
+	bool IsBackingUp() const { return bBacking; }
+
+	/** How far the front is up (degrees over the ground; 0 on both wheels). */
+	UFUNCTION(BlueprintPure, Category = "Auto|Impennata")
+	float GetWheelieDeg() const { return WheelieDeg; }
+
+	UPROPERTY(BlueprintAssignable, Category = "Auto")
+	FM80RiderThrown OnRiderThrown;
+
+	/** Why the last rider came off (crash, wheelie over, on its side): for tests and the log. */
+	UFUNCTION(BlueprintPure, Category = "Auto|Impennata")
+	FString GetThrowReason() const { return ThrowReason; }
+
 	/** Cart: top speed pushing it on the flat (km/h) and how hard the push is (cm/s2). */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Auto|Carretto")
 	float PushTopKmh = 13.f;
@@ -205,7 +280,7 @@ protected:
 		float BrakeRise = 5.f, BrakeFall = 8.f;
 		// Stability help
 		float StabilizeRoll = 0.f;
-		// Two-wheelers: kept upright by the game, leaning into bends up to this angle
+		// Two-wheelers: kept upright by the game, leaning into bends (as much as speed and turn ask) up to this angle
 		float MaxLeanDeg = 0.f;
 		float WheelbaseCm = 220.f;
 		float GripG = 0.85f;   // sideways grip of the tyres (g)
@@ -293,7 +368,40 @@ private:
 	void StabilityAssist(float DeltaSeconds);
 	bool bCoasting = false;
 	float MaxLeanDeg = 0.f;
+	float LeanNow = 0.f;
 	void KeepUpright(float DeltaSeconds);
+	UPROPERTY(Transient)
+	TObjectPtr<UInputAction> WheelieAction;
+	void UpdateWheelie(float DeltaSeconds);
+	void ThrowRider(const FVector& Velocity, float Damage, const TCHAR* Why);
+	FString ThrowReason;
+	float SinceThrown = 0.f;
+	float WheelieClock = -1.f;
+	bool bPulled = false;
+	float RiderLean = 0.f;
+	float WheelieDeg = 0.f;
+	float GroundPitch = 0.f;
+	/** Down on its side (or over) without its rider: not held up any more until someone picks it up. */
+	bool bFallen = false;
+	float TipTime = 0.f;
+	FVector LastVelocity = FVector::ZeroVector;
+	/** The side it goes down to without its rider (+1 right, -1 left). */
+	float ToppleSide = 1.f;
+	bool bPickingUp = false;
+	FQuat PickFrom = FQuat::Identity;
+	FQuat PickTo = FQuat::Identity;
+	/** Moving with nobody on it: a free body, falling onto its side (standing still it stays up). */
+	void UpdateRiderless(float DeltaSeconds);
+	/** The tyres' grip as set up; little of it while nobody holds the moped up (GripLoose). */
+	TArray<float> WheelGrip;
+	void GripLoose(bool bLoose);
+	/** Held wide open in a wheelie the engine revs up and pulls harder and harder (0 = as at the pull). */
+	float WheelieRev = 0.f;
+
+	void UpdateFootBack(float DeltaSeconds);
+	bool bBacking = false;
+	/** Turns the body about the rear tyre's contact (not its centre of mass, which would push the rear into its spring). */
+	void PitchAboutRear(float DegreesPerSecond, bool bImpulse);
 	TWeakObjectPtr<APlayerController> InputOwner;
 	void UpdateCart(float DeltaSeconds);
 	float CartPush = 0.f;
@@ -356,13 +464,17 @@ public:
 	AM80CarApe();
 };
 
-/** Vespa 125 (Primavera type): 125 cc two-stroke, 6 hp, about 80 kg, 10 inch wheels, top speed about 80 km/h. Kept upright by the game. */
-UCLASS(meta = (DisplayName = "Vespa Piaggio (guidabile)"))
-class MAZZARINOVEHICLES_API AM80CarVespa : public AM80Car
+/**
+ * Piaggio Si (1978-): 49 cc two-stroke moped, about 1.5 hp, automatic (variator), about 55 kg, 16 inch wheels, top speed about
+ * 45 km/h. Kept upright by the game, leaning into the bends with speed; got on astride from the left
+ * (Research/Mazzarino80/Blender/m80_motorino_gioco.py, Scripts/m80_motorino_import.py).
+ */
+UCLASS(meta = (DisplayName = "Piaggio Si (guidabile)"))
+class MAZZARINOVEHICLES_API AM80CarPiaggioSi : public AM80Car
 {
 	GENERATED_BODY()
 public:
-	AM80CarVespa();
+	AM80CarPiaggioSi();
 };
 
 /** Wheels: one class per axle and vehicle, values set in the constructors. */
@@ -463,19 +575,19 @@ public:
 };
 
 UCLASS()
-class MAZZARINOVEHICLES_API UM80WheelVespaFront : public UChaosVehicleWheel
+class MAZZARINOVEHICLES_API UM80WheelSiFront : public UChaosVehicleWheel
 {
 	GENERATED_BODY()
 public:
-	UM80WheelVespaFront();
+	UM80WheelSiFront();
 };
 
 UCLASS()
-class MAZZARINOVEHICLES_API UM80WheelVespaRear : public UChaosVehicleWheel
+class MAZZARINOVEHICLES_API UM80WheelSiRear : public UChaosVehicleWheel
 {
 	GENERATED_BODY()
 public:
-	UM80WheelVespaRear();
+	UM80WheelSiRear();
 };
 
 /** Soapbox carts (carretti): wooden boards on steel ball bearings, steered by a pivoting front axle. */

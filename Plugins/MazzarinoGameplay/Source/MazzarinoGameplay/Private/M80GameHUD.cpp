@@ -505,7 +505,7 @@ void AM80GameHUD::DrawHelp(float S)
 	}
 	else if (const AM80Car* C = PC->GetCarInReach())
 	{
-		Msg = C->bCart ? FString::Printf(TEXT("Premi  E  per salire sul %s"), *C->DisplayName.ToString())
+		Msg = C->bCart || C->IsTwoWheeler() ? FString::Printf(TEXT("Premi  E  per salire sul %s"), *C->DisplayName.ToString())
 			: FString::Printf(TEXT("Premi  E  per salire sulla %s"), *C->DisplayName.ToString());
 	}
 	if (Msg.IsEmpty())

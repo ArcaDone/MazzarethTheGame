@@ -575,6 +575,37 @@ void AM80PlayerController::OnCarExploded(AM80Car* Exploded)
 	}
 }
 
+void AM80PlayerController::OnRiderThrown(AM80Car* From, FVector Velocity, float Damage)
+{
+	ACharacter* W = Walker.Get();
+	if (!W || From != Car.Get() || State != EM80PlayerState::Driving)
+	{
+		return;
+	}
+	// Off the saddle (into something hard, over backwards in a wheelie, down on its side): the body flies on as a ragdoll
+	// and gets up again, unless the fall hurt too much.
+	const FVector At = W->GetMesh()->GetSocketLocation(TEXT("pelvis"));
+	Possess(W);
+	W->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	W->SetActorLocationAndRotation(At + FVector(0.f, 0.f, 20.f), FRotator(0.f, From->GetActorRotation().Yaw, 0.f), false, nullptr, ETeleportType::TeleportPhysics);
+	W->GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
+	SetViewTargetWithBlend(W, 0.3f, VTBlend_EaseInOut, 2.f);
+	SetIgnoreLookInput(false);
+	Car.Reset();
+	IgnoreCar = From;
+	IgnoreCarTime = 1.5f;
+	State = EM80PlayerState::OnFoot;
+	if (UM80VitalsComponent* V = GetVitals())
+	{
+		V->TakeHit(Damage, Velocity.GetSafeNormal(), From);
+		if (V->IsDead())
+		{
+			return;
+		}
+	}
+	KnockDown(Velocity);
+}
+
 void AM80PlayerController::OnWalkerDamaged(float Amount, FVector Direction, AActor* Causer)
 {
 	// A blast close by (a car blowing up): down on the ground.
@@ -882,12 +913,32 @@ void AM80PlayerController::UpdateRide()
 	const USkeletalMeshComponent* M = C ? C->GetMesh() : nullptr;
 	static const FName Hand[2] = {TEXT("Mano_L"), TEXT("Mano_R")};
 	static const FName Foot[2] = {TEXT("Piede_L"), TEXT("Piede_R")};
-	const bool bOn = W && M && C->bCart && W->IsAttachedTo(C) && (State == EM80PlayerState::GettingIn || State == EM80PlayerState::Driving)
-		&& M->DoesSocketExist(Hand[0]);
-	// Comes in with the slide onto the seat.
+	// Fists round the grips while on a moped, getting on and off, picking it up.
+	O->RideFists = FMath::FInterpTo(O->RideFists, C && W && C->IsTwoWheeler() && (W->IsAttachedTo(C) || PickingUp.Get() == C) ? 1.f : 0.f,
+		GetWorld()->GetDeltaSeconds(), 8.f);
+	if (C && M && W && PickingUp.Get() == C)
+	{
+		// Picking it up: the hands down to the grips as the body bends (0.35-0.65 s), the moped up as it stands (1.0-1.73 s;
+		// Research/Mazzarino80/Blender/m80_motorino_gioco.py, mount_keys).
+		O->RideWeight = FMath::SmoothStep(0.35f, 0.65f, ClipTime);
+		O->bRideFeet = false;
+		O->RideLean = 0.f;
+		O->bRideSteadyJoints = true;
+		for (int32 k = 0; k < 2; ++k)
+		{
+			O->RideHand[k] = M->GetSocketLocation(Hand[k]);
+		}
+		PickingUp->SetPickUp(FMath::SmoothStep(1.0f, 1.73f, ClipTime));
+		RideLocal(O, W);
+		return;
+	}
+	const bool bOn = W && M && (C->bCart || C->IsTwoWheeler()) && W->IsAttachedTo(C) && !ClipNow
+		&& (State == EM80PlayerState::GettingIn || State == EM80PlayerState::Driving) && M->DoesSocketExist(Hand[0]);
+	// Comes in with the slide onto the seat (on a moped the getting-on clip ends in the pose: at once).
 	O->RideWeight = !bOn ? 0.f : (State == EM80PlayerState::Driving ? 1.f : FMath::Clamp(PhaseTime / SlideInTime, 0.f, 1.f));
 	if (!bOn)
 	{
+		FootDown = 0.f;
 		return;
 	}
 	O->bRideFeet = M->DoesSocketExist(Foot[0]);
@@ -899,11 +950,54 @@ void AM80PlayerController::UpdateRide()
 			O->RideFoot[k] = M->GetSocketLocation(Foot[k]);
 		}
 	}
+	O->RideLean = C->GetRiderLean();
+	O->bRideSteadyJoints = C->IsTwoWheeler();
+	if (C->IsTwoWheeler() && O->bRideFeet)
+	{
+		// Stopped or nearly: the left foot off the pedal, down on the road beside it (out to the left, a little forward).
+		// Walking it back (no reverse gear): both feet down, stepping back in turn.
+		const float Dt = GetWorld()->GetDeltaSeconds();
+		const bool bBack = State == EM80PlayerState::Driving && C->IsBackingUp();
+		const bool bStill = State == EM80PlayerState::Driving && FMath::Abs(C->GetSpeedKmh()) < 4.f;
+		FootDown = FMath::FInterpTo(FootDown, bStill || bBack ? 1.f : 0.f, Dt, 6.f);
+		FootDownRight = FMath::FInterpTo(FootDownRight, bBack ? 1.f : 0.f, Dt, 6.f);
+		const float Downs[2] = {FootDown, FootDownRight};
+		const FTransform T = C->GetActorTransform();
+		for (int32 k = 0; k < 2; ++k)
+		{
+			if (Downs[k] <= 0.01f)
+			{
+				continue;
+			}
+			const float Stride = bBack ? 14.f * FMath::Sin(GetWorld()->GetTimeSeconds() * 2.f * PI * 1.2f + k * PI) : 0.f;
+			const FVector Beside = O->RideFoot[k] + T.TransformVector(FVector(12.f + Stride, k == 0 ? -22.f : 22.f, 0.f));
+			FHitResult Hit;
+			FCollisionQueryParams Params(SCENE_QUERY_STAT(M80FootDown), false, C);
+			Params.AddIgnoredActor(W);
+			const bool bGround = GetWorld()->LineTraceSingleByChannel(Hit, Beside + FVector(0, 0, 30.f), Beside - FVector(0, 0, 120.f), ECC_Visibility, Params);
+			const FVector Down = bGround ? Hit.ImpactPoint + FVector(0, 0, 9.f) : Beside - FVector(0, 0, 25.f);
+			O->RideFoot[k] = FMath::Lerp(O->RideFoot[k], Down, Downs[k]);
+		}
+	}
+	RideLocal(O, W);
+}
+
+void AM80PlayerController::RideLocal(UM80OverlayAnimInstance* O, const ACharacter* W) const
+{
+	// The targets in the animation mesh's space, now, with the vehicle's sockets just read (see bRideLocal).
+	const FTransform& ST = W->GetMesh()->GetComponentTransform();
+	for (int32 k = 0; k < 2; ++k)
+	{
+		O->RideHandLocal[k] = ST.InverseTransformPosition(O->RideHand[k]);
+		O->RideFootLocal[k] = ST.InverseTransformPosition(O->RideFoot[k]);
+	}
+	O->bRideLocal = true;
 }
 
 FVector AM80PlayerController::DoorWorld(const AM80Car* C) const
 {
-	return C->GetActorTransform().TransformPosition(C->DoorOffset);
+	// A moped is got on (or picked up) from beside where it stands upright, also when it lies on its side.
+	return (C->IsTwoWheeler() ? C->GetUprightTransform() : C->GetActorTransform()).TransformPosition(C->DoorOffset);
 }
 
 AM80Car* AM80PlayerController::FindCarInReach() const
@@ -919,7 +1013,7 @@ AM80Car* AM80PlayerController::FindCarInReach() const
 	{
 		AM80Car* C = *It;
 		const APlayerController* Driver = Cast<APlayerController>(C->GetController());
-		if (C->bWrecked || C->GetActorUpVector().Z < 0.5f || (Driver && Driver != this))
+		if (C->bWrecked || (C->GetActorUpVector().Z < 0.5f && !C->IsTwoWheeler()) || (Driver && Driver != this))
 		{
 			continue;
 		}
@@ -982,6 +1076,7 @@ void AM80PlayerController::StartGetIn(AM80Car* Target)
 	PhaseTime = 0.f;
 	BreakWait = 0.f;
 	Target->OnExploded.AddUniqueDynamic(this, &AM80PlayerController::OnCarExploded);
+	Target->OnRiderThrown.AddUniqueDynamic(this, &AM80PlayerController::OnRiderThrown);
 	SeatStartRel = FVector::ZeroVector;
 	SetIgnoreLookInput(true);
 }
@@ -1049,6 +1144,10 @@ void AM80PlayerController::StartGetOut(bool bJump)
 		}
 	}
 	const float Yaw = C->GetActorRotation().Yaw;
+	if (!bJump && C->IsTwoWheeler() && FMath::Abs(C->GetSpeedKmh()) < 3.f && FVector::Dist2D(Exit, T.TransformPosition(D)) < 1.f && GetOffAstride(C))
+	{
+		return;
+	}
 	UAnimSequence* OutClip = LoadObject<UAnimSequence>(nullptr, TEXT("/Game/Mazzarino80/Personaggi/Animazioni/A_M80_Folla_Scende.A_M80_Folla_Scende"), nullptr, LOAD_NoWarn);
 	if (!bJump && OutClip && ActsCar(C) && FMath::Abs(C->GetSpeedKmh()) < 3.f && FVector::Dist2D(Exit, T.TransformPosition(D)) < 1.f)
 	{
@@ -1200,10 +1299,11 @@ void AM80PlayerController::PlayerTick(float DeltaTime)
 		// 1) Walk to the driver door (the character's own locomotion animates it); for the acted getting in, to
 		// where the clip starts.
 		const bool bActs = ActsCar(C);
+		const bool bAstride = C->IsTwoWheeler();
 		const FVector Door = bActs ? EnterStart(C) : DoorWorld(C);
 		FVector To = Door - W->GetActorLocation();
 		To.Z = 0.f;
-		if (To.Size() > (bActs ? 25.f : 45.f) && PhaseTime < WalkToDoorMax)
+		if (To.Size() > (bActs || bAstride ? 25.f : 45.f) && PhaseTime < WalkToDoorMax)
 		{
 			W->AddMovementInput(To.GetSafeNormal(), To.Size() < 150.f ? 0.5f : 1.f);
 			return;
@@ -1218,6 +1318,14 @@ void AM80PlayerController::PlayerTick(float DeltaTime)
 		if (BreakWait > 0.f)
 		{
 			BreakWait -= DeltaTime;
+			return;
+		}
+		if (bAstride && C->IsLyingDown() && PickUpAstride(C))
+		{
+			return;
+		}
+		if (bAstride && GetOnAstride(C))
+		{
 			return;
 		}
 		if (bActs)
@@ -1303,6 +1411,144 @@ void AM80PlayerController::UpdateStreetName()
 // ---------------------------------------------------------------------------------------------
 // Acted moves: getting in and out of a car, sitting down and standing up (the townspeople's clips)
 
+bool AM80PlayerController::PickUpAstride(AM80Car* C)
+{
+	ACharacter* W = Walker.Get();
+	UAnimSequence* Clip = Cast<UAnimSequence>(C->PickUpClip.LoadSynchronous());
+	if (!W || !Clip)
+	{
+		return false;
+	}
+	// Standing where getting on starts, facing its front; its body off (not pushing the moped).
+	W->GetCharacterMovement()->StopMovementImmediately();
+	W->GetCharacterMovement()->DisableMovement();
+	W->GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	const FTransform Up = C->GetUprightTransform();
+	FVector Stand = Up.TransformPosition(FVector(C->DoorOffset.X, C->DoorOffset.Y, 0.f));
+	FHitResult Hit;
+	FCollisionQueryParams Params(SCENE_QUERY_STAT(M80PickUp), false, C);
+	Params.AddIgnoredActor(W);
+	if (GetWorld()->LineTraceSingleByChannel(Hit, Stand + FVector(0, 0, 100.f), Stand - FVector(0, 0, 150.f), ECC_Visibility, Params))
+	{
+		Stand = Hit.ImpactPoint;
+	}
+	W->SetActorLocationAndRotation(Stand + FVector(0.f, 0.f, W->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() + 2.f),
+		Up.GetRotation(), false, nullptr, ETeleportType::TeleportPhysics);
+	C->BeginPickUp();
+	PickingUp = C;
+	PlayWithRoot(Clip, 0.f, -1.f, [this]()
+	{
+		AM80Car* Moped = PickingUp.Get();
+		PickingUp.Reset();
+		if (Moped)
+		{
+			Moped->EndPickUp();
+			// On from where picking it up ended: standing beside it, the hands on the grips (frame 16 of getting on).
+			if (!GetOnAstride(Moped, 0.53f))
+			{
+				FinishGetIn();
+			}
+		}
+	});
+	return true;
+}
+
+bool AM80PlayerController::GetOnAstride(AM80Car* C, float From)
+{
+	ACharacter* W = Walker.Get();
+	UAnimSequence* Clip = Cast<UAnimSequence>(C->MountClip.LoadSynchronous());
+	if (!W || !Clip)
+	{
+		return false;
+	}
+	// On the moped from where the clip starts: attached to it, the mesh origin on its saddle, the clip carries the body
+	// over (hands on the grips, the right leg over the saddle, sitting, the feet onto the pedals); then the riding pose.
+	W->GetCharacterMovement()->StopMovementImmediately();
+	W->GetCharacterMovement()->DisableMovement();
+	W->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	// The body's own collision off too: the leg going over the saddle would push the moped it is attached to (and the
+	// moped the body, and so on: it flew off). Back with the profile on foot (BackOnFoot) or as a ragdoll.
+	W->GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	W->AttachToComponent(C->GetMesh(), FAttachmentTransformRules::KeepWorldTransform);
+	W->GetRootComponent()->SetRelativeLocationAndRotation(SeatFor(C), FRotator::ZeroRotator);
+	// Standing on the road beside it until the right foot is over (frame 40 of 30 fps), sitting by frame 63
+	// (Research/Mazzarino80/Blender/m80_motorino_gioco.py, mount_keys).
+	ClipLift = GroundBeside(C);
+	ClipLiftWindow = FVector2D(1.33f, 2.1f);
+	bClipLiftIn = false;
+	PlayWithRoot(Clip, From, -1.f, [this]()
+	{
+		ClipLift = 0.f;
+		if (ACharacter* Rider = Walker.Get())
+		{
+			Rider->GetMesh()->SetRelativeLocation(MeshRelative.GetLocation());
+		}
+		FinishGetIn();
+		PhaseTime = SlideInTime;
+	});
+	return true;
+}
+
+float AM80PlayerController::GroundBeside(const AM80Car* C) const
+{
+	// The road where the rider stands to get on, against the moped's own ground there (its wheels' plane): a kerb, a slope.
+	const FVector Plane = C->GetActorTransform().TransformPosition(FVector(C->DoorOffset.X, C->DoorOffset.Y, 0.f));
+	FHitResult Hit;
+	FCollisionQueryParams Params(SCENE_QUERY_STAT(M80GroundBeside), false, C);
+	Params.AddIgnoredActor(Walker.Get());
+	if (GetWorld()->LineTraceSingleByChannel(Hit, Plane + FVector(0, 0, 60.f), Plane - FVector(0, 0, 80.f), ECC_Visibility, Params))
+	{
+		return FMath::Clamp(float(Hit.ImpactPoint.Z - Plane.Z), -40.f, 40.f);
+	}
+	return 0.f;
+}
+
+bool AM80PlayerController::GetOffAstride(AM80Car* C)
+{
+	ACharacter* W = Walker.Get();
+	UAnimSequence* Clip = Cast<UAnimSequence>(C->DismountClip.LoadSynchronous());
+	if (!W || !Clip || !W->IsAttachedTo(C))
+	{
+		return false;
+	}
+	// Still on the moped: the feet down, standing astride, the right leg back over the saddle, standing beside it on the
+	// left; then walking from there.
+	State = EM80PlayerState::GettingOut;
+	Possess(W);
+	// Possessing turns the walking back on: it would move the capsule (still on the saddle) away while the clip plays.
+	W->GetCharacterMovement()->StopMovementImmediately();
+	W->GetCharacterMovement()->DisableMovement();
+	SetViewTargetWithBlend(W, 0.6f, VTBlend_EaseInOut, 2.f);
+	SetControlRotation(FRotator(-10.f, C->GetActorRotation().Yaw, 0));
+	SetIgnoreLookInput(false);
+	SetIgnoreMoveInput(true);
+	// The feet back on the road beside it from standing astride (frame 22) to the leg over (frame 44).
+	ClipLift = GroundBeside(C);
+	ClipLiftWindow = FVector2D(0.73f, 1.47f);
+	bClipLiftIn = true;
+	PlayWithRoot(Clip, 0.f, -1.f, [this]()
+	{
+		ACharacter* Rider = Walker.Get();
+		const AM80Car* Moped = Car.Get();
+		if (Rider && Moped)
+		{
+			const float Half = Rider->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+			const FVector Stand = Moped->GetActorTransform().TransformPosition(FVector(Moped->DoorOffset.X, Moped->DoorOffset.Y, 0.f))
+				+ FVector(0.f, 0.f, ClipLift + Half + 2.f);
+			ClipLift = 0.f;
+			Rider->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+			Rider->SetActorLocationAndRotation(Stand, FRotator(0.f, Moped->GetActorRotation().Yaw, 0.f), false, nullptr, ETeleportType::TeleportPhysics);
+		}
+		else if (Rider)
+		{
+			Rider->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		}
+		Car.Reset();
+		BackOnFoot();
+	});
+	return true;
+}
+
 bool AM80PlayerController::ActsCar(const AM80Car* C) const
 {
 	return C && !C->bCart && C->RidePose.IsNull() && C->GetMesh() && C->GetMesh()->DoesSocketExist(TEXT("Wheel_FL"));
@@ -1376,6 +1622,11 @@ void AM80PlayerController::TickClip(float DeltaTime)
 	{
 		S->SetPosition(ClipTime, false);
 	}
+	if (!FMath::IsNearlyZero(ClipLift))
+	{
+		const float A = FMath::SmoothStep(float(ClipLiftWindow.X), float(ClipLiftWindow.Y), ClipTime);
+		W->GetMesh()->SetRelativeLocation(MeshRelative.GetLocation() + FVector(0.f, 0.f, ClipLift * (bClipLiftIn ? A : 1.f - A)));
+	}
 	if (ClipDrop > 0.f)
 	{
 		const float Up = FMath::Clamp((ClipTime - 0.6f) / 1.8f, 0.f, 1.f);
@@ -1402,6 +1653,7 @@ void AM80PlayerController::BackOnFoot()
 	}
 	W->GetMesh()->SetRelativeTransform(MeshRelative);
 	W->GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
+	W->GetMesh()->SetCollisionProfileName(MeshProfile);
 	W->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	W->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 	if (UM80OverlayAnimInstance* O = Overlay.Get())

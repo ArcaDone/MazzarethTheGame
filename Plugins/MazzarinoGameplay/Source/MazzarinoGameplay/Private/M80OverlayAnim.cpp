@@ -1,4 +1,6 @@
 #include "M80OverlayAnim.h"
+#include "M80BodyAnim.h"
+#include "Retargeter/IKRetargeter.h"
 #include "Animation/AnimSequence.h"
 #include "Animation/AnimationPoseData.h"
 #include "Animation/AttributesRuntime.h"
@@ -63,10 +65,22 @@ UM80OverlayAnimInstance* UM80OverlayAnimInstance::Install(ACharacter* Character)
 	Body->AddTickPrerequisiteComponent(Copy);
 	// The body retargets from its attached parent: put it under the copy.
 	Body->AttachToComponent(Copy, FAttachmentTransformRules::KeepRelativeTransform);
-	// The retarget node keeps the source it found first: a new anim instance looks for the parent again.
+	// The retarget node keeps the source it found first: a new anim instance looks for the parent again. Our own: the same
+	// retarget (the blueprint's retargeter), then the riding IK on the body's own bones (UM80BodyAnimInstance).
+	UIKRetargeter* Retargeter = UM80BodyAnimInstance::FindRetargeter(Body);
 	const TSubclassOf<UAnimInstance> BodyAnim = Body->GetAnimClass();
 	Body->SetAnimInstanceClass(nullptr);
-	Body->SetAnimInstanceClass(BodyAnim);
+	if (Retargeter)
+	{
+		UM80BodyAnimInstance::NextRetargeter = Retargeter;
+		Body->SetAnimInstanceClass(UM80BodyAnimInstance::StaticClass());
+		UM80BodyAnimInstance::NextRetargeter = nullptr;
+		UE_LOG(LogTemp, Log, TEXT("M80 body: retarget with %s"), *Retargeter->GetName());
+	}
+	else
+	{
+		Body->SetAnimInstanceClass(BodyAnim);
+	}
 	return Cast<UM80OverlayAnimInstance>(Copy->GetAnimInstance());
 }
 
@@ -129,11 +143,15 @@ void FM80OverlayProxy::PreUpdate(UAnimInstance* InAnimInstance, float DeltaSecon
 	bGripLedge = I->bClimbing;
 	RideWeight = I->RideWeight;
 	bRideFeet = I->bRideFeet;
+	RideLean = I->RideLean;
+	bRideSteadyJoints = I->bRideSteadyJoints;
+	RideFists = I->RideFists;
 	const FTransform& CT = Comp->GetComponentTransform();
 	for (int32 k = 0; k < 2; ++k)
 	{
-		RideHandCS[k] = CT.InverseTransformPosition(I->RideHand[k]);
-		RideFootCS[k] = CT.InverseTransformPosition(I->RideFoot[k]);
+		// This copy sits on the animation mesh with no offset: its space is the mesh's.
+		RideHandCS[k] = I->bRideLocal ? I->RideHandLocal[k] : CT.InverseTransformPosition(I->RideHand[k]);
+		RideFootCS[k] = I->bRideLocal ? I->RideFootLocal[k] : CT.InverseTransformPosition(I->RideFoot[k]);
 	}
 }
 
@@ -148,6 +166,7 @@ void FM80OverlayProxy::CacheBones()
 	const FReferenceSkeleton& Ref = BC.GetReferenceSkeleton();
 	Bones.Reset();
 	Upper.Reset();
+	Fingers.Reset();
 	const int32 Spine = Ref.FindBoneIndex(TEXT("spine_01"));
 	for (int32 i = 0; i < BC.GetCompactPoseNumBones(); ++i)
 	{
@@ -155,6 +174,14 @@ void FM80OverlayProxy::CacheBones()
 		const int32 Mesh = BC.MakeMeshPoseIndex(CI).GetInt();
 		const FName Name = Ref.GetBoneName(Mesh);
 		Bones.Add(Name, CI);
+		{
+			const FString N = Name.ToString();
+			if ((N.StartsWith(TEXT("thumb_")) || N.StartsWith(TEXT("index_")) || N.StartsWith(TEXT("middle_")) || N.StartsWith(TEXT("ring_"))
+				|| N.StartsWith(TEXT("pinky_"))) && !N.Contains(TEXT("metacarpal")))
+			{
+				Fingers.Add(CI);
+			}
+		}
 		// Under spine_01: the lower spine follows the walk half way, the rest is the weapon pose's.
 		for (int32 P = Mesh; P != INDEX_NONE && Spine != INDEX_NONE; P = Ref.GetParentIndex(P))
 		{
@@ -287,6 +314,28 @@ void FM80OverlayProxy::LayerUpper(FPoseContext& Output, UAnimSequence* Seq, doub
 	}
 }
 
+void FM80OverlayProxy::Fists(FPoseContext& Output)
+{
+	if (!Punches || Fingers.Num() == 0)
+	{
+		return;
+	}
+	// The fingers of the boxing guard (A_M80_Pugni_Combo before the first blow): a real fist, closed round the grip.
+	FCompactPose P;
+	P.SetBoneContainer(&Output.Pose.GetBoneContainer());
+	FBlendedCurve Curve;
+	Curve.InitFrom(Output.Curve);
+	UE::Anim::FStackAttributeContainer Attributes;
+	FAnimationPoseData Data(P, Curve, Attributes);
+	Punches->GetAnimationPose(Data, FAnimExtractContext(0.3, false));
+	const float W = FMath::Clamp(RideFists, 0.f, 1.f);
+	for (const FCompactPoseBoneIndex& F : Fingers)
+	{
+		FTransform& Local = Output.Pose[F];
+		Local.SetRotation(FQuat::Slerp(Local.GetRotation(), P[F].GetRotation(), W).GetNormalized());
+	}
+}
+
 bool FM80OverlayProxy::Punch(FPoseContext& Output)
 {
 	if (!Punches || Upper.Num() == 0)
@@ -357,6 +406,9 @@ void FM80OverlayProxy::CurlThumbs(FPoseContext& Output)
 void FM80OverlayProxy::RideLimbs(FPoseContext& Output)
 {
 	auto Find = [this](const TCHAR* N) { const FCompactPoseBoneIndex* I = Bones.Find(N); return I ? *I : FCompactPoseBoneIndex(INDEX_NONE); };
+	// The torso over the handlebar or pulled back (the arms follow onto the grips below).
+	Rotate(Output, TEXT("spine_02"), CSLeft, -RideLean * 0.6f * FMath::Clamp(RideWeight, 0.f, 1.f));
+	Rotate(Output, TEXT("spine_04"), CSLeft, -RideLean * 0.4f * FMath::Clamp(RideWeight, 0.f, 1.f));
 	static const TCHAR* const Chains[4][3] = {{TEXT("upperarm_l"), TEXT("lowerarm_l"), TEXT("hand_l")}, {TEXT("upperarm_r"), TEXT("lowerarm_r"), TEXT("hand_r")},
 		{TEXT("thigh_l"), TEXT("calf_l"), TEXT("foot_l")}, {TEXT("thigh_r"), TEXT("calf_r"), TEXT("foot_r")}};
 	FCSPose<FCompactPose> CS;
@@ -372,10 +424,28 @@ void FM80OverlayProxy::RideLimbs(FPoseContext& Output)
 		FTransform T[3] = {CS.GetComponentSpaceTransform(A), CS.GetComponentSpaceTransform(B), CS.GetComponentSpaceTransform(C)};
 		const FTransform T0[3] = {T[0], T[1], T[2]};
 		const FVector Target = k < 2 ? RideHandCS[k] : RideFootCS[k - 2];
-		// The elbow / knee keeps the side the pose bends it to; the hand / foot keeps its turn.
-		const FVector Joint = T[1].GetLocation() * 2.f - (T[0].GetLocation() + T[2].GetLocation()) * 0.5f;
+		// The elbow / knee keeps the side the pose bends it to; the hand / foot keeps its turn. An arm reaching almost straight
+		// leaves that side undecided from frame to frame (the elbow flipped): on a moped the elbows go out and down, the
+		// knees forward.
+		FVector Joint = T[1].GetLocation() * 2.f - (T[0].GetLocation() + T[2].GetLocation()) * 0.5f;
+		if (bRideSteadyJoints)
+		{
+			Joint = k < 2 ? T[1].GetLocation() + (k == 0 ? CSLeft : -CSLeft) * 40.f - CSUp * 25.f : T[1].GetLocation() + CSForward * 40.f;
+		}
 		const FQuat EndRot = T[2].GetRotation();
-		AnimationCore::SolveTwoBoneIK(T[0], T[1], T[2], Joint, Target, false, 1.0, 1.0);
+		FVector Reach = Target;
+		if (bRideSteadyJoints)
+		{
+			// Short of full reach (the grips are about an arm's length away: with the moped's shakes the arm went straight
+			// and bent again from frame to frame, the elbow jumping).
+			const float Length = (T[1].GetLocation() - T[0].GetLocation()).Size() + (T[2].GetLocation() - T[1].GetLocation()).Size();
+			const FVector D = Target - T[0].GetLocation();
+			if (D.Size() > Length * 0.96f)
+			{
+				Reach = T[0].GetLocation() + D.GetSafeNormal() * Length * 0.96f;
+			}
+		}
+		AnimationCore::SolveTwoBoneIK(T[0], T[1], T[2], Joint, Reach, false, 1.0, 1.0);
 		T[2].SetRotation(EndRot);
 		TArray<FBoneTransform> Out;
 		const FCompactPoseBoneIndex Index[3] = {A, B, C};
@@ -405,6 +475,10 @@ bool FM80OverlayProxy::Evaluate(FPoseContext& Output)
 	if (RideWeight > 0.01f)
 	{
 		RideLimbs(Output);
+	}
+	if (RideFists > 0.01f)
+	{
+		Fists(Output);
 	}
 	if (ArmsWeight > 0.01f && !UpperBodyPose(Output))
 	{

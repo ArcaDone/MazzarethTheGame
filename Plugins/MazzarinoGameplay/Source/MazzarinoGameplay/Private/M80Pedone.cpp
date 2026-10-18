@@ -2157,7 +2157,7 @@ bool AM80PedoneAI::TryDrive()
 	{
 		AM80Car* C = *It;
 		const float D = FVector::Dist2D(C->GetActorLocation(), P->GetActorLocation());
-		if (!C->bCart && !C->bWrecked && !C->GetController() && C->GetActorUpVector().Z > 0.9f && D < BestDist && !Taken.Contains(C)
+		if (!C->bCart && !C->IsTwoWheeler() && !C->bWrecked && !C->GetController() && C->GetActorUpVector().Z > 0.9f && D < BestDist && !Taken.Contains(C)
 			&& FMath::Abs(C->GetSpeedKmh()) < 1.f)
 		{
 			Best = C;

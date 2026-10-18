@@ -215,8 +215,17 @@ private:
 	void LimitSprint();
 	void UpdateWeapons(float DeltaTime);
 	void UpdateClimbInput();
-	/** On a cart: hands (and feet) on its grips, following the steering. */
+	/** On a cart or a moped: hands (and feet) on its grips, following the steering; on a stopped moped the left foot down. */
 	void UpdateRide();
+	void RideLocal(UM80OverlayAnimInstance* O, const ACharacter* W) const;
+	float FootDown = 0.f;
+	float FootDownRight = 0.f;
+	/** Two-wheelers: on and off astride from the left, the vehicle's own clips played with the rider attached to it. */
+	bool GetOnAstride(AM80Car* C, float From = 0.f);
+	bool GetOffAstride(AM80Car* C);
+	/** A moped lying on the road: bent down to the handlebar, it comes up with the rider standing up; then getting on. */
+	bool PickUpAstride(AM80Car* C);
+	TWeakObjectPtr<AM80Car> PickingUp;
 	/** Where the character's root goes in the vehicle (its mesh origin on the cart's Sella bone, else SeatOffset). */
 	FVector SeatFor(const AM80Car* C) const;
 	void BindKeyLambda(const FKey& Key, TFunction<void()> Fn);
@@ -233,6 +242,8 @@ private:
 	void OnWalkerLanded(const FHitResult& Hit);
 	UFUNCTION()
 	void OnCarExploded(AM80Car* Exploded);
+	UFUNCTION()
+	void OnRiderThrown(AM80Car* From, FVector Velocity, float Damage);
 	AM80Car* FindCarInReach() const;
 	void UpdateStreetName();
 	void ShowHint(const FString& Text);
@@ -291,6 +302,12 @@ private:
 	float ClipTo = 0.f;
 	float ClipTime = 0.f;
 	float ClipDrop = 0.f;
+	/** Two-wheelers' clips: how much higher (or lower) the road beside the moped is than its wheels' ground, carried by the
+	 *  feet while they stand beside it (ClipLiftWindow: seconds of the clip over which it goes; bClipLiftIn: 0 -> 1). */
+	float ClipLift = 0.f;
+	FVector2D ClipLiftWindow = FVector2D::ZeroVector;
+	bool bClipLiftIn = false;
+	float GroundBeside(const AM80Car* C) const;
 	TFunction<void()> ClipThen;
 	TWeakObjectPtr<AActor> Chair;
 };

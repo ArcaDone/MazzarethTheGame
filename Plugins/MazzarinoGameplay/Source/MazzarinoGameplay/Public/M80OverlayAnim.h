@@ -60,6 +60,9 @@ struct FM80OverlayProxy : public FAnimInstanceProxy
 	// Riding a cart: wrists and ankles onto the cart's grips (component space).
 	float RideWeight = 0.f;
 	bool bRideFeet = false;
+	float RideLean = 0.f;
+	bool bRideSteadyJoints = false;
+	float RideFists = 0.f;
 	FVector RideHandCS[2] = {FVector::ZeroVector, FVector::ZeroVector};
 	FVector RideFootCS[2] = {FVector::ZeroVector, FVector::ZeroVector};
 
@@ -79,6 +82,9 @@ private:
 
 	/** Upper body bones (spine_01 and everything under it) with their blend weights. */
 	TArray<TPair<FCompactPoseBoneIndex, float>> Upper;
+	/** The finger joints (thumb, index... pinky 01-03, both hands): closed in a fist on a moped's grips. */
+	TArray<FCompactPoseBoneIndex> Fingers;
+	void Fists(FPoseContext& Output);
 
 	TMap<FName, FCompactPoseBoneIndex> Bones;
 };
@@ -104,8 +110,20 @@ public:
 	/** Riding a cart: the wrists (and the ankles, with bRideFeet) go to these world points, by RideWeight. */
 	float RideWeight = 0.f;
 	bool bRideFeet = false;
+	/** The torso leaning forward (+) or back (-) on a moped (the wheelie's pull), degrees; the hands stay on the grips. */
+	float RideLean = 0.f;
+	/** Elbows out and down, knees forward, whatever the pose (arms almost straight to the grips flipped the elbows). */
+	bool bRideSteadyJoints = false;
+	/** Fingers closed in a fist (on a moped's grips, getting on and off too), by this weight. */
+	float RideFists = 0.f;
 	FVector RideHand[2] = {FVector::ZeroVector, FVector::ZeroVector};
 	FVector RideFoot[2] = {FVector::ZeroVector, FVector::ZeroVector};
+	/** The same points in the animation mesh's space, taken at the same moment as the vehicle's sockets: the rider rides
+	 *  attached to the vehicle, so they hold still in it. World points read a moment later lag behind a fast vehicle (a
+	 *  frame at 40 km/h is about 18 cm) and the limbs jumped from frame to frame. */
+	bool bRideLocal = false;
+	FVector RideHandLocal[2] = {FVector::ZeroVector, FVector::ZeroVector};
+	FVector RideFootLocal[2] = {FVector::ZeroVector, FVector::ZeroVector};
 
 	float BlendArms = 0.f;
 

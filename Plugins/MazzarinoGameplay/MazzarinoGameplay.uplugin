@@ -7,6 +7,6 @@
   "Category": "Gameplay",
   "CanContainContent": false,
   "EnabledByDefault": true,
-  "Plugins": [{"Name": "MazzarinoVehicles", "Enabled": true}, {"Name": "MazzarinoRoads", "Enabled": true}, {"Name": "EnhancedInput", "Enabled": true}],
+  "Plugins": [{"Name": "MazzarinoVehicles", "Enabled": true}, {"Name": "MazzarinoRoads", "Enabled": true}, {"Name": "EnhancedInput", "Enabled": true}, {"Name": "IKRig", "Enabled": true}],
   "Modules": [{"Name": "MazzarinoGameplay", "Type": "Runtime", "LoadingPhase": "Default", "PlatformAllowList": ["Win64"]}]
 }

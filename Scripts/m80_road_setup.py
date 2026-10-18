@@ -212,7 +212,9 @@ def road(label, points, **props):
 def build_roads():
     unreal.EditorLoadingAndSavingUtils.load_map(MAP)
     for a in EAS.get_all_level_actors():
-        if str(a.get_folder_path()).startswith(FOLDER):
+        folder = str(a.get_folder_path())
+        # Strade/Pietra bianca belongs to m80_strada_bianca_setup.py.
+        if folder.startswith(FOLDER) and not folder.startswith(FOLDER + "/Pietra bianca"):
             a.destroy_actor()
     ground = unreal.load_asset("/Game/Mazzarino80/Vehicles/M_M80_ProvaGuida_Suolo") or unreal.load_asset(KIT + "/MI_M80_Cemento")
     # South of the stairs: a bank sloping sideways (6 degrees), a hump and a ramp up to a 2.5 m edge.

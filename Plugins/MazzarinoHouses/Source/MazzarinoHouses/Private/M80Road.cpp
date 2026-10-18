@@ -141,7 +141,7 @@ void AM80Road::Rebuild()
 	{
 		return;
 	}
-	if (Surface == EM80RoadSurface::Slab)
+	if (Surface == EM80RoadSurface::Slab || Surface == EM80RoadSurface::WhiteLava)
 	{
 		BuildSlab();
 	}
@@ -251,6 +251,10 @@ void AM80Road::BuildSlab()
 	}
 
 	FM80MeshBuffer B;
+	// UV1 for the panelled paving: X = half width (the edge bands), Y = distance between the bands across, in metres,
+	// rounded to whole panels.
+	const double Panels = FMath::Max(1.0, FMath::RoundToDouble(Length / FMath::Max(100.0, double(PanelLengthCm))));
+	B.CurrentUnit = FVector2f(float(Half / 100.0), float(Length / Panels / 100.0));
 	const FVector3d Down(0, 0, -Thick);
 	auto Normal = [&](int32 i, int32 j)
 	{
@@ -290,8 +294,9 @@ void AM80Road::BuildSlab()
 	UE::Geometry::FDynamicMesh3 Dyn;
 	B.ToDynamicMesh(Dyn);
 	Slab->SetMesh(MoveTemp(Dyn));
-	UMaterialInterface* M = Material ? Material.Get()
-		: LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/Mazzarino80/Kit/Stairs/MI_M80_Lavica_secondaria.MI_M80_Lavica_secondaria"), nullptr, LOAD_NoWarn);
+	const TCHAR* Default = Surface == EM80RoadSurface::WhiteLava ? TEXT("/Game/Mazzarino80/Kit/Stairs/MI_M80_StradaBiancaLavica.MI_M80_StradaBiancaLavica")
+		: TEXT("/Game/Mazzarino80/Kit/Stairs/MI_M80_Lavica_secondaria.MI_M80_Lavica_secondaria");
+	UMaterialInterface* M = Material ? Material.Get() : LoadObject<UMaterialInterface>(nullptr, Default, nullptr, LOAD_NoWarn);
 	Slab->ConfigureMaterialSet({M ? M : UMaterial::GetDefaultMaterial(MD_Surface)});
 	Slab->SetComplexAsSimpleCollisionEnabled(bCollision, true);
 	Slab->SetCollisionProfileName(bCollision ? TEXT("BlockAll") : TEXT("NoCollision"));

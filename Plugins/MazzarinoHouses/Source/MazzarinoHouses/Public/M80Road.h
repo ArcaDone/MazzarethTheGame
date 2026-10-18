@@ -18,6 +18,9 @@ enum class EM80RoadSurface : uint8
 	CurvedLava UMETA(DisplayName = "Lavica bombata (Lavica_curved)"),
 	/** A slab ("cube") draped on the ground, textured with a tiling material (default: secondary lava). */
 	Slab UMETA(DisplayName = "Lastra (cubo) con materiale"),
+	/** The slab paved with white stone in panels framed by bands of lava setts: one along the middle, one across
+	 *  every "Passo riquadri" and one along each edge (MI_M80_StradaBiancaLavica). */
+	WhiteLava UMETA(DisplayName = "Pietra bianca e lavica (riquadri)"),
 	/** Any static mesh, repeated like the lava pieces. */
 	Custom UMETA(DisplayName = "Mesh personalizzata")
 };
@@ -62,15 +65,20 @@ public:
 	float WidthCm = 500.f;
 
 	/** Length of each repeated mesh piece; 0 keeps the mesh proportions (setts not stretched). */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strada", meta = (DisplayName = "Lunghezza pezzi (cm, 0 = proporzionata)", ClampMin = "0", ClampMax = "5000", EditCondition = "Surface != EM80RoadSurface::Slab"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strada", meta = (DisplayName = "Lunghezza pezzi (cm, 0 = proporzionata)", ClampMin = "0", ClampMax = "5000", EditCondition = "Surface != EM80RoadSurface::Slab && Surface != EM80RoadSurface::WhiteLava"))
 	float PieceLengthCm = 0.f;
 
 	/** Height of the mesh pieces, as a multiple of their proportional height. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strada", meta = (DisplayName = "Scala verticale mesh", ClampMin = "0.1", ClampMax = "5", EditCondition = "Surface != EM80RoadSurface::Slab"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strada", meta = (DisplayName = "Scala verticale mesh", ClampMin = "0.1", ClampMax = "5", EditCondition = "Surface != EM80RoadSurface::Slab && Surface != EM80RoadSurface::WhiteLava"))
 	float VerticalScale = 1.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strada", meta = (DisplayName = "Spessore lastra (cm)", ClampMin = "2", ClampMax = "200", EditCondition = "Surface == EM80RoadSurface::Slab"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strada", meta = (DisplayName = "Spessore lastra (cm)", ClampMin = "2", ClampMax = "200", EditCondition = "Surface == EM80RoadSurface::Slab || Surface == EM80RoadSurface::WhiteLava"))
 	float SlabThicknessCm = 25.f;
+
+	/** Distance between the lava bands across the road; rounded so the road holds whole panels (it starts and
+	 *  ends on a band). The width of the bands and the bands along the edges are in the material instance. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Strada", meta = (DisplayName = "Passo riquadri (cm)", ClampMin = "100", ClampMax = "2000", EditCondition = "Surface == EM80RoadSurface::WhiteLava", EditConditionHides))
+	float PanelLengthCm = 400.f;
 
 	/** Puts the road on the terrain; off: the spline points keep their own height. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Terreno", meta = (DisplayName = "Appoggia sul terreno"))

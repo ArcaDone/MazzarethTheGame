@@ -8,6 +8,8 @@ then Scripts/m80_stairs_setup.py imports them into /Game/Mazzarino80/Kit/Stairs.
   MuroConci     golden calcarenite blocks in courses, recessed mortar (walls)
   Cemento       grey concrete render with stains (walls, treads)
   Legno         weathered wood grain along U (fence posts and rails)
+  LastreBianche white limestone slabs of the panelled roads (Strada, "Pietra bianca e lavica")
+  CubettiLavici small speckled lava setts of the bands between the white panels
 Sizes (metres per repeat) are in SIZE_M; the meshes have UVs of one unit per metre.
 Normal maps are OpenGL (Y+): the import flips the green channel for Unreal.
 ORM = R ambient occlusion, G roughness, B metallic (0).
@@ -201,6 +203,60 @@ def canna():
     save("Canna", col, height, rough, 4.0)
 
 
+def lastre_bianche():
+    """White limestone slabs of the panelled roads: courses 30 cm deep across the road (V = along the road), slabs
+    45-75 cm long, pale grey-cream with a tone per slab, dust and tyre grime, thin dark joints. The texture starts on
+    a joint at U = 0 and V = 0, where the material puts the edge of the lava bands."""
+    rows = [1.0] * 4                                         # 30 cm courses over 1.2 m
+    _, block, dj, lu, lv = courses(rows, 1.2, (0.45, 0.75), 61)
+    r = block_rand(block, 7)
+    r2 = block_rand(block, 13)
+    cream = srgb_to_lin([204, 196, 180])
+    grey = srgb_to_lin([182, 180, 174])
+    col = cream[None, None, :] * (1 - r2[..., None]) + grey * r2[..., None]
+    col = col * (0.88 + 0.16 * r[..., None]) * (0.9 + 0.14 * fbm(N, 220, 62, 4))[..., None]
+    # Dust and grime: soft dark patches, darker towards the joints where dirt settles.
+    grime = np.clip(fbm(N, 140, 63, 4) * 2.2 - 1.0, 0, 1)
+    col = col * (1 - 0.22 * grime[..., None])
+    edge = np.clip(1 - dj / 0.025, 0, 1)
+    col = col * (1 - 0.15 * edge[..., None])
+    # Fine grain and a few fossil pits of the limestone.
+    grain = fbm(N, 2.0, 64, 2)
+    pits = np.clip((pnoise(N, 2.2, 65) - 0.82) * 7, 0, 1)
+    col = col * (0.94 + 0.1 * grain[..., None]) * (1 - 0.25 * pits[..., None])
+    joint_w = 0.003 + 0.002 * fbm(N, 40, 66, 2)
+    joint = np.clip(1 - (dj - joint_w) / 0.003, 0, 1)
+    jcol = srgb_to_lin([118, 114, 106]) * (0.8 + 0.3 * fbm(N, 25, 67, 3))[..., None]
+    col = col * (1 - joint[..., None]) + jcol * joint[..., None]
+    # Flat slabs with softly worn edges.
+    face = np.clip(dj / 0.012, 0, 1) ** 0.5
+    height = 0.5 * face + 0.08 * grain + 0.05 * r - 0.3 * pits - 0.8 * joint
+    rough = 0.62 + 0.15 * grain + 0.15 * joint - 0.12 * (1 - grime) * fbm(N, 300, 68, 2)
+    save("LastreBianche", col, height, rough, 4.0)
+
+
+def cubetti_lavici():
+    """Small lava setts of the bands between the white panels: 10 cm cubes in rows, grey speckled with black and
+    white grains (like bush-hammered basalt), dark joints."""
+    rows = [1.0] * 10                                        # 10 cm rows over 1 m
+    _, block, dj, lu, lv = courses(rows, 1.0, (0.08, 0.13), 71)
+    r = block_rand(block, 17)
+    base = srgb_to_lin([122, 122, 120])
+    col = base[None, None, :] * (0.78 + 0.35 * r[..., None]) * (0.9 + 0.15 * fbm(N, 25, 72, 3))[..., None]
+    dark = np.clip((pnoise(N, 2.5, 73) - 0.68) * 8, 0, 1)
+    light = np.clip((pnoise(N, 2.5, 74) - 0.72) * 8, 0, 1)
+    col = col * (1 - 0.6 * dark[..., None]) + srgb_to_lin([200, 198, 194]) * 0.5 * light[..., None]
+    joint_w = 0.002 + 0.002 * fbm(N, 30, 75, 2)
+    joint = np.clip(1 - (dj - joint_w) / 0.003, 0, 1)
+    jcol = srgb_to_lin([88, 88, 86]) * (0.8 + 0.3 * fbm(N, 20, 76, 3))[..., None]
+    col = col * (1 - joint[..., None]) + jcol * joint[..., None]
+    grain = fbm(N, 1.6, 77, 2)
+    dome = np.clip(dj / 0.02, 0, 1) ** 0.6
+    height = 0.5 * dome + 0.15 * grain - 0.2 * dark - 0.9 * joint
+    rough = 0.7 + 0.15 * grain + 0.1 * joint
+    save("CubettiLavici", col, height, rough, 6.0)
+
+
 CANDIDATES = os.path.join(ROOT, "Saved", "Mazzarino80", "Stairs", "Candidates")
 LAVICA_BOX = (640, 1060, 1480, 1900)   # the square of diagonal setts in the atlas of the hand-made lava road
 
@@ -237,5 +293,8 @@ def lavica():
 
 
 if __name__ == "__main__":
-    for fn in (pietra_lavica, basolato, muro_conci, cemento, legno, lavica, canna):
-        fn()
+    # Names on the command line make only those sets (e.g. lastre_bianche cubetti_lavici).
+    ALL = (pietra_lavica, basolato, muro_conci, cemento, legno, lavica, canna, lastre_bianche, cubetti_lavici)
+    for fn in ALL:
+        if len(sys.argv) < 2 or fn.__name__ in sys.argv[1:]:
+            fn()

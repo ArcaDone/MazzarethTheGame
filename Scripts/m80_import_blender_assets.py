@@ -1,7 +1,7 @@
 """Imports the assets prepared by Research/Mazzarino80/Blender/m80_prepare_vehicle.py
 (Saved/Mazzarino80/Import/out/<Key>.fbx + <Key>.json + Textures/) into Unreal.
 
-- The cars (Fiat 500, Mini, Maggiolino, Golf, M3): skeletal mesh /Game/Mazzarino80/Vehicles/<Key>/SK_M80_<Key>
+- The cars (Fiat 500, Mini, Maggiolino, Golf, M3, the Carabinieri's Alfa 155): skeletal mesh /Game/Mazzarino80/Vehicles/<Key>/SK_M80_<Key>
   (skeleton Root + Wheel_FL/FR/RL/RR), physics asset of two boxes (UM80EditorLibrary); the downloaded cars one LOD
   (the full mesh), the others 3.
 - Two-wheelers: Scripts/m80_motorino_import.py (the Piaggio Si).
@@ -14,7 +14,9 @@
 - Street furniture: /Game/Mazzarino80/Kit/Arredo/SM_M80_Cassonetto and SM_M80_Tombino (box collision).
 - Materials: one instance per Blender material on three masters in /Game/Mazzarino80/Vehicles/Materials:
   M_M80_Vernice (car paint, clear coat), M_M80_Veicolo (generic: colour x texture, normal map, emission),
-  M_M80_Vetro (glass, translucent). Textures at most 2K, colour ones stored as JPEG.
+  M_M80_Vetro (glass, translucent). Textures at most 2K, colour ones stored as JPEG. A paint with textures (the Alfa 155's
+  livery baked in Blender) goes on M_M80_VerniceLivrea: clear coat over the colour texture, metallic and roughness from
+  its mask (R, G; B = stickers, matt), the baked normal map and metal flakes (T_M80_Scaglie) that make it sparkle.
 Env M80_IMPORT_ONLY=Key1,Key2 limits the import; M80_PHYSICS_ONLY=1 only rebuilds the cars' physics assets. Report: Saved/Mazzarino80/Import/import_report.json.
 """
 import hashlib
@@ -36,7 +38,7 @@ EAL = unreal.EditorAssetLibrary
 MEL = unreal.MaterialEditingLibrary
 TOOLS = unreal.AssetToolsHelpers.get_asset_tools()
 MASTERS = "/Game/Mazzarino80/Vehicles/Materials"
-CARS = ["Fiat500", "Mini", "Maggiolino", "Golf", "M3"]   # drivable
+CARS = ["Fiat500", "Mini", "Maggiolino", "Golf", "M3", "Alfa155C"]   # drivable
 DEST = {k: "/Game/Mazzarino80/Vehicles/" + k for k in CARS}
 DEST["Poste"] = "/Game/Mazzarino80/Buildings/Poste"
 BUILDINGS = ["Comune", "ChiesaComune", "Matrice", "Castello", "Madonna"]
@@ -52,7 +54,7 @@ PHYSICS_ONLY = os.environ.get("M80_PHYSICS_ONLY", "") == "1"
 # Downloaded game-ready cars: LOD0 is the full mesh (the user does not want them decimated) and Unreal makes no LODs (its
 # reduction bent the wheels out of shape as the camera moved away); the distance LODs, if the car has them, come from
 # Blender (custom_lods). M80_LOD_ONLY=1 only redoes the LODs of the imported ones.
-FULL_MESH = ["Fiat500", "Mini", "Maggiolino", "Golf", "M3"]
+FULL_MESH = ["Fiat500", "Mini", "Maggiolino", "Golf", "M3", "Alfa155C"]
 LOD_ONLY = os.environ.get("M80_LOD_ONLY", "") == "1"
 
 
@@ -166,6 +168,80 @@ def masters():
     return {"generic": m, "paint": p, "glass": g}
 
 
+def flakes_texture():
+    """T_M80_Scaglie: grey noise, one grain a pixel, tiled finely over the paint (written here: no image library)."""
+    path = MASTERS + "/Textures/T_M80_Scaglie"
+    if EAL.does_asset_exist(path):
+        return unreal.load_asset(path)
+    import random
+    import struct
+    import zlib
+    n = 256
+    rnd = random.Random(80)
+    rows = b"".join(b"\x00" + bytes(rnd.randrange(256) for _ in range(n)) for _ in range(n))
+    def chunk(kind, data):
+        return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data) & 0xffffffff)
+    png = b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", n, n, 8, 0, 0, 0, 0)) + chunk(b"IDAT", zlib.compress(rows)) + chunk(b"IEND", b"")
+    f = ROOT / "Saved/Mazzarino80/Import/T_M80_Scaglie.png"
+    f.write_bytes(png)
+    return import_texture(f, MASTERS + "/Textures", "mask", "T_M80_Scaglie")
+
+
+def livery_master():
+    """M_M80_VerniceLivrea, made once (like the other masters, never cleared while cars use it)."""
+    path = MASTERS + "/M_M80_VerniceLivrea"
+    if EAL.does_asset_exist(path) and not os.environ.get("M80_REBUILD_LIVREA"):
+        return unreal.load_asset(path)
+    m = new_material("M_M80_VerniceLivrea")
+    m.set_editor_property("shading_model", unreal.MaterialShadingModel.MSM_CLEAR_COAT)
+    S = unreal.MaterialSamplerType
+    white = unreal.load_asset("/Engine/EngineResources/WhiteSquareTexture")
+    flat = unreal.load_asset("/Engine/EngineMaterials/DefaultNormal")
+    col = node(m, unreal.MaterialExpressionTextureSampleParameter2D, -900, -200, parameter_name="TexColore", texture=white)
+    tint = vector(m, "Colore", (1, 1, 1, 1), -900, -400)
+    mul = node(m, unreal.MaterialExpressionMultiply, -500, -300)
+    MEL.connect_material_expressions(col, "RGB", mul, "A")
+    MEL.connect_material_expressions(tint, "", mul, "B")
+    MEL.connect_material_property(mul, "", unreal.MaterialProperty.MP_BASE_COLOR)
+    # A masks sampler needs a linear default: the white square is sRGB and the material would not compile.
+    white_mask = unreal.load_asset(MASTERS + "/Textures/T_M80_BiancoMaschera")
+    mask = node(m, unreal.MaterialExpressionTextureSampleParameter2D, -900, 100, parameter_name="TexMaschera", texture=white_mask,
+                sampler_type=S.SAMPLERTYPE_MASKS)
+    MEL.connect_material_property(mask, "R", unreal.MaterialProperty.MP_METALLIC)
+    # Flakes: a fine grain over the roughness of the paint (not of the stickers), so the metal glitters as it turns.
+    uv = node(m, unreal.MaterialExpressionTextureCoordinate, -1300, 400)
+    rep = node(m, unreal.MaterialExpressionMultiply, -1100, 400)
+    MEL.connect_material_expressions(uv, "", rep, "A")
+    MEL.connect_material_expressions(scalar(m, "Scaglie ripetizione", 220.0, -1300, 500), "", rep, "B")
+    fl = node(m, unreal.MaterialExpressionTextureSampleParameter2D, -900, 400, parameter_name="TexScaglie", texture=flakes_texture(),
+              sampler_type=S.SAMPLERTYPE_MASKS)
+    MEL.connect_material_expressions(rep, "", fl, "UVs")
+    centred = node(m, unreal.MaterialExpressionSubtract, -650, 400)
+    centred.set_editor_property("const_b", 0.5)
+    MEL.connect_material_expressions(fl, "R", centred, "A")
+    amount = node(m, unreal.MaterialExpressionMultiply, -500, 450)
+    MEL.connect_material_expressions(centred, "", amount, "A")
+    MEL.connect_material_expressions(scalar(m, "Scaglie forza", 0.25, -650, 550), "", amount, "B")
+    paint = node(m, unreal.MaterialExpressionOneMinus, -650, 250)
+    MEL.connect_material_expressions(mask, "B", paint, "")
+    grain = node(m, unreal.MaterialExpressionMultiply, -350, 400)
+    MEL.connect_material_expressions(amount, "", grain, "A")
+    MEL.connect_material_expressions(paint, "", grain, "B")
+    rough = node(m, unreal.MaterialExpressionAdd, -200, 200)
+    MEL.connect_material_expressions(mask, "G", rough, "A")
+    MEL.connect_material_expressions(grain, "", rough, "B")
+    sat = node(m, unreal.MaterialExpressionSaturate, -50, 200)
+    MEL.connect_material_expressions(rough, "", sat, "")
+    MEL.connect_material_property(sat, "", unreal.MaterialProperty.MP_ROUGHNESS)
+    nm = node(m, unreal.MaterialExpressionTextureSampleParameter2D, -900, 700, parameter_name="TexNormale", texture=flat,
+              sampler_type=S.SAMPLERTYPE_NORMAL)
+    MEL.connect_material_property(nm, "RGB", unreal.MaterialProperty.MP_NORMAL)
+    # The clear coat keeps its defaults (amount 1, roughness 0.1): Python cannot reach those pins (no MP_CUSTOM_DATA).
+    MEL.recompile_material(m)
+    EAL.save_loaded_asset(m)
+    return m
+
+
 # ---------------------------------------------------------------------------------------------
 # Textures and material instances
 
@@ -183,7 +259,10 @@ def import_texture(file, folder, normal, name=None):
     if not tex:
         return None
     tex.set_editor_property("virtual_texture_streaming", False)
-    if normal:
+    if normal == "mask":
+        tex.set_editor_property("srgb", False)
+        tex.set_editor_property("compression_settings", unreal.TextureCompressionSettings.TC_MASKS)
+    elif normal:
         tex.set_editor_property("srgb", False)
         tex.set_editor_property("compression_settings", unreal.TextureCompressionSettings.TC_NORMALMAP)
     else:
@@ -215,12 +294,17 @@ def make_instances(key, info, mats):
     for blender_name, d in info["materials"].items():
         kind = d.get("type", "generic")
         parent = mats["paint"] if kind == "paint" else (mats["glass"] if kind == "glass" else mats["generic"])
+        livery = kind == "paint" and d.get("base_tex")
+        if livery:
+            parent = livery_master()
         name = "MI_M80_%s_%s" % (key, d["slot"])[:60]
         path = folder + "/" + name
         mi = unreal.load_asset(path) if EAL.does_asset_exist(path) else TOOLS.create_asset(
             name, folder, unreal.MaterialInstanceConstant, unreal.MaterialInstanceConstantFactoryNew())
         MEL.set_material_instance_parent(mi, parent)
         c = d.get("color") or [0.5, 0.5, 0.5]
+        if livery:
+            c = [1.0, 1.0, 1.0]       # the colour is all in the texture
         MEL.set_material_instance_vector_parameter_value(mi, "Colore", unreal.LinearColor(c[0], c[1], c[2], 1))
         MEL.set_material_instance_scalar_parameter_value(mi, "Ruvidita", max(0.03, min(0.95, d.get("roughness", 0.5))))
         if kind == "glass":
@@ -230,6 +314,13 @@ def make_instances(key, info, mats):
             if kind == "metal":
                 metal = max(metal, 0.9)
             MEL.set_material_instance_scalar_parameter_value(mi, "Metallo", max(0.0, min(1.0, metal)))
+        if livery:
+            for slot, param, normal in (("base_tex", "TexColore", False), ("normal_tex", "TexNormale", True), ("mask_tex", "TexMaschera", "mask")):
+                f = d.get(slot)
+                if f and f not in cache:
+                    cache[f] = shared_texture(SRC / "Textures" / f, normal, texfolder)
+                if f and cache[f]:
+                    MEL.set_material_instance_texture_parameter_value(mi, param, cache[f])
         if kind != "paint" and kind != "glass":
             for slot, param, normal in (("base_tex", "TexColore", False), ("normal_tex", "TexNormale", True)):
                 f = d.get(slot)

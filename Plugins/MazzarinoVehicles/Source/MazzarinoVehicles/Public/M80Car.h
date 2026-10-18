@@ -12,6 +12,7 @@ class UAudioComponent;
 class USpotLightComponent;
 class UPointLightComponent;
 class UParticleSystemComponent;
+class UMaterialInstanceDynamic;
 class UAnimSequenceBase;
 class AM80Car;
 
@@ -455,6 +456,37 @@ public:
 	AM80CarM3();
 };
 
+/** Alfa Romeo 155 of the Carabinieri (1992-97): 2.0 Twin Spark, 143 hp, about 1250 kg, front-wheel drive, top speed about
+ * 210 km/h. The downloaded game model reduced to 30k triangles with its livery, beacon, searchlight and CC plates baked
+ * into one set of textures (Research/Mazzarino80/Blender/m80_alfa155_carabinieri.py). While someone drives it the blue
+ * beacon turns: its glass flashes and a blue light sweeps the street. */
+UCLASS(meta = (DisplayName = "Alfa 155 Carabinieri (guidabile)"))
+class MAZZARINOVEHICLES_API AM80CarAlfa155 : public AM80Car
+{
+	GENERATED_BODY()
+public:
+	AM80CarAlfa155();
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
+
+	/** The beacon turns while the car is driven. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Carabinieri", meta = (DisplayName = "Lampeggiante quando guidata"))
+	bool bLampeggiante = true;
+	/** Turns a second (a rotating beacon's mirror sweeps past about twice a second). */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Carabinieri", meta = (DisplayName = "Giri al secondo", ClampMin = "0.2", ClampMax = "5"))
+	float BeaconTurns = 2.2f;
+	/** The beacon's place on the roof (local, cm). */
+	UPROPERTY(EditAnywhere, Category = "Carabinieri", meta = (DisplayName = "Posizione lampeggiante"))
+	FVector BeaconOffset = FVector(-33.f, 32.f, 150.f);
+
+private:
+	UPROPERTY(Transient)
+	TObjectPtr<UPointLightComponent> BeaconLight;
+	UPROPERTY(Transient)
+	TObjectPtr<UMaterialInstanceDynamic> BeaconGlass;
+	float BeaconPhase = 0.f;
+};
+
 /** Piaggio Ape (P501 type, late 70s): 3 wheels, small engine, about 450 kg, top speed about 60 km/h. Slow, short gears, leans in fast turns. */
 UCLASS(meta = (DisplayName = "Ape Piaggio (guidabile)"))
 class MAZZARINOVEHICLES_API AM80CarApe : public AM80Car
@@ -540,6 +572,22 @@ class MAZZARINOVEHICLES_API UM80WheelMaggiolinoRear : public UChaosVehicleWheel
 	GENERATED_BODY()
 public:
 	UM80WheelMaggiolinoRear();
+};
+
+UCLASS()
+class MAZZARINOVEHICLES_API UM80WheelAlfa155Front : public UChaosVehicleWheel
+{
+	GENERATED_BODY()
+public:
+	UM80WheelAlfa155Front();
+};
+
+UCLASS()
+class MAZZARINOVEHICLES_API UM80WheelAlfa155Rear : public UChaosVehicleWheel
+{
+	GENERATED_BODY()
+public:
+	UM80WheelAlfa155Rear();
 };
 
 UCLASS()

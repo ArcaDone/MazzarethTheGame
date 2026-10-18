@@ -9,6 +9,7 @@
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
 #include "Materials/MaterialInterface.h"
+#include "Materials/MaterialInstanceDynamic.h"
 #include "Particles/ParticleSystem.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Sound/SoundBase.h"
@@ -104,6 +105,9 @@ UM80WheelGolfFront::UM80WheelGolfFront() { SetupWheel(this, EAxleType::Front, 27
 UM80WheelGolfRear::UM80WheelGolfRear() { SetupWheel(this, EAxleType::Rear, 27.9f, 18.f, 0.f, 800.f, 2000.f, false, 150.f, 55.f, 0.45f, 8.f, 10.f, 2.6f); }
 UM80WheelM3Front::UM80WheelM3Front() { SetupWheel(this, EAxleType::Front, 31.1f, 21.f, 36.f, 1800.f, 0.f, false, 260.f, 90.f, 0.45f, 8.f, 10.f, 2.6f); }
 UM80WheelM3Rear::UM80WheelM3Rear() { SetupWheel(this, EAxleType::Rear, 30.f, 21.f, 0.f, 1200.f, 2600.f, true, 280.f, 95.f, 0.45f, 8.f, 10.f, 2.8f); }
+// The 155: 195/60 R14 on the model (radius 29.5, width 21), front-wheel drive, a heavier car than the Golf.
+UM80WheelAlfa155Front::UM80WheelAlfa155Front() { SetupWheel(this, EAxleType::Front, 29.5f, 21.f, 36.f, 1800.f, 0.f, true, 260.f, 90.f, 0.45f, 8.f, 10.f, 2.6f); }
+UM80WheelAlfa155Rear::UM80WheelAlfa155Rear() { SetupWheel(this, EAxleType::Rear, 29.5f, 21.f, 0.f, 1100.f, 2600.f, false, 240.f, 85.f, 0.45f, 8.f, 10.f, 2.6f); }
 // The Piaggio Si: 2.25x16 tyres (radius 25.1, width 7 on the mesh), drum brakes, soft telescopic fork and rear shocks.
 // A two-wheeler's wheel touches the road under its centre (a sphere cast), not where a ray along the leaning frame meets it
 // (that is out on the low side, and the springs there stood the moped up again like a wide foot); no anti-roll bar.
@@ -1443,6 +1447,87 @@ AM80CarGolf::AM80CarGolf()
 	S.WheelbaseCm = 237.f;
 	S.GripG = 0.95f;
 	ApplySpec(S);
+}
+
+AM80CarAlfa155::AM80CarAlfa155()
+{
+	DisplayName = NSLOCTEXT("M80", "Alfa155", "Alfa 155 Carabinieri");
+	SetupImported(TEXT("/Game/Mazzarino80/Vehicles/Alfa155C/SK_M80_Alfa155C.SK_M80_Alfa155C"), UM80WheelAlfa155Front::StaticClass(), UM80WheelAlfa155Rear::StaticClass());
+	ChaseDistance = 560.f;
+	SeatOffset = FVector(-25.f, -35.f, 45.f);
+	SeatRecline = 12.f;
+	DoorOffset = FVector(-20.f, -170.f, 100.f);
+	MaxHealth = 800.f;
+	EngineOffset = FVector(170.f, 0.f, 60.f);
+	HeadlightOffset = FVector(212.f, 52.f, 60.f);
+	TaillightOffset = FVector(-210.f, 60.f, 85.f);
+	FCarSpec S;
+	S.MassKg = 1330.f;                      // 1250 kg + two Carabinieri
+	S.CenterOfMass = FVector(30, 0, -15);   // engine across over the front wheels
+	S.DragCoefficient = 0.30f;
+	S.ChassisWidth = 170.f;
+	S.ChassisHeight = 144.f;
+	S.MaxTorqueNm = 187.f;
+	S.MaxRPM = 6500.f;
+	S.IdleRPM = 850.f;
+	S.PeakTorqueRPM = 4000.f;
+	S.Gears = {3.5f, 1.96f, 1.36f, 1.03f, 0.84f};
+	S.ReverseGear = 3.55f;
+	S.FinalRatio = 3.73f;
+	S.ChangeUpRPM = 6200.f;
+	S.ChangeDownRPM = 2800.f;
+	S.Drive = EVehicleDifferential::FrontWheelDrive;
+	S.SteerAt30Mph = 0.5f;
+	S.SteerAt60Mph = 0.28f;
+	S.WheelbaseCm = 254.f;
+	S.GripG = 0.95f;
+	ApplySpec(S);
+}
+
+void AM80CarAlfa155::BeginPlay()
+{
+	Super::BeginPlay();
+	USkeletalMeshComponent* Body = GetMesh();
+	// The beacon's glass: its own material slot (Lampeggiante), made dynamic to flash.
+	const TArray<FName> Slots = Body->GetMaterialSlotNames();
+	for (int32 i = 0; i < Slots.Num(); ++i)
+	{
+		if (Slots[i].ToString().Contains(TEXT("Lampeggiante")))
+		{
+			BeaconGlass = Body->CreateDynamicMaterialInstance(i);
+			break;
+		}
+	}
+	BeaconLight = NewObject<UPointLightComponent>(this);
+	BeaconLight->SetupAttachment(Body);
+	BeaconLight->SetRelativeLocation(BeaconOffset);
+	BeaconLight->SetLightColor(FLinearColor(0.05f, 0.2f, 1.f));
+	BeaconLight->SetAttenuationRadius(1800.f);
+	BeaconLight->SetIntensity(0.f);
+	BeaconLight->SetCastShadows(false);
+	BeaconLight->RegisterComponent();
+}
+
+void AM80CarAlfa155::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	const bool bOn = bLampeggiante && GetController() != nullptr && Health > 0.f;
+	float Flash = 0.f;
+	if (bOn)
+	{
+		// The mirror turning round the bulb: a short bright sweep each turn, a faint glow between.
+		BeaconPhase = FMath::Fmod(BeaconPhase + DeltaSeconds * BeaconTurns, 1.f);
+		Flash = FMath::Pow(FMath::Max(0.f, FMath::Cos(BeaconPhase * 2.f * PI)), 8.f);
+	}
+	if (BeaconLight)
+	{
+		BeaconLight->SetIntensity(bOn ? 30000.f * Flash : 0.f);
+	}
+	if (BeaconGlass)
+	{
+		const float Glow = bOn ? 0.6f + 40.f * Flash : 0.05f;
+		BeaconGlass->SetVectorParameterValue(TEXT("Emissivo"), FLinearColor(0.05f * Glow, 0.25f * Glow, 1.f * Glow));
+	}
 }
 
 AM80CarM3::AM80CarM3()

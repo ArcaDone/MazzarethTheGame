@@ -54,6 +54,11 @@ ASSETS = {
     # Two headlight pieces of the file sit 60 cm ahead of the bumper (they made the car 0.88 times too small).
     "M3": {"kind": "car", "length": 4.345, "budget": 0, "keep_normals": True, "straight": True, "front": -1,
            "exclude": ["BMW:HeadLightL6_Mesh_020_M_Light_Max_004", "HeadLightR6_Mesh_021_M_Light_Max_004"]},
+    # The Carabinieri's Alfa Romeo 155 (Research/Mazzarino80/Blender/m80_alfa155_carabinieri.py: reduced to 30k, livery
+    # and the original's detail baked into one set of 4096 textures on UV0): wheels by name (tyres in pairs, the discs
+    # turn with them), the baked textures kept at full size.
+    "Alfa155C": {"kind": "car", "length": 4.443, "budget": 0, "keep_normals": True, "straight": True, "front": -1,
+                 "wheel_names": r"tirea_s|rotor", "max_tex": 4096},
     "Poste": {"kind": "building", "scale": 1.0, "split": ["Antenna"]},   # the radio mast is its own mesh
     # Town buildings (Comune and its church are stand-ins until the user rebuilds the Comune).
     "Comune": {"kind": "building", "density": 1500, "budget": 0},
@@ -74,8 +79,8 @@ ASSETS = {
 CFG = ASSETS[KEY]
 BODY_BUDGET = CFG.get("budget", 70000) if CFG["kind"] == "car" else (50000 if CFG["kind"] == "bike" else CFG.get("budget", 600000))
 WHEEL_BUDGET = 5000 if CFG.get("budget", 1) else 0
-MAX_TEX = 2048
-MAX_NORMAL_TEX = 1024   # normal maps of small details (lights, leather): 1K is plenty
+MAX_TEX = CFG.get("max_tex", 2048)
+MAX_NORMAL_TEX = CFG.get("max_tex", 1024)   # normal maps of small details (lights, leather): 1K is plenty
 os.makedirs(os.path.join(OUT, "Textures"), exist_ok=True)
 REPORT = {"key": KEY, "kind": CFG["kind"], "steps": []}
 
@@ -616,7 +621,7 @@ def export_materials(objs):
                 continue
             p = principled(m)
             d = {"slot": clean(m.name), "color": list(m.diffuse_color[:3]), "metallic": float(m.metallic), "roughness": float(m.roughness),
-                 "opacity": 1.0, "emissive": [0, 0, 0], "base_tex": None, "normal_tex": None}
+                 "opacity": 1.0, "emissive": [0, 0, 0], "base_tex": None, "normal_tex": None, "mask_tex": None}
             glass = False
             emit = False
             if p:
@@ -646,6 +651,10 @@ def export_materials(objs):
                 nm = p.inputs.get("Normal")
                 if nm is not None and nm.is_linked:
                     d["normal_tex"] = save_image(linked_image(nm), normal=True)
+                # A texture feeding metallic: the paint's mask (R metallic, G roughness, B stickers).
+                mt = p.inputs.get("Metallic")
+                if mt is not None and mt.is_linked:
+                    d["mask_tex"] = save_image(linked_image(mt), normal=True)
             d["type"] = classify(m.name, glass, emit)
             mats[m.name] = d
     return mats

@@ -265,7 +265,7 @@ def cylinder(name, x, y, z0, r, h, mat, cap_dome=False):
     o = bpy.data.objects.new(name, me)
     o.location = (x, y, z0)
     bpy.context.scene.collection.objects.link(o)
-    me.uv_layers.new(name="UVChannel_1")
+    me.uv_layers.new(name="UV_Originale_1")
     return o
 
 
@@ -279,7 +279,7 @@ def plate_box(name, image, x, y, z, w, h, facing, mat_name):
     bmesh.ops.create_cube(bm, size=1.0)
     for v in bm.verts:
         v.co = Vector((v.co.x * w, v.co.y * 0.008, v.co.z * h))
-    uv = bm.loops.layers.uv.new("UVChannel_1")
+    uv = bm.loops.layers.uv.new("UV_Originale_1")
     for f in bm.faces:
         for l in f.loops:
             if f.normal.y * facing > 0.5:

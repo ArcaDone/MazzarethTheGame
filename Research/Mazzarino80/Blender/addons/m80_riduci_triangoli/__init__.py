@@ -539,11 +539,15 @@ def bake_uv_first(me):
     for name, _ in keep:
         me.uv_layers.remove(me.uv_layers[name])
     me.uv_layers.new(name=BAKE_UV)
+    # Unreal's FBX import puts a map named UVChannel_<n> (the 3ds Max way) at index n-1 whatever its order: the
+    # original "UVChannel_1" took UV0 from M80_Bake and every texture of a 155 landed on the wrong islands.
+    def safe(name):
+        return re.sub(r"^UVChannel_(\d+)$", r"UV_Originale_\1", name)
     for name, data in keep:
-        l = me.uv_layers.new(name=name)
+        l = me.uv_layers.new(name=safe(name))
         l.uv.foreach_set("vector", data)
     if keep:
-        me.uv_layers[render or keep[0][0]].active_render = True
+        me.uv_layers[safe(render or keep[0][0])].active_render = True
     me.uv_layers.active = me.uv_layers[BAKE_UV]
 
 

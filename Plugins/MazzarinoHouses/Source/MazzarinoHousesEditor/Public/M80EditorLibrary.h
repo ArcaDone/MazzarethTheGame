@@ -133,6 +133,13 @@ public:
 	static bool SetRuntimePartitionGrid(UWorld* World, FName PartitionName, int32 CellSize, int32 LoadingRange);
 
 	/**
+	 * Block On Slow Streaming of every layer of the runtime partition PartitionName (main and HLOD): when on, the game
+	 * stops until the cells near the player are loaded (the freezes while driving). Marks the map dirty.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|World Partition")
+	static bool SetRuntimePartitionBlockOnSlowStreaming(UWorld* World, FName PartitionName, bool bBlock);
+
+	/**
 	 * Reads the LOD0 vertices of head, eyes and teeth from a MetaHuman face DNA file (for
 	 * MetaHumanCharacterEditorSubsystem.fit_state_to_target_vertices: the 5.8 Creator refuses to import the DNA of
 	 * a legacy online-Creator MetaHuman, whose rig differs, but its meshes have the MetaHuman topology).

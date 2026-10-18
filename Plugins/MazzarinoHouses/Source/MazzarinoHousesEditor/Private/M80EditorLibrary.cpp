@@ -1038,6 +1038,10 @@ FString UM80EditorLibrary::DescribeRuntimePartitions(UWorld* World)
 				Out += FString::Printf(TEXT(" %s=%lld"), Name, Prop->GetSignedIntPropertyValue(Prop->ContainerPtrToValuePtr<void>(Object)));
 			}
 		}
+		if (FBoolProperty* Block = Object ? FindFProperty<FBoolProperty>(Object->GetClass(), TEXT("bBlockOnSlowStreaming")) : nullptr)
+		{
+			Out += FString::Printf(TEXT(" BlockOnSlowStreaming=%d"), Block->GetPropertyValue_InContainer(Object) ? 1 : 0);
+		}
 		Out += TEXT("\n");
 	});
 	return Out;
@@ -1062,6 +1066,31 @@ bool UM80EditorLibrary::SetRuntimePartitionGrid(UWorld* World, FName PartitionNa
 			FPropertyChangedEvent Event(Change.Key, EPropertyChangeType::ValueSet);
 			Object->PostEditChangeProperty(Event);
 		}
+		bDone = true;
+	});
+	if (bDone)
+	{
+		World->GetWorldPartition()->RuntimeHash->Modify();
+		World->MarkPackageDirty();
+	}
+	return bDone;
+}
+
+bool UM80EditorLibrary::SetRuntimePartitionBlockOnSlowStreaming(UWorld* World, FName PartitionName, bool bBlock)
+{
+	bool bDone = false;
+	ForEachRuntimePartitionLayer(World, [&](FName Partition, FName Layer, UObject* Object)
+	{
+		FBoolProperty* Prop = Object ? FindFProperty<FBoolProperty>(Object->GetClass(), TEXT("bBlockOnSlowStreaming")) : nullptr;
+		if (Partition != PartitionName || !Prop)
+		{
+			return;
+		}
+		Object->Modify();
+		Object->PreEditChange(Prop);
+		Prop->SetPropertyValue_InContainer(Object, bBlock);
+		FPropertyChangedEvent Event(Prop, EPropertyChangeType::ValueSet);
+		Object->PostEditChangeProperty(Event);
 		bDone = true;
 	});
 	if (bDone)

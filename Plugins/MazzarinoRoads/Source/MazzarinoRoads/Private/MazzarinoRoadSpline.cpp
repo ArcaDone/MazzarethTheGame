@@ -16,7 +16,20 @@ AMazzarinoRoadSpline::AMazzarinoRoadSpline()
 void AMazzarinoRoadSpline::OnConstruction(const FTransform& Transform)
 {
     Super::OnConstruction(Transform);
+    // In game (also Play in the editor, where streamed cells run construction again) the pieces built in the editor
+    // are kept: rebuilding the town's roads as their cells stream in costs game-thread time.
+    if (GetWorld() && GetWorld()->IsGameWorld() && HasGeometry()) return;
     RebuildRoad();
+}
+
+bool AMazzarinoRoadSpline::HasGeometry() const
+{
+    TInlineComponentArray<USplineMeshComponent*> Pieces(this);
+    for (const USplineMeshComponent* Component : Pieces)
+    {
+        if (Component && Component->ComponentHasTag(TEXT("M80RoadGenerated"))) return true;
+    }
+    return false;
 }
 
 void AMazzarinoRoadSpline::RebuildRoad()
@@ -58,7 +71,9 @@ void AMazzarinoRoadSpline::RebuildRoad()
         const double A = Distances[Index], B = Distances[Index + 1], Span = B - A;
         if (Span < 0.1) continue;
         USplineMeshComponent* Segment = NewObject<USplineMeshComponent>(this, NAME_None, RF_Transactional);
-        Segment->CreationMethod = EComponentCreationMethod::UserConstructionScript;
+        // Instance, not construction script: the pieces are saved and survive construction running again.
+        Segment->CreationMethod = EComponentCreationMethod::Instance;
+        AddInstanceComponent(Segment);
         Segment->ComponentTags.Add(TEXT("M80RoadGenerated"));
         Segment->SetupAttachment(Spline);
         Segment->SetMobility(EComponentMobility::Static);
@@ -112,7 +127,8 @@ void AMazzarinoRoadSpline::RebuildRoad()
             if (BackWidth > UE_SMALL_NUMBER)
             {
                 USplineMeshComponent* Back = NewObject<USplineMeshComponent>(this, NAME_None, RF_Transactional);
-                Back->CreationMethod = EComponentCreationMethod::UserConstructionScript;
+                Back->CreationMethod = EComponentCreationMethod::Instance;
+                AddInstanceComponent(Back);
                 Back->ComponentTags.Add(TEXT("M80RoadGenerated"));
                 Back->SetupAttachment(Spline);
                 Back->SetMobility(EComponentMobility::Static);

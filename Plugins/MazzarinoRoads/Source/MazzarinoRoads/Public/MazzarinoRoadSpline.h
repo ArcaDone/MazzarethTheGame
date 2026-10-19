@@ -57,6 +57,8 @@ public:
     int32 GetRoadSegmentCount() const { return RoadSegments.Num(); }
 
 private:
+    bool HasGeometry() const;
+
     UPROPERTY()
     TArray<TObjectPtr<USplineMeshComponent>> RoadSegments;
 };

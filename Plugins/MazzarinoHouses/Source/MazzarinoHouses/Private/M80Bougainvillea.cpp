@@ -334,6 +334,12 @@ AM80Bougainvillea::AM80Bougainvillea()
 void AM80Bougainvillea::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
+	// The cook loads each actor on its own, with no ground or neighbours to trace: what the editor built and saved is
+	// what ships (rebuilt there, sidewalks climbed the houses and houses stretched to ground that was not there).
+	if (IsRunningCookCommandlet())
+	{
+		return;
+	}
 	if (Baked->GetStaticMesh() && BakedHash == ComputeInputHash())
 	{
 		Baked->SetVisibility(true);

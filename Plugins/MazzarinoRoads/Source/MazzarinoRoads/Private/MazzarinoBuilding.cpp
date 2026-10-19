@@ -60,7 +60,7 @@ AMazzarinoBuilding::AMazzarinoBuilding(){
     static ConstructorHelpers::FObjectFinder<UStaticMesh> Cube(TEXT("/Engine/BasicShapes/Cube.Cube"));WindowBackings->SetStaticMesh(Cube.Object);
     for(auto* C:{MasonryDetails.Get(),MetalDetails.Get(),Shutters.Get()}){C->SetStaticMesh(Cube.Object);C->SetCollisionEnabled(ECollisionEnabled::NoCollision);}
 }
-void AMazzarinoBuilding::OnConstruction(const FTransform& Transform){Super::OnConstruction(Transform);RebuildBuilding();}
+void AMazzarinoBuilding::OnConstruction(const FTransform& Transform){Super::OnConstruction(Transform);if(IsRunningCookCommandlet())return;RebuildBuilding();}
 void AMazzarinoBuilding::RebuildBuilding(){
     BuildingSurface->ClearAllMeshSections();Windows->ClearInstances();Doors->ClearInstances();WindowBackings->ClearInstances();GeometryError.Empty();
     MasonryDetails->ClearInstances();MetalDetails->ClearInstances();Shutters->ClearInstances();

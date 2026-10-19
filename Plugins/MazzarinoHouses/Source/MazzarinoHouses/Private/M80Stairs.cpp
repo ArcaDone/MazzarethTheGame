@@ -281,6 +281,12 @@ AM80Stairs::AM80Stairs()
 void AM80Stairs::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
+	// The cook loads each actor on its own, with no ground or neighbours to trace: what the editor built and saved is
+	// what ships (rebuilt there, sidewalks climbed the houses and houses stretched to ground that was not there).
+	if (IsRunningCookCommandlet())
+	{
+		return;
+	}
 	// In game (also Play in the editor, where streamed cells run construction again) the geometry built in the
 	// editor is kept: rebuilding there costs streaming time and traces ground that may not be loaded yet.
 	if (GetWorld() && GetWorld()->IsGameWorld() && HasGeometry())

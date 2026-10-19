@@ -69,6 +69,12 @@ AM80Horizon::AM80Horizon()
 void AM80Horizon::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
+	// The cook loads each actor on its own, with no ground or neighbours to trace: what the editor built and saved is
+	// what ships (rebuilt there, sidewalks climbed the houses and houses stretched to ground that was not there).
+	if (IsRunningCookCommandlet())
+	{
+		return;
+	}
 	int32 Triangles = 0;
 	Land->ProcessMesh([&Triangles](const FDynamicMesh3& Mesh) { Triangles = Mesh.TriangleCount(); });
 	if (Triangles == 0)

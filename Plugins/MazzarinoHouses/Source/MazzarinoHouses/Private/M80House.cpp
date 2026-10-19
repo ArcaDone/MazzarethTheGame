@@ -142,6 +142,12 @@ uint32 AM80House::ComputeInputHash() const
 void AM80House::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
+	// The cook loads each actor on its own, with no ground or neighbours to trace: what the editor built and saved is
+	// what ships (rebuilt there, sidewalks climbed the houses and houses stretched to ground that was not there).
+	if (IsRunningCookCommandlet())
+	{
+		return;
+	}
 	// The editor also runs construction when a level loads: skip if nothing changed. In game (also Play in
 	// the editor, where streamed cells run construction again) a baked house is final: rebuilding it there
 	// would drop the bake for a live mesh and stall streaming.

@@ -16,6 +16,7 @@ AMazzarinoRoadSpline::AMazzarinoRoadSpline()
 void AMazzarinoRoadSpline::OnConstruction(const FTransform& Transform)
 {
     Super::OnConstruction(Transform);
+    if (IsRunningCookCommandlet()) return;   // the cook ships what the editor saved
     // In game (also Play in the editor, where streamed cells run construction again) the pieces built in the editor
     // are kept: rebuilding the town's roads as their cells stream in costs game-thread time.
     if (GetWorld() && GetWorld()->IsGameWorld() && HasGeometry()) return;

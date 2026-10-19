@@ -114,6 +114,12 @@ void AM80StreetLight::PlaceLight()
 void AM80StreetLight::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
+	// The cook loads each actor on its own, with no ground or neighbours to trace: what the editor built and saved is
+	// what ships (rebuilt there, sidewalks climbed the houses and houses stretched to ground that was not there).
+	if (IsRunningCookCommandlet())
+	{
+		return;
+	}
 	PlaceLight();
 	const AM80Atmosphere* Atmosphere = AM80Atmosphere::Find(this);
 	SetNight(Atmosphere ? Atmosphere->GetStreetLights() : 0.f);

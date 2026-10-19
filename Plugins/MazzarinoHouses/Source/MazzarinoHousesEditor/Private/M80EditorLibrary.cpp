@@ -283,6 +283,8 @@ UStaticMesh* UM80EditorLibrary::BakeHouse(AM80House* House, const FString& Folde
 	{
 		return nullptr;
 	}
+	// The house's own file (World Partition: one per actor) must be saved with the bake, or the town keeps it live.
+	House->Modify();
 	House->Rebuild();
 	UE::Geometry::FDynamicMesh3 Mesh;
 	House->Shell->ProcessMesh([&Mesh](const UE::Geometry::FDynamicMesh3& Source) { Mesh = Source; });
@@ -341,6 +343,7 @@ UStaticMesh* UM80EditorLibrary::BakeHouse(AM80House* House, const FString& Folde
 		FAssetRegistryModule::AssetCreated(StaticMesh);
 	}
 	House->ApplyBakedMesh(StaticMesh);
+	House->MarkPackageDirty();
 	return StaticMesh;
 }
 

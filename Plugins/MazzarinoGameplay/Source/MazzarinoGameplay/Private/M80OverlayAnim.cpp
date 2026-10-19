@@ -105,6 +105,10 @@ void FM80OverlayProxy::Initialize(UAnimInstance* InAnimInstance)
 	RifleAim = Load(TEXT("A_M80_Fucile_Mira_Sweep"));
 	RifleHold = Load(TEXT("A_M80_Fucile_Pose"));
 	Punches = Load(TEXT("A_M80_Pugni_Combo"));
+	if (UM80OverlayAnimInstance* I = Cast<UM80OverlayAnimInstance>(InAnimInstance))
+	{
+		I->Clips = {PistolAim, PistolHold, RifleAim, RifleHold, Punches};
+	}
 }
 
 void FM80OverlayProxy::PreUpdate(UAnimInstance* InAnimInstance, float DeltaSeconds)

@@ -132,4 +132,10 @@ protected:
 	virtual void DestroyAnimInstanceProxy(FAnimInstanceProxy* InProxy) override { delete InProxy; }
 
 	friend struct FM80OverlayProxy;
+
+private:
+	/** Keeps the proxy's clips loaded: it holds plain pointers the garbage collector does not see (a packaged game freed
+	 *  the punch clip and crashed on the moped, where the fists close on the grips). */
+	UPROPERTY(Transient)
+	TArray<TObjectPtr<UAnimSequence>> Clips;
 };

@@ -1,8 +1,9 @@
 """Bakes every AM80House of a map into Nanite static meshes, saves, and captures views.
 
 Baked meshes go to /Game/Mazzarino80/Houses/Baked/<MapName> (derived data, gitignored).
-World Partition maps (the town, L_M80_Paese_WP) are baked tile by tile (300 m): each tile is loaded,
-its unbaked houses baked, the changed actor files saved and the tile unloaded, so memory stays low.
+World Partition maps (the town, L_M80_Paese_WP) are baked tile by tile (300 m): each tile is loaded with the landscape
+under it (a house is rebuilt before baking and needs its ground), its unbaked houses baked, the changed actor files
+saved and the tile unloaded, so memory stays low.
 Env: M80_BAKE_MAP (default the town map), M80_BAKE_CAPTURE=0 skips captures (always skipped on the town),
      M80_BAKE_LIMIT bakes at most N houses per run (the ones not baked yet; "remaining" in the report).
 """
@@ -67,13 +68,34 @@ def street_view(world, house):
     return look_at(eye, (mx, my, z + 250))
 
 
+def ground_under(tile, ground, margin=10000.0):
+    """The landscape pieces under a tile's houses (and a margin around them): baking rebuilds each house, and a house
+    rebuilt without its ground is built on guesses (houses came out raised by metres and stretched)."""
+    lo_x = min(d.get_editor_property("bounds").min.x for d in tile) - margin
+    lo_y = min(d.get_editor_property("bounds").min.y for d in tile) - margin
+    hi_x = max(d.get_editor_property("bounds").max.x for d in tile) + margin
+    hi_y = max(d.get_editor_property("bounds").max.y for d in tile) + margin
+    out = []
+    for d in ground:
+        b = d.get_editor_property("bounds")
+        if b.max.x >= lo_x and b.min.x <= hi_x and b.max.y >= lo_y and b.min.y <= hi_y:
+            out.append(d)
+    return out
+
+
 def bake_by_tiles(world, descs, report):
     t0 = time.time()
     baked, failed, remaining = 0, [], 0
+    ground = m80_seq.actor_descs("LandscapeStreamingProxy")
+    report["ground_pieces"] = len(ground)
     for tile in m80_seq.tiles(descs):
         if LIMIT and baked >= LIMIT:
             remaining += len(tile)  # upper bound: not checked
             continue
+        under = ground_under(tile, ground)
+        # Ground first: houses whose inputs changed rebuild as soon as they load.
+        m80_seq.load(under)
+        yield 30
         m80_seq.load(tile)
         yield 5
         houses = list(unreal.GameplayStatics.get_all_actors_of_class(world, unreal.M80House))  # only this tile is loaded
@@ -92,6 +114,7 @@ def bake_by_tiles(world, descs, report):
             unreal.EditorAssetLibrary.save_directory(FOLDER, only_if_is_dirty=True, recursive=True)
             m80_seq.save_all()
         m80_seq.unload(tile)
+        m80_seq.unload(under)
         unreal.SystemLibrary.collect_garbage()
         yield 2
     report.update({"baked": baked, "failed": failed, "remaining": remaining, "bake_seconds": round(time.time() - t0, 1)})

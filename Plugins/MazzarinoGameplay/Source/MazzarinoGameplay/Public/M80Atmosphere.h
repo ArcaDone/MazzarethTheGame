@@ -56,6 +56,22 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Atmosfera", meta = (DisplayName = "Tempo"))
 	EM80Weather Weather = EM80Weather::Hazy;
 
+	/** Wet ground after rain (0 dry, 1 soaked): floors and steps darker and glossy (materials read MPC "Bagnato"). */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Atmosfera", meta = (DisplayName = "Bagnato", ClampMin = "0", ClampMax = "1"))
+	float Wetness = 0.f;
+
+	/** The player's view as filmed by someone walking behind: a slow sway, the steps when moving, a wider lens. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera", meta = (DisplayName = "Camera a mano"))
+	bool bHandheldCamera = false;
+
+	/** How much the handheld camera sways (1 = a steady hand). */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera", meta = (DisplayName = "Oscillazione", ClampMin = "0", ClampMax = "4", EditCondition = "bHandheldCamera"))
+	float HandheldAmount = 1.f;
+
+	/** Degrees added to the field of view by the handheld camera (a wide lens). */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera", meta = (DisplayName = "Grandangolo in piu (gradi)", ClampMin = "0", ClampMax = "40", EditCondition = "bHandheldCamera"))
+	float HandheldExtraFOV = 12.f;
+
 	/** 1 = 1 January; 200 = mid July (long days, high sun). */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Atmosfera", meta = (DisplayName = "Giorno dell'anno", ClampMin = "1", ClampMax = "365"))
 	int32 DayOfYear = 200;

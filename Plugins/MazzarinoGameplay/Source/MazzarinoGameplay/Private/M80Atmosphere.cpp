@@ -331,5 +331,6 @@ void AM80Atmosphere::ApplyAt(float AtHour)
 		UKismetMaterialLibrary::SetScalarParameterValue(this, MaterialValues, TEXT("Finestre"), FMath::Lerp(0.12f, 1.f, FMath::Max(Night, 0.5f * Golden)));
 		UKismetMaterialLibrary::SetScalarParameterValue(this, MaterialValues, TEXT("Notte"), Night);
 		UKismetMaterialLibrary::SetScalarParameterValue(this, MaterialValues, TEXT("Lampioni"), Lamps);
+		UKismetMaterialLibrary::SetScalarParameterValue(this, MaterialValues, TEXT("Bagnato"), FMath::Clamp(Wetness, 0.f, 1.f));
 	}
 }

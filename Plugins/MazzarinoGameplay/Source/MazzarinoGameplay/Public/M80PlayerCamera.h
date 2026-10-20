@@ -9,6 +9,7 @@
  * shoulder, closer and narrower (GTA), so the crosshair at the centre of the screen is where the shot goes and the
  * character no longer hides the target. A sphere sweep keeps it out of walls. Shots aim from this view
  * (AM80PlayerController::GetAimPoint uses the view point).
+ * With the Atmosfera's "Camera a mano" the view sways like a camera held by someone walking behind.
  */
 UCLASS()
 class MAZZARINOGAMEPLAY_API AM80PlayerCameraManager : public APlayerCameraManager
@@ -38,4 +39,6 @@ public:
 
 private:
 	float AimAlpha = 0.f;
+	float HandheldTime = 0.f;
+	float HandheldStep = 0.f;
 };

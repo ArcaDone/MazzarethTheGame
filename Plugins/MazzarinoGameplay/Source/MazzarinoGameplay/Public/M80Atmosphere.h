@@ -56,6 +56,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Atmosfera", meta = (DisplayName = "Tempo"))
 	EM80Weather Weather = EM80Weather::Hazy;
 
+	/** Colours as a camera sees them instead of the warm summer grade: neutral white, no orange, softer contrast, the
+	 *  shade opened by the light bouncing off the pale walls, highlights rolled off instead of burnt. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Atmosfera", meta = (DisplayName = "Colore naturale"))
+	bool bNaturalColour = false;
+
 	/** Wet ground after rain (0 dry, 1 soaked): floors and steps darker and glossy (materials read MPC "Bagnato"). */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Atmosfera", meta = (DisplayName = "Bagnato", ClampMin = "0", ClampMax = "1"))
 	float Wetness = 0.f;

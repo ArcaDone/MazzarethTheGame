@@ -192,7 +192,8 @@ void AM80Atmosphere::ApplyAt(float AtHour)
 	const float K = FMath::Clamp(LookStrength, 0.f, 1.5f);
 	// Overcast: the sky is a high, even haze (fog reaching up), the sun a soft glow through it, no summer warmth.
 	const bool bOvercast = Weather == EM80Weather::Overcast;
-	const float Warm = bOvercast ? 0.25f : 1.f;
+	const float Warm = bOvercast ? 0.25f : (bNaturalColour ? 0.2f : 1.f);
+	const bool bNatural = bOvercast || bNaturalColour;
 
 	// 0 by day, 1 in the dark; golden near the horizon.
 	const float Night = 1.f - FMath::SmoothStep(-9.f, -1.f, Elevation);
@@ -243,7 +244,7 @@ void AM80Atmosphere::ApplyAt(float AtHour)
 
 	if (SkyLight)
 	{
-		SkyLight->SetIntensity(FMath::Lerp(bOvercast ? 1.7f : 1.25f, 0.8f, Night));
+		SkyLight->SetIntensity(FMath::Lerp(bOvercast ? 1.7f : (bNaturalColour ? 1.5f : 1.25f), 0.8f, Night));
 		// By day the shade is lit by warm stone and dust as much as by the blue sky: no cold, sad shadows.
 		SkyLight->SetLightColor(FMath::Lerp(bOvercast ? FLinearColor(1.f, 0.99f, 0.97f) : FLinearColor(1.f, 0.93f, 0.84f), FLinearColor::White, Night));
 		SkyLight->SetLowerHemisphereColor(FMath::Lerp(FLinearColor(0.09f, 0.075f, 0.055f), FLinearColor(0.005f, 0.006f, 0.01f), Night));
@@ -281,11 +282,12 @@ void AM80Atmosphere::ApplyAt(float AtHour)
 	P.bOverride_WhiteTemp = true;
 	P.WhiteTemp = 6500.f + K * ((700.f + 900.f * Golden) * Warm - 1800.f * Night);
 	P.bOverride_SceneColorTint = true;
-	P.SceneColorTint = FMath::Lerp(FLinearColor::White, W.Tint, FMath::Min(K, 1.f));
+	P.SceneColorTint = FMath::Lerp(FLinearColor::White, W.Tint, FMath::Min(K, 1.f) * (bNaturalColour ? 0.3f : 1.f));
 	P.bOverride_ColorSaturation = true;
-	P.ColorSaturation = Lerp4(One, bOvercast ? FVector4(1.f, 1.f, 1.f, 0.92f - 0.3f * Night) : FVector4(1.08f, 1.05f, 0.98f, 1.1f - 0.35f * Night), K);
+	P.ColorSaturation = Lerp4(One, bOvercast ? FVector4(1.f, 1.f, 1.f, 0.92f - 0.3f * Night)
+		: (bNaturalColour ? FVector4(1.f, 1.f, 1.f, 0.96f - 0.3f * Night) : FVector4(1.08f, 1.05f, 0.98f, 1.1f - 0.35f * Night)), K);
 	P.bOverride_ColorContrast = true;
-	P.ColorContrast = Lerp4(One, FVector4(1.06f, 1.06f, 1.06f, 1.f), K);
+	P.ColorContrast = Lerp4(One, bNatural ? FVector4(1.f, 1.f, 1.f, 0.97f) : FVector4(1.06f, 1.06f, 1.06f, 1.f), K);
 	P.bOverride_ColorGainHighlights = true;
 	P.ColorGainHighlights = Lerp4(One, FVector4(1.08f + 0.04f * Golden, 1.01f, 0.88f - 0.05f * Golden, 1.f), K * Warm);
 	P.bOverride_ColorGainMidtones = true;
@@ -293,7 +295,7 @@ void AM80Atmosphere::ApplyAt(float AtHour)
 	P.bOverride_ColorSaturationHighlights = true;
 	P.ColorSaturationHighlights = Lerp4(One, FVector4(1.f, 1.f, 1.f, 0.94f), K);
 	P.bOverride_ColorOffsetShadows = true;
-	P.ColorOffsetShadows = Lerp4(Zero, FVector4(0.003f * Day - 0.002f * Night, 0.001f * Day, -0.002f * Day + 0.012f * Night, 0.f), K);
+	P.ColorOffsetShadows = Lerp4(Zero, FVector4(0.003f * Day * Warm - 0.002f * Night, 0.001f * Day * Warm, -0.002f * Day * Warm + 0.012f * Night, 0.f), K);
 	P.bOverride_FilmToe = true;
 	P.FilmToe = FMath::Lerp(0.55f, 0.6f, FMath::Min(K, 1.f));
 	P.bOverride_BloomIntensity = true;
@@ -305,9 +307,9 @@ void AM80Atmosphere::ApplyAt(float AtHour)
 	P.bOverride_LensFlareIntensity = true;
 	P.LensFlareIntensity = 0.25f * K;
 	P.bOverride_LocalExposureHighlightContrastScale = true;
-	P.LocalExposureHighlightContrastScale = FMath::Lerp(1.f, 0.85f, FMath::Min(K, 1.f));
+	P.LocalExposureHighlightContrastScale = FMath::Lerp(1.f, bNatural ? 0.7f : 0.85f, FMath::Min(K, 1.f));
 	P.bOverride_LocalExposureShadowContrastScale = true;
-	P.LocalExposureShadowContrastScale = FMath::Lerp(1.f, 0.8f, FMath::Min(K, 1.f));
+	P.LocalExposureShadowContrastScale = FMath::Lerp(1.f, bNatural ? 0.65f : 0.8f, FMath::Min(K, 1.f));
 	// Exposure: nights stay dark (the eye does not adapt to full daylight under the moon).
 	P.bOverride_AutoExposureBias = true;
 	// The floor of the adaptation rises at dusk, so the blue hour and the night read darker than the day.

@@ -1,11 +1,11 @@
 """Test A of the realistic look, on a copy of the Matrice mini-town (L_M80_ProvaMatrice -> L_M80_ProvaMatrice_Look; the
-original is not touched): an overcast sky (Atmosfera weather "Coperto", late morning), wet floors, the handheld camera
-in Play, and the look of a real lens on top of the Mazzarino grade: barrel distortion (post-process material
-M_M80_Obiettivo, instance MI_M80_Obiettivo), chromatic aberration at the edges, vignette, film grain, softer colours,
-slow exposure. Then photos from the same views before (the town's summer haze at the same hour) and after, with the
-editor viewport in game view (Lumen and Nanite as in game).
+original is not touched). Three looks at the same hour from the same views: the town today; realistic sun (the summer
+haze with the Atmosfera's natural colours); overcast after rain (weather "Coperto", wet floors). The last two through
+a real lens over the grade (barrel distortion M_M80_Obiettivo / MI_M80_Obiettivo, chromatic aberration, vignette,
+grain, slow exposure) and with the handheld camera in Play. Photos with the editor viewport in game view (Lumen and
+Nanite as in game). The map is saved with the realistic sun.
 Env: M80_LOOK_RIFAI=1 copies the map again from the original; M80_LOOK_FOTO=0 skips the photos.
-Out: Saved/Mazzarino80/Look/{prima,dopo}_<n>.png, look.json
+Out: Saved/Mazzarino80/Look/{prima,sole,coperto}_<n>.png, look.json
 powershell -File Scripts/run_editor_script.ps1 -Script Scripts/m80_look_realistico.py -ForceLit
 """
 import json
@@ -33,9 +33,11 @@ TOOLS = unreal.AssetToolsHelpers.get_asset_tools()
 # Lens: k of the barrel distortion (0 = none); the image is scaled so that the corners stay the corners.
 DISTORTION = 0.22
 # "dopo": overcast; "prima": the town's own summer haze at the same hour.
-# "dopo" also has wet floors (after rain) and the handheld camera in Play.
-SKY = {"weather": unreal.M80Weather.OVERCAST, "hour": 10.5, "wetness": 0.7, "handheld_camera": True}
-BEFORE = {"weather": unreal.M80Weather.HAZY, "hour": 10.5, "wetness": 0.0, "handheld_camera": False}
+# Three looks at the same hour: the town today ("prima"), realistic sun ("sole": the summer haze with natural colours)
+# and overcast after rain ("coperto"); the last two through the lens and with the handheld camera in Play.
+BEFORE = {"weather": unreal.M80Weather.HAZY, "hour": 10.5, "wetness": 0.0, "natural_colour": False, "handheld_camera": False}
+SUN = {"weather": unreal.M80Weather.HAZY, "hour": 10.5, "wetness": 0.0, "natural_colour": True, "handheld_camera": True}
+SKY = {"weather": unreal.M80Weather.OVERCAST, "hour": 10.5, "wetness": 0.7, "natural_colour": True, "handheld_camera": True}
 
 
 def set_sky(atmo, sky):
@@ -219,12 +221,16 @@ def steps():
         yield 30
         yield from photos("prima", vs, report)
         volume.set_editor_property("enabled", True)
+        set_sky(atmo, SUN)
+        yield 60
+        yield from photos("sole", vs, report)
         set_sky(atmo, SKY)
         yield 60
-        yield from photos("dopo", vs, report)
+        yield from photos("coperto", vs, report)
         unreal.EditorLevelLibrary.editor_set_game_view(False)
+    # Saved with the realistic sun (the candidate for the town); Tempo, Bagnato etc. switch to the others.
     volume.set_editor_property("enabled", True)
-    set_sky(atmo, SKY)
+    set_sky(atmo, SUN)
     if not m80_seq.editor_world().get_path_name().startswith(MAP + "."):
         raise RuntimeError("wrong map open before saving")
     unreal.EditorLoadingAndSavingUtils.save_current_level()

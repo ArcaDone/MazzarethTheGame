@@ -6,6 +6,7 @@ then Scripts/m80_stairs_setup.py imports them into /Game/Mazzarino80/Kit/Stairs.
   PietraLavica  dark grey basalt of the step edges, risers and copings: bush-hammered, with vesicles
   Basolato      small lava setts in rows across the stair, pale mortar joints (treads, cordonate)
   MuroConci     golden calcarenite blocks in courses, recessed mortar (walls)
+  PietraSecco   pale limestone dry-stone wall, irregular rounded stones, dark gaps (country walls)
   Cemento       grey concrete render with stains (walls, treads)
   Legno         weathered wood grain along U (fence posts and rails)
   LastreBianche white limestone slabs of the panelled roads (Strada, "Pietra bianca e lavica")
@@ -27,7 +28,7 @@ from m80_bartoli_texture import blur, fbm, grid, lin_to_srgb, pnoise, srgb_to_li
 
 OUT = os.path.join(ROOT, "Saved", "Mazzarino80", "Stairs", "Textures")
 N = 2048
-SIZE_M = {"PietraLavica": 1.0, "Basolato": 1.2, "MuroConci": 2.0, "Cemento": 2.0, "Legno": 1.0}
+SIZE_M = {"PietraLavica": 1.0, "Basolato": 1.2, "MuroConci": 2.0, "PietraSecco": 2.0, "Cemento": 2.0, "Legno": 1.0}
 
 
 def save(name, col_lin, height, rough, strength):
@@ -147,6 +148,66 @@ def muro_conci():
     height = 0.7 * face + 0.2 * fbm(N, 10, 27, 3) - 0.4 * pits - 0.7 * mortar
     rough = 0.85 + 0.1 * fbm(N, 50, 28, 2)
     save("MuroConci", col, height, rough, 5.0)
+
+
+def pietra_secco():
+    """Dry-stone field wall: pale limestone stones of every shape, laid roughly in courses, rounded and weathered,
+    with deep dark gaps and small wedge stones instead of mortar (the country walls around Mazzarino)."""
+    rnd = random.Random(31)
+    u, v = grid(N)
+    size = 2.0
+    # Seeds: loose courses 12-24 cm tall, stones 18-48 cm long, jittered; distances on the torus so it tiles.
+    seeds = []
+    y = 0.0
+    while y < size - 0.1:
+        h = rnd.uniform(0.12, 0.24)
+        x = rnd.uniform(0, 0.3)
+        while x < size - 0.1:
+            w = rnd.uniform(0.18, 0.48)
+            seeds.append(((x + w / 2) / size, (y + h / 2 + rnd.uniform(-0.03, 0.03)) / size, w / h))
+            x += w
+        y += h
+    # Warp the pixels a little so the outlines are irregular, not polygonal.
+    wu = u + 0.006 * (fbm(N, 70, 41, 3) - 0.5)
+    wv = v + 0.006 * (fbm(N, 70, 42, 3) - 0.5)
+    d1 = np.full(u.shape, 9.0)
+    d2 = np.full(u.shape, 9.0)
+    ids = np.zeros(u.shape, np.int64)
+    for k, (sx, sy, aspect) in enumerate(seeds):
+        dx = np.abs(wu - sx)
+        dx = np.minimum(dx, 1 - dx)
+        dy = np.abs(wv - sy)
+        dy = np.minimum(dy, 1 - dy)
+        # Stones longer than tall: distances along U count less.
+        d = np.sqrt((dx / np.sqrt(aspect)) ** 2 + (dy * np.sqrt(aspect)) ** 2) * size
+        nearer = d < d1
+        d2 = np.where(nearer, d1, np.minimum(d2, d))
+        ids = np.where(nearer, k, ids)
+        d1 = np.where(nearer, d, d1)
+    edge = (d2 - d1) * 0.5                                    # metres to the gap, about
+    r = block_rand(ids, 7)
+    r2 = block_rand(ids, 13)
+    pale = srgb_to_lin([216, 206, 182])
+    warm = srgb_to_lin([204, 184, 146])
+    grey = srgb_to_lin([178, 172, 158])
+    col = pale[None, None, :] * (1 - r2[..., None]) + warm * (r2[..., None] * 0.6) + grey * (r2[..., None] * 0.4)
+    col = col * (0.72 + 0.4 * r[..., None]) * (0.72 + 0.5 * fbm(N, 16, 43, 4))[..., None]
+    # Weathering: darker grime on the lower part of each stone, lichen spots, pits.
+    lich = np.clip((fbm(N, 18, 44, 3) - 0.68) * 7, 0, 1) * np.clip((block_rand(ids, 17) - 0.4) * 3, 0, 1)
+    col = col * (1 - 0.45 * lich[..., None]) + srgb_to_lin([120, 118, 92]) * (0.45 * lich[..., None])
+    pits = np.clip((pnoise(N, 3, 45) - 0.8) * 6, 0, 1)
+    grain = fbm(N, 6, 51, 3)
+    col = col * (1 - 0.3 * pits[..., None]) * (0.85 + 0.3 * grain[..., None]) * (0.9 + 0.2 * fbm(N, 22, 52, 3))[..., None]
+    # Gaps: narrow, deep and dark; the stones darken towards them (rounded, shadowed edges).
+    gap_w = 0.002 + 0.012 * fbm(N, 30, 46, 3) ** 2
+    gap = np.clip(1 - (edge - gap_w) / 0.004, 0, 1)
+    face = np.clip(edge / 0.05, 0, 1) ** 0.5
+    col = col * (0.7 + 0.3 * face[..., None])
+    dark = srgb_to_lin([52, 46, 38]) * (0.6 + 0.8 * fbm(N, 10, 48, 2))[..., None]
+    col = col * (1 - gap[..., None]) + dark * gap[..., None]
+    height = 0.9 * face + 0.3 * fbm(N, 12, 49, 3) + 0.15 * grain + 0.1 * r - 0.35 * pits - 1.0 * gap
+    rough = 0.82 + 0.1 * fbm(N, 40, 50, 2) + 0.08 * gap
+    save("PietraSecco", col, height, rough, 6.0)
 
 
 def cemento():
@@ -294,7 +355,7 @@ def lavica():
 
 if __name__ == "__main__":
     # Names on the command line make only those sets (e.g. lastre_bianche cubetti_lavici).
-    ALL = (pietra_lavica, basolato, muro_conci, cemento, legno, lavica, canna, lastre_bianche, cubetti_lavici)
+    ALL = (pietra_lavica, basolato, muro_conci, pietra_secco, cemento, legno, lavica, canna, lastre_bianche, cubetti_lavici)
     for fn in ALL:
         if len(sys.argv) < 2 or fn.__name__ in sys.argv[1:]:
             fn()

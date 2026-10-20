@@ -13,7 +13,7 @@
 namespace M80St
 {
 // Material slots of the generated mesh.
-enum ESlot : int32 { Lava = 0, Tread = 1, Wall = 2, Iron = 3, Wood = 4, Cane = 5 };
+enum ESlot : int32 { Lava = 0, Tread = 1, Wall = 2, Iron = 3, Wood = 4, Cane = 5, RedIron = 6 };
 
 // Longest straight piece: treads, walls and rails are cut so they follow curves and slopes.
 constexpr double Piece = 50.0;
@@ -29,6 +29,12 @@ UMaterialInterface* Kit(const TCHAR* Name)
 constexpr double RailingSpan = 353.8;
 constexpr double RailingPostHeight = 109.0;
 constexpr double RailingPostHalf = 21.7;
+
+// Stones of the dry-stone walls (Research/Mazzarino80/Blender/m80_pietre_secco.py, imported by Scripts/m80_muretti_prova.py).
+constexpr int32 DryStoneModels = 8;
+// The core of a dry-stone wall stands back from the stones' faces, and its top is under the row of top stones.
+constexpr double DryCoreInset = 10.0;
+constexpr double DryTopCourse = 12.0;
 
 UStaticMesh* KitMesh(const TCHAR* Name)
 {
@@ -273,6 +279,16 @@ AM80Stairs::AM80Stairs()
 	{
 		C->SetupAttachment(Path);
 		C->SetMobility(EComponentMobility::Static);
+	}
+	// Stones of a dry-stone wall: seen only (the wall's core collides).
+	for (int32 k = 0; k < M80St::DryStoneModels; ++k)
+	{
+		UInstancedStaticMeshComponent* C = CreateDefaultSubobject<UInstancedStaticMeshComponent>(*FString::Printf(TEXT("DryStone%d"), k));
+		C->SetupAttachment(Path);
+		C->SetMobility(EComponentMobility::Static);
+		C->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		C->SetCanEverAffectNavigation(false);
+		DryStones.Add(C);
 	}
 	// Houses must keep finding the real ground under a stair.
 	Tags.Add(TEXT("M80IgnoreGround"));
@@ -569,7 +585,143 @@ void AM80Stairs::BuildTreads(FM80MeshBuffer& B) const
 
 double AM80Stairs::WallGap() const
 {
-	return Kind == EM80StairsKind::WallFromSpline ? -WallThicknessCm * 0.5 : FMath::Max(20.0, double(WidthCm)) * 0.5;
+	return IsSingleWall() ? -WallThicknessCm * 0.5 : FMath::Max(20.0, double(WidthCm)) * 0.5;
+}
+
+bool AM80Stairs::IsSingleWall() const
+{
+	return Kind == EM80StairsKind::WallFromSpline || Kind == EM80StairsKind::WallFromGround;
+}
+
+double AM80Stairs::WallTopZ(double D) const
+{
+	const double Z = EdgeLineZ(D) + WallHeightCm;
+	if (TopStones.Num() == 0)
+	{
+		return Z;
+	}
+	// The stone under D: its own height, and a rounded back that drops into the joints at both ends.
+	int32 k = 0;
+	while (k + 1 < TopStones.Num() && TopStones[k + 1].X <= D)
+	{
+		++k;
+	}
+	const double S0 = TopStones[k].X, S1 = k + 1 < TopStones.Num() ? TopStones[k + 1].X : Length;
+	const double T = FMath::Clamp((D - S0) / FMath::Max(S1 - S0, 1.0), 0.0, 1.0);
+	return Z + TopStones[k].Y - TopUnevenCm * 0.35 * (1.0 - FMath::Pow(FMath::Max(0.0, FMath::Sin(UE_DOUBLE_PI * T)), 0.4));
+}
+
+bool AM80Stairs::HasStoneCourses() const
+{
+	return WallFinish == EM80StairsWallFinish::DryStone && DryStones.Num() > 0 && M80St::KitMesh(TEXT("SM_M80_PietraSecco_0")) != nullptr;
+}
+
+double AM80Stairs::CopingCm() const
+{
+	return bWallCoping && TopStones.Num() == 0 && WallFinish != EM80StairsWallFinish::DryStone ? 7.0 : 0.0;
+}
+
+void AM80Stairs::PlaceDryStones(double Side)
+{
+	TArray<FVector> Sizes;
+	for (int32 k = 0; k < DryStones.Num(); ++k)
+	{
+		UStaticMesh* M = M80St::KitMesh(*FString::Printf(TEXT("SM_M80_PietraSecco_%d"), k));
+		if (!M)
+		{
+			break;
+		}
+		DryStones[k]->SetStaticMesh(M);
+		Sizes.Add(M->GetBoundingBox().GetSize().ComponentMax(FVector(1.0)));
+	}
+	if (Sizes.Num() == 0)
+	{
+		return;
+	}
+	const FTransform& T = Path->GetComponentTransform();
+	const double HalfW = WallGap(), Th = WallThicknessCm;
+	FRandomStream Rnd(int32(GetTypeHash(GetName()) % 9973) + int32(Side * 13) + 5);
+	// One stone: Along the wall, Across it (along the right vector), H tall; bTurn lays the model across the wall.
+	auto Add = [&](double D, double Lat, double Z, double Along, double Across, double H, bool bTurn)
+	{
+		const int32 k = Rnd.RandRange(0, Sizes.Num() - 1);
+		const FVector R = RightAt(D);
+		const double Yaw = FMath::RadiansToDegrees(FMath::Atan2(-R.X, R.Y)) + (bTurn ? 90.0 : 0.0) + (Rnd.FRand() < 0.5 ? 180.0 : 0.0) + Rnd.FRandRange(-5.0, 5.0);
+		const FVector Scale = bTurn ? FVector(Across / Sizes[k].X, Along / Sizes[k].Y, H / Sizes[k].Z) : FVector(Along / Sizes[k].X, Across / Sizes[k].Y, H / Sizes[k].Z);
+		DryStones[k]->AddInstance(FTransform(FRotator(Rnd.FRandRange(-4.0, 4.0), Yaw, Rnd.FRandRange(-4.0, 4.0)), T.TransformPosition(PointAt(D, Lat, Z)), Scale), true);
+	};
+	const TArray<double> Samples = M80St::Cuts(0.0, Length, 25.0);
+	for (const double Face : {1.0, -1.0})
+	{
+		// The face plane and the lateral sign pointing out of the wall.
+		const double Lat = Face > 0 ? Side * (HalfW + Th) : Side * HalfW;
+		const double Out = Face > 0 ? Side : -Side;
+		TArray<double> Ground;
+		double Rise = 0.0;
+		for (const double D : Samples)
+		{
+			Ground.Add(GroundAt(T.TransformPosition(PointAt(D, Lat, 0.0))));
+			Rise = FMath::Max(Rise, WallTopZ(D) - Ground.Last());
+		}
+		auto GroundZ = [&](double D)
+		{
+			const double X = FMath::Clamp(D / FMath::Max(Length, 1.0) * (Samples.Num() - 1), 0.0, double(Samples.Num() - 1));
+			const int32 i = FMath::Min(int32(X), Samples.Num() - 2);
+			return FMath::Lerp(Ground[i], Ground[i + 1], X - i);
+		};
+		// Courses 13-24 cm tall following the ground, of stones 22-42 cm long, each a little out of the face, big enough to overlap and hide the core.
+		for (double Row = -4.0; Row < Rise;)
+		{
+			const double H = Rnd.FRandRange(13.0, 24.0);
+			for (double D = Rnd.FRandRange(-20.0, 0.0); D < Length;)
+			{
+				const double Len = Rnd.FRandRange(22.0, 42.0);
+				const double D0 = FMath::Max(D, 0.0), D1 = FMath::Min(D + Len, Length);
+				D += Len;
+				if (D1 - D0 < 8.0)
+				{
+					continue;
+				}
+				const double Dm = (D0 + D1) * 0.5;
+				const double Bottom = GroundZ(Dm) + Row;
+				const double Limit = WallTopZ(Dm) - M80St::DryTopCourse;
+				if (Bottom > Limit - 6.0)
+				{
+					continue;
+				}
+				const double Hs = FMath::Min(H, Limit - Bottom + 2.0);
+				const double Depth = Rnd.FRandRange(20.0, 30.0);
+				Add(Dm, Lat - Out * (Depth * 0.5 - 3.5), Bottom + Hs * 0.5, (D1 - D0) * 1.3, Depth, Hs * 1.3, false);
+			}
+			Row += H;
+		}
+	}
+	// The two ends: a column of stones laid across the whole thickness, their faces a little out of the core's end.
+	const double Mid = Side * (HalfW + Th * 0.5);
+	for (const double End : {0.0, Length})
+	{
+		const double In = End > 0.0 ? -1.0 : 1.0;
+		const double G = GroundAt(T.TransformPosition(PointAt(End, Mid, 0.0)));
+		const double Limit = WallTopZ(End) - M80St::DryTopCourse;
+		for (double Bottom = G - 4.0; Bottom < Limit - 6.0;)
+		{
+			const double H = FMath::Min(Rnd.FRandRange(13.0, 24.0), Limit - Bottom + 2.0);
+			const double Deep = Rnd.FRandRange(22.0, 30.0);
+			Add(End + In * (Deep * 0.5 - 3.5), Mid, Bottom + H * 0.5, Deep, Th * 1.04, H * 1.3, true);
+			Bottom += H;
+		}
+	}
+	// The top: stones laid across the whole thickness, on the core's top.
+	for (double D = 0.0; D < Length;)
+	{
+		const double D1 = FMath::Min(D + Rnd.FRandRange(18.0, 35.0), Length);
+		if (D1 - D >= 8.0)
+		{
+			const double Dm = (D + D1) * 0.5, H = Rnd.FRandRange(12.0, 18.0);
+			Add(Dm, Mid + Rnd.FRandRange(-2.0, 2.0), WallTopZ(Dm) - M80St::DryTopCourse - 2.0 + H * 0.5, (D1 - D) * 1.08, Th * 1.04, H, true);
+		}
+		D = D1;
+	}
 }
 
 void AM80Stairs::BuildWall(FM80MeshBuffer& B, double Side) const
@@ -580,12 +732,16 @@ void AM80Stairs::BuildWall(FM80MeshBuffer& B, double Side) const
 	const double Th = WallThicknessCm;
 	const double Use = FMath::Clamp(double(Wear), 0.0, 1.0);
 	const int32 Seed = int32(GetTypeHash(GetName()) % 9973) + int32(Side * 31);
-	const double In = Side * HalfW, OutL = Side * (HalfW + Th), Centre = Side * (HalfW + Th * 0.5);
-	const double Cop = bWallCoping ? 7.0 : 0.0, Over = 4.0;
-	// Old masonry bulges and sags: the faces are pushed in and out by up to ~1.5 cm.
-	const double Bulge = (WallFinish == EM80StairsWallFinish::Concrete ? 0.5 : 1.5) * Use;
-	const TArray<double> C = M80St::Cuts(0.0, Length, 25.0);
-	auto TopZ = [&](double D) { return EdgeLineZ(D) + WallHeightCm; };
+	// A wall of stones: only its core is built here, set back behind the stones (PlaceDryStones).
+	const bool bStones = HasStoneCourses();
+	const double Inset = bStones ? M80St::DryCoreInset : 0.0;
+	const double In = Side * (HalfW + Inset), OutL = Side * (HalfW + Th - Inset), Centre = Side * (HalfW + Th * 0.5);
+	const double Cop = CopingCm(), Over = 4.0;
+	// Old masonry bulges and sags: the faces are pushed in and out by up to ~1.5 cm (a dry-stone wall by more).
+	const double Bulge = (WallFinish == EM80StairsWallFinish::Concrete ? 0.5 : (WallFinish == EM80StairsWallFinish::DryStone ? 3.0 : 1.5)) * Use;
+	// An uneven top is sampled finely enough to draw each stone of it.
+	const TArray<double> C = M80St::Cuts(0.0, Length, TopStones.Num() && !bStones ? 6.0 : 25.0);
+	auto TopZ = [&](double D) { return WallTopZ(D) - (bStones ? M80St::DryTopCourse : 0.0); };
 	TArray<double> Bot, Tops;
 	double Tallest = 0.0;
 	for (const double D : C)
@@ -662,13 +818,16 @@ void AM80Stairs::BuildFence(FM80MeshBuffer& B, double Side, bool bOnWall) const
 	const FTransform& T = Path->GetComponentTransform();
 	auto Local = [&T](const FVector& V) { return FVector3d(T.InverseTransformVectorNoScale(V)); };
 	const double HalfW = WallGap();
-	const double Lat = bOnWall ? Side * (HalfW + WallThicknessCm * 0.5) : Side * (HalfW - 10.0);
+	// On the wall: along its middle; without a wall, at the side of the steps, or on the spline for a single wall.
+	const double Lat = bOnWall ? Side * (HalfW + WallThicknessCm * 0.5) : (IsSingleWall() ? 0.0 : Side * (HalfW - 10.0));
 	const double H = FenceHeightCm;
-	const double Cop = bWallCoping ? 7.0 : 0.0;
+	const double Cop = CopingCm();
 	const double Use = FMath::Clamp(double(Wear), 0.0, 1.0);
-	// Feet of the fence: on the wall's top, or on the steps; the rails follow the edge line.
-	auto Base = [&](double D) { return bOnWall ? EdgeLineZ(D) + WallHeightCm + Cop : SurfaceZ(D); };
-	auto Line = [&](double D) { return bOnWall ? Base(D) : EdgeLineZ(D); };
+	// Feet of the fence: on the wall's top (on the stone under each post), or on the steps; the rails follow the
+	// edge line, above the highest stones of an uneven top.
+	auto Base = [&](double D) { return bOnWall ? WallTopZ(D) + Cop : SurfaceZ(D); };
+	const double Lift = bOnWall ? (TopStones.Num() ? TopUnevenCm * 0.5 : 0.0) + (HasStoneCourses() ? 6.0 : 0.0) : 0.0;
+	auto Line = [&](double D) { return bOnWall ? EdgeLineZ(D) + WallHeightCm + Cop + Lift : EdgeLineZ(D); };
 	auto P = [&](double D, double Z, double Off = 0.0) { return FVector3d(PointAt(D, Lat + Side * Off, Z)); };
 	auto RailPts = [&](double D0, double D1, double Offset, double Off = 0.0)
 	{
@@ -769,6 +928,26 @@ void AM80Stairs::BuildFence(FM80MeshBuffer& B, double Side, bool bOnWall) const
 		}
 		break;
 	}
+	case EM80FenceKind::RedIronRails:
+	{
+		// Red-painted box section: wide posts with slots, the three flat rails running through them from the first
+		// post to the last, following the slope; the paint worn to rust is the material's.
+		// Square posts (a vertical sweep does not keep its section turned to the fence), wider than the rails.
+		const M80St::FSection PostS = M80St::RoundRect(7.0, 7.0, 0.6, 2), RailS = M80St::RoundRect(2.4, 6.0, 0.5, 2);
+		const double End = 3.5;
+		for (int32 i = 0; i <= Posts; ++i)
+		{
+			const double D = FMath::Clamp(Length * i / Posts, End, Length - End);
+			const FVector3d Lean = Local(RightAt(D) * Rnd.FRandRange(-0.8, 0.8) * Use);
+			M80St::Sweep(B, M80St::RedIron, {P(D, Base(D) - (bOnWall ? 2.0 : 15.0)), P(D, Line(D) + H + 3.0) + Lean}, PostS, false, true, Rnd.FRandRange(0.f, 20.f));
+		}
+		for (const double Z : {H - 5.0, H * 0.62, H * 0.28})
+		{
+			// Rails end inside the end posts.
+			M80St::Sweep(B, M80St::RedIron, RailPts(End * 0.5, Length - End * 0.5, Z), RailS, true, true, Rnd.FRandRange(0.f, 20.f));
+		}
+		break;
+	}
 	default:
 		break;
 	}
@@ -784,10 +963,10 @@ void AM80Stairs::PlaceMadonnaRailing(double Side, bool bOnWall)
 	}
 	RailingPosts->SetStaticMesh(PostMesh);
 	RailingBays->SetStaticMesh(BayMesh);
-	const double Lat = bOnWall ? Side * (WallGap() + WallThicknessCm * 0.5) : Side * (WallGap() - 10.0);
-	const double Cop = bWallCoping ? 7.0 : 0.0;
+	const double Lat = bOnWall ? Side * (WallGap() + WallThicknessCm * 0.5) : (IsSingleWall() ? 0.0 : Side * (WallGap() - 10.0));
+	const double Cop = CopingCm();
 	const double Scale = FMath::Max(0.2, double(FenceHeightCm) / M80St::RailingPostHeight);
-	auto Base = [&](double D) { return bOnWall ? EdgeLineZ(D) + WallHeightCm + Cop : SurfaceZ(D); };
+	auto Base = [&](double D) { return bOnWall ? WallTopZ(D) + Cop : SurfaceZ(D); };
 	// Posts at both ends and evenly between them, about the model's own spacing apart: never an open end.
 	const double Inset = FMath::Min(M80St::RailingPostHalf * Scale, Length * 0.5);
 	const double Run = FMath::Max(0.0, Length - 2.0 * Inset);
@@ -829,8 +1008,16 @@ void AM80Stairs::Rebuild()
 			C->ClearInstances();
 		}
 	}
+	for (UInstancedStaticMeshComponent* C : DryStones)
+	{
+		if (C)
+		{
+			C->ClearInstances();
+		}
+	}
 	Treads.Reset();
 	EdgeLine.Reset();
+	TopStones.Reset();
 	StepCount = LandingCount = 0;
 	RealRiserCm = RealTreadCm = 0.f;
 	Length = Path->GetSplineLength();
@@ -848,7 +1035,7 @@ void AM80Stairs::Rebuild()
 	const double Rise = FMath::Abs(Dz);
 	const bool bUp = Dz >= 0.0;
 
-	if (Kind == EM80StairsKind::FenceOnly || Kind == EM80StairsKind::WallFromSpline)
+	if (Kind == EM80StairsKind::FenceOnly || IsSingleWall())
 	{
 		// Walls and fences on the ground, or (from the spline) with their top on the spline.
 		for (const double D : M80St::Cuts(0.0, Length))
@@ -935,8 +1122,18 @@ void AM80Stairs::Rebuild()
 		}
 	}
 
+	// Uneven top: stones 25-55 cm long, each at its own height.
+	if (TopUnevenCm >= 1.f)
+	{
+		FRandomStream Rnd(int32(GetTypeHash(GetName()) % 9973) + 77);
+		for (double D = 0.0; D < Length - 5.0; D += Rnd.FRandRange(25.0, 55.0))
+		{
+			TopStones.Add(FVector2D(D, Rnd.FRandRange(-0.5, 0.5) * TopUnevenCm));
+		}
+	}
+
 	FM80MeshBuffer B;
-	if (Kind != EM80StairsKind::FenceOnly && Kind != EM80StairsKind::WallFromSpline)
+	if (Kind != EM80StairsKind::FenceOnly && !IsSingleWall())
 	{
 		BuildTreads(B);
 	}
@@ -946,12 +1143,17 @@ void AM80Stairs::Rebuild()
 	};
 	for (const double S : {-1.0, 1.0})
 	{
-		// The wall from the spline is a single wall on the spline itself.
-		const bool bFromSpline = Kind == EM80StairsKind::WallFromSpline;
-		const bool bWall = bFromSpline ? S > 0 : Has(WallSides, S) && (Kind != EM80StairsKind::FenceOnly || WallHeightCm > 1.f);
+		// The wall from the spline (or from the ground) is a single wall on the spline itself.
+		const bool bFromSpline = IsSingleWall();
+		const bool bWall = bFromSpline ? S > 0 && (Kind == EM80StairsKind::WallFromSpline || WallHeightCm > 1.f)
+			: Has(WallSides, S) && (Kind != EM80StairsKind::FenceOnly || WallHeightCm > 1.f);
 		if (bWall)
 		{
 			BuildWall(B, S);
+			if (HasStoneCourses())
+			{
+				PlaceDryStones(S);
+			}
 		}
 		const bool bFence = FenceKind != EM80FenceKind::None && (bFromSpline ? S > 0 : Has(FenceSides, S));
 		if (bFence && FenceKind == EM80FenceKind::MadonnaRailing)
@@ -976,9 +1178,11 @@ void AM80Stairs::Rebuild()
 	B.ToDynamicMesh(Dyn);
 	Mesh->SetMesh(MoveTemp(Dyn));
 	const TCHAR* TreadName = TreadFinish == EM80TreadFinish::Setts ? TEXT("MI_M80_Basolato") : (TreadFinish == EM80TreadFinish::Lava ? TEXT("MI_M80_PietraLavica") : TEXT("MI_M80_Cemento"));
-	const TCHAR* WallName = WallFinish == EM80StairsWallFinish::Stone ? TEXT("MI_M80_MuroConci") : (WallFinish == EM80StairsWallFinish::Concrete ? TEXT("MI_M80_Cemento") : TEXT("MI_M80_PietraLavica"));
+	const TCHAR* WallNames[] = {TEXT("MI_M80_MuroConci"), TEXT("MI_M80_Cemento"), TEXT("MI_M80_PietraLavica"), TEXT("MI_M80_PietraSecco")};
+	const TCHAR* WallName = WallNames[FMath::Clamp(int32(WallFinish), 0, 3)];
 	Mesh->ConfigureMaterialSet({M80St::Pick(LavaMaterial, TEXT("MI_M80_PietraLavica")), M80St::Pick(TreadMaterial, TreadName), M80St::Pick(WallMaterial, WallName),
-		M80St::Pick(IronMaterial, TEXT("MI_M80_Ferro")), M80St::Pick(WoodMaterial, TEXT("MI_M80_Legno")), M80St::Pick(CaneMaterial, TEXT("MI_M80_Canne"))});
+		M80St::Pick(IronMaterial, TEXT("MI_M80_Ferro")), M80St::Pick(WoodMaterial, TEXT("MI_M80_Legno")), M80St::Pick(CaneMaterial, TEXT("MI_M80_Canne")),
+		M80St::Pick(RedIronMaterial, TEXT("MI_M80_FerroRosso"))});
 	Mesh->SetComplexAsSimpleCollisionEnabled(bCollision, true);
 	Mesh->SetCollisionProfileName(bCollision ? TEXT("BlockAll") : TEXT("NoCollision"));
 }

@@ -27,7 +27,7 @@ TOOLS = unreal.AssetToolsHelpers.get_asset_tools()
 CUBE = "/Engine/BasicShapes/Cube"
 # Own texture sets (m80_stairs_textures.py): metres per repeat (the meshes have one UV unit per metre).
 # Lavica = the setts of the hand-made lava road, made seamless.
-SETS = {"PietraLavica": 1.0, "Basolato": 1.2, "MuroConci": 2.0, "Cemento": 2.0, "Legno": 1.0, "Lavica": 1.4, "Canna": 1.0}
+SETS = {"PietraLavica": 1.0, "Basolato": 1.2, "MuroConci": 2.0, "PietraSecco": 2.0, "Cemento": 2.0, "Legno": 1.0, "Lavica": 1.4, "Canna": 1.0}
 # Kit materials: own set (master M_M80_KitPietra) or scanned Megascans surface (child of its instance):
 # name -> (source, tiling per metre, albedo tint, rotation in turns).
 MS = "/Game/Megascans/Surfaces/"
@@ -40,11 +40,13 @@ KIT_MATERIALS = {
     "Legno": (MS + "Flaked_Paint_Wooden_Panel_tlsmbafdy/MI_Flaked_Paint_Wooden_Panel_tlsmbafdy_4K", 0.7, (1.0, 1.0, 1.0), 0.25),
     "Ferro": (MS + "Rusty_Painted_Metal_Sheet_tj2xahsbw/MI_Rusty_Painted_Metal_Sheet_tj2xahsbw_2K", 1.5, (0.35, 0.35, 0.35), 0.0),
     "Canne": ("Canna", None, None, 0.0),
+    "PietraSecco": ("PietraSecco", None, None, 0.0),
+    "FerroRosso": (MS + "Rusty_Painted_Metal_Sheet_tj2xahsbw/MI_Rusty_Painted_Metal_Sheet_tj2xahsbw_2K", 1.5, (0.85, 0.36, 0.26), 0.0),
 }
 COLOURS = {}
 
 
-def import_textures(names=("Lavica", "Canna")):
+def import_textures(names=("Lavica", "Canna", "PietraSecco")):
     """Imports the texture sets in use (the generated stone/wood sets of the first version are kept)."""
     tasks = []
     for name in names:
@@ -289,7 +291,9 @@ def steps():
         yield 2
 
 
-if os.environ.get("M80_STAIRS_ONLY_MATERIALS") == "1":
+if __name__ != "__main__":
+    pass  # imported for its helpers (m80_muretti_prova.py)
+elif os.environ.get("M80_STAIRS_ONLY_MATERIALS") == "1":
     # Just (re)make the kit materials.
     try:
         materials()

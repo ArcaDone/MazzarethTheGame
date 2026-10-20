@@ -1,6 +1,7 @@
 #include "M80PlayerController.h"
 #include "M80PlayerCamera.h"
 #include "Kismet/GameplayStatics.h"
+#include "Engine/AssetManager.h"
 #include "M80Climb.h"
 #include "M80TargetDummy.h"
 #include "EngineUtils.h"
@@ -77,6 +78,20 @@ AM80PlayerController::AM80PlayerController()
 	PlayerCameraManagerClass = AM80PlayerCameraManager::StaticClass();
 	static ConstructorHelpers::FObjectFinderOptional<UAnimSequenceBase> Seated(TEXT("/Game/Mazzarino80/Player/A_M80_Seduto_Guida.A_M80_Seduto_Guida"));
 	SeatedAnim = Seated.Get();
+}
+
+void AM80PlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+	// Each of these stalled a frame on the disk the first time it was needed in the packaged game.
+	TArray<FSoftObjectPath> Assets = {GetUpBackAnim.ToSoftObjectPath(), GetUpFrontAnim.ToSoftObjectPath(), RollAnim.ToSoftObjectPath(),
+		MoveAction.ToSoftObjectPath(), SprintAction.ToSoftObjectPath(), Sunglasses.ToSoftObjectPath()};
+	for (const TCHAR* Name : {TEXT("Scende"), TEXT("Sale"), TEXT("Siediti"), TEXT("Seduto"), TEXT("Alzati")})
+	{
+		Assets.Add(FSoftObjectPath(FString::Printf(TEXT("/Game/Mazzarino80/Personaggi/Animazioni/A_M80_Folla_%s.A_M80_Folla_%s"), Name, Name)));
+	}
+	Assets.RemoveAll([](const FSoftObjectPath& P) { return P.IsNull(); });
+	Preloaded = UAssetManager::GetStreamableManager().RequestAsyncLoad(Assets);
 }
 
 void AM80PlayerController::SetupInputComponent()

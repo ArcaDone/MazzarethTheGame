@@ -2,6 +2,7 @@
 #include "M80Vitals.h"
 #include "M80Pedone.h"
 #include "AnimationRuntime.h"
+#include "Engine/AssetManager.h"
 #include "Engine/SkeletalMesh.h"
 #include "Components/DecalComponent.h"
 #include "Components/PointLightComponent.h"
@@ -169,6 +170,25 @@ UM80WeaponInventory::UM80WeaponInventory()
 void UM80WeaponInventory::BeginPlay()
 {
 	Super::BeginPlay();
+	// The first shot, blow or pickup stalled a frame on the disk in the packaged game: all loaded in the background now.
+	TArray<FSoftObjectPath> Assets;
+	for (const TCHAR* Path : {ShotSound, HoleDecal, HitDust, HitMetal, HitBlood, TEXT("/Game/Mazzarino80/Audio/M80_Colpo.M80_Colpo"),
+		TEXT("/Game/Mazzarino80/Weapons/M_M80_Bagliore.M_M80_Bagliore")})
+	{
+		Assets.Add(FSoftObjectPath(Path));
+	}
+	for (int32 i = 0; i < int32(EM80Weapon::Count); ++i)
+	{
+		const FM80WeaponSpec& S = M80WeaponSpec(EM80Weapon(i));
+		for (const TCHAR* Path : {S.Mesh, S.FireSound})
+		{
+			if (Path)
+			{
+				Assets.AddUnique(FSoftObjectPath(Path));
+			}
+		}
+	}
+	Preloaded = UAssetManager::GetStreamableManager().RequestAsyncLoad(Assets);
 	UpdateHeldMesh();
 }
 

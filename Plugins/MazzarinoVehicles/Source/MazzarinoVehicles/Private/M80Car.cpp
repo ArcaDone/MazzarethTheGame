@@ -5,6 +5,7 @@
 #include "Components/AudioComponent.h"
 #include "Components/PointLightComponent.h"
 #include "Components/SpotLightComponent.h"
+#include "Engine/AssetManager.h"
 #include "Engine/DamageEvents.h"
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
@@ -167,6 +168,21 @@ void AM80Car::BeginPlay()
 {
 	Super::BeginPlay();
 	Health = MaxHealth;
+	// Loaded by path the first time they are needed, each was a frame stalled on the disk in the packaged game (breaking
+	// a window, getting on): loaded in the background now, before they are needed, and kept.
+	TArray<FSoftObjectPath> Assets;
+	for (const TCHAR* Path : {EngineSound, HornSound, GlassSound, BoomSound, CrashSound, SmokeLight, SmokeDark, FireFx, BoomFx, GlassFx, BurntMat})
+	{
+		Assets.Add(FSoftObjectPath(Path));
+	}
+	for (const TSoftObjectPtr<UAnimSequenceBase>* Clip : {&RidePose, &MountClip, &DismountClip, &PickUpClip})
+	{
+		if (!Clip->IsNull())
+		{
+			Assets.Add(Clip->ToSoftObjectPath());
+		}
+	}
+	Preloaded = UAssetManager::GetStreamableManager().RequestAsyncLoad(Assets);
 	USkeletalMeshComponent* Body = GetMesh();
 	Body->OnComponentHit.AddUniqueDynamic(this, &AM80Car::OnBodyHit);
 	// On every body of its physics asset (the component's own flag does not reach them): crashes are felt.

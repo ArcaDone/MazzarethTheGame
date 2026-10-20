@@ -4,6 +4,7 @@
 #include "WheeledVehiclePawn.h"
 #include "ChaosVehicleWheel.h"
 #include "ChaosWheeledVehicleMovementComponent.h"
+#include "Engine/StreamableManager.h"
 #include "M80Car.generated.h"
 
 class USpringArmComponent;
@@ -314,6 +315,9 @@ private:
 	void UpdateLightsAndSound(float DeltaSeconds);
 	UFUNCTION()
 	void OnBodyHit(UPrimitiveComponent* HitComp, AActor* Other, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	/** The clips, sounds and effects loaded by path when first needed, loaded in the background at BeginPlay and kept. */
+	TSharedPtr<FStreamableHandle> Preloaded;
 
 	UPROPERTY(Transient)
 	TObjectPtr<UAudioComponent> EngineAudio;

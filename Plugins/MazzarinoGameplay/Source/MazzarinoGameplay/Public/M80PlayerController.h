@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "Engine/StreamableManager.h"
 #include "M80PlayerController.generated.h"
 
 class ACharacter;
@@ -44,6 +45,7 @@ class MAZZARINOGAMEPLAY_API AM80PlayerController : public APlayerController
 public:
 	AM80PlayerController();
 
+	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
 	virtual void PlayerTick(float DeltaTime) override;
 	virtual void OnPossess(APawn* InPawn) override;
@@ -208,6 +210,10 @@ public:
 	TSoftObjectPtr<UStaticMesh> Sunglasses = TSoftObjectPtr<UStaticMesh>(FSoftObjectPath(TEXT("/Game/Mazzarino80/Player/SM_M80_Occhiali.SM_M80_Occhiali")));
 
 private:
+	/** The player's clips (getting up, rolling, getting in and out, sitting), input actions and sunglasses, loaded by
+	 *  path when first needed: loaded in the background at BeginPlay and kept. */
+	TSharedPtr<FStreamableHandle> Preloaded;
+
 	void PutOnSunglasses(ACharacter* C);
 	void StartGetIn(AM80Car* Target);
 	void FinishGetIn();

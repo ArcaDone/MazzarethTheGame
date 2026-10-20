@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "GameFramework/Actor.h"
+#include "Engine/StreamableManager.h"
 #include "M80Weapons.generated.h"
 
 class UStaticMesh;
@@ -206,6 +207,9 @@ private:
 
 	UPROPERTY(Transient)
 	TObjectPtr<UStaticMeshComponent> Held;
+
+	/** Weapon meshes, sounds, hit effects and decals (loaded by path when first used), loaded in the background. */
+	TSharedPtr<FStreamableHandle> Preloaded;
 
 	int32 Current = 0;
 	TArray<int32> Chosen;   // per sector: the weapon index last chosen, or -1

@@ -7,6 +7,7 @@
 class UPointLightComponent;
 class UStaticMeshComponent;
 class UStaticMesh;
+class UMaterialInterface;
 
 UENUM(BlueprintType)
 enum class EM80LampKind : uint8
@@ -14,7 +15,8 @@ enum class EM80LampKind : uint8
 	Wall UMETA(DisplayName = "A muro (braccio in ferro battuto)"),
 	Pole UMETA(DisplayName = "A palo (candelabro a tre luci)"),
 	City UMETA(DisplayName = "Lamp_city (tre lanterne sui bracci)"),
-	Garden UMETA(DisplayName = "Lampione della Madonna (lanterna su colonnina)")
+	Garden UMETA(DisplayName = "Lampione della Madonna (lanterna su colonnina)"),
+	Whip UMETA(DisplayName = "A frusta (palo stradale anni '80)")
 };
 
 /**
@@ -26,6 +28,9 @@ enum class EM80LampKind : uint8
  * lamp goes against the wall). Two more kinds are the recovered lamps of the old project (Lamp_city and the
  * Madonna's Lampione, copies in Kit/Lamps made by Scripts/m80_lampioni_migrati.py with the night glass); they stand
  * on the ground and collide.
+ * "A frusta" is the steel road lamp of the 1970s-80s outskirts (Research/Mazzarino80/Blender/m80_lampione_frusta.py):
+ * a tapered pole of the chosen height bending into an arm over the road (+X), with an aluminium luminaire and a
+ * glass bowl; high-pressure sodium (orange) or mercury (bluish white) light.
  */
 UCLASS(meta = (DisplayName = "Lampione (Mazzarino)"))
 class MAZZARINOGAMEPLAY_API AM80StreetLight : public AActor
@@ -44,6 +49,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Lampione")
 	TObjectPtr<UPointLightComponent> Light;
 
+	/** The straight pole of "A frusta", stretched to the chosen height (the arm and luminaire are the Lantern). */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Lampione")
+	TObjectPtr<UStaticMeshComponent> Pole;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lampione", meta = (DisplayName = "Tipo"))
 	EM80LampKind Kind = EM80LampKind::Wall;
 
@@ -58,6 +67,14 @@ public:
 	/** Pole lamps light a whole square: this multiplies brightness and reach. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lampione", meta = (DisplayName = "Fattore palo", ClampMin = "1"))
 	float PoleScale = 2.5f;
+
+	/** Height of the luminaire above the ground (the top of the arm). */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lampione", meta = (DisplayName = "Altezza palo (m)", ClampMin = "4", ClampMax = "14", EditCondition = "Kind == EM80LampKind::Whip", EditConditionHides))
+	float PoleHeightM = 9.f;
+
+	/** Mercury vapour (the older bluish-white lamps) instead of high-pressure sodium (orange). */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lampione", meta = (DisplayName = "Luce al mercurio (bianca)", EditCondition = "Kind == EM80LampKind::Whip", EditConditionHides))
+	bool bMercury = false;
 
 	/** Broken or switched-off lamp (a few, for realism). */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lampione", meta = (DisplayName = "Spento (guasto)"))
@@ -85,6 +102,19 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UStaticMesh> GardenModel;
+
+	UPROPERTY()
+	TObjectPtr<UStaticMesh> WhipPoleModel;
+
+	UPROPERTY()
+	TObjectPtr<UStaticMesh> WhipHeadModel;
+
+	/** Glass of the whip's luminaire: sodium or mercury colour. */
+	UPROPERTY()
+	TObjectPtr<UMaterialInterface> SodiumGlass;
+
+	UPROPERTY()
+	TObjectPtr<UMaterialInterface> MercuryGlass;
 
 	/** Brightness and reach of the kind against a wall lamp. */
 	float KindScale() const;

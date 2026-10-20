@@ -3,6 +3,7 @@
 #include "Components/PointLightComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
+#include "Materials/MaterialInterface.h"
 #include "EngineUtils.h"
 #include "UObject/ConstructorHelpers.h"
 
@@ -28,6 +29,22 @@ AM80StreetLight::AM80StreetLight()
 	CityModel = CityMesh.Succeeded() ? CityMesh.Object : nullptr;
 	GardenModel = GardenMesh.Succeeded() ? GardenMesh.Object : nullptr;
 	Lantern->SetStaticMesh(WallModel);
+
+	// The whip lamp (Scripts/m80_lampione_frusta_setup.py): a pole stretched to the height, the head on top.
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> WhipPoleMesh(TEXT("/Game/Mazzarino80/Kit/Lamps/SM_M80_Frusta_Palo.SM_M80_Frusta_Palo"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> WhipHeadMesh(TEXT("/Game/Mazzarino80/Kit/Lamps/SM_M80_Frusta_Testa.SM_M80_Frusta_Testa"));
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface> Sodium(TEXT("/Game/Mazzarino80/Kit/Lamps/MI_M80_Frusta_VetroSodio.MI_M80_Frusta_VetroSodio"));
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface> Mercury(TEXT("/Game/Mazzarino80/Kit/Lamps/MI_M80_Frusta_VetroMercurio.MI_M80_Frusta_VetroMercurio"));
+	WhipPoleModel = WhipPoleMesh.Succeeded() ? WhipPoleMesh.Object : nullptr;
+	WhipHeadModel = WhipHeadMesh.Succeeded() ? WhipHeadMesh.Object : nullptr;
+	SodiumGlass = Sodium.Succeeded() ? Sodium.Object : nullptr;
+	MercuryGlass = Mercury.Succeeded() ? Mercury.Object : nullptr;
+	Pole = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Pole"));
+	Pole->SetupAttachment(Root);
+	Pole->SetMobility(EComponentMobility::Static);
+	Pole->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Pole->SetCanEverAffectNavigation(false);
+	Pole->SetVisibility(false);
 
 	// Warm sodium-like light, no shadows: dozens of lamps stay cheap at night.
 	Light = CreateDefaultSubobject<UPointLightComponent>(TEXT("Light"));
@@ -73,16 +90,60 @@ float AM80StreetLight::KindScale() const
 	case EM80LampKind::Pole: return PoleScale;
 	case EM80LampKind::City: return PoleScale * 0.8f;  // three lanterns, lower than the candelabra
 	case EM80LampKind::Garden: return 0.6f;            // one small lantern at head height
+	case EM80LampKind::Whip: return 4.f * FMath::Square(PoleHeightM / 9.f); // the road below, 9 m down
 	default: return 1.f;
 	}
 }
 
 void AM80StreetLight::PlaceLight()
 {
-	UStaticMesh* Kinds[] = {WallModel.Get(), PoleModel.Get(), CityModel.Get(), GardenModel.Get()};
-	UStaticMesh* Model = MeshOverride ? MeshOverride.Get() : Kinds[FMath::Clamp(int32(Kind), 0, 3)];
+	// The whip's assets may be made after the class was loaded (the setup script imports them in the same session).
+	if (Kind == EM80LampKind::Whip && !WhipHeadModel)
+	{
+		WhipPoleModel = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/Mazzarino80/Kit/Lamps/SM_M80_Frusta_Palo.SM_M80_Frusta_Palo"), nullptr, LOAD_NoWarn);
+		WhipHeadModel = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/Mazzarino80/Kit/Lamps/SM_M80_Frusta_Testa.SM_M80_Frusta_Testa"), nullptr, LOAD_NoWarn);
+		SodiumGlass = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/Mazzarino80/Kit/Lamps/MI_M80_Frusta_VetroSodio.MI_M80_Frusta_VetroSodio"), nullptr, LOAD_NoWarn);
+		MercuryGlass = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/Mazzarino80/Kit/Lamps/MI_M80_Frusta_VetroMercurio.MI_M80_Frusta_VetroMercurio"), nullptr, LOAD_NoWarn);
+	}
+	UStaticMesh* Kinds[] = {WallModel.Get(), PoleModel.Get(), CityModel.Get(), GardenModel.Get(), WhipHeadModel.Get()};
+	UStaticMesh* Model = MeshOverride ? MeshOverride.Get() : Kinds[FMath::Clamp(int32(Kind), 0, 4)];
 	Lantern->SetStaticMesh(Model);
+	Lantern->SetRelativeLocation(FVector::ZeroVector);
 	Light->SetAttenuationRadius(1600.f * FMath::Sqrt(KindScale()));
+	Light->SetTemperature(2300.f);
+	const bool bWhip = Kind == EM80LampKind::Whip;
+	// The whip's glass colour is an override of its "Vetro" slot: dropped when the lamp becomes another kind.
+	for (int32 i = 0; i < Lantern->OverrideMaterials.Num(); ++i)
+	{
+		const UMaterialInterface* M = Lantern->OverrideMaterials[i];
+		if (M && (M == SodiumGlass || M == MercuryGlass))
+		{
+			Lantern->SetMaterial(i, nullptr);
+		}
+	}
+	// A whip lamp is seen from far down the road.
+	Lantern->SetCullDistance(bWhip ? 0.f : 8000.f);
+	Pole->SetCullDistance(0.f);
+	Pole->SetVisibility(bWhip);
+	Pole->SetStaticMesh(bWhip ? WhipPoleModel.Get() : nullptr);
+	Pole->SetCollisionEnabled(bWhip ? ECollisionEnabled::QueryAndPhysics : ECollisionEnabled::NoCollision);
+	Pole->SetCollisionProfileName(bWhip ? TEXT("BlockAll") : TEXT("NoCollision"));
+	if (bWhip && !MeshOverride)
+	{
+		// Measured on the model (M80_LampioneFrusta.json): the head's luminaire sits 206 cm above its joint with
+		// the pole and 175 cm out along +X; the 1 m pole is stretched to bring it to the chosen height.
+		const double PoleCm = FMath::Max(100.0, PoleHeightM * 100.0 - 206.0);
+		Pole->SetRelativeScale3D(FVector(1, 1, PoleCm / 100.0));
+		Lantern->SetRelativeLocation(FVector(0, 0, PoleCm));
+		const int32 GlassSlot = Lantern->GetMaterialIndex(TEXT("Vetro"));
+		if (GlassSlot != INDEX_NONE)
+		{
+			Lantern->SetMaterial(GlassSlot, bMercury ? MercuryGlass.Get() : SodiumGlass.Get());
+		}
+		Light->SetRelativeLocation(FVector(175, 0, PoleCm + 194));
+		Light->SetTemperature(bMercury ? 4200.f : 2000.f);
+		return;
+	}
 	// The recovered lamps stand in the street: they block like a post (box collision on their meshes).
 	const bool bStanding = Kind == EM80LampKind::City || Kind == EM80LampKind::Garden;
 	Lantern->SetCollisionEnabled(bStanding ? ECollisionEnabled::QueryAndPhysics : ECollisionEnabled::NoCollision);

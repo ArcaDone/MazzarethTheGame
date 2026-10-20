@@ -367,6 +367,12 @@ private:
 	void HoldWithoutGround();
 	float GroundCheck = 0.f;
 	bool bHeldNoGround = false;
+	/** Away from the player the car rests with no vehicle physics (no suspension), see Tick; back within reach, its
+	 *  vehicle is built again. */
+	void UpdateDormant();
+	void SetDormant(bool bNow);
+	bool bDormant = false;
+	float DormantCheck = 0.f;
 	float WheelbaseCm = 220.f;
 	float GripG = 0.85f;
 	bool bHandbrakeHeld = false;

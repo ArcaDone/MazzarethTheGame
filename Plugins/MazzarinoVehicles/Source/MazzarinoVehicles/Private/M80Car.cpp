@@ -984,8 +984,22 @@ void AM80Car::Tick(float DeltaSeconds)
 		}
 	}
 
-	// Cars are always loaded (see the constructor): parked away from the player, the ground under one can be
-	// streamed out or not in yet, and it would fall through the world.
+	// Cars are always loaded (see the constructor), the ground streams with the player. Chaos keeps a pointer to the body
+	// each wheel stands on and does not clear it when that body is streamed out (UE 5.8): the packaged game crashed in
+	// the suspension constraints after the player left the 500 and ran off. Away from the player a car rests with no
+	// vehicle physics; within reach again (its ground streamed in long before) its vehicle is built again.
+	DormantCheck -= DeltaSeconds;
+	if (DormantCheck <= 0.f)
+	{
+		DormantCheck = 0.5f;
+		UpdateDormant();
+	}
+	if (bDormant)
+	{
+		return;
+	}
+
+	// Parked near the player, the ground under a car may not be streamed in yet: it would fall through the world.
 	GroundCheck -= DeltaSeconds;
 	if (!bPickingUp && (GroundCheck <= 0.f || (bHeldNoGround && GetController())))
 	{
@@ -1027,6 +1041,60 @@ void AM80Car::Tick(float DeltaSeconds)
 	{
 		UpsideDownTime = 0.f;
 	}
+}
+
+void AM80Car::UpdateDormant()
+{
+	// Well inside World Partition's loading range (192 m): ground is only streamed out further away.
+	constexpr double SleepCm = 12000.0;
+	constexpr double WakeCm = 10000.0;
+	const APawn* Player = UGameplayStatics::GetPlayerPawn(this, 0);
+	if (!Player || IsPlayerControlled() || bPickingUp)
+	{
+		SetDormant(false);
+		return;
+	}
+	const double Distance = FVector::Dist2D(Player->GetActorLocation(), GetActorLocation());
+	if (Distance > SleepCm)
+	{
+		SetDormant(true);
+	}
+	else if (Distance < WakeCm)
+	{
+		SetDormant(false);
+	}
+}
+
+void AM80Car::SetDormant(bool bNow)
+{
+	if (bDormant == bNow)
+	{
+		return;
+	}
+	bDormant = bNow;
+	USkeletalMeshComponent* Body = GetMesh();
+	UChaosWheeledVehicleMovementComponent* M = Movement(this);
+	if (bNow)
+	{
+		// Removes the vehicle with its suspension constraints (and rebuilds the body without them).
+		if (M)
+		{
+			M->DestroyPhysicsState();
+		}
+		Body->SetSimulatePhysics(false);
+		UE_LOG(LogTemp, Verbose, TEXT("%s: at rest, away from the player"), *GetName());
+		return;
+	}
+	Body->SetSimulatePhysics(!bHeldNoGround);
+	if (M)
+	{
+		M->CreatePhysicsState();
+		if (!GetController())
+		{
+			M->SetHandbrakeInput(true);
+		}
+	}
+	UE_LOG(LogTemp, Verbose, TEXT("%s: vehicle physics back, the player is near"), *GetName());
 }
 
 void AM80Car::HoldWithoutGround()

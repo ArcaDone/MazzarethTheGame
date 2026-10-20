@@ -19,7 +19,9 @@ enum class EM80Weather : uint8
 	Clear UMETA(DisplayName = "Sereno"),
 	Hazy UMETA(DisplayName = "Afa estiva (foschia)"),
 	Scirocco UMETA(DisplayName = "Scirocco (polvere)"),
-	Cloudy UMETA(DisplayName = "Nuvoloso")
+	Cloudy UMETA(DisplayName = "Nuvoloso"),
+	/** Grey sky all over (no volumetric clouds: a high, even haze), the sun only a soft glow, flat light. */
+	Overcast UMETA(DisplayName = "Coperto")
 };
 
 /**

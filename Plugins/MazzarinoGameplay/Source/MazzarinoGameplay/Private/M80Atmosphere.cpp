@@ -39,6 +39,8 @@ FWeatherLook LookFor(EM80Weather Weather)
 		return {0.02f, FLinearColor(0.1f, 0.3f, 0.75f), 0.008f, 0.012f, 3.f, 0.35f, FLinearColor(1.f, 0.93f, 0.8f), 0.7f};
 	case EM80Weather::Cloudy:
 		return {0.006f, FLinearColor(0.44f, 0.44f, 0.44f), 0.003f, 0.008f, 1.5f, 0.8f, FLinearColor(0.96f, 0.98f, 1.f), 0.55f};
+	case EM80Weather::Overcast:
+		return {0.004f, FLinearColor(0.44f, 0.44f, 0.44f), 0.012f, 0.012f, 1.5f, 1.f, FLinearColor(0.97f, 0.99f, 1.f), 0.12f};
 	case EM80Weather::Hazy:
 	default:
 		// Sicilian summer of the '80s: blue sky with a few fair weather clouds, warm sandy haze on the horizon
@@ -188,6 +190,9 @@ void AM80Atmosphere::ApplyAt(float AtHour)
 	SunElevation = Elevation;
 	const FWeatherLook W = LookFor(Weather);
 	const float K = FMath::Clamp(LookStrength, 0.f, 1.5f);
+	// Overcast: the sky is a high, even haze (fog reaching up), the sun a soft glow through it, no summer warmth.
+	const bool bOvercast = Weather == EM80Weather::Overcast;
+	const float Warm = bOvercast ? 0.25f : 1.f;
 
 	// 0 by day, 1 in the dark; golden near the horizon.
 	const float Night = 1.f - FMath::SmoothStep(-9.f, -1.f, Elevation);
@@ -200,6 +205,7 @@ void AM80Atmosphere::ApplyAt(float AtHour)
 	Sun->SetIntensity(SunLux * W.SunScale * FMath::SmoothStep(-4.f, 3.f, Elevation));
 	Sun->SetTemperature(FMath::Lerp(5400.f, 3900.f, Golden));
 	Sun->SetCastShadows(Elevation > -4.f);
+	Sun->SetLightSourceAngle(bOvercast ? 25.f : 0.6f);   // a sun behind clouds: very soft shadows
 
 	// Moon: high in the opposite part of the sky, cold and dim.
 	Moon->SetWorldRotation(FRotator(-38.f, SunYaw, 0.f));
@@ -219,6 +225,7 @@ void AM80Atmosphere::ApplyAt(float AtHour)
 
 	if (Clouds)
 	{
+		Clouds->SetVisibility(!bOvercast);
 		Clouds->SetLayerBottomAltitude(Weather == EM80Weather::Cloudy ? 1.8f : 3.f);
 		Clouds->SetLayerHeight(Weather == EM80Weather::Cloudy ? 6.f : 4.f);
 		Clouds->SetTracingMaxDistance(80.f);
@@ -236,28 +243,29 @@ void AM80Atmosphere::ApplyAt(float AtHour)
 
 	if (SkyLight)
 	{
-		SkyLight->SetIntensity(FMath::Lerp(1.25f, 0.8f, Night));
+		SkyLight->SetIntensity(FMath::Lerp(bOvercast ? 1.7f : 1.25f, 0.8f, Night));
 		// By day the shade is lit by warm stone and dust as much as by the blue sky: no cold, sad shadows.
-		SkyLight->SetLightColor(FMath::Lerp(FLinearColor(1.f, 0.93f, 0.84f), FLinearColor::White, Night));
+		SkyLight->SetLightColor(FMath::Lerp(bOvercast ? FLinearColor(1.f, 0.99f, 0.97f) : FLinearColor(1.f, 0.93f, 0.84f), FLinearColor::White, Night));
 		SkyLight->SetLowerHemisphereColor(FMath::Lerp(FLinearColor(0.09f, 0.075f, 0.055f), FLinearColor(0.005f, 0.006f, 0.01f), Night));
 	}
 
 	// Fog: thin over the town, thicker in the valleys below; warm glow towards the low sun.
 	Fog->SetWorldLocation(GetActorLocation());
 	Fog->SetFogDensity(W.FogDensity);
-	Fog->SetFogHeightFalloff(0.2f);
-	Fog->SetStartDistance(1500.f);
+	// Overcast: falling off slowly, the haze reaches the whole sky and greys it.
+	Fog->SetFogHeightFalloff(bOvercast ? 0.01f : 0.2f);
+	Fog->SetStartDistance(bOvercast ? 2000.f : 1500.f);
 	Fog->SetSecondFogDensity(W.ValleyFogDensity);
 	Fog->SetSecondFogHeightFalloff(0.8f);
 	Fog->SetSecondFogHeightOffset(-9000.f);
 	// Haze colour: warm grey by day, deep blue in the blue hour (sun just below the horizon), dark at night.
 	const float Blue = 1.f - FMath::SmoothStep(-2.f, 3.f, Elevation);
-	const FLinearColor DayHaze = FMath::Lerp(FLinearColor(0.6f, 0.56f, 0.5f), FLinearColor(0.06f, 0.09f, 0.19f), Blue);
+	const FLinearColor DayHaze = FMath::Lerp(bOvercast ? FLinearColor(0.62f, 0.64f, 0.67f) : FLinearColor(0.6f, 0.56f, 0.5f), FLinearColor(0.06f, 0.09f, 0.19f), Blue);
 	Fog->SetFogInscatteringColor(FMath::Lerp(DayHaze, FLinearColor(0.012f, 0.016f, 0.03f), Night) * W.Tint);
 	// Never fully opaque: the far hills and Etna stay readable as pale layers, and above them the sky stays blue
 	// (an opaque fog paints the low sky in its own colour: a white, overcast look).
-	Fog->SetFogMaxOpacity(Weather == EM80Weather::Scirocco ? 0.97f : (Weather == EM80Weather::Cloudy ? 0.88f : 0.6f));
-	Fog->SetDirectionalInscatteringColor(FMath::Lerp(FLinearColor(0.35f, 0.3f, 0.24f), FLinearColor(0.95f, 0.55f, 0.25f), Golden) * Day);
+	Fog->SetFogMaxOpacity(bOvercast ? 1.f : (Weather == EM80Weather::Scirocco ? 0.97f : (Weather == EM80Weather::Cloudy ? 0.88f : 0.6f)));
+	Fog->SetDirectionalInscatteringColor(FMath::Lerp(FLinearColor(0.35f, 0.3f, 0.24f), FLinearColor(0.95f, 0.55f, 0.25f), Golden) * Day * (bOvercast ? 0.f : 1.f));
 	Fog->SetDirectionalInscatteringExponent(6.f);
 	Fog->SetDirectionalInscatteringStartDistance(4000.f);
 	Fog->SetVolumetricFog(true);
@@ -271,17 +279,17 @@ void AM80Atmosphere::ApplyAt(float AtHour)
 	const FVector4 One(1, 1, 1, 1);
 	const FVector4 Zero(0, 0, 0, 0);
 	P.bOverride_WhiteTemp = true;
-	P.WhiteTemp = 6500.f + K * (700.f + 900.f * Golden - 1800.f * Night);
+	P.WhiteTemp = 6500.f + K * ((700.f + 900.f * Golden) * Warm - 1800.f * Night);
 	P.bOverride_SceneColorTint = true;
 	P.SceneColorTint = FMath::Lerp(FLinearColor::White, W.Tint, FMath::Min(K, 1.f));
 	P.bOverride_ColorSaturation = true;
-	P.ColorSaturation = Lerp4(One, FVector4(1.08f, 1.05f, 0.98f, 1.1f - 0.35f * Night), K);
+	P.ColorSaturation = Lerp4(One, bOvercast ? FVector4(1.f, 1.f, 1.f, 0.92f - 0.3f * Night) : FVector4(1.08f, 1.05f, 0.98f, 1.1f - 0.35f * Night), K);
 	P.bOverride_ColorContrast = true;
 	P.ColorContrast = Lerp4(One, FVector4(1.06f, 1.06f, 1.06f, 1.f), K);
 	P.bOverride_ColorGainHighlights = true;
-	P.ColorGainHighlights = Lerp4(One, FVector4(1.08f + 0.04f * Golden, 1.01f, 0.88f - 0.05f * Golden, 1.f), K);
+	P.ColorGainHighlights = Lerp4(One, FVector4(1.08f + 0.04f * Golden, 1.01f, 0.88f - 0.05f * Golden, 1.f), K * Warm);
 	P.bOverride_ColorGainMidtones = true;
-	P.ColorGainMidtones = Lerp4(One, FVector4(1.02f, 1.0f, 0.97f, 1.f), K * Day);
+	P.ColorGainMidtones = Lerp4(One, FVector4(1.02f, 1.0f, 0.97f, 1.f), K * Day * Warm);
 	P.bOverride_ColorSaturationHighlights = true;
 	P.ColorSaturationHighlights = Lerp4(One, FVector4(1.f, 1.f, 1.f, 0.94f), K);
 	P.bOverride_ColorOffsetShadows = true;

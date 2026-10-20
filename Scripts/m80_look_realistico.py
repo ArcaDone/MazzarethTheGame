@@ -128,11 +128,12 @@ def lens_instance(base):
     return mi
 
 
-def look_volume(world, material):
-    """The volume of the look, spawned once; its settings are written again on every run."""
-    found = [a for a in EAS.get_all_level_actors() if isinstance(a, unreal.PostProcessVolume) and a.get_actor_label() == VOLUME]
+def look_volume(world, material, label=VOLUME):
+    """The volume of the look, spawned once; its settings are written again on every run (also used by
+    m80_look_paese.py for the town)."""
+    found = [a for a in EAS.get_all_level_actors() if isinstance(a, unreal.PostProcessVolume) and a.get_actor_label() == label]
     v = found[0] if found else EAS.spawn_actor_from_class(unreal.PostProcessVolume, unreal.Vector(0, 0, 0))
-    v.set_actor_label(VOLUME)
+    v.set_actor_label(label)
     v.set_editor_property("unbound", True)
     v.set_editor_property("priority", 10.0)
     s = v.get_editor_property("settings")
@@ -237,4 +238,5 @@ def steps():
     (OUT / "look.json").write_text(json.dumps(report, indent=1), encoding="utf-8")
 
 
-m80_seq.Sequencer(steps(), log_file=str(OUT / "errore.txt"))
+if __name__ == "__main__":
+    m80_seq.Sequencer(steps(), log_file=str(OUT / "errore.txt"))

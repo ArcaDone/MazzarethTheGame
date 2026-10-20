@@ -346,6 +346,13 @@ Sull'altro PC:
 - **Traffico** (mini-paese della Matrice, 17/10): corsie ricavate dalle strade OSM (a destra; incroci e stradine strette un'auto alla volta), adattate allo spazio libero tra cordoli e muri; le auto si fermano per pedoni e auto davanti e sorpassano quelle parcheggiate; i pedoni restano lungo le case e aspettano sul bordo. Da migliorare: alcune auto si incastrano ancora nelle curve strette o contro gli spigoli; parcheggi solo dove la strada è abbastanza larga (nel mini-paese nessuno). Da portare nel paese vero quando si sceglierà il senso di marcia.
 - **Motorino senza pilota** (18/10): sbalzato via in movimento dovrebbe cadere per gravità, ma le ruote di Chaos lo tengono su (resta inclinato di 15-20°): provati attrito ridotto, ruote a sfera, spinta laterale crescente, aiuto alla stabilità spento. Finché non cade non si vede la raccolta da terra (fatta: clip, moto che si rialza, mani sulle manopole). Da verificare anche: piedi sul marciapiede nella salita, scatti di auto e moto in paese.
 - **Negozi**: mancano le stanze secondarie dei prototipi (bagno, magazzino, saletta), i tavolini fuori e le insegne dei pacchetti; un negozio a cavallo di due case attaccate lascia un po' di terreno a vista.
+- **Da fare dopo il 20/10**:
+  - cuocere il gioco per verificare le correzioni del 20/10 (freeze, picchi, crash al castello) e il look realistico;
+  - muschio giallo del terreno troppo acceso;
+  - `M_GroundProps` con riflesso al massimo (Specular 1) e rugosità minima 0 nei master Megascans;
+  - punto D: case che condividono le mesh (kit istanziato comune + guscio unico leggero) per caricamenti più leggeri;
+  - cache PSO contro l'attesa degli shader all'avvio;
+  - import rotto del CameraDirector di GASP (oggi il cook usa `-IgnoreCookErrors`).
 - **Licenze delle auto scaricate**: i nomi delle texture fanno pensare a modelli presi da giochi commerciali; prima di pubblicare vanno sostituite o verificate.
 
 ## 8. Fonti e licenze

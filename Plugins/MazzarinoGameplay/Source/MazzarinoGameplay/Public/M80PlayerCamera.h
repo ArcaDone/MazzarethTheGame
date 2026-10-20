@@ -34,6 +34,10 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Mira")
 	float BlendSpeed = 12.f;
 
+	/** On foot the camera moves this fraction of the way towards the character's head (0 = the sample's distance). */
+	UPROPERTY(EditAnywhere, Category = "Camera")
+	float CloserOnFoot = 0.22f;
+
 	/** 0 = the sample's camera, 1 = over the shoulder. */
 	float GetAimAlpha() const { return AimAlpha; }
 

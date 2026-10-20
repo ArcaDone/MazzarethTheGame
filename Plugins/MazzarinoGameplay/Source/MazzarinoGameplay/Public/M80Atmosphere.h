@@ -75,7 +75,7 @@ public:
 
 	/** Degrees added to the field of view by the handheld camera (a wide lens). */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera", meta = (DisplayName = "Grandangolo in piu (gradi)", ClampMin = "0", ClampMax = "40", EditCondition = "bHandheldCamera"))
-	float HandheldExtraFOV = 12.f;
+	float HandheldExtraFOV = 5.f;
 
 	/** 1 = 1 January; 200 = mid July (long days, high sun). */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Atmosfera", meta = (DisplayName = "Giorno dell'anno", ClampMin = "1", ClampMax = "365"))

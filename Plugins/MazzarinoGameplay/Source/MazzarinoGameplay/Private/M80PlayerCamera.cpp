@@ -8,7 +8,14 @@
 void AM80PlayerCameraManager::UpdateViewTarget(FTViewTarget& OutVT, float DeltaTime)
 {
 	Super::UpdateViewTarget(OutVT, DeltaTime);
-	// Handheld: slow drift on every axis (the frame a little tilted), the steps when the target moves, a wider lens.
+	// On foot, a little closer to the character than the sample's camera (towards the head, so the framing holds).
+	if (const ACharacter* Walker = Cast<ACharacter>(OutVT.Target); Walker && CloserOnFoot > 0.f)
+	{
+		const FVector Head = Walker->GetActorLocation() + FVector(0.f, 0.f, PivotHeight);
+		OutVT.POV.Location = FMath::Lerp(OutVT.POV.Location, Head, FMath::Clamp(CloserOnFoot, 0.f, 0.6f));
+	}
+	// Handheld: a slow drift on every axis (the frame a little tilted) and a faint step. Running, the operator steadies
+	// the camera: the drift halves and the step stays small, with almost no roll (rolling made players sick).
 	if (const AM80Atmosphere* Atmo = AM80Atmosphere::Find(this); Atmo && Atmo->bHandheldCamera)
 	{
 		HandheldTime += DeltaTime;
@@ -16,10 +23,11 @@ void AM80PlayerCameraManager::UpdateViewTarget(FTViewTarget& OutVT, float DeltaT
 		const float Moving = Target ? FMath::Clamp(Target->GetVelocity().Size2D() / 450.f, 0.f, 1.f) : 0.f;
 		HandheldStep += DeltaTime * 2.f * PI * FMath::Lerp(1.4f, 2.2f, Moving);   // about two steps a second
 		const float T = HandheldTime;
-		const float K = Atmo->HandheldAmount;
-		const float Pitch = FMath::PerlinNoise1D(T * 0.35f) * 0.7f + FMath::Sin(HandheldStep * 2.f) * 0.25f * Moving;
-		const float Yaw = FMath::PerlinNoise1D(T * 0.27f + 17.f) * 0.9f + FMath::Sin(HandheldStep) * 0.2f * Moving;
-		const float Roll = FMath::PerlinNoise1D(T * 0.21f + 41.f) * 1.2f + FMath::Sin(HandheldStep) * 0.45f * Moving;
+		const float K = Atmo->HandheldAmount * FMath::Lerp(1.f, 0.5f, Moving);
+		const float Step = 0.3f * Moving * (1.f - 0.5f * Moving);   // most at a walk, less at a run
+		const float Pitch = FMath::PerlinNoise1D(T * 0.35f) * 0.6f + FMath::Sin(HandheldStep * 2.f) * 0.12f * Step;
+		const float Yaw = FMath::PerlinNoise1D(T * 0.27f + 17.f) * 0.7f + FMath::Sin(HandheldStep) * 0.08f * Step;
+		const float Roll = FMath::PerlinNoise1D(T * 0.21f + 41.f) * 0.6f * (1.f - Moving);
 		OutVT.POV.Rotation += FRotator(Pitch, Yaw, Roll) * K;
 		OutVT.POV.FOV += Atmo->HandheldExtraFOV;
 	}

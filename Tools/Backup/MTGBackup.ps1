@@ -47,11 +47,12 @@ $Jobs = @(
         Dst = "$ProjectBackup\Saved\Mazzarino80"
         XD  = @(); XF = @('*.tmp')
     },
-    @{  # Comune: source project for buildings and materials
-        Src = 'D:\UE5Projects\Comune'
-        Dst = "$Dest\Comune"
-        XD  = @('Binaries', 'Intermediate', 'DerivedDataCache', 'Saved')
-        XF  = @('*.tmp')
+    @{  # Comune: only its Migrated folder (the user's own models, not in the Epic library). The game holds its own
+        # copy of every asset it uses and the marketplace packs can be downloaded again, so since 2026-10-20 the
+        # rest of the Comune project (about 95 GB) is no longer backed up.
+        Src = 'D:\UE5Projects\Comune\Content\Migrated'
+        Dst = "$Dest\Comune_Migrated"
+        XD  = @(); XF = @('*.tmp')
     },
     @{  # Every source file brought into the game, by kind (animations, cars, buildings, interiors, references...), and
         # the old D:\Blender\AssetsMazzarethTheGame (moved here 2026-10-17: Blender_Storico and the kind folders)

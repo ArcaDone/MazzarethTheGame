@@ -173,7 +173,7 @@ Dopo aver aggiunto o spostato piante, ricostruisci gli HLOD (capitolo 1).
 | `Tools/` | Backup, mappa del radar, suoni, migrazione dal progetto Comune |
 | `Research/Mazzarino80/` | Dati OSM, terreno, piani, script Blender (`Blender/`) |
 
-`Megapack`, `Megascans`, `Migrated` e gli altri pacchetti del marketplace sono **fuori da Git**: sono nel backup e nel progetto `D:\UE5Projects\Comune`.
+`Megapack`, `Megascans`, `Migrated` e gli altri pacchetti del marketplace sono **fuori da Git**: sono nel backup del progetto (solo le parti usate dal gioco), interi nel progetto `D:\UE5Projects\Comune` e nella libreria Epic.
 
 ---
 
@@ -270,7 +270,7 @@ Script: `Tools/Backup/MTGBackup.ps1`.
 - Cosa copia:
   - il progetto, senza `.git`, cache, `Binaries` e `Intermediate`;
   - `Saved/Autosaves` e `Saved/Mazzarino80` (report, foto, copie delle mappe);
-  - il progetto `D:\UE5Projects\Comune`;
+  - del progetto `D:\UE5Projects\Comune` solo `Content\Migrated` (tuoi modelli, in `C:\MTGBackup\Comune_Migrated`): il gioco ha già la sua copia di tutto quello che usa, e i pacchetti del marketplace si riscaricano dalla libreria Epic (dal 20/10/2026);
   - tutti i sorgenti in `D:\Mazzarino80_Sorgenti` (anche i file Blender storici che stavano in `D:\Blender\AssetsMazzarethTheGame`, spostati il 17/10/2026), più le immagini ricevute in chat (in `Saved/Mazzarino80/Riferimenti`);
   - `D:\HDRI` e `D:\Audio_Music`;
   - gli appunti di Claude Code sul progetto (in `ClaudeMemory`, da rimettere in `C:\Users\<utente>\.claude\projects\D--UE5Projects-GameAnimationSample\memory`).

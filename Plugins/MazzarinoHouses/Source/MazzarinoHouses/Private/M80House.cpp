@@ -148,6 +148,10 @@ void AM80House::OnConstruction(const FTransform& Transform)
 	{
 		return;
 	}
+	if (bMarciapiedi && !(GetWorld() && GetWorld()->IsGameWorld()))
+	{
+		SyncLatiMarciapiede();
+	}
 	// The editor also runs construction when a level loads: skip if nothing changed. In game (also Play in
 	// the editor, where streamed cells run construction again) a baked house is final: rebuilding it there
 	// would drop the bake for a live mesh and stall streaming.
@@ -1418,3 +1422,133 @@ void AM80House::MostraNumeriLati()
 		DrawDebugLine(World, T.TransformPosition(FVector(A.X, A.Y, 300.0)), T.TransformPosition(FVector(B.X, B.Y, 300.0)), bFront ? FColor::Yellow : FColor::Cyan, false, 30.f, 0, 8.f);
 	}
 }
+
+void AM80House::SyncLatiMarciapiede()
+{
+	TArray<FVector2D> Local = LocalFootprint();
+	M80Poly::Clean(Local);
+	if (LatiMarciapiede.Num() == Local.Num())
+	{
+		return;
+	}
+	LatiMarciapiede.SetNum(Local.Num());
+	for (int32 i = 0; i < Local.Num(); ++i)
+	{
+		// Party walls and courtyards get no sidewalk at first.
+		LatiMarciapiede[i] = !ResolvedEdgeKinds.IsValidIndex(i) || ResolvedEdgeKinds[i] == EM80EdgeKind::Street;
+	}
+}
+
+void AM80House::RifaiMarciapiedi()
+{
+#if WITH_EDITOR
+	UWorld* World = GetWorld();
+	if (!World || World->IsGameWorld())
+	{
+		return;
+	}
+	Modify();
+	for (const TSoftObjectPtr<AM80Sidewalk>& Old : MarciapiediCreati)
+	{
+		if (AM80Sidewalk* Sidewalk = Old.Get())
+		{
+			World->EditorDestroyActor(Sidewalk, true);
+		}
+	}
+	MarciapiediCreati.Reset();
+	if (!bMarciapiedi)
+	{
+		return;
+	}
+	SyncLatiMarciapiede();
+	TArray<FVector2D> Local = LocalFootprint();
+	M80Poly::Clean(Local);
+	const int32 N = Local.Num();
+	int32 Ticked = 0;
+	for (const bool bSide : LatiMarciapiede)
+	{
+		Ticked += bSide ? 1 : 0;
+	}
+	if (N < 3 || Ticked == 0)
+	{
+		return;
+	}
+
+	// Centre lines half a sidewalk out from the facades (Clean made the footprint counter-clockwise: the house is on the
+	// left walking along them, the curb on the right). One open line per run of ticked sides, a ring when all are.
+	const double Half = GetDefault<AM80Sidewalk>()->WidthCm * 0.5;
+	const FTransform& T = GetActorTransform();
+	auto ToWorld = [&T](const FVector2D& Q) { return T.TransformPosition(FVector(Q.X, Q.Y, 0.0)); };
+	TArray<TArray<FVector>> Lines;
+	if (Ticked == N)
+	{
+		TArray<FVector>& Ring = Lines.AddDefaulted_GetRef();
+		for (int32 i = 0; i < N; ++i)
+		{
+			Ring.Add(ToWorld(Local[i] + M80Poly::Miter(Local, i) * Half));
+		}
+	}
+	else
+	{
+		for (int32 First = 0; First < N; ++First)
+		{
+			if (!LatiMarciapiede[First] || LatiMarciapiede[(First + N - 1) % N])
+			{
+				continue;
+			}
+			TArray<FVector>& Line = Lines.AddDefaulted_GetRef();
+			Line.Add(ToWorld(Local[First] + M80Poly::EdgeNormal(Local, First) * Half));
+			int32 Last = First;
+			while (LatiMarciapiede[(Last + 1) % N])
+			{
+				Last = (Last + 1) % N;
+				Line.Add(ToWorld(Local[Last] + M80Poly::Miter(Local, Last) * Half));
+			}
+			Line.Add(ToWorld(Local[(Last + 1) % N] + M80Poly::EdgeNormal(Local, Last) * Half));
+		}
+	}
+
+	FActorSpawnParameters Params;
+	Params.OverrideLevel = GetLevel();
+	Params.ObjectFlags = RF_Transactional;
+	for (int32 l = 0; l < Lines.Num(); ++l)
+	{
+		AM80Sidewalk* Sidewalk = World->SpawnActor<AM80Sidewalk>(AM80Sidewalk::StaticClass(), FTransform(Lines[l][0]), Params);
+		if (!Sidewalk)
+		{
+			continue;
+		}
+		USplineComponent* Path = Sidewalk->Path;
+		Path->ClearSplinePoints(false);
+		for (const FVector& P : Lines[l])
+		{
+			Path->AddSplinePoint(P, ESplineCoordinateSpace::World, false);
+		}
+		for (int32 i = 0; i < Path->GetNumberOfSplinePoints(); ++i)
+		{
+			Path->SetSplinePointType(i, ESplinePointType::Linear, false);
+		}
+		Path->UpdateSpline();
+		Sidewalk->bClosedLoop = Ticked == N;
+		Sidewalk->CurbSide = EM80CurbSide::Right;
+		Sidewalk->bSnapToHouses = true;
+		Sidewalk->SetActorLabel(FString::Printf(TEXT("Marciapiede_%s_%d"), LotId.IsEmpty() ? *GetActorLabel() : *LotId, l + 1));
+		Sidewalk->SetFolderPath(GetFolderPath());
+		Sidewalk->RerunConstructionScripts();
+		MarciapiediCreati.Add(Sidewalk);
+	}
+#endif
+}
+
+#if WITH_EDITOR
+void AM80House::PostEditChangeProperty(FPropertyChangedEvent& Event)
+{
+	Super::PostEditChangeProperty(Event);
+	const FName Name = Event.GetMemberPropertyName();
+	if (Event.ChangeType != EPropertyChangeType::Interactive
+		&& (Name == GET_MEMBER_NAME_CHECKED(AM80House, bMarciapiedi) || Name == GET_MEMBER_NAME_CHECKED(AM80House, LatiMarciapiede)))
+	{
+		RifaiMarciapiedi();
+	}
+}
+#endif

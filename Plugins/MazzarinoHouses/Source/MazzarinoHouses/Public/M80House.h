@@ -83,6 +83,29 @@ public:
 	UFUNCTION(BlueprintCallable, CallInEditor, Category = "Negozi", meta = (DisplayName = "Mostra numeri dei lati"))
 	void MostraNumeriLati();
 
+	/**
+	 * Sidewalks along the facades, made by the house as ordinary sidewalks (same height and width as a new one, magnet on):
+	 * their spline points can then be moved by hand. Off by default.
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Marciapiedi", meta = (DisplayName = "Marciapiedi"))
+	bool bMarciapiedi = false;
+
+	/** One box per side (the numbers of "Mostra numeri dei lati"): the ticked sides get a sidewalk. At first the street facades are ticked. */
+	UPROPERTY(EditAnywhere, EditFixedSize, BlueprintReadWrite, Category = "Marciapiedi", meta = (DisplayName = "Lati con marciapiede", EditCondition = "bMarciapiedi"))
+	TArray<bool> LatiMarciapiede;
+
+	/** The sidewalks made by this house. Changing the sides above makes them again: hand edits to them are lost. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Marciapiedi", meta = (DisplayName = "Marciapiedi creati"))
+	TArray<TSoftObjectPtr<class AM80Sidewalk>> MarciapiediCreati;
+
+	/** Deletes the sidewalks made by the house and makes them again from the ticked sides (one per run of sides, a ring when all are ticked). */
+	UFUNCTION(BlueprintCallable, CallInEditor, Category = "Marciapiedi", meta = (DisplayName = "Rifai marciapiedi"))
+	void RifaiMarciapiedi();
+
+#if WITH_EDITOR
+	virtual void PostEditChangeProperty(FPropertyChangedEvent& Event) override;
+#endif
+
 	/** Shop rooms of the last build: "<shop> <width>x<depth> cm, <pieces> pezzi" (for the tests). */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Negozi", meta = (DisplayName = "Negozi costruiti"))
 	TArray<FString> NegoziCostruiti;
@@ -190,6 +213,8 @@ private:
 	};
 
 	TArray<FVector2D> LocalFootprint() const;
+	/** One sidewalk box per side of the cleaned footprint; a new count starts again from the street facades. */
+	void SyncLatiMarciapiede();
 	FGroundGrid SampleGround(const TArray<FVector2D>& World2D) const;
 	void ResolveEdges(const TArray<FVector2D>& Local, TArray<EM80EdgeKind>& OutKinds, int32& OutFront) const;
 	void SplitIntoUnits(const TArray<FVector2D>& Local, const TArray<EM80EdgeKind>& Kinds, int32 Front, TArray<FM80Unit>& OutUnits) const;

@@ -1,4 +1,5 @@
 #include "M80Sidewalk.h"
+#include "M80DynamicMeshHLOD.h"
 #include "M80House.h"
 #include "M80MeshBuffer.h"
 #include "M80Polygon.h"
@@ -34,6 +35,8 @@ AM80Sidewalk::AM80Sidewalk()
 	Fill->SetupAttachment(Path);
 	Fill->SetMobility(EComponentMobility::Static);
 	Fill->SetTangentsType(EDynamicMeshComponentTangentsMode::AutoCalculated);
+	// The far view (HLOD) only takes static meshes: this puts Fill into it.
+	CreateDefaultSubobject<UM80DynamicMeshHLODComponent>(TEXT("HLODDinamico"));
 	// Houses must keep finding the real ground under a sidewalk.
 	Tags.Add(TEXT("M80IgnoreGround"));
 

@@ -6,6 +6,10 @@
 #include "Modules/ModuleManager.h"
 #include "TextureSourceDataUtils.h"
 #include "M80House.h"
+#include "M80DynamicMeshHLOD.h"
+#include "M80DynamicMeshHLODBuilder.h"
+#include "WorldPartition/HLOD/HLODBuilder.h"
+#include "StaticMeshResources.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "AssetUtils/CreateStaticMeshUtil.h"
 #include "Components/DynamicMeshComponent.h"
@@ -1427,4 +1431,48 @@ int32 UM80EditorLibrary::SetSkeletalLODScreenSizes(USkeletalMesh* Mesh, const TA
 	Mesh->PostEditChange();
 	Mesh->MarkPackageDirty();
 	return Set;
+}
+
+FString UM80EditorLibrary::TestDynamicMeshHLOD(const TArray<AActor*>& Actors)
+{
+	TArray<UActorComponent*> Sources;
+	for (AActor* Actor : Actors)
+	{
+		if (UM80DynamicMeshHLODComponent* C = Actor ? Actor->FindComponentByClass<UM80DynamicMeshHLODComponent>() : nullptr)
+		{
+			if (C->IsHLODRelevant() && C->GetCustomHLODBuilderClass() == UM80DynamicMeshHLODBuilder::StaticClass())
+			{
+				Sources.Add(C);
+			}
+		}
+	}
+	if (Sources.IsEmpty())
+	{
+		return TEXT("nessuna sorgente: componente assente, mesh vuota o builder non trovato");
+	}
+	PRAGMA_DISABLE_DEPRECATION_WARNINGS
+	FHLODBuildContext Context = {};
+	PRAGMA_ENABLE_DEPRECATION_WARNINGS
+	Context.TargetWorld = Context.BuildWorld = Actors[0]->GetWorld();
+	Context.SourceComponents = Sources;
+	Context.AssetsOuter = GetTransientPackage();
+	Context.AssetsBaseName = TEXT("ProvaHLOD");
+	Context.WorldPosition = Actors[0]->GetActorLocation();
+	Context.MinVisibleDistance = 0;
+	Context.AssetsObjectFlags = RF_NoFlags;
+	const TArray<UActorComponent*> Out = GetDefault<UM80DynamicMeshHLODBuilder>()->Build(Context, Sources);
+	const UStaticMeshComponent* Mesh = Out.Num() == 1 ? Cast<UStaticMeshComponent>(Out[0]) : nullptr;
+	const UStaticMesh* Static = Mesh ? Mesh->GetStaticMesh() : nullptr;
+	if (!Static || !Static->GetRenderData() || Static->GetRenderData()->LODResources.IsEmpty())
+	{
+		return FString::Printf(TEXT("%d sorgenti, nessuna mesh costruita (%d componenti)"), Sources.Num(), Out.Num());
+	}
+	TArray<FString> Names;
+	for (const FStaticMaterial& M : Static->GetStaticMaterials())
+	{
+		Names.Add(M.MaterialInterface ? M.MaterialInterface->GetName() : TEXT("<nessuno>"));
+	}
+	const FVector Centre = Mesh->GetComponentTransform().TransformPosition(Static->GetBounds().Origin);
+	return FString::Printf(TEXT("%d sorgenti, %d triangoli, %d materiali: %s; centro %.0f %.0f %.0f"), Sources.Num(),
+		Static->GetRenderData()->LODResources[0].GetNumTriangles(), Names.Num(), *FString::Join(Names, TEXT(", ")), Centre.X, Centre.Y, Centre.Z);
 }

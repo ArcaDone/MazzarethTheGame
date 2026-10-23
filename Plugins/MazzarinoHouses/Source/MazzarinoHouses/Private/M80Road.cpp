@@ -1,4 +1,5 @@
 #include "M80Road.h"
+#include "M80DynamicMeshHLOD.h"
 #include "M80MeshBuffer.h"
 #include "M80Sidewalk.h"
 #include "Components/DynamicMeshComponent.h"
@@ -36,6 +37,8 @@ AM80Road::AM80Road()
 	Slab->SetupAttachment(Path);
 	Slab->SetMobility(EComponentMobility::Static);
 	Slab->SetTangentsType(EDynamicMeshComponentTangentsMode::AutoCalculated);
+	// The far view (HLOD) only takes static meshes: this puts Slab into it.
+	CreateDefaultSubobject<UM80DynamicMeshHLODComponent>(TEXT("HLODDinamico"));
 	// Houses, sidewalks and stairs must keep finding the real ground under a road.
 	Tags.Add(TEXT("M80IgnoreGround"));
 }

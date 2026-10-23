@@ -1,4 +1,5 @@
 #include "M80Stairs.h"
+#include "M80DynamicMeshHLOD.h"
 #include "M80MeshBuffer.h"
 #include "M80Sidewalk.h"
 #include "Components/DynamicMeshComponent.h"
@@ -273,6 +274,8 @@ AM80Stairs::AM80Stairs()
 	Mesh->SetupAttachment(Path);
 	Mesh->SetMobility(EComponentMobility::Static);
 	Mesh->SetTangentsType(EDynamicMeshComponentTangentsMode::AutoCalculated);
+	// The far view (HLOD) only takes static meshes: this puts Mesh into it.
+	CreateDefaultSubobject<UM80DynamicMeshHLODComponent>(TEXT("HLODDinamico"));
 	RailingPosts = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("RailingPosts"));
 	RailingBays = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("RailingBays"));
 	for (UInstancedStaticMeshComponent* C : {RailingPosts.Get(), RailingBays.Get()})

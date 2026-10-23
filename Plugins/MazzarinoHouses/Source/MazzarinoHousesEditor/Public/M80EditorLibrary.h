@@ -243,6 +243,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Veicoli")
 	static int32 SetSkeletalLODScreenSizes(USkeletalMesh* Mesh, const TArray<float>& ScreenSizes);
 
+	/**
+	 * Test of the far view (HLOD) of dynamic meshes: builds with UM80DynamicMeshHLODBuilder what the HLOD would hold for
+	 * these actors, in the transient package (nothing saved). Returns "<sources> sorgenti, <triangles> triangoli,
+	 * <slots> materiali: <names>; centro <x y z>", or why nothing came out.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|HLOD")
+	static FString TestDynamicMeshHLOD(const TArray<AActor*>& Actors);
+
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Personaggi")
 	static bool SetOutfitSizes(UObject* Outfit, const TArray<UObject*>& ClothAssets, const TArray<FString>& SizeNames,
 		const TArray<USkeletalMesh*>& Bodies);

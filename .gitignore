@@ -60,6 +60,10 @@ Build/*
 Build/*/**
 !Build/*/PakBlacklist*.txt
 
+# Bundled PSO cache made from a recorded run of the cooked game (see README, Gioco cotto)
+!Build/*/PipelineCaches/
+!Build/*/PipelineCaches/*.spc
+
 # Don't ignore icon files in Build
 !Build/**/*.ico
 

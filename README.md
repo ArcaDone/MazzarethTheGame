@@ -338,6 +338,14 @@ Sull'altro PC:
 
 ## 7. Punti aperti
 
+**Lista dell'utente (23/10), in ordine.** Prima di tutto si finisce il paese: senza la mappa non si scrivono la storia, i negozi e i punti di interesse. La folla viene tolta dal paese finché non è finito.
+1. **Paese**:
+   - bug: dei marciapiedi si cuociono solo i bordi;
+   - marciapiedi automatici dalla casa procedurale: interruttore (spento di base), altezza e distanza dal perimetro fisse, scelta del lato per ogni segmento del perimetro; poi si ritoccano i punti della spline.
+2. **Blender** (l'utente spiega cosa e come, con le foto): Acquedotto; Castello (LOD, da vicino non deve sembrare bruciato); chiesa al Castello e statua; chiesa del Comune; Santa Maria di Gesù con i ruderi; 24 Ore; Salesiane (capire come reimportarle); Ospedale in proporzione; Banca separata (le mura le fa l'utente); scuola Madonnuzza; Cimitero; Calvario; Cappuccini; campo sportivo (da capire); sistemare Sant'Ignazio.
+3. **Vegetazione**: piante, alberi e terreno come nella foto di riferimento, ottimizzati con Nanite o altro; Nanite anche sulle auto (in 5.8 si dovrebbe poter fare).
+4. **Animazioni**: seduto bene in auto; salire bene in moto; armi dal pacchetto; in moto retromarcia e partenza troppo lente, guida ancora troppo "a pendolo".
+
 - **Macchia nel cielo** nelle viste aeree molto alte: sembra un difetto delle nuvole, non dell'orizzonte. Ancora da capire.
 - **Zona delle Salesiane**: OSM non ha case nel triangolo. Si riempie a mano con *Isolato da riempire*.
 - **Candelabri a tre luci**: da piazzare a mano nelle piazze.

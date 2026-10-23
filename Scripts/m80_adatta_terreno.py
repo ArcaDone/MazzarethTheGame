@@ -9,8 +9,10 @@ Env: M80_ZONA=x,y,radius_m  only around that point (x, y in cm as in the editor'
      M80_PROVA=1           report only, save nothing
      M80_TOLLERANZA=5      cm a wall bottom may move before the house is redone
      M80_FOTO=6            pictures before/after of the first N houses redone (Saved/Mazzarino80/Terreno/foto)
-Out: Saved/Mazzarino80/Terreno/adatta_terreno.json
-powershell -File Scripts/run_editor_script.ps1 -Script Scripts/m80_adatta_terreno.py -TimeoutMinutes 240
+     M80_DA=28 M80_QUANTI=8  only tiles 28..35, adding to the report of the earlier ones (memory grows tile after
+                           tile: the whole town in one editor runs out of it; m80_adatta_terreno_tutto.ps1 restarts it)
+Out: Saved/Mazzarino80/Terreno/adatta_terreno.json ("prossimo": the next tile to do, "finito" when all are done)
+powershell -File Scripts/m80_adatta_terreno_tutto.ps1
 """
 import json
 import math
@@ -34,6 +36,8 @@ PROVA = os.environ.get("M80_PROVA") == "1"
 TOLLERANZA = float(os.environ.get("M80_TOLLERANZA", "5"))
 ZONA = [float(v) for v in os.environ.get("M80_ZONA", "").split(",") if v.strip()]
 FOTO = int(os.environ.get("M80_FOTO", "0"))
+DA = int(os.environ.get("M80_DA", "0"))
+QUANTI = int(os.environ.get("M80_QUANTI", "0"))
 FOLLOWERS = ("M80Sidewalk", "M80Road", "M80Stairs")
 # Sidewalks made by a house's Marciapiedi switch: already on its facades, the magnet only turned them onto a neighbour.
 FROM_HOUSE = re.compile(r"^Marciapiede_\d+_\d+$")
@@ -92,9 +96,19 @@ def steps():
     yield 120
     targets = [d for d in descs if cls_name(d) in ("M80House",) + FOLLOWERS and in_zone(d)]
     report = {"prova": PROVA, "tolleranza_cm": TOLLERANZA, "zona": ZONA, "da_controllare": len(targets),
-              "case_rifatte": [], "case_non_controllate": [], "seguono_rifatti": [], "errori": [], "riquadri": 0}
-    unchanged = {"case": 0, "seguono": 0}
-    for group in m80_seq.tiles(targets, TILE):
+              "case_rifatte": [], "case_non_controllate": [], "seguono_rifatti": [], "errori": [], "riquadri": 0,
+              "invariati": {"case": 0, "seguono": 0}, "minuti": 0}
+    if DA > 0 and (OUT / "adatta_terreno.json").exists():
+        report = json.loads((OUT / "adatta_terreno.json").read_text(encoding="utf-8"))
+    unchanged = report["invariati"]
+    minutes = report.get("minuti", 0)
+    groups = m80_seq.tiles(targets, TILE)
+    report["riquadri_totali"] = len(groups)
+    for index, group in enumerate(groups):
+        if index < DA:
+            continue
+        if QUANTI and index >= DA + QUANTI:
+            break
         lo = [min(box(d)[0].x for d in group) - MARGIN, min(box(d)[0].y for d in group) - MARGIN]
         hi = [max(box(d)[1].x for d in group) + MARGIN, max(box(d)[1].y for d in group) + MARGIN]
         context = [d for d in descs if overlaps(d, lo, hi) and "HLOD" not in cls_name(d) and "Landscape" not in cls_name(d)]
@@ -156,12 +170,13 @@ def steps():
             cap.destroy()
         report["riquadri"] += 1
         report["invariati"] = unchanged
-        report["minuti"] = round((time.time() - t0) / 60, 1)
+        report["minuti"] = round(minutes + (time.time() - t0) / 60, 1)
+        report["prossimo"] = index + 1
         write(report)
         m80_seq.unload(context)
         unreal.SystemLibrary.collect_garbage()
         yield 30
-    report["finito"] = True
+    report["finito"] = report.get("prossimo", 0) >= len(groups)
     write(report)
     yield 5
 

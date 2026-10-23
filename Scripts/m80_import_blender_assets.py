@@ -41,13 +41,30 @@ MASTERS = "/Game/Mazzarino80/Vehicles/Materials"
 CARS = ["Fiat500", "Mini", "Maggiolino", "Golf", "M3", "Alfa155C"]   # drivable
 DEST = {k: "/Game/Mazzarino80/Vehicles/" + k for k in CARS}
 DEST["Poste"] = "/Game/Mazzarino80/Buildings/Poste"
-BUILDINGS = ["Comune", "ChiesaComune", "Matrice", "Castello", "Madonna"]
+BUILDINGS = ["Comune", "ChiesaComune", "ComuneChiesa", "Matrice", "Castello", "Madonna"]
 PROPS = ["Cassonetto", "Tombino"]
 for k in BUILDINGS:
     DEST[k] = "/Game/Mazzarino80/Buildings/" + k
 for k in PROPS:
     DEST[k] = "/Game/Mazzarino80/Kit/Arredo"
 BUILDING_TEXTURES = "/Game/Mazzarino80/Buildings/Textures"
+# The new Comune with its church takes the materials the user set on the old Comune (Blueprint ComuneCompleto); the
+# church's own materials go to the closest of those. Blender material (name before any ".001") -> existing material.
+OLD_COMUNE = "/Game/Migrated/"
+KEEP_MATERIALS = {"ComuneChiesa": {
+    "Main": OLD_COMUNE + "Materials/ComuneMain.ComuneMain", "Main2": OLD_COMUNE + "Materials/Main2.Main2",
+    "WallPillar": "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/MI_Roman_Stone_Wall_tf2kaa2n_4K.MI_Roman_Stone_Wall_tf2kaa2n_4K",
+    "Metal01": OLD_COMUNE + "Metal01.Metal01", "Metal02": OLD_COMUNE + "Materials/Metal02.Metal02",
+    "Roof": OLD_COMUNE + "Roof.Roof", "Lavica": OLD_COMUNE + "Materials/Lavica.Lavica", "Lumen": OLD_COMUNE + "Materials/Lumen.Lumen",
+    "Marble": OLD_COMUNE + "ComuneAgain/Marble.Marble", "Marciapiede": OLD_COMUNE + "Marciapiede.Marciapiede",
+    "Glass": OLD_COMUNE + "MI_Glass_CleanMaster.MI_Glass_CleanMaster", "WindowsWood": OLD_COMUNE + "Materials/WindowsWood.WindowsWood",
+    "Wood2": OLD_COMUNE + "wood.wood",
+    "Chiesa_Pietra": "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/MI_Roman_Stone_Wall_tf2kaa2n_4K.MI_Roman_Stone_Wall_tf2kaa2n_4K",
+    "Chiesa_Malta": "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/MI_Roman_Stone_Wall_tf2kaa2n_4K.MI_Roman_Stone_Wall_tf2kaa2n_4K",
+    "Chiesa_Intonaco": OLD_COMUNE + "Materials/ComuneMain.ComuneMain", "Chiesa_IntonacoLato": OLD_COMUNE + "Materials/ComuneMain.ComuneMain",
+    "Chiesa_Buio": OLD_COMUNE + "ComuneAgain/Black.Black", "Chiesa_Bronzo": OLD_COMUNE + "Materials/Metal02.Metal02",
+    "Chiesa_Vetro": OLD_COMUNE + "MI_Glass_CleanMaster.MI_Glass_CleanMaster", "Chiesa_Legno": OLD_COMUNE + "Materials/WindowsWood.WindowsWood",
+}}
 NO_NANITE = ["Poste"]   # thin slats and lattices that Nanite's simplification bends
 ONLY = [k for k in os.environ.get("M80_IMPORT_ONLY", "").split(",") if k]
 PHYSICS_ONLY = os.environ.get("M80_PHYSICS_ONLY", "") == "1"
@@ -291,7 +308,14 @@ def make_instances(key, info, mats):
     texfolder = SHARED_TEXTURES if key in CARS else (BUILDING_TEXTURES if key in BUILDINGS else DEST[key] + "/Textures")
     out = {}
     cache = {}
+    keep = KEEP_MATERIALS.get(key, {})
     for blender_name, d in info["materials"].items():
+        existing = keep.get(blender_name.split(".")[0])
+        if existing and EAL.does_asset_exist(existing.split(".")[0]):
+            mi = unreal.load_asset(existing)
+            out[norm(blender_name)] = mi
+            out[norm(d["slot"])] = mi
+            continue
         kind = d.get("type", "generic")
         parent = mats["paint"] if kind == "paint" else (mats["glass"] if kind == "glass" else mats["generic"])
         livery = kind == "paint" and d.get("base_tex")

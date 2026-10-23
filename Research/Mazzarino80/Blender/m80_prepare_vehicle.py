@@ -1,7 +1,7 @@
 """Blender 4.3: clean, optimise and export one asset of D:/Mazzarino80_Sorgenti (Edifici, Auto, Arredo_Urbano...) for Unreal.
 
 Run: blender -b <file.blend> --python m80_prepare_vehicle.py -- <key> <out_dir>
-key: Fiat500 | Mini | Maggiolino | Golf | M3 | Poste | Comune | ChiesaComune | Matrice | Castello | Madonna |
+key: Fiat500 | Mini | Maggiolino | Golf | M3 | Poste | Comune | ChiesaComune | ComuneChiesa | Matrice | Castello | Madonna |
      Cassonetto | Tombino (see ASSETS)
 
 What it does (the source .blend is never saved):
@@ -63,6 +63,9 @@ ASSETS = {
     # Town buildings (Comune and its church are stand-ins until the user rebuilds the Comune).
     "Comune": {"kind": "building", "density": 1500, "budget": 0},
     "ChiesaComune": {"kind": "building", "density": 1500, "budget": 0},
+    # ComuneConChiesa.blend (2026-10-23): the Comune with the church rebuilt beside it, edited by the user; one mesh,
+    # nothing decimated (the Comune's forged railings would break).
+    "ComuneChiesa": {"kind": "building", "budget": 0, "keep": ["Chiesa_Tetto", "Plane.034"]},   # a 18-triangle roof is no sky
     # MatriceDentroFuori.blend; the pews came without a material: the church's wood.
     "Matrice": {"kind": "building", "density": 1500, "budget": 0, "collections": ["Export", "Export2", "Interno"],
                 "split_collections": {"Interno": "Interno"}, "materials": {"PancheChiesa": "Wood"}},
@@ -229,7 +232,8 @@ def drop_scenery_and_duplicates(meshes):
         flat = ext[2] < 0.02 * max(ext[0], ext[1], 1e-6)
         ground = flat and t <= 400 and hi[2] <= zmin + 0.02 * float(max(ext)) and float(max(ext[0], ext[1])) > 2 * med
         sky = t <= 64 and float(max(ext)) > 5 * med
-        if (ground or sky) and not CFG.get("keep_normals"):   # downloaded game-ready cars bring no scenery
+        kept = any(o.name.startswith("M80_" + k) for k in CFG.get("keep", []))
+        if (ground or sky) and not CFG.get("keep_normals") and not kept:   # downloaded game-ready cars bring no scenery
             log("drop scenery", o.name, [round(float(v), 2) for v in ext], t)
             bpy.data.objects.remove(o, do_unlink=True)
             continue
@@ -876,6 +880,8 @@ def main():
         lo, hi = world_bbox(body)
         # Height of Blender's z = 0 (the street level the model was made on) above the pivot (its lowest point).
         REPORT["blender_zero_cm"] = round(float(-mid.z) * 100 * sc, 1)
+        # Where the pivot was in the .blend (m): to put the mesh back where the model had it.
+        REPORT["pivot_blender_m"] = [round(float(v), 4) for v in mid]
         REPORT["box_cm"] = [round(float(x) * 100, 1) for x in list(lo) + list(hi)]
         mats = export_materials([body] + list(pieces.values()))
         REPORT["materials"] = mats

@@ -41,7 +41,7 @@ MASTERS = "/Game/Mazzarino80/Vehicles/Materials"
 CARS = ["Fiat500", "Mini", "Maggiolino", "Golf", "M3", "Alfa155C"]   # drivable
 DEST = {k: "/Game/Mazzarino80/Vehicles/" + k for k in CARS}
 DEST["Poste"] = "/Game/Mazzarino80/Buildings/Poste"
-BUILDINGS = ["Comune", "ChiesaComune", "Matrice", "Castello", "Madonna"]
+BUILDINGS = ["Comune", "ChiesaComune", "Matrice", "Castello", "OspedaleModulare", "Madonna"]
 PROPS = ["Cassonetto", "Tombino"]
 for k in BUILDINGS:
     DEST[k] = "/Game/Mazzarino80/Buildings/" + k
@@ -68,6 +68,9 @@ KEEP_MATERIALS = {"ChiesaComune": {
     "Chiesa_Buio": OLD_COMUNE + "ComuneAgain/Black.Black", "Chiesa_Bronzo": OLD_COMUNE + "Materials/Metal02.Metal02",
     "Chiesa_Vetro": "/Game/Mazzarino80/Houses/Materials/M_M80_HouseGlass.M_M80_HouseGlass", "Chiesa_Legno": OLD_COMUNE + "Materials/WindowsWood.WindowsWood",
 }}
+# Pieces of a building already in the town: same slot name, same material as on its old mesh.
+KEEP_FROM_MESH = {"OspedaleModulare": "/Game/Mazzarino80/Buildings/Ospedale/SM_M80_Ospedale.SM_M80_Ospedale"}
+HOUSE_GLASS = "/Game/Mazzarino80/Houses/Materials/M_M80_HouseGlass.M_M80_HouseGlass"
 NO_NANITE = ["Poste"]   # thin slats and lattices that Nanite's simplification bends
 ONLY = [k for k in os.environ.get("M80_IMPORT_ONLY", "").split(",") if k]
 PHYSICS_ONLY = os.environ.get("M80_PHYSICS_ONLY", "") == "1"
@@ -311,11 +314,17 @@ def make_instances(key, info, mats):
     texfolder = SHARED_TEXTURES if key in CARS else (BUILDING_TEXTURES if key in BUILDINGS else DEST[key] + "/Textures")
     out = {}
     cache = {}
-    keep = KEEP_MATERIALS.get(key, {})
+    keep = dict(KEEP_MATERIALS.get(key, {}))
+    old_mesh = unreal.load_asset(KEEP_FROM_MESH[key]) if key in KEEP_FROM_MESH else None
+    old_slots = {norm(str(sm.material_slot_name)): sm.material_interface for sm in old_mesh.get_editor_property("static_materials")} if old_mesh else {}
     for blender_name, d in info["materials"].items():
         existing = keep.get(blender_name.split(".")[0])
-        if existing and EAL.does_asset_exist(existing.split(".")[0]):
-            mi = unreal.load_asset(existing)
+        mi = unreal.load_asset(existing) if existing and EAL.does_asset_exist(existing.split(".")[0]) else None
+        mi = mi or old_slots.get(norm(blender_name)) or old_slots.get(norm(d["slot"]))
+        if mi:
+            base = mi.get_base_material() if hasattr(mi, "get_base_material") else None
+            if base and base.get_editor_property("blend_mode") == unreal.BlendMode.BLEND_TRANSLUCENT:
+                mi = unreal.load_asset(HOUSE_GLASS)   # Nanite would fall back to its coarse copy for the whole mesh
             out[norm(blender_name)] = mi
             out[norm(d["slot"])] = mi
             continue

@@ -1,7 +1,7 @@
 """Blender 4.3: clean, optimise and export one asset of D:/Mazzarino80_Sorgenti (Edifici, Auto, Arredo_Urbano...) for Unreal.
 
 Run: blender -b <file.blend> --python m80_prepare_vehicle.py -- <key> <out_dir>
-key: Fiat500 | Mini | Maggiolino | Golf | M3 | Poste | Comune | ChiesaComune | Matrice | Castello | Madonna |
+key: Fiat500 | Mini | Maggiolino | Golf | M3 | Poste | Comune | ChiesaComune | Matrice | Castello | OspedaleModulare | Madonna |
      Cassonetto | Tombino (see ASSETS)
 
 What it does (the source .blend is never saved):
@@ -72,6 +72,14 @@ ASSETS = {
     "Matrice": {"kind": "building", "density": 1500, "budget": 0, "collections": ["Export", "Export2", "Interno"],
                 "split_collections": {"Interno": "Interno"}, "materials": {"PancheChiesa": "Wood"}},
     "Castello": {"kind": "building", "density": 1500, "budget": 0},
+    # OspedalePezzi.blend (m80_ospedale_pezzi.py): the hospital at its real size, every part its own mesh; the fence is
+    # one pillar and one panel, repeated along a spline in Unreal (AM80ModularFence).
+    "OspedaleModulare": {"kind": "building", "budget": 0,
+                         "collections": ["OSP_Struttura", "OSP_Annesso", "OSP_Gabbiotto", "OSP_Cancello", "OSP_Insegne",
+                                         "OSP_RecintoPilastro", "OSP_RecintoPannello"],
+                         "split_collections": {"OSP_Annesso": "Annesso", "OSP_Gabbiotto": "Gabbiotto", "OSP_Cancello": "Cancello",
+                                               "OSP_Insegne": "Insegne", "OSP_RecintoPilastro": "RecintoPilastro",
+                                               "OSP_RecintoPannello": "RecintoPannello"}},
     # Every part on its own, to be arranged in Unreal; the church is the main mesh ("main").
     "Madonna": {"kind": "building", "density": 1500, "budget": 0, "split": "*", "main": "ChiesaMadonna", "exclude": ["CreepingBentgrass"],
                 "names": {"VIllaPvimento": "VillaPavimento", "ErbaGscatter_001": "Prato", "Villa_006": "VillaAnnesso",

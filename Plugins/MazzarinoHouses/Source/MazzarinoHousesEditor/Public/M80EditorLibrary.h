@@ -251,6 +251,27 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino|HLOD")
 	static FString TestDynamicMeshHLOD(const TArray<AActor*>& Actors);
 
+	/**
+	 * Fits a house to the ground as it is now (the terrain was edited while the house was not loaded): rebuilds it and
+	 * compares the bottom of its walls, every metre along the footprint, before and after. If at least 3 points moved by more than
+	 * ToleranceCm, a baked house is baked again in Folder and 1 is returned (save its file). If nothing moved,
+	 * the old bake goes back and 0 is returned, its file left as it was. -1: not checked (excluded, or no ground loaded
+	 * under it). OutInfo: how many points moved and by how much.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Case")
+	static int32 FitHouseToGround(AM80House* House, const FString& Folder, float ToleranceCm, FString& OutInfo);
+
+	/**
+	 * Rebuilds a sidewalk, road or stairs (any actor with a Rebuild function and no parameters) on the ground and houses
+	 * as they are now. 1: its geometry changed (save its file); 0: unchanged, its file left as it was; -1: no Rebuild.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Case")
+	static int32 RebuildOnGround(AActor* Actor);
+
+	/** Waits for every mesh, texture and shader still being built in the background (after loading a region). */
+	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Case")
+	static void FinishAllCompilation();
+
 	UFUNCTION(BlueprintCallable, Category = "Mazzarino|Personaggi")
 	static bool SetOutfitSizes(UObject* Outfit, const TArray<UObject*>& ClothAssets, const TArray<FString>& SizeNames,
 		const TArray<USkeletalMesh*>& Bodies);

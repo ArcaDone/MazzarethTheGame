@@ -20,6 +20,9 @@ $EditorArgs = @(
     "`"$Project`"",
     "-ExecCmds=`"py $ScriptPath`"",
     '-ini:EditorPerProjectUserSettings:[/Script/UnrealEd.EditorPerformanceSettings]:bThrottleCPUWhenNotForeground=False',
+    # Zen writes crash-report session.json files under Content/UE_DDC: watching Content would open a modal
+    # DataTable import dialog for them and stall the run.
+    '-ini:EditorPerProjectUserSettings:[/Script/UnrealEd.EditorLoadingSavingSettings]:bMonitorContentDirectories=False',
     '-nosplash'
 )
 $UserIni = Join-Path $PSScriptRoot '..\Saved\Config\WindowsEditor\EditorPerProjectUserSettings.ini'

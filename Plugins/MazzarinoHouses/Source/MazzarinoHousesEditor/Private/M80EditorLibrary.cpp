@@ -8,6 +8,11 @@
 #include "M80House.h"
 #include "M80DynamicMeshHLOD.h"
 #include "M80DynamicMeshHLODBuilder.h"
+#include "M80Polygon.h"
+#include "StaticMeshCompiler.h"
+#include "AssetCompilingManager.h"
+#include "Components/SplineMeshComponent.h"
+#include "Components/InstancedStaticMeshComponent.h"
 #include "WorldPartition/HLOD/HLODBuilder.h"
 #include "StaticMeshResources.h"
 #include "AssetRegistry/AssetRegistryModule.h"
@@ -1475,4 +1480,209 @@ FString UM80EditorLibrary::TestDynamicMeshHLOD(const TArray<AActor*>& Actors)
 	const FVector Centre = Mesh->GetComponentTransform().TransformPosition(Static->GetBounds().Origin);
 	return FString::Printf(TEXT("%d sorgenti, %d triangoli, %d materiali: %s; centro %.0f %.0f %.0f"), Sources.Num(),
 		Static->GetRenderData()->LODResources[0].GetNumTriangles(), Names.Num(), *FString::Join(Names, TEXT(", ")), Centre.X, Centre.Y, Centre.Z);
+}
+
+namespace
+{
+	/** Points every Step cm along the footprint (corners included). */
+	TArray<FVector2D> PerimeterSamples(const TArray<FVector2D>& P, double Step)
+	{
+		TArray<FVector2D> Out;
+		for (int32 i = 0; i < P.Num(); ++i)
+		{
+			const FVector2D A = P[i], B = P[(i + 1) % P.Num()];
+			const int32 N = FMath::Max(1, FMath::CeilToInt(FVector2D::Distance(A, B) / Step));
+			for (int32 k = 0; k < N; ++k)
+			{
+				Out.Add(FMath::Lerp(A, B, double(k) / N));
+			}
+		}
+		return Out;
+	}
+
+	/** Lowest vertex of the house's visible mesh within 40 cm of each point (NaN where there is none). */
+	TArray<double> WallBottoms(const AM80House* House, const TArray<FVector2D>& Points)
+	{
+		TArray<FVector> Vertices;
+		if (House->IsBaked())
+		{
+			const FTransform T = House->Baked->GetComponentTransform();
+			if (const FMeshDescription* Description = House->Baked->GetStaticMesh()->GetMeshDescription(0))
+			{
+				const TVertexAttributesConstRef<FVector3f> Positions = FStaticMeshConstAttributes(*Description).GetVertexPositions();
+				for (const FVertexID V : Description->Vertices().GetElementIDs())
+				{
+					Vertices.Add(T.TransformPosition(FVector(Positions[V])));
+				}
+			}
+		}
+		else
+		{
+			const FTransform T = House->Shell->GetComponentTransform();
+			House->Shell->ProcessMesh([&Vertices, &T](const UE::Geometry::FDynamicMesh3& Mesh)
+			{
+				for (const int32 V : Mesh.VertexIndicesItr())
+				{
+					Vertices.Add(T.TransformPosition(Mesh.GetVertex(V)));
+				}
+			});
+		}
+		TArray<double> Bottom;
+		Bottom.Init(TNumericLimits<double>::Max(), Points.Num());
+		constexpr double Reach2 = 40.0 * 40.0;
+		for (const FVector& V : Vertices)
+		{
+			for (int32 i = 0; i < Points.Num(); ++i)
+			{
+				if (FVector2D::DistSquared(Points[i], FVector2D(V.X, V.Y)) < Reach2 && V.Z < Bottom[i])
+				{
+					Bottom[i] = V.Z;
+				}
+			}
+		}
+		for (double& Z : Bottom)
+		{
+			if (Z == TNumericLimits<double>::Max())
+			{
+				Z = NAN;
+			}
+		}
+		return Bottom;
+	}
+
+	/** Where an actor's generated geometry is, to the centimetre: dynamic mesh vertices, spline mesh ends, instances. */
+	uint32 GeometryHashOf(const AActor* Actor)
+	{
+		uint32 Hash = 0;
+		auto Add = [&Hash](const FVector& P)
+		{
+			Hash = HashCombineFast(Hash, GetTypeHash(FIntVector(FMath::RoundToInt(P.X), FMath::RoundToInt(P.Y), FMath::RoundToInt(P.Z))));
+		};
+		TInlineComponentArray<UDynamicMeshComponent*> Meshes(Actor);
+		for (UDynamicMeshComponent* C : Meshes)
+		{
+			const FTransform T = C->GetComponentTransform();
+			C->ProcessMesh([&Add, &T](const UE::Geometry::FDynamicMesh3& Mesh)
+			{
+				for (const int32 V : Mesh.VertexIndicesItr())
+				{
+					Add(T.TransformPosition(Mesh.GetVertex(V)));
+				}
+			});
+		}
+		TInlineComponentArray<USplineMeshComponent*> Pieces(Actor);
+		for (const USplineMeshComponent* C : Pieces)
+		{
+			Add(C->GetComponentTransform().TransformPosition(C->GetStartPosition()));
+			Add(C->GetComponentTransform().TransformPosition(C->GetEndPosition()));
+		}
+		TInlineComponentArray<UInstancedStaticMeshComponent*> Instanced(Actor);
+		for (const UInstancedStaticMeshComponent* C : Instanced)
+		{
+			for (int32 i = 0; i < C->GetInstanceCount(); ++i)
+			{
+				FTransform X;
+				C->GetInstanceTransform(i, X, true);
+				Add(X.GetLocation());
+			}
+		}
+		return Hash;
+	}
+}
+
+int32 UM80EditorLibrary::FitHouseToGround(AM80House* House, const FString& Folder, float ToleranceCm, FString& OutInfo)
+{
+	if (!House || House->IsExcluded())
+	{
+		OutInfo = TEXT("esclusa");
+		return -1;
+	}
+	UPackage* Package = House->GetPackage();
+	const bool bWasDirty = Package && Package->IsDirty();
+	UStaticMesh* OldBake = House->IsBaked() ? House->Baked->GetStaticMesh() : nullptr;
+	// A bake missing from the cache is rebuilt in the background on load: touching it meanwhile races the renderer.
+	if (OldBake)
+	{
+		FStaticMeshCompilingManager::Get().FinishCompilation({OldBake});
+	}
+	const TArray<FVector2D> Points = PerimeterSamples(House->GetFootprintWorld2D(), 100.0);
+	const TArray<double> Before = WallBottoms(House, Points);
+	auto PutBack = [&]()
+	{
+		if (OldBake && !House->IsBaked())
+		{
+			House->ApplyBakedMesh(OldBake);
+		}
+		if (!bWasDirty && Package)
+		{
+			Package->SetDirtyFlag(false);
+		}
+	};
+	House->Rebuild();
+	if (House->BuildInfo.StartsWith(TEXT("Terreno non caricato")))
+	{
+		OutInfo = House->BuildInfo;
+		PutBack();
+		return -1;
+	}
+	const TArray<double> After = WallBottoms(House, Points);
+	int32 Compared = 0, Moved = 0;
+	double Largest = 0, Floating = 0, Buried = 0;
+	for (int32 i = 0; i < Points.Num(); ++i)
+	{
+		if (FMath::IsNaN(Before[i]) || FMath::IsNaN(After[i]))
+		{
+			continue;
+		}
+		++Compared;
+		const double Move = FMath::Abs(After[i] - Before[i]);
+		Largest = FMath::Max(Largest, Move);
+		// The old wall bottom above the new one: the house stood in the air there; below: it was sunk.
+		Floating = FMath::Max(Floating, Before[i] - After[i]);
+		Buried = FMath::Max(Buried, After[i] - Before[i]);
+		Moved += Move > ToleranceCm ? 1 : 0;
+	}
+	OutInfo = FString::Printf(TEXT("%d punti su %d spostati, al massimo di %.0f cm (in aria fino a %.0f cm, sotto terra fino a %.0f cm)"),
+		Moved, Compared, Largest, Floating, Buried);
+	// A single point is not the ground moving: with no wall corner within reach the lowest vertex near it is
+	// whatever the openings left there, and that changes when the house is rebuilt.
+	if (Moved < 3 && Compared > 0)
+	{
+		PutBack();
+		return 0;
+	}
+	if (OldBake && !BakeHouse(House, Folder, true))
+	{
+		OutInfo += TEXT(", cottura fallita");
+	}
+	House->MarkPackageDirty();
+	return 1;
+}
+
+int32 UM80EditorLibrary::RebuildOnGround(AActor* Actor)
+{
+	UFunction* Rebuild = Actor ? Actor->FindFunction(TEXT("Rebuild")) : nullptr;
+	if (!Rebuild || Rebuild->NumParms > 0)
+	{
+		return -1;
+	}
+	UPackage* Package = Actor->GetPackage();
+	const bool bWasDirty = Package && Package->IsDirty();
+	const uint32 Before = GeometryHashOf(Actor);
+	Actor->ProcessEvent(Rebuild, nullptr);
+	if (GeometryHashOf(Actor) == Before)
+	{
+		if (!bWasDirty && Package)
+		{
+			Package->SetDirtyFlag(false);
+		}
+		return 0;
+	}
+	Actor->MarkPackageDirty();
+	return 1;
+}
+
+void UM80EditorLibrary::FinishAllCompilation()
+{
+	FAssetCompilingManager::Get().FinishAllCompilation();
 }

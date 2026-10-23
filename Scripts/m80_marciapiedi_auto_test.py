@@ -2,7 +2,7 @@
 never saved): an octagonal house with all sides ticked (one ring), the same with sides 0, 1 and 3 (two open lines),
 a rectangular house switched on and off. For each case: sidewalks made, their points' distance from the facade, closed
 or not, curb side; then what UM80DynamicMeshHLODBuilder makes of them (triangles, materials).
-Out: Saved/Mazzarino80/Marciapiedi/Auto/report.json + dall_alto.png, ottagono.png
+Out: Saved/Mazzarino80/Marciapiedi/Auto/report.json + one picture per view (VIEWS)
 powershell -File Scripts/run_editor_script.ps1 -Script Scripts/m80_marciapiedi_auto_test.py -ForceLit -TimeoutMinutes 15
 """
 import json
@@ -103,9 +103,14 @@ def build():
     return rep
 
 
+# Final state: octagon sides 0, 1, 3; rectangle sides 0 (y = -500) and 2 (y = +500), none on its short sides.
 VIEWS = {
     "dall_alto": ((1200, -200, 4200), (1200, 0, 0)),
-    "ottagono": ((-1300, -1500, 500), (0, 0, 50)),
+    "ottagono_lati_3_4_5": ((-1300, -1500, 500), (0, 0, 50)),
+    "ottagono_lati_0_1": ((1500, 1500, 400), (0, 0, 50)),
+    "rettangolo_lato_0": ((2600, -1900, 350), (2600, -500, 0)),
+    "rettangolo_lato_2": ((2600, 1900, 350), (2600, 500, 0)),
+    "rettangolo_lato_1": ((4600, 0, 350), (3200, 0, 0)),
 }
 
 

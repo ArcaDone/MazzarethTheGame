@@ -1,7 +1,7 @@
 """Blender 4.3: clean, optimise and export one asset of D:/Mazzarino80_Sorgenti (Edifici, Auto, Arredo_Urbano...) for Unreal.
 
 Run: blender -b <file.blend> --python m80_prepare_vehicle.py -- <key> <out_dir>
-key: Fiat500 | Mini | Maggiolino | Golf | M3 | Poste | Comune | ChiesaComune | Matrice | Castello | OspedaleModulare | Madonna |
+key: Fiat500 | Mini | Maggiolino | Golf | M3 | Poste | Comune | ChiesaComune | Matrice | Castello | OspedaleModulare | BancaModulare | Madonna |
      Cassonetto | Tombino (see ASSETS)
 
 What it does (the source .blend is never saved):
@@ -74,6 +74,12 @@ ASSETS = {
     "Castello": {"kind": "building", "density": 1500, "budget": 0},
     # OspedalePezzi.blend (m80_ospedale_pezzi.py): the hospital at its real size, every part its own mesh; the fence is
     # one pillar and one panel, repeated along a spline in Unreal (AM80ModularFence).
+    # BancaPezzi.blend (m80_banca_pezzi.py): the bank at its real size in pieces, the fence as one post and one panel.
+    "BancaModulare": {"kind": "building", "budget": 0, "keep": ["Cube.037"],   # the roof ridge is no sky
+                      "collections": ["BAN_Struttura", "BAN_Giardino", "BAN_Cancelli", "BAN_Insegne", "BAN_RecintoPilastro",
+                                      "BAN_RecintoPannello"],
+                      "split_collections": {"BAN_Giardino": "Giardino", "BAN_Cancelli": "Cancelli", "BAN_Insegne": "Insegne",
+                                            "BAN_RecintoPilastro": "RecintoPilastro", "BAN_RecintoPannello": "RecintoPannello"}},
     "OspedaleModulare": {"kind": "building", "budget": 0,
                          "collections": ["OSP_Struttura", "OSP_Annesso", "OSP_Gabbiotto", "OSP_Cancello", "OSP_Insegne",
                                          "OSP_RecintoPilastro", "OSP_RecintoPannello"],

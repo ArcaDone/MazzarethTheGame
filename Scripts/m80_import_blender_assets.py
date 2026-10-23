@@ -41,7 +41,7 @@ MASTERS = "/Game/Mazzarino80/Vehicles/Materials"
 CARS = ["Fiat500", "Mini", "Maggiolino", "Golf", "M3", "Alfa155C"]   # drivable
 DEST = {k: "/Game/Mazzarino80/Vehicles/" + k for k in CARS}
 DEST["Poste"] = "/Game/Mazzarino80/Buildings/Poste"
-BUILDINGS = ["Comune", "ChiesaComune", "Matrice", "Castello", "OspedaleModulare", "Madonna"]
+BUILDINGS = ["Comune", "ChiesaComune", "Matrice", "Castello", "OspedaleModulare", "BancaModulare", "Madonna"]
 PROPS = ["Cassonetto", "Tombino"]
 for k in BUILDINGS:
     DEST[k] = "/Game/Mazzarino80/Buildings/" + k
@@ -69,7 +69,8 @@ KEEP_MATERIALS = {"ChiesaComune": {
     "Chiesa_Vetro": "/Game/Mazzarino80/Houses/Materials/M_M80_HouseGlass.M_M80_HouseGlass", "Chiesa_Legno": OLD_COMUNE + "Materials/WindowsWood.WindowsWood",
 }}
 # Pieces of a building already in the town: same slot name, same material as on its old mesh.
-KEEP_FROM_MESH = {"OspedaleModulare": "/Game/Mazzarino80/Buildings/Ospedale/SM_M80_Ospedale.SM_M80_Ospedale"}
+KEEP_FROM_MESH = {"OspedaleModulare": "/Game/Mazzarino80/Buildings/Ospedale/SM_M80_Ospedale.SM_M80_Ospedale",
+                  "BancaModulare": "/Game/Mazzarino80/Buildings/Banca/SM_M80_Banca.SM_M80_Banca"}
 HOUSE_GLASS = "/Game/Mazzarino80/Houses/Materials/M_M80_HouseGlass.M_M80_HouseGlass"
 NO_NANITE = ["Poste"]   # thin slats and lattices that Nanite's simplification bends
 ONLY = [k for k in os.environ.get("M80_IMPORT_ONLY", "").split(",") if k]

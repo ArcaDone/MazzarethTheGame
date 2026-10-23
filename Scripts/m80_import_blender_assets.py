@@ -57,13 +57,16 @@ KEEP_MATERIALS = {"ComuneChiesa": {
     "Metal01": OLD_COMUNE + "Metal01.Metal01", "Metal02": OLD_COMUNE + "Materials/Metal02.Metal02",
     "Roof": OLD_COMUNE + "Roof.Roof", "Lavica": OLD_COMUNE + "Materials/Lavica.Lavica", "Lumen": OLD_COMUNE + "Materials/Lumen.Lumen",
     "Marble": OLD_COMUNE + "ComuneAgain/Marble.Marble", "Marciapiede": OLD_COMUNE + "Marciapiede.Marciapiede",
-    "Glass": OLD_COMUNE + "MI_Glass_CleanMaster.MI_Glass_CleanMaster", "WindowsWood": OLD_COMUNE + "Materials/WindowsWood.WindowsWood",
+    # not the old Comune's glass: it is translucent, and one translucent slot makes Unreal draw the whole Nanite mesh
+    # with its coarse fallback (railings gone, statue in blocks)
+    "Glass": "/Game/Mazzarino80/Houses/Materials/M_M80_HouseGlass.M_M80_HouseGlass",
+    "WindowsWood": OLD_COMUNE + "Materials/WindowsWood.WindowsWood",
     "Wood2": OLD_COMUNE + "wood.wood",
     "Chiesa_Pietra": "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/MI_Roman_Stone_Wall_tf2kaa2n_4K.MI_Roman_Stone_Wall_tf2kaa2n_4K",
     "Chiesa_Malta": "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/MI_Roman_Stone_Wall_tf2kaa2n_4K.MI_Roman_Stone_Wall_tf2kaa2n_4K",
     "Chiesa_Intonaco": OLD_COMUNE + "Materials/ComuneMain.ComuneMain", "Chiesa_IntonacoLato": OLD_COMUNE + "Materials/ComuneMain.ComuneMain",
     "Chiesa_Buio": OLD_COMUNE + "ComuneAgain/Black.Black", "Chiesa_Bronzo": OLD_COMUNE + "Materials/Metal02.Metal02",
-    "Chiesa_Vetro": OLD_COMUNE + "MI_Glass_CleanMaster.MI_Glass_CleanMaster", "Chiesa_Legno": OLD_COMUNE + "Materials/WindowsWood.WindowsWood",
+    "Chiesa_Vetro": "/Game/Mazzarino80/Houses/Materials/M_M80_HouseGlass.M_M80_HouseGlass", "Chiesa_Legno": OLD_COMUNE + "Materials/WindowsWood.WindowsWood",
 }}
 NO_NANITE = ["Poste"]   # thin slats and lattices that Nanite's simplification bends
 ONLY = [k for k in os.environ.get("M80_IMPORT_ONLY", "").split(",") if k]

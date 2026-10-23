@@ -1483,8 +1483,8 @@ void AM80House::RifaiMarciapiedi()
 		return;
 	}
 
-	// Centre lines half a sidewalk out from the facades (Clean made the footprint counter-clockwise: the house is on the
-	// left walking along them, the curb on the right). One open line per run of ticked sides, a ring when all are.
+	// Centre lines half a sidewalk out from the facades (Clean made the footprint counter-clockwise: walking along them
+	// the house is on the side the sidewalk calls "right", the street on its "left"). One open line per run of ticked sides, a ring when all are.
 	const double Half = GetDefault<AM80Sidewalk>()->WidthCm * 0.5;
 	const FTransform& T = GetActorTransform();
 	auto ToWorld = [&T](const FVector2D& Q) { return T.TransformPosition(FVector(Q.X, Q.Y, 0.0)); };
@@ -1548,7 +1548,8 @@ void AM80House::RifaiMarciapiedi()
 		}
 		Path->UpdateSpline();
 		Sidewalk->bClosedLoop = Ticked == N;
-		Sidewalk->CurbSide = EM80CurbSide::Right;
+		// The sidewalk's "right" is +90 degrees from the way it runs, here towards the house: the curb goes on its left.
+		Sidewalk->CurbSide = EM80CurbSide::Left;
 		// The line is already on this house's facades; the magnet would pull its ends onto a neighbour's wall and turn
 		// the whole straight run away from this one.
 		Sidewalk->bSnapToHouses = false;

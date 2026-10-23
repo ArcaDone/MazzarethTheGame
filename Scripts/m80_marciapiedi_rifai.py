@@ -34,9 +34,10 @@ def label(d):
 
 
 def points(a):
+    """The line and the settings the house gives it (a changed curb side or magnet counts as a change too)."""
     path = a.get_editor_property("path")
     return [tuple(round(v) for v in (q.x, q.y, q.z)) for q in
-            (path.get_location_at_spline_point(i, unreal.SplineCoordinateSpace.WORLD) for i in range(path.get_number_of_spline_points()))]
+            (path.get_location_at_spline_point(i, unreal.SplineCoordinateSpace.WORLD) for i in range(path.get_number_of_spline_points()))]         + [str(a.get_editor_property("curb_side")), a.get_editor_property("snap_to_houses")]
 
 
 def steps():

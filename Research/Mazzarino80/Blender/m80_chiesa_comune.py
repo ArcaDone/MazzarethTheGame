@@ -12,9 +12,11 @@ The church, from the photos (units of the Comune's file, metres before the final
   across tower and facade, returning along the east side; iron railing on top;
 - portal: columns on pedestals, arched opening with a stone frame, entablature, volutes, window with a stone frame and
   the coat of arms above; bronze door, closed;
-- in front, the stone landing with its round front ("spiazzo cilindrico") and the two side stairs along the facade;
-  their railings are the Comune's own railing module arrayed along Bezier curves (collection Chiesa_Percorsi: move the
-  curve points and the railings follow);
+- in front, the landing: half a cylinder of stone blocks centred on the door, and the two stairs along the facade from
+  its sides, each closed on the street side by a sloping stone parapet ending in a newel;
+- forged railing as in the photos: round posts with a ball on top about every 1.3 m, panels with a big X and a ring,
+  C scrolls under the top rail, rings in the bottom band; on the stairs it stands on the parapets, rails following the
+  slope and upright bars vertical;
 - nave behind with plain walls and a low tiled roof (only the outside: the door stays closed).
 Materials: the Comune's (Main2 stone, Metal01 railings, Roof tiles, Marble) plus a few new ones (plaster, mortar,
 bronze, wood, glass); every texture path of the file is pointed to D:/BitBucket (the file's relative paths were broken).
@@ -46,12 +48,10 @@ TOWER_Y1 = -14.1          # tower depth
 DOOR_X = (TOWER_X1 + FACADE_X1) / 2
 ENT_H = 2.6               # main entablature height
 TOP_ABOVE_G = 18.4        # entablature top above the street at the door
-LANDING_H = 1.87          # 11 steps of 17 cm
+LANDING_H = 2.2           # 13 steps of 17 cm
 STEP_R, STEP_T = 0.17, 0.32
-LAND_X0, LAND_X1 = DOOR_X - 3.3, DOOR_X + 3.3
-STAIR_W = 1.7             # stairs run along the facade, 1.7 m from it
-LAND_FRONT = -26.0        # landing front at its corners; the round front reaches LAND_BULGE at the middle
-LAND_BULGE = -26.7
+STAIR_W = 2.0             # stairs run along the facade, 2 m wide
+LAND_R = 2.75             # the landing is half a cylinder of this radius, centred on the door at the facade
 BELL_IN = 0.4             # bell stage set back from the tower faces
 BELL_H = 7.2
 
@@ -71,7 +71,7 @@ def ground(x, y):
     return (PLANE.matrix_world @ loc).z if hit else 2.0
 
 
-G0 = ground(DOOR_X, LAND_FRONT - 0.5)
+G0 = ground(DOOR_X, Y_FACADE - LAND_R - 0.5)
 Z_TOP = G0 + TOP_ABOVE_G
 Z_ENT = Z_TOP - ENT_H
 LZ = G0 + LANDING_H
@@ -630,101 +630,201 @@ def build(coll, M):
     mb.box(bcx - 0.6, bcx + 0.6, by0 + 0.35, by0 + 0.55, bz0 + 3.97, bz0 + 4.17, M["legno"])
     objs.append(mb.finish(coll, smooth=True))
 
-    # ---- landing (round front) and the two side stairs
+    # ---- landing: half a stone cylinder in front of the door; the two stairs run along the facade from its sides,
+    # each closed on the street side by a sloping stone parapet
     mb = MB("Chiesa_Sagrato")
     ys = Y_FACADE - STAIR_W
-    front = []
-    N = 24
-    for i in range(N + 1):
-        t = i / N
-        x = LAND_X0 + (LAND_X1 - LAND_X0) * t
-        y = LAND_FRONT + (LAND_BULGE - LAND_FRONT) * math.sin(math.pi * t)
-        front.append((x, y))
-    top = [Vector((x, y, LZ)) for x, y in front] + [Vector((LAND_X1, Y_FACADE, LZ)), Vector((LAND_X0, Y_FACADE, LZ))]
-    mb.face(top, M["pietra"], (0, 0, 1))
+    phi0 = math.asin(min(STAIR_W / LAND_R, 0.99))
+    xc = LAND_R * math.cos(phi0)          # where the round front meets the stairs' street side
+
+    def arc(r, a0, a1, n):
+        return [(DOOR_X + r * math.cos(a0 + (a1 - a0) * i / n), Y_FACADE - r * math.sin(a0 + (a1 - a0) * i / n)) for i in range(n + 1)]
+
+    front = arc(LAND_R, phi0, math.pi - phi0, 28)
+    outline = [(DOOR_X + LAND_R, Y_FACADE), (DOOR_X + LAND_R, ys)] + front + [(DOOR_X - LAND_R, ys), (DOOR_X - LAND_R, Y_FACADE)]
+    mb.face([Vector((x, y, LZ)) for x, y in outline], M["pietra"], (0, 0, 1))
+    # mortar behind the blocks of the round front, then the blocks course by course
     for (x0, y0), (x1, y1) in zip(front, front[1:]):
-        za, zb = ground(x0, y0) - 0.3, ground(x1, y1) - 0.3
-        mb.face([Vector((x0, y0, za)), Vector((x1, y1, zb)), Vector((x1, y1, LZ)), Vector((x0, y0, LZ))], M["pietra"],
-                ((x0 + x1) / 2 - DOOR_X, (y0 + y1) / 2 - Y_FACADE, 0))
-    # coping stone along the round front
-    sweep_h(mb, front, LZ - 0.18, [(0.0, 0.0), (0.06, 0.02), (0.06, 0.18), (0.0, 0.2)], M["pietra"])
-    # landing sides between the stairs and the round front
-    for x, sgn in ((LAND_X0, -1), (LAND_X1, 1)):
-        g = ground(x, (ys + LAND_FRONT) / 2) - 0.3
-        mb.face([Vector((x, LAND_FRONT, g)), Vector((x, ys, g)), Vector((x, ys, LZ)), Vector((x, LAND_FRONT, LZ))],
-                M["pietra"], (sgn, 0, 0))
-    # stairs: steps down from the landing along the facade, each side to its own street height
-    for x_start, d in ((LAND_X0, -1), (LAND_X1, 1)):
-        z = LZ
-        x = x_start
+        mb.face([Vector((x0, y0, Z_LOW)), Vector((x1, y1, Z_LOW)), Vector((x1, y1, LZ - 0.22)), Vector((x0, y0, LZ - 0.22))],
+                M["malta"], ((x0 + x1) / 2 - DOOR_X, (y0 + y1) / 2 - Y_FACADE, 0))
+    z = Z_LOW
+    row = 0
+    while z < LZ - 0.25:
+        h = min(0.46, LZ - 0.22 - z)
+        a = phi0 - (0.06 if row % 2 else 0.0)
+        while a < math.pi - phi0 - 0.01:
+            da = random.uniform(0.55, 1.0) / LAND_R
+            a0, a1 = max(a, phi0), min(a + da, math.pi - phi0)
+            a += da
+            if a1 - a0 < 0.03:
+                continue
+            am = (a0 + a1) / 2
+            radial = Vector((math.cos(am), -math.sin(am), 0))
+            tang = Vector((-math.sin(am), -math.cos(am), 0))
+            c = Vector((DOOR_X, Y_FACADE, z + h / 2)) + radial * (LAND_R + 0.01)
+            k = random.uniform(0.8, 1.08)
+            mb.tint = (k, k, k * random.uniform(0.88, 1.0), 1.0)
+            mb.obox(c, tang, radial, (0, 0, 1), LAND_R * (a1 - a0) / 2 - 0.007, 0.03, h / 2 - 0.007, M["pietra"])
+            mb.tint = (1.0, 1.0, 1.0, 1.0)
+        z += h
+        row += 1
+    # coping ring at the top of the cylinder
+    sweep_h(mb, front, LZ - 0.22, [(0.0, 0.0), (0.1, 0.0), (0.12, 0.04), (0.12, 0.2), (0.06, 0.22), (0.0, 0.22)], M["pietra"])
+    # stairs and parapets
+    ends = {}
+    for d in (-1, 1):
+        x0 = DOOR_X + d * LAND_R
+        x = x0
+        zt = LZ
         k = 0
-        while z > ground(x, ys) + 0.05 and k < 20:
-            z1 = z - STEP_R
-            gx_ = ground(x + d * STEP_T, ys)
-            if z1 < gx_:
-                z1 = gx_
+        while zt > ground(x, ys) + 0.06 and k < 24:
+            z1 = max(zt - STEP_R, ground(x + d * STEP_T, ys))
             xa, xb = sorted((x, x + d * STEP_T))
-            mb.box(xa, xb + (0.03 if d > 0 else 0), ys, Y_FACADE, ground(x, ys) - 0.3, z1, M["pietra"])
+            mb.box(xa, xb, ys, Y_FACADE, Z_LOW, z1, M["pietra"])
             x += d * STEP_T
-            z = z1
+            zt = z1
             k += 1
-        if d < 0:
-            left_end = (x, z)
-        else:
-            right_end = (x, z)
+        xe = x
+        # parapet: from the cylinder down to a stone newel at the foot of the stair, top 0.3 above the step noses
+        pa = DOOR_X + d * xc
+        n = 12
+        top = []
+        for i in range(n + 1):
+            xi = pa + (xe - pa) * i / n
+            t = min(max((xi - x0) * d / max((xe - x0) * d, 1e-3), 0.0), 1.0)
+            top.append((xi, max(LZ + 0.3 - (LZ - zt) * t, ground(xi, ys) + 0.55)))
+        for (xa_, za_), (xb_, zb_) in zip(top, top[1:]):
+            for yy, out in ((ys - 0.35, (0, -1, 0)), (ys, (0, 1, 0))):
+                mb.face([Vector((xa_, yy, Z_LOW)), Vector((xb_, yy, Z_LOW)), Vector((xb_, yy, zb_)), Vector((xa_, yy, za_))],
+                        M["pietra"], out)
+            mb.face([Vector((xa_, ys - 0.38, za_)), Vector((xb_, ys - 0.38, zb_)), Vector((xb_, ys + 0.03, zb_)),
+                     Vector((xa_, ys + 0.03, za_))], M["pietra"], (0, 0, 1))
+
+        def topz(xq):
+            for (xa_, za_), (xb_, zb_) in zip(top, top[1:]):
+                if min(xa_, xb_) - 1e-6 <= xq <= max(xa_, xb_) + 1e-6:
+                    return za_ + (zb_ - za_) * (xq - xa_) / (xb_ - xa_)
+            return top[-1][1]
+
+        # blocks on the street face, the top course cut along the slope under the coping
+        z = Z_LOW
+        row = 0
+        lo_x, hi_x = sorted((pa, xe))
+        while z < max(t[1] for t in top) - 0.1:
+            h = 0.44
+            s = lo_x - (random.uniform(0.2, 0.5) if row % 2 else 0.0)
+            while s < hi_x - 0.05:
+                L = random.uniform(0.6, 1.1)
+                a_, b_ = max(s, lo_x), min(s + L, hi_x)
+                s += L
+                ta, tb = min(z + h, topz(a_) - 0.06), min(z + h, topz(b_) - 0.06)
+                if b_ - a_ < 0.1 or max(ta, tb) < z + 0.08:
+                    continue
+                ta, tb = max(ta, z + 0.02), max(tb, z + 0.02)
+                k = random.uniform(0.8, 1.08)
+                mb.tint = (k, k, k * random.uniform(0.88, 1.0), 1.0)
+                y0_, y1_ = ys - 0.38, ys - 0.33
+                g = 0.007
+                P = [Vector((a_ + g, y0_, z + g)), Vector((b_ - g, y0_, z + g)), Vector((b_ - g, y0_, tb - g)), Vector((a_ + g, y0_, ta - g))]
+                Q = [Vector((v.x, y1_, v.z)) for v in P]
+                mb.face(P, M["pietra"], (0, -1, 0))
+                for i in range(4):
+                    j = (i + 1) % 4
+                    mb.face([P[i], P[j], Q[j], Q[i]], M["pietra"], (P[i] + P[j]) / 2 - (P[0] + P[2]) / 2 + Vector((0, -0.001, 0)))
+                mb.tint = (1.0, 1.0, 1.0, 1.0)
+            z += h
+            row += 1
+        xn = xe + d * 0.25
+        gz = ground(xn, ys - 0.17)
+        mb.box(min(xe - d * 0.25, xn + d * 0.25), max(xe - d * 0.25, xn + d * 0.25), ys - 0.42, ys + 0.08, Z_LOW, gz + 1.0, M["pietra"])
+        mb.box(min(xe - d * 0.3, xn + d * 0.3), max(xe - d * 0.3, xn + d * 0.3), ys - 0.47, ys + 0.13, gz + 1.0, gz + 1.12, M["pietra"])
+        ends[d] = {"top": top, "newel": (xe, gz + 1.12), "stair_end": xe}
     objs.append(mb.finish(coll, bevel=0.01))
-    return objs, (front, ys, left_end, right_end), (bx0, bx1, by0, by1, bz1)
+    return objs, {"phi0": phi0, "ys": ys, "ends": ends}, (bx0, bx1, by0, by1, bz1)
 
 
-# ---------------------------------------------------------------- railings (the Comune's module along curves)
-def railing_module(M, height=1.15):
-    """The Comune's railing bay (BezierCurve.002's mesh), moved so it starts at x = 0 on the ground line and scaled to
-    height (the modifiers that bend it along a curve work in the object's own units, so the scale is in the mesh)."""
-    src = bpy.data.objects.get("BezierCurve.002")
-    if not src or src.type != "MESH":
-        return None
-    me = src.data.copy()
-    me.name = "Chiesa_RinghieraModulo"
-    xs = [v.co.x for v in me.vertices]
-    ys = [v.co.y for v in me.vertices]
-    zs = [v.co.z for v in me.vertices]
-    off = Vector((-min(xs), -(min(ys) + max(ys)) / 2, -min(zs)))
-    k = height / (max(zs) - min(zs))
-    for v in me.vertices:
-        v.co = (v.co + off) * k
-    return me, (max(xs) - min(xs)) * k, height
+# ---------------------------------------------------------------- railings
+def tube(mb, a, b, r, m, segs=6):
+    """Round bar from a to b (no caps: too thin to see them)."""
+    a, b = Vector(a), Vector(b)
+    d = (b - a)
+    if d.length < 1e-5:
+        return
+    d.normalize()
+    x = d.cross(Vector((0, 0, 1)) if abs(d.z) < 0.9 else Vector((1, 0, 0))).normalized()
+    y = d.cross(x)
+    ra = [a + (x * math.cos(2 * math.pi * i / segs) + y * math.sin(2 * math.pi * i / segs)) * r for i in range(segs)]
+    rb = [q + (b - a) for q in ra]
+    for i in range(segs):
+        j = (i + 1) % segs
+        mb.face([ra[i], ra[j], rb[j], rb[i]], m, ((ra[i] + ra[j]) / 2 - a))
 
 
-def path_curve(name, coll, pts, cyclic=False, corners=()):
-    cu = bpy.data.curves.new(name, "CURVE")
-    cu.dimensions = "3D"
-    sp = cu.splines.new("BEZIER")
-    sp.bezier_points.add(len(pts) - 1)
-    for i, p in enumerate(pts):
-        bp = sp.bezier_points[i]
-        bp.co = Vector(p)
-        kind = "VECTOR" if i in corners or i in (0, len(pts) - 1) else "AUTO"
-        bp.handle_left_type = bp.handle_right_type = kind
-    sp.use_cyclic_u = cyclic
-    ob = bpy.data.objects.new(name, cu)
-    coll.objects.link(ob)
-    return ob
+def poly_tube(mb, pts, r, m, closed=False):
+    pts = [Vector(q) for q in pts]
+    for a, b in zip(pts, pts[1:] + ([pts[0]] if closed else [])):
+        tube(mb, a, b, r, m, segs=5)
 
 
-def railing_on(name, coll, module, curve):
-    me, length, _h = module
-    ob = bpy.data.objects.new(name, me)
-    coll.objects.link(ob)
-    ar = ob.modifiers.new("Lungo la curva", "ARRAY")
-    ar.fit_type = "FIT_CURVE"
-    ar.curve = curve
-    ar.use_relative_offset = True
-    ar.relative_offset_displace = (1.0, 0, 0)
-    ar.use_merge_vertices = False
-    cm = ob.modifiers.new("Segue la curva", "CURVE")
-    cm.object = curve
-    cm.deform_axis = "POS_X"
-    return ob
+def post(mb, x, y, z, h, m):
+    """Round iron post with a collar and a ball on top (the church's railing posts)."""
+    mb.lathe(x, y, [(0.06, 0.0), (0.06, 0.03), (0.036, 0.05), (0.036, h - 0.06), (0.05, h - 0.04), (0.05, h),
+                    (0.025, h + 0.02), (0.05, h + 0.06), (0.058, h + 0.1), (0.05, h + 0.14), (0.0, h + 0.16)], m, segs=12, z0=z)
+
+
+def forged_panel(mb, p, q, h, m):
+    """One panel between two posts: top and bottom rails, a big X with a ring, a band of C scrolls under the top rail,
+    rings in the bottom band. p, q = (x, y, z) at the foot of the posts; on a stair the rails follow the slope and the
+    upright bars stay vertical."""
+    p, q = Vector(p), Vector(q)
+    hor = Vector((q.x - p.x, q.y - p.y, 0))
+    L = hor.length
+    if L < 0.1:
+        return
+    u = hor.normalized()
+
+    def at(s_, zz):
+        return p + u * s_ + Vector((0, 0, (q.z - p.z) * s_ / L + zz))
+
+    s0, s1 = 0.06, L - 0.06
+    rail = at(s1, h) - at(s0, h)
+    rd = rail.normalized()
+    n = Vector((u.y, -u.x, 0))
+    mb.obox((at(s0, h - 0.02) + at(s1, h - 0.02)) / 2, rd, n, n.cross(rd), rail.length / 2, 0.022, 0.014, m)
+    for zz in (0.08, 0.24, h - 0.24):
+        tube(mb, at(s0, zz), at(s1, zz), 0.011, m)
+    for s_ in (s0 + 0.03, s1 - 0.03):
+        tube(mb, at(s_, 0.08), at(s_, h - 0.03), 0.011, m)
+    a, b, c, d = at(s0 + 0.03, 0.24), at(s1 - 0.03, h - 0.24), at(s0 + 0.03, h - 0.24), at(s1 - 0.03, 0.24)
+    tube(mb, a, b, 0.012, m)
+    tube(mb, c, d, 0.012, m)
+    mid = (a + b) / 2
+    up = Vector((0, 0, 1))
+    poly_tube(mb, [mid + (u * math.cos(2 * math.pi * k / 10) + up * math.sin(2 * math.pi * k / 10)) * 0.07 for k in range(10)],
+              0.008, m, closed=True)
+    # C scrolls in the top band, rings in the bottom band
+    cnt = max(1, int((s1 - s0) / 0.28))
+    for i in range(cnt):
+        sc = s0 + (s1 - s0) * (i + 0.5) / cnt
+        base = at(sc, h - 0.13)
+        spiral = []
+        for k in range(14):
+            t = k / 13
+            ang = math.pi * (0.5 + 2.2 * t)
+            rr = 0.085 * (1 - 0.7 * t)
+            spiral.append(base + u * (rr * math.cos(ang)) + up * (rr * math.sin(ang) * 0.9))
+        poly_tube(mb, spiral, 0.006, m)
+        rc = at(sc, 0.16)
+        poly_tube(mb, [rc + (u * math.cos(2 * math.pi * k / 8) + up * math.sin(2 * math.pi * k / 8)) * 0.065 for k in range(8)],
+                  0.006, m, closed=True)
+
+
+def forged_railing(mb, feet, h, m):
+    """Posts at every foot point (x, y, z) and a panel between each pair."""
+    for f in feet:
+        post(mb, f[0], f[1], f[2], h, m)
+    for a, b in zip(feet, feet[1:]):
+        forged_panel(mb, a, b, h, m)
 
 
 def iron_railing(mb, pts, z, h, m, spacing=0.14):
@@ -746,35 +846,28 @@ def iron_railing(mb, pts, z, h, m, spacing=0.14):
             mb.obox(p + Vector((0, 0, h / 2)), u, n, (0, 0, 1), 0.025, 0.025, h / 2 + 0.03, m)
 
 
-def railings(coll, curves_coll, M, sag, bell):
-    front, ys, left_end, right_end = sag
-    module = railing_module(M)
+def railings(coll, M, sag, bell):
     objs = []
-    yr = ys + 0.12
-    land = [(LAND_X0 + 0.1, yr, LZ), (LAND_X0 + 0.1, LAND_FRONT + 0.12, LZ)] + [(x, y + 0.12, LZ) for x, y in front[2:-2:2]]
-    land += [(LAND_X1 - 0.1, LAND_FRONT + 0.12, LZ), (LAND_X1 - 0.1, yr, LZ)]
-    c_land = path_curve("Chiesa_Percorso_Sagrato", curves_coll, land, corners=(1, len(land) - 2))
-    c_left = path_curve("Chiesa_Percorso_ScalaSinistra", curves_coll, [(left_end[0], yr, left_end[1] + 0.05), (LAND_X0 + 0.1, yr, LZ)])
-    c_right = path_curve("Chiesa_Percorso_ScalaDestra", curves_coll, [(LAND_X1 - 0.1, yr, LZ), (right_end[0], yr, right_end[1] + 0.05)])
-    if module:
-        for nm, c in (("Chiesa_Ringhiera_Sagrato", c_land), ("Chiesa_Ringhiera_ScalaSinistra", c_left),
-                      ("Chiesa_Ringhiera_ScalaDestra", c_right)):
-            objs.append(railing_on(nm, coll, module, c))
-        post = bpy.data.objects.get("Cylinder.004")
-        if post:
-            for i, p in enumerate([(LAND_X0 + 0.1, LAND_FRONT + 0.12, LZ), (LAND_X1 - 0.1, LAND_FRONT + 0.12, LZ),
-                                   (left_end[0], yr, left_end[1]), (right_end[0], yr, right_end[1])]):
-                ob = post.copy()
-                ob.data = post.data
-                ob.name = "Chiesa_Pilastrino_%d" % (i + 1)
-                zmin = min((post.matrix_world @ Vector(c)).z for c in post.bound_box)
-                ob.location = Vector((p[0], p[1], p[2] + (post.location.z - zmin) * 0.75))
-                ob.scale = (0.75, 0.75, 0.75)
-                ob.rotation_euler = (0, 0, 0)
-                for cc in ob.users_collection:
-                    cc.objects.unlink(ob)
-                coll.objects.link(ob)
-                objs.append(ob)
+    mb = MB("Chiesa_Ringhiere")
+    phi0, ys = sag["phi0"], sag["ys"]
+    r = LAND_R - 0.14
+    # landing: along the round front, posts about every 1.3 m
+    span = math.pi - 2 * phi0
+    n = max(2, round(r * span / 1.3))
+    feet = [(DOOR_X + r * math.cos(phi0 + span * i / n), Y_FACADE - r * math.sin(phi0 + span * i / n), LZ) for i in range(n + 1)]
+    forged_railing(mb, feet, 1.05, M["ferro"])
+    # stairs: on the parapets, from the post at the cylinder down to the newel
+    for d, e in sag["ends"].items():
+        top = e["top"]
+        x0, x1 = top[0][0], e["newel"][0]
+        k = max(2, round(abs(x1 - x0) / 1.3))
+        sfeet = []
+        for i in range(k + 1):
+            x = x0 + (x1 - x0) * i / k
+            zt = min(top, key=lambda t: abs(t[0] - x))[1]
+            sfeet.append((x, ys - 0.17, zt if i < k else e["newel"][1]))
+        forged_railing(mb, sfeet, 0.95, M["ferro"])
+    objs.append(mb.finish(coll))
     bx0, bx1, by0, by1, bz1 = bell
     mb = MB("Chiesa_RinghiereTetto")
     iron_railing(mb, [(TOWER_X1, Y_FACADE - 0.75), (SIDE_X + 0.9, Y_FACADE - 0.75), (SIDE_X + 0.9, Y_FACADE + 3.0)], Z_TOP, 1.0, M["ferro"])
@@ -838,7 +931,8 @@ def views(out_dir, coll):
         "4_portale": ((DOOR_X + 3, Y_FACADE - 11, G0 + 1.7), (DOOR_X, Y_FACADE, LZ + 5), 26),
         "5_alto": ((DOOR_X + 30, Y_FACADE - 45, G0 + 32), (DOOR_X - 8, Y_FACADE + 8, G0 + 8), 30),
         "6_comune_e_chiesa": ((X_COMUNE - 30, Y_FACADE - 40, G0 + 4), (X_COMUNE + 4, Y_FACADE, G0 + 10), 24),
-        "7_scala_destra": ((LAND_X1 + 6, Y_FACADE - 7, G0 + 1.7), (LAND_X1 + 1, Y_FACADE - 1, G0 + 1.2), 24),
+        "7_scala_destra": ((DOOR_X + LAND_R + 6, Y_FACADE - 7, G0 + 1.7), (DOOR_X + LAND_R + 1, Y_FACADE - 1, G0 + 1.2), 24),
+        "8_sagrato": ((DOOR_X - 4.5, Y_FACADE - 8.5, G0 + 1.6), (DOOR_X - 0.5, Y_FACADE - 2.0, LZ - 0.2), 26),
     }
     for name, (loc, at, lens) in shots.items():
         cam.location = Vector(loc)
@@ -864,10 +958,8 @@ def main():
         bpy.data.collections.remove(old)
     coll = bpy.data.collections.new("Chiesa")
     scene.collection.children.link(coll)
-    curves = bpy.data.collections.new("Chiesa_Percorsi")
-    coll.children.link(curves)
     objs, sag, bell = build(coll, M)
-    objs += railings(coll, curves, M, sag, bell)
+    objs += railings(coll, M, sag, bell)
     objs += roof(coll, M)
     bpy.ops.wm.save_as_mainfile(filepath=DST, copy=False)
     tris = 0

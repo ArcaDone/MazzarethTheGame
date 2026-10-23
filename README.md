@@ -357,6 +357,7 @@ Sull'altro PC:
   - punto D: case che condividono le mesh (kit istanziato comune + guscio unico leggero) per caricamenti più leggeri;
   - cache PSO: fatta il 23/10 da un giro di 12 minuti (311 PSO registrati, 2592 nella cache); resta l'attesa di 2,3 s al primo fotogramma (caricamento del codice degli shader, non i PSO);
   - `M80Folla` blocca 245 ms quando entra la sua cella (BeginPlay: crea tutta la folla insieme);
+  - **folla invisibile nel gioco cotto** (si vedono solo capsula e borsette): `M80Pedone` carica per percorso `Personaggi/Folla/Build/<nome>/BP_<nome>`, che il cook non segue. Aggiungere `+DirectoriesToAlwaysCook=(Path="/Game/Mazzarino80/Personaggi/Folla/Build")` in `DefaultGame.ini` (21 MetaHuman, 2,3 GB di sorgenti: cook più lungo e gioco più grande);
   - import rotto del CameraDirector di GASP (oggi il cook usa `-IgnoreCookErrors`).
 - **Licenze delle auto scaricate**: i nomi delle texture fanno pensare a modelli presi da giochi commerciali; prima di pubblicare vanno sostituite o verificate.
 

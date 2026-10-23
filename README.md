@@ -187,13 +187,16 @@ Dopo aver aggiunto o spostato piante, ricostruisci gli HLOD (capitolo 1).
 
 | Quando | Cosa lanciare | Dove |
 |---|---|---|
-| Hai modificato il terreno (anche in zone non caricate) e case, marciapiedi, strade o scalinate restano in aria o affondano | `m80_adatta_terreno.py`: rifà sul terreno di adesso solo quello che si è spostato (le case oltre 5 cm alla base dei muri), lo ricuoce e lo salva; il resto non viene toccato. Poi ricostruisci gli HLOD. `M80_ZONA=x,y,raggio_m` per una zona sola, `M80_PROVA=1` per il solo resoconto, `M80_FOTO=6` per le foto prima/dopo | `Scripts/`, editor chiuso, con il comando qui sotto (`-TimeoutMinutes 240` per tutto il paese). Resoconto in `Saved/Mazzarino80/Terreno/adatta_terreno.json` |
+| Hai modificato il terreno (anche in zone non caricate) e case, marciapiedi, strade o scalinate restano in aria o affondano | `powershell -File Scripts/m80_adatta_terreno_tutto.ps1`: rifà sul terreno di adesso solo quello che si è spostato (le case con almeno 3 punti oltre 5 cm alla base dei muri), lo ricuoce e lo salva; il resto non viene toccato. Riapre l'editor ogni 8 riquadri (un editor solo per tutto il paese finisce la memoria) e dopo un crash riparte da dove era; `-DaCapo` per rifarlo tutto. Poi ricostruisci gli HLOD | `Scripts/`, editor chiuso; tutto il paese ~45 minuti. Resoconto in `Saved/Mazzarino80/Terreno/adatta_terreno.json` |
+| Marciapiedi fatti dalla casa staccati dal muro | *Rifai marciapiedi* sulla casa, o `m80_marciapiedi_rifai.py` per tutte (`M80_PROVA=1` per il solo resoconto) | `Scripts/`, editor chiuso |
 | Hai finito di modificare il paese e vuoi vederlo bene da lontano | *Build → Build HLODs* nell'editor, o il comando del capitolo 1 | Capitolo 1 |
 | Vuoi provare il gioco vero | `Cuoci_Paese.bat` (25-45 minuti, editor chiuso), poi `Gioca_Paese.bat` | `D:\Mazzarino80_Sorgenti\Build_Cotto` (capitolo 1, *Gioco cotto*) |
 | Case nuove o cambiate da cuocere in Nanite | `m80_houses_bake.py` | `Scripts/`, editor chiuso |
 | Backup | Parte da solo ogni giorno alle 13:00; a mano `Tools/Backup/MTGBackup.ps1` | Capitolo 5 |
 
-Il 23/10 `m80_adatta_terreno.py` è ancora in verifica: lanciarlo su tutto il paese solo dopo il controllo delle foto prima/dopo.
+Il 23/10 il paese intero è stato rimesso sul terreno: 508 case rifatte su 3082 (controllate a occhio una affondata di 6 m e una sollevata di quasi 3 m). Al primo avvio dopo un crash l'editor chiede *Restore Packages*: rispondere **Skip Restore**.
+
+**Cache shader dentro Content:** il percorso della cache locale (registro `UE-LocalDataCachePath`) è `Content/UE_DDC`. Zen ci scrive dei `session.json` che l'editor scambia per tabelle da importare (finestra *DataTable Options*: rispondere **Cancel**), e git e l'editor scansionano le sue ~99.000 cartelle (commit e avvii lenti). Da spostare fuori da `Content`, per esempio in `D:\UE_DDC`. Gli script lanciati con `run_editor_script.ps1` non guardano Content e non si bloccano.
 
 ### Come si lanciano
 
@@ -212,6 +215,8 @@ powershell -ExecutionPolicy Bypass -File Scripts/run_editor_script.ps1 -Script S
 |---|---|
 | `m80_houses_bake.py` | Cuoce le case non ancora cotte, riquadro per riquadro. Report con le case fallite. |
 | `m80_adatta_terreno.py` | Adatta il paese al terreno di adesso (vedi *Gli strumenti di tutti i giorni*): `M80EditorLibrary.FitHouseToGround` per le case, `RebuildOnGround` per marciapiedi, strade e scalinate; salva solo quello che è cambiato. |
+| `m80_marciapiedi_rifai.py` | Ridisegna dalle facciate della casa i marciapiedi fatti con l'interruttore *Marciapiedi* (quelli fatti con la calamita accesa finivano sulla casa accanto); stessi attori, salva solo quelli spostati. |
+| `m80_marciapiede_ispeziona.py` | `M80_CASA=Casa_…`: per i marciapiedi vicini alla casa, distanza dal muro di ogni punto e ogni 25 cm, terreno che sbuca sopra il lastricato. |
 | `m80_marciapiedi_auto_test.py` | Prova dei marciapiedi fatti dalla casa (lati scelti, anello, casa a L con spigoli dentro e fuori) e del loro HLOD; foto per ogni lato. |
 | `m80_houses_district.py` | Crea le case dai lotti OSM, saltando quelli coperti da edifici fatti a mano. |
 | `m80_town_zones.py` | Zone di esclusione attorno agli edifici fatti a mano, sul loro perimetro reale visto dall'alto (`m80_footprints.py`). |

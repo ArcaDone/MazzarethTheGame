@@ -9,6 +9,7 @@ class USplineMeshComponent;
 class UDynamicMeshComponent;
 class UStaticMesh;
 class UMaterialInterface;
+struct FM80MeshBuffer;
 
 UENUM(BlueprintType)
 enum class EM80CurbSide : uint8
@@ -21,7 +22,7 @@ enum class EM80CurbSide : uint8
 
 /**
  * Sidewalk drawn with a spline (the centre line): a paved slab (tiles of the hand-made "Marciapiede"
- * material, mapped in world space) plus the lava-stone curb of the "marciapiede" blueprints on the road side.
+ * material, mapped in world space) plus a lava-stone curb on the road side, one mesh with sharp mitered corners.
  * The slab is one mesh laid on the ground every half metre, at both its edges (it follows slopes along and
  * across); its sides are lava stone mapped on their own plane (the tiles, mapped from above, streaked down them).
  * Houses ignore it when they look for the ground.
@@ -104,6 +105,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh", meta = (DisplayName = "Mesh lastra (non usata)"))
 	TObjectPtr<UStaticMesh> SlabMesh;
 
+	/** Gives the curb its material (when "Materiale cordolo" is empty); the curb itself is built with the slab. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh", meta = (DisplayName = "Mesh cordolo"))
 	TObjectPtr<UStaticMesh> CurbMesh;
 
@@ -132,20 +134,23 @@ private:
 	struct FStation
 	{
 		FVector Pos;   // world, on the ground
-		FVector Right; // world, horizontal
+		FVector Right; // world, horizontal; at a corner the miter (longer than 1), so offsets keep their width on both sides
 	};
 
+	/** Stations every Step along each segment, every spline point included (evenly spaced stations cut the corners). */
 	TArray<FStation> Sample(double Step) const;
 	/** Moves the spline points near house facades (magnet); W = sidewalk width. */
 	void SnapToHouses(double W);
 	/** Footprints (CCW, world) of the procedural houses within Reach of the spline points. */
 	TArray<TArray<FVector2D>> NearbyHouses(double Reach) const;
 	double GroundZ(const FVector& World) const;
-	void AddStrip(UStaticMesh* Mesh, UMaterialInterface* Material, const TArray<FStation>& St, double Lateral, double Width, double Top, double Depth, bool bWrap = true);
+	/** The curb: a lava-stone profile Width wide, from Depth below the ground to Top above it, swept through the
+	 *  stations at Lateral with mitered corners; capped at the ends unless bLoop. */
+	void AddCurb(FM80MeshBuffer& Out, const TArray<FStation>& St, double Lateral, double Width, double Top, double Depth, bool bLoop) const;
 	/** Paves the inside of the closed spline; returns +1/-1, the side ("Right" sign) where the inside lies. */
-	double BuildFill(double Top);
+	double BuildFill(double Top, FM80MeshBuffer& Out);
 	/** The slab between Lateral -/+ Width/2 of the stations, on the ground at both edges, sides down Depth below. */
-	void BuildSlab(const TArray<FStation>& St, double Lateral, double Width, double Top, double Depth);
+	void BuildSlab(const TArray<FStation>& St, double Lateral, double Width, double Top, double Depth, FM80MeshBuffer& Out);
 	/** Top tiles, then the sides (the curb's lava stone). */
 	void SetFillMaterials();
 };

@@ -1,6 +1,6 @@
 """Sidewalks made by the house ("Marciapiedi" on AM80House) and their far view (HLOD), in a level made in memory (/Temp,
 never saved): an octagonal house with all sides ticked (one ring), the same with sides 0, 1 and 3 (two open lines),
-a rectangular house switched on and off. For each case: sidewalks made, their points' distance from the facade, closed
+a rectangular house switched on and off, an L-shaped house ringed (outer and inner corners). For each case: sidewalks made, their points' distance from the facade, closed
 or not, curb side; then what UM80DynamicMeshHLODBuilder makes of them (triangles, materials).
 Out: Saved/Mazzarino80/Marciapiedi/Auto/report.json + one picture per view (VIEWS)
 powershell -File Scripts/run_editor_script.ps1 -Script Scripts/m80_marciapiedi_auto_test.py -ForceLit -TimeoutMinutes 15
@@ -22,6 +22,8 @@ STYLE = "/Game/Mazzarino80/Houses/Styles/DA_M80Style_01_PopolarePietra"
 EAS = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
 OCT = [(600 * math.cos(math.radians(22.5 + 45 * i)), 600 * math.sin(math.radians(22.5 + 45 * i))) for i in range(8)]
 RECT = [(2000, -500), (3200, -500), (3200, 500), (2000, 500)]
+# L-shaped: four outer corners and one inner corner, ringed by one sidewalk.
+ELLE = [(3800, -600), (4800, -600), (4800, 600), (4300, 600), (4300, 0), (3800, 0)]
 
 
 def house(label, pts, seed):
@@ -100,6 +102,9 @@ def build():
                                 "nel_livello": len([a for a in EAS.get_all_level_actors() if isinstance(a, unreal.M80Sidewalk)])}
     set_on(rect, [True, False, True, False])
     rep["rettangolo_lati_0_2"] = describe(rect, RECT)
+    elle = house("Casa_Elle", ELLE, 9)
+    set_on(elle)
+    rep["elle_anello"] = describe(elle, ELLE)
     return rep
 
 
@@ -111,6 +116,8 @@ VIEWS = {
     "rettangolo_lato_0": ((2600, -1900, 350), (2600, -500, 0)),
     "rettangolo_lato_2": ((2600, 1900, 350), (2600, 500, 0)),
     "rettangolo_lato_1": ((4600, 0, 350), (3200, 0, 0)),
+    "elle_spigolo_fuori": ((5300, -1100, 250), (4800, -600, 0)),
+    "elle_spigolo_dentro": ((3850, 750, 250), (4300, 0, 0)),
 }
 
 

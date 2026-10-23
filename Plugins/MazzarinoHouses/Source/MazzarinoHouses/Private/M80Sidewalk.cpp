@@ -326,109 +326,96 @@ void AM80Sidewalk::RefreshSnappedNear(UWorld* World, const FBox& Area)
 TArray<AM80Sidewalk::FStation> AM80Sidewalk::Sample(double Step) const
 {
 	TArray<FStation> Out;
+	const int32 Points = Path->GetNumberOfSplinePoints();
+	const bool bLoop = Path->IsClosedLoop();
+	const int32 Segments = bLoop ? Points : Points - 1;
 	const double Length = Path->GetSplineLength();
-	if (Length < 1.0)
+	if (Segments < 1 || Length < 1.0)
 	{
 		return Out;
 	}
-	const int32 N = FMath::Max(1, FMath::CeilToInt(Length / FMath::Max(Step, 10.0)));
-	for (int32 k = 0; k <= N; ++k)
+	Step = FMath::Max(Step, 10.0);
+	for (int32 s = 0; s < Segments; ++s)
 	{
-		const double D = Length * k / N;
-		FStation S;
-		S.Pos = Path->GetLocationAtDistanceAlongSpline(D, ESplineCoordinateSpace::World);
-		FVector Dir = Path->GetDirectionAtDistanceAlongSpline(D, ESplineCoordinateSpace::World);
-		Dir.Z = 0;
-		if (!Dir.Normalize())
+		const double D0 = Path->GetDistanceAlongSplineAtSplinePoint(s);
+		const double D1 = s + 1 < Points ? Path->GetDistanceAlongSplineAtSplinePoint(s + 1) : Length;
+		const int32 N = FMath::Max(1, FMath::CeilToInt((D1 - D0) / Step));
+		for (int32 k = 0; k < N; ++k)
 		{
-			Dir = FVector::ForwardVector;
+			Out.Add({Path->GetLocationAtDistanceAlongSpline(D0 + (D1 - D0) * k / N, ESplineCoordinateSpace::World), FVector::ZeroVector});
 		}
-		S.Right = FVector(-Dir.Y, Dir.X, 0);
-		Out.Add(S);
+	}
+	// The last point, or on a closed spline the first one again.
+	Out.Add({Path->GetLocationAtDistanceAlongSpline(Length, ESplineCoordinateSpace::World), FVector::ZeroVector});
+
+	// Right of the way in and of the way out, joined by the miter.
+	const int32 Last = Out.Num() - 1;
+	auto Flat = [](FVector V)
+	{
+		V.Z = 0;
+		return V.GetSafeNormal();
+	};
+	for (int32 k = 0; k <= Last; ++k)
+	{
+		FVector In = k > 0 ? Flat(Out[k].Pos - Out[k - 1].Pos) : (bLoop ? Flat(Out[Last].Pos - Out[Last - 1].Pos) : FVector::ZeroVector);
+		FVector Next = k < Last ? Flat(Out[k + 1].Pos - Out[k].Pos) : (bLoop ? Flat(Out[1].Pos - Out[0].Pos) : FVector::ZeroVector);
+		if (In.IsNearlyZero())
+		{
+			In = Next;
+		}
+		if (Next.IsNearlyZero())
+		{
+			Next = In;
+		}
+		if (In.IsNearlyZero())
+		{
+			In = Next = FVector::ForwardVector;
+		}
+		const FVector RightIn(-In.Y, In.X, 0), RightOut(-Next.Y, Next.X, 0);
+		const double Denominator = 1.0 + FVector::DotProduct(RightIn, RightOut);
+		FVector R = Denominator > 1e-3 ? (RightIn + RightOut) / Denominator : RightOut;
+		if (R.Size() > 3.0)
+		{
+			R = R.GetSafeNormal() * 3.0;
+		}
+		Out[k].Right = R;
 	}
 	return Out;
 }
 
-void AM80Sidewalk::AddStrip(UStaticMesh* Mesh, UMaterialInterface* Material, const TArray<FStation>& St, double Lateral, double Width, double Top, double Depth, bool bWrap)
+void AM80Sidewalk::AddCurb(FM80MeshBuffer& Out, const TArray<FStation>& St, double Lateral, double Width, double Top, double Depth, bool bLoop) const
 {
-	if (!Mesh || St.Num() < 2 || Width <= 1.0)
+	if (St.Num() < 2 || Width <= 1.0)
 	{
 		return;
 	}
-	const FBox Box = Mesh->GetBoundingBox();
-	const double MeshW = Box.Max.Y - Box.Min.Y, MeshH = Box.Max.Z - Box.Min.Z;
-	if (MeshW <= UE_SMALL_NUMBER || MeshH <= UE_SMALL_NUMBER)
-	{
-		return;
-	}
-	const double SY = Width / MeshW;
-	const double SZ = (Top + Depth) / MeshH;
-	const FVector2D Scale(SY, SZ);
-	const FVector2D Offset(-Box.GetCenter().Y * SY, Top - Box.Max.Z * SZ);
 	const FTransform& T = Path->GetComponentTransform();
-	// A closed spline samples its first point again at the end: tangents wrap around.
-	const bool bLoop = bWrap && Path->IsClosedLoop() && St.Num() > 2;
-
-	TArray<FVector> P;
-	P.Reserve(St.Num());
+	// Square stone with its top edges taken off, down into the ground. Counter-clockwise in (out, up).
+	const double H = Width / 2, C = FMath::Min(3.0, H * 0.3);
+	const TArray<FVector2D> Profile = {{-H, -Depth}, {H, -Depth}, {H, Top - C}, {H - C, Top}, {-H + C, Top}, {-H, Top - C}};
+	TArray<FVector3d> P, R;
 	for (const FStation& S : St)
 	{
 		FVector W = S.Pos + S.Right * Lateral;
 		W.Z = GroundZ(W);
 		P.Add(T.InverseTransformPosition(W));
+		R.Add(T.InverseTransformVector(S.Right));
 	}
-	const int32 Last = P.Num() - 1;
-	auto Tangent = [&P, Last, bLoop](int32 j)
+	for (int32 i = 0; i + 1 < P.Num(); ++i)
 	{
-		if (bLoop)
-		{
-			return (P[(j + 1) % Last] - P[(j - 1 + Last) % Last]) * 0.5;
-		}
-		if (j == 0)
-		{
-			return P[1] - P[0];
-		}
-		return j == Last ? P[Last] - P[Last - 1] : (P[j + 1] - P[j - 1]) * 0.5;
-	};
-	for (int32 i = 0; i < Last; ++i)
-	{
-		const FVector TA = Tangent(i);
-		const FVector TB = Tangent(i + 1);
-		USplineMeshComponent* Seg = NewObject<USplineMeshComponent>(this, NAME_None, RF_Transactional);
-		// Instance, not construction script: the pieces are saved and survive construction running again.
-		Seg->CreationMethod = EComponentCreationMethod::Instance;
-		Seg->ComponentTags.Add(GeneratedTag);
-		AddInstanceComponent(Seg);
-		Seg->SetupAttachment(Path);
-		Seg->SetMobility(EComponentMobility::Static);
-		Seg->SetStaticMesh(Mesh);
-		if (Material)
-		{
-			Seg->SetMaterial(0, Material);
-		}
-		Seg->SetForwardAxis(ESplineMeshAxis::X, false);
-		Seg->SetBoundaryMin(Box.Min.X, false);
-		Seg->SetBoundaryMax(Box.Max.X, false);
-		Seg->SetStartAndEnd(P[i], TA, P[i + 1], TB, false);
-		Seg->SetStartScale(Scale, false);
-		Seg->SetEndScale(Scale, false);
-		Seg->SetStartOffset(Offset, false);
-		Seg->SetEndOffset(Offset, false);
-		Seg->SetCollisionProfileName(bCollision ? TEXT("BlockAll") : TEXT("NoCollision"));
-		Seg->RegisterComponent();
-		Seg->UpdateMesh();
+		Out.Sweep(1, P[i], P[i + 1], R[i], R[i + 1], Profile, !bLoop && i == 0, !bLoop && i + 2 == P.Num());
 	}
 }
 
-double AM80Sidewalk::BuildFill(double Top)
+double AM80Sidewalk::BuildFill(double Top, FM80MeshBuffer& Mesh)
 {
 	const FTransform& T = Path->GetComponentTransform();
-	const double Length = Path->GetSplineLength();
-	const int32 N = FMath::Clamp(FMath::CeilToInt(Length / 50.0), 3, 4000);
+	// The spline points are on the outline: its corners stay sharp.
 	TArray<FVector2D> Outline;
-	for (int32 k = 0; k < N; ++k)
+	const TArray<FStation> St = Sample(50.0);
+	for (int32 k = 0; k + 1 < St.Num(); ++k)
 	{
-		Outline.Add(FVector2D(Path->GetLocationAtDistanceAlongSpline(Length * k / N, ESplineCoordinateSpace::Local)));
+		Outline.Add(FVector2D(T.InverseTransformPosition(St[k].Pos)));
 	}
 	M80Poly::Clean(Outline, 5.0);
 	if (Outline.Num() < 3)
@@ -443,7 +430,7 @@ double AM80Sidewalk::BuildFill(double Top)
 	const double Inside = M80Poly::Contains(Outline, FVector2D(Start) + Right * 10.0) ? 1.0 : -1.0;
 
 	// With a curb the paving stops under its inner edge, so the stones show all around the piazza.
-	if (CurbMesh && CurbSide != EM80CurbSide::None)
+	if (CurbSide != EM80CurbSide::None)
 	{
 		const double Inset = FMath::Clamp<double>(CurbWidthCm, 10.0, 100.0) * 0.8;
 		TArray<FVector2D> Inner = Outline;
@@ -473,7 +460,6 @@ double AM80Sidewalk::BuildFill(double Top)
 	};
 
 	// The polygon is cut into 2 m cells so the paving follows the slopes of the terrain.
-	FM80MeshBuffer Mesh;
 	const double Cell = 200.0;
 	const FBox2D Box(Outline);
 	const FVector3d FacingUp(0, 0, 1);
@@ -517,11 +503,6 @@ double AM80Sidewalk::BuildFill(double Top)
 		const FVector3d A = Drape(Outline[i]), B = Drape(Outline[(i + 1) % Outline.Num()]);
 		Mesh.QuadProjected(1, A - Down, B - Down, B, A, FVector3d(Out.X, Out.Y, 0));
 	}
-
-	UE::Geometry::FDynamicMesh3 Dyn;
-	Mesh.ToDynamicMesh(Dyn);
-	Fill->SetMesh(MoveTemp(Dyn));
-	SetFillMaterials();
 	return Inside;
 }
 
@@ -534,7 +515,7 @@ void AM80Sidewalk::SetFillMaterials()
 	Fill->SetCollisionProfileName(bCollision ? TEXT("BlockAll") : TEXT("NoCollision"));
 }
 
-void AM80Sidewalk::BuildSlab(const TArray<FStation>& St, double Lateral, double Width, double Top, double Depth)
+void AM80Sidewalk::BuildSlab(const TArray<FStation>& St, double Lateral, double Width, double Top, double Depth, FM80MeshBuffer& Mesh)
 {
 	if (St.Num() < 2 || Width <= 1.0)
 	{
@@ -555,7 +536,6 @@ void AM80Sidewalk::BuildSlab(const TArray<FStation>& St, double Lateral, double 
 			(Side < 0 ? UL : UR).Add(FVector2f(W.X / 100.0, W.Y / 100.0));
 		}
 	}
-	FM80MeshBuffer Mesh;
 	const FVector3d SlabUp(0, 0, 1);
 	const FVector3d Down(0, 0, Top + Depth);
 	const bool bLoop = Path->IsClosedLoop();
@@ -577,10 +557,6 @@ void AM80Sidewalk::BuildSlab(const TArray<FStation>& St, double Lateral, double 
 		const FVector3d Front = (L[E] + R[E] - L[E - 1] - R[E - 1]).GetSafeNormal();
 		Mesh.QuadProjected(1, L[E] - Down, R[E] - Down, R[E], L[E], Front);
 	}
-	UE::Geometry::FDynamicMesh3 Dyn;
-	Mesh.ToDynamicMesh(Dyn);
-	Fill->SetMesh(MoveTemp(Dyn));
-	SetFillMaterials();
 }
 
 void AM80Sidewalk::Rebuild()
@@ -616,17 +592,29 @@ void AM80Sidewalk::Rebuild()
 	const double CW = Curbs ? FMath::Min<double>(CurbWidthCm, W / (Curbs + 1)) : 0.0;
 	const double Top = FMath::Max(0.f, TopHeightCm);
 
-	if (Path->IsClosedLoop() && bFillInside && Fill)
+	// Slab and curb are one mesh: tiles in slot 0, lava stone (curb and slab sides) in slot 1.
+	FM80MeshBuffer Mesh;
+	auto Commit = [this, &Mesh]()
+	{
+		if (Fill)
+		{
+			UE::Geometry::FDynamicMesh3 Dyn;
+			Mesh.ToDynamicMesh(Dyn);
+			Fill->SetMesh(MoveTemp(Dyn));
+			SetFillMaterials();
+		}
+	};
+	const TArray<FStation> St = Sample(FMath::Clamp<double>(SlabPieceCm, 10.0, 50.0));
+
+	if (Path->IsClosedLoop() && bFillInside)
 	{
 		// Piazza: paving inside the outline, one curb running along it on the inside.
-		const double Inside = BuildFill(Top);
-		if (CurbMesh && Curbs)
+		const double Inside = BuildFill(Top, Mesh);
+		if (Curbs)
 		{
-			const FBox CB = CurbMesh->GetBoundingBox();
-			const double CurbW = FMath::Max(1.0, CB.Max.Y - CB.Min.Y);
-			const double Piece = FMath::Clamp((CB.Max.X - CB.Min.X) * CW / CurbW, 60.0, 400.0);
-			AddStrip(CurbMesh, CurbMaterial, Sample(Piece), Inside * CW / 2, CW, Top + 2.0, 25.0 + Top);
+			AddCurb(Mesh, St, Inside * CW / 2, CW, Top + 2.0, 25.0 + Top, true);
 		}
+		Commit();
 		return;
 	}
 
@@ -694,15 +682,10 @@ void AM80Sidewalk::Rebuild()
 	{
 		SlabMin += CW * 0.8;
 	}
-	BuildSlab(Sample(FMath::Clamp<double>(SlabPieceCm, 10.0, 50.0)), (SlabMin + SlabMax) / 2, SlabMax - SlabMin, Top, 30.0);
+	BuildSlab(St, (SlabMin + SlabMax) / 2, SlabMax - SlabMin, Top, 30.0, Mesh);
 
-	if (CurbMesh && Curbs)
+	if (Curbs)
 	{
-		const FBox CB = CurbMesh->GetBoundingBox();
-		const double CurbW = FMath::Max(1.0, CB.Max.Y - CB.Min.Y);
-		// Keep the stones' proportions: piece length = mesh length at the curb's scale.
-		const double Piece = FMath::Clamp((CB.Max.X - CB.Min.X) * CW / CurbW, 60.0, 400.0);
-		const TArray<FStation> St = Sample(Piece);
 		for (const double Side : {1.0, -1.0})
 		{
 			if (!(Side > 0 ? bCurbRight : bCurbLeft))
@@ -721,11 +704,12 @@ void AM80Sidewalk::Rebuild()
 				}
 				if (Run.Num() >= 2)
 				{
-					// A piece of a closed ring is an open strip: no wrapping tangents.
-					AddStrip(CurbMesh, CurbMaterial, Run, Side * (W / 2 - CW / 2), CW, Top + 2.0, 25.0 + Top, Run.Num() == St.Num());
+					// A piece of a closed ring is an open strip, capped at both ends.
+					AddCurb(Mesh, Run, Side * (W / 2 - CW / 2), CW, Top + 2.0, 25.0 + Top, Path->IsClosedLoop() && Run.Num() == St.Num());
 				}
 				Run.Reset();
 			}
 		}
 	}
+	Commit();
 }

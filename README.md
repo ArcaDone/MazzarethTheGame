@@ -183,6 +183,20 @@ Dopo aver aggiunto o spostato piante, ricostruisci gli HLOD (capitolo 1).
 
 ## 3. Script di automazione
 
+### Gli strumenti di tutti i giorni
+
+| Quando | Cosa lanciare | Dove |
+|---|---|---|
+| Hai modificato il terreno (anche in zone non caricate) e case, marciapiedi, strade o scalinate restano in aria o affondano | `m80_adatta_terreno.py`: rifà sul terreno di adesso solo quello che si è spostato (le case oltre 5 cm alla base dei muri), lo ricuoce e lo salva; il resto non viene toccato. Poi ricostruisci gli HLOD. `M80_ZONA=x,y,raggio_m` per una zona sola, `M80_PROVA=1` per il solo resoconto, `M80_FOTO=6` per le foto prima/dopo | `Scripts/`, editor chiuso, con il comando qui sotto (`-TimeoutMinutes 240` per tutto il paese). Resoconto in `Saved/Mazzarino80/Terreno/adatta_terreno.json` |
+| Hai finito di modificare il paese e vuoi vederlo bene da lontano | *Build → Build HLODs* nell'editor, o il comando del capitolo 1 | Capitolo 1 |
+| Vuoi provare il gioco vero | `Cuoci_Paese.bat` (25-45 minuti, editor chiuso), poi `Gioca_Paese.bat` | `D:\Mazzarino80_Sorgenti\Build_Cotto` (capitolo 1, *Gioco cotto*) |
+| Case nuove o cambiate da cuocere in Nanite | `m80_houses_bake.py` | `Scripts/`, editor chiuso |
+| Backup | Parte da solo ogni giorno alle 13:00; a mano `Tools/Backup/MTGBackup.ps1` | Capitolo 5 |
+
+Il 23/10 `m80_adatta_terreno.py` è ancora in verifica: lanciarlo su tutto il paese solo dopo il controllo delle foto prima/dopo.
+
+### Come si lanciano
+
 Gli script Python girano in un editor lanciato apposta:
 
 ```
@@ -197,6 +211,8 @@ powershell -ExecutionPolicy Bypass -File Scripts/run_editor_script.ps1 -Script S
 | Script | Cosa fa |
 |---|---|
 | `m80_houses_bake.py` | Cuoce le case non ancora cotte, riquadro per riquadro. Report con le case fallite. |
+| `m80_adatta_terreno.py` | Adatta il paese al terreno di adesso (vedi *Gli strumenti di tutti i giorni*): `M80EditorLibrary.FitHouseToGround` per le case, `RebuildOnGround` per marciapiedi, strade e scalinate; salva solo quello che è cambiato. |
+| `m80_marciapiedi_auto_test.py` | Prova dei marciapiedi fatti dalla casa (lati scelti, anello, casa a L con spigoli dentro e fuori) e del loro HLOD; foto per ogni lato. |
 | `m80_houses_district.py` | Crea le case dai lotti OSM, saltando quelli coperti da edifici fatti a mano. |
 | `m80_town_zones.py` | Zone di esclusione attorno agli edifici fatti a mano, sul loro perimetro reale visto dall'alto (`m80_footprints.py`). |
 | `m80_town_roads.py`, `m80_town_sidewalks.py`, `m80_town_props.py` | Strade dipinte, marciapiedi, cartelli e manifesti. |

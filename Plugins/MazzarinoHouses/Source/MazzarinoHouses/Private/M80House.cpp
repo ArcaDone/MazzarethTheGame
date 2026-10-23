@@ -1531,7 +1531,9 @@ void AM80House::RifaiMarciapiedi()
 		Path->UpdateSpline();
 		Sidewalk->bClosedLoop = Ticked == N;
 		Sidewalk->CurbSide = EM80CurbSide::Right;
-		Sidewalk->bSnapToHouses = true;
+		// The line is already on this house's facades; the magnet would pull its ends onto a neighbour's wall and turn
+		// the whole straight run away from this one.
+		Sidewalk->bSnapToHouses = false;
 		Sidewalk->SetActorLabel(FString::Printf(TEXT("Marciapiede_%s_%d"), LotId.IsEmpty() ? *GetActorLabel() : *LotId, l + 1));
 		Sidewalk->SetFolderPath(GetFolderPath());
 		Sidewalk->RerunConstructionScripts();

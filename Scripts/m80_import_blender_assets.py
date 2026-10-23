@@ -8,7 +8,7 @@
 - Poste: static meshes /Game/Mazzarino80/Buildings/Poste/SM_M80_Poste and SM_M80_Poste_Antenna, without Nanite
   (it turns the thin round slats of the facade into crooked wedges) and with 3 LODs instead.
 - Town buildings: /Game/Mazzarino80/Buildings/<Key>/SM_M80_<Key> (+ pieces) for Comune, ChiesaComune (stand-ins
-  for the Comune), Matrice (+ _Interno), Castello, Madonna (every part a mesh of its own); collision = the mesh
+  for the Comune; ChiesaComune is now the church rebuilt from photos, ComuneConChiesa.blend), Matrice (+ _Interno), Castello, Madonna (every part a mesh of its own); collision = the mesh
   itself, so they can be walked on and entered. Their textures are shared in /Game/Mazzarino80/Buildings/Textures
   (the same Poly Haven stone or marble used by several buildings is imported once).
 - Street furniture: /Game/Mazzarino80/Kit/Arredo/SM_M80_Cassonetto and SM_M80_Tombino (box collision).
@@ -41,17 +41,17 @@ MASTERS = "/Game/Mazzarino80/Vehicles/Materials"
 CARS = ["Fiat500", "Mini", "Maggiolino", "Golf", "M3", "Alfa155C"]   # drivable
 DEST = {k: "/Game/Mazzarino80/Vehicles/" + k for k in CARS}
 DEST["Poste"] = "/Game/Mazzarino80/Buildings/Poste"
-BUILDINGS = ["Comune", "ChiesaComune", "ComuneChiesa", "Matrice", "Castello", "Madonna"]
+BUILDINGS = ["Comune", "ChiesaComune", "Matrice", "Castello", "Madonna"]
 PROPS = ["Cassonetto", "Tombino"]
 for k in BUILDINGS:
     DEST[k] = "/Game/Mazzarino80/Buildings/" + k
 for k in PROPS:
     DEST[k] = "/Game/Mazzarino80/Kit/Arredo"
 BUILDING_TEXTURES = "/Game/Mazzarino80/Buildings/Textures"
-# The new Comune with its church takes the materials the user set on the old Comune (Blueprint ComuneCompleto); the
-# church's own materials go to the closest of those. Blender material (name before any ".001") -> existing material.
+# The church rebuilt beside the Comune takes the materials the user set on the old Comune (Blueprint ComuneCompleto);
+# its own materials go to the closest of those. Blender material (name before any ".001") -> existing material.
 OLD_COMUNE = "/Game/Migrated/"
-KEEP_MATERIALS = {"ComuneChiesa": {
+KEEP_MATERIALS = {"ChiesaComune": {
     "Main": OLD_COMUNE + "Materials/ComuneMain.ComuneMain", "Main2": OLD_COMUNE + "Materials/Main2.Main2",
     "WallPillar": "/Game/Megascans/Surfaces/Roman_Stone_Wall_tf2kaa2n/MI_Roman_Stone_Wall_tf2kaa2n_4K.MI_Roman_Stone_Wall_tf2kaa2n_4K",
     "Metal01": OLD_COMUNE + "Metal01.Metal01", "Metal02": OLD_COMUNE + "Materials/Metal02.Metal02",

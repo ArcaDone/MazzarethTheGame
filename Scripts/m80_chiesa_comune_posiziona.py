@@ -1,14 +1,13 @@
-"""Puts the new Comune with its church (SM_M80_ComuneChiesa, from ComuneConChiesa.blend) in the town where the old
-Comune Blueprint (M80_Recuperato_ComuneCompleto) has its main building, and hides in that Blueprint the pieces the new
-mesh replaces: the Comune itself (MainComune, ComuneScale), the old ruined church (ChurchTownHall), the statue and the
-Megapack doors, windows and garage gates that were stuck on the old facade. Fountain, lamps, grass and the rest stay.
+"""Puts the church rebuilt beside the Comune (SM_M80_ChiesaComune, from ComuneConChiesa.blend) in the town next to the
+old Comune Blueprint (M80_Recuperato_ComuneCompleto), and hides in that Blueprint only the old ruined church
+(ChurchTownHall) it replaces. The Comune itself stays the Blueprint's.
 
-Placement: the old main building came from ComuneScaled.blend, whose MainComune is the new file's MainBuilding
-stretched 1.0565 along x and 1.0665 along y (same height) and moved; the new mesh gets the old actor's rotation and scale
-times that stretch, so its main building lies on the old one.
+Placement: the Blueprint's Comune came from ComuneScaled.blend, whose MainComune is the church file's MainBuilding
+stretched 1.0565 along x and 1.0665 along y (same height) and moved; the church gets the Blueprint's rotation and scale
+times that stretch, so it stands against the Comune's east end as it does in the .blend.
 Env: M80_PROVA=1 report and pictures only, save nothing.
-Out: Saved/Mazzarino80/Comune/sostituisci.json + pictures
-powershell -File Scripts/run_editor_script.ps1 -Script Scripts/m80_comune_sostituisci.py -TimeoutMinutes 30
+Out: Saved/Mazzarino80/Comune/chiesa_posiziona.json + pictures
+powershell -File Scripts/run_editor_script.ps1 -Script Scripts/m80_chiesa_comune_posiziona.py -TimeoutMinutes 30
 """
 import json
 import os
@@ -24,17 +23,16 @@ ROOT = Path(unreal.Paths.project_dir())
 OUT = ROOT / "Saved/Mazzarino80/Comune"
 PROVA = os.environ.get("M80_PROVA") == "1"
 OLD = "M80_Recuperato_ComuneCompleto"
-NEW = "M80_ComuneChiesa"
-MESH = "/Game/Mazzarino80/Buildings/ComuneChiesa/SM_M80_ComuneChiesa.SM_M80_ComuneChiesa"
+NEW = "M80_ChiesaComune"
+MESH = "/Game/Mazzarino80/Buildings/ChiesaComune/SM_M80_ChiesaComune.SM_M80_ChiesaComune"
 # ComuneScaled (old) = stretch * new file + offset, metres, from MainComune vs MainBuilding
 AX, BX = 63.518 / 60.12, -37.87 + 63.518 / 60.12 * 47.891
 AY, BY = 52.931 / 49.631, -23.916 + 52.931 / 49.631 * 22.379
-HIDE = ("MainComune", "ComuneScale", "ChurchTownHall", "StatuaComume", "SM_windows_02", "SM_window_door_part_01",
-        "SM_window_door_01", "SM_Door_02", "SM_Door_color_03", "SM_Door_Jamb_01", "SM_metal_gate_01", "Porta6")
+HIDE = ("ChurchTownHall",)
 
 
 def steps():
-    info = json.loads((ROOT / "Saved/Mazzarino80/Import/out/ComuneChiesa.json").read_text(encoding="utf-8"))
+    info = json.loads((ROOT / "Saved/Mazzarino80/Import/out/ChiesaComune.json").read_text(encoding="utf-8"))
     px, py, pz = info["pivot_blender_m"]
     unreal.EditorLoadingAndSavingUtils.load_map(m80_seq.TOWN_MAP)
     yield 60
@@ -75,7 +73,7 @@ def steps():
             hidden[sm.get_name()] = hidden.get(sm.get_name(), 0) + 1
     old.modify()
     rep["nascosti"] = hidden
-    # houses that the new mesh overlaps (the church stands where the old Blueprint had nothing)
+    # houses that the church overlaps (it is bigger than the old ruined one)
     origin, extent = new.get_actor_bounds(False)
     rep["nuovo_bounds"] = {"min": [origin.x - extent.x, origin.y - extent.y, origin.z - extent.z],
                            "max": [origin.x + extent.x, origin.y + extent.y, origin.z + extent.z]}
@@ -95,14 +93,14 @@ def steps():
             eye = origin + unreal.Vector(-6000, -6000, 6000)
         else:
             eye = origin + d * 7000 + unreal.Vector(0, 0, 2500)
-        cap.capture(eye, unreal.MathLibrary.find_look_at_rotation(eye, origin), OUT / ("sostituisci_%s.png" % name))
+        cap.capture(eye, unreal.MathLibrary.find_look_at_rotation(eye, origin), OUT / ("chiesa_posiziona_%s.png" % name))
     yield 2
     cap.destroy()
     if not PROVA:
         unreal.EditorLoadingAndSavingUtils.save_packages([new.get_outermost(), old.get_outermost()], True)
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / "sostituisci.json").write_text(json.dumps(rep, indent=1), encoding="utf-8")
+    (OUT / "chiesa_posiziona.json").write_text(json.dumps(rep, indent=1), encoding="utf-8")
     yield 2
 
 
-m80_seq.Sequencer(steps(), log_file=str(OUT / "sostituisci_errore.txt"))
+m80_seq.Sequencer(steps(), log_file=str(OUT / "chiesa_posiziona_errore.txt"))

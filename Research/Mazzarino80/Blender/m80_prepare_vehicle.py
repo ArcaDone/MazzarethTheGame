@@ -1,7 +1,7 @@
 """Blender 4.3: clean, optimise and export one asset of D:/Mazzarino80_Sorgenti (Edifici, Auto, Arredo_Urbano...) for Unreal.
 
 Run: blender -b <file.blend> --python m80_prepare_vehicle.py -- <key> <out_dir>
-key: Fiat500 | Mini | Maggiolino | Golf | M3 | Poste | Comune | ChiesaComune | ComuneChiesa | Matrice | Castello | Madonna |
+key: Fiat500 | Mini | Maggiolino | Golf | M3 | Poste | Comune | ChiesaComune | Matrice | Castello | Madonna |
      Cassonetto | Tombino (see ASSETS)
 
 What it does (the source .blend is never saved):
@@ -62,10 +62,12 @@ ASSETS = {
     "Poste": {"kind": "building", "scale": 1.0, "split": ["Antenna"]},   # the radio mast is its own mesh
     # Town buildings (Comune and its church are stand-ins until the user rebuilds the Comune).
     "Comune": {"kind": "building", "density": 1500, "budget": 0},
-    "ChiesaComune": {"kind": "building", "density": 1500, "budget": 0},
-    # ComuneConChiesa.blend (2026-10-23): the Comune with the church rebuilt beside it, edited by the user; one mesh,
-    # nothing decimated (the Comune's forged railings would break).
-    "ComuneChiesa": {"kind": "building", "budget": 0, "keep": ["Chiesa_Tetto", "Plane.034"]},   # a 18-triangle roof is no sky
+    # ComuneConChiesa.blend (2026-10-23): only the church rebuilt beside the Comune (the Comune in the town stays the old
+    # Blueprint): the collection Chiesa plus the landing, stairs and railing the user made in the Comune's own collections.
+    # Nothing decimated (the Comune's forged railing would break); a 18-triangle roof is no sky.
+    "ChiesaComune": {"kind": "building", "budget": 0, "collections": ["Chiesa"], "keep": ["Chiesa_Tetto"],
+                     "include": ["Cylinder.015", "BaseScaleGarage.003", "BaseScaleGarage.004", "BezierCurve.029",
+                                 "Cylinder.016", "Cylinder.017", "Cylinder.018", "Cylinder.019", "Cylinder.020"]},
     # MatriceDentroFuori.blend; the pews came without a material: the church's wood.
     "Matrice": {"kind": "building", "density": 1500, "budget": 0, "collections": ["Export", "Export2", "Interno"],
                 "split_collections": {"Interno": "Interno"}, "materials": {"PancheChiesa": "Wood"}},
@@ -167,7 +169,7 @@ def collect():
             bpy.ops.object.duplicates_make_real()
     keep = [o for o in scene.objects if o.type in ("MESH", "CURVE", "FONT", "SURFACE", "META") and o.visible_get() and not o.hide_render]
     if CFG.get("collections"):
-        keep = [o for o in keep if any(c.name in CFG["collections"] for c in o.users_collection)]
+        keep = [o for o in keep if any(c.name in CFG["collections"] for c in o.users_collection) or o.name in CFG.get("include", [])]
     keep = [o for o in keep if not any(o.name.startswith(x) for x in CFG.get("exclude", []))]
     for o in keep:
         mat = bpy.data.materials.get(CFG.get("materials", {}).get(o.name, ""))

@@ -36,6 +36,10 @@ Repository privato: `ArcaDone/MazzarethTheGame` (Git + LFS).
 "D:\UE_5.8\Engine\Binaries\Win64\UnrealEditor-Cmd.exe" "D:\UE5Projects\GameAnimationSample\MazzarethTheGame.uproject" /Game/Mazzarino80/Houses/Maps/L_M80_Paese_WP -run=WorldPartitionBuilderCommandlet -Builder=WorldPartitionHLODsBuilder -AllowCommandletRendering
 ```
 
+**Gioco cotto** (in `D:\Mazzarino80_Sorgenti\Build_Cotto`, a editor chiuso):
+- `Cuoci_Paese.bat` rifà il gioco (mappa iniziale + paese, 25-45 minuti, log in `cook_log.txt`); `Gioca_Paese.bat` lo avvia in una finestra e scrive nel log del gioco gli scatti sopra i 60 ms.
+- **Cache PSO** (gli stati grafici preparati prima di vederli, contro gli scatti al primo materiale): `Build/Windows/PipelineCaches/PSO_MazzarethTheGame_PCD3D_SM6.spc`, entra nel cook da sola. Per allargarla: giro nel gioco cotto con `Gioca_Paese_Registra.bat` (salva alla chiusura in `Windows\MazzarethTheGame\Saved\CollectedPSOs`), poi `-run=ShaderPipelineCacheTools expand <tutte le .rec.upipelinecache> <ShaderStableInfo-*-PCD3D_SM6.shk di Saved/Cooked/Windows/MazzarethTheGame/Metadata/PipelineCaches> PSO_MazzarethTheGame_PCD3D_SM6.spc` e un nuovo cook. Le chiavi `.shk` devono venire dallo stesso cook del giro; le registrazioni vecchie stanno in `D:\Mazzarino80_Sorgenti\PSO_Registrazioni`.
+
 Altre mappe:
 - `Houses/Maps/L_M80_Houses18_V2`: 18 case di prova del generatore.
 - `Vehicles/L_M80_ProvaGuida`: pista di prova delle auto (rettilineo, rampe, slalom, vicolo). Tab cambia auto.
@@ -351,7 +355,8 @@ Sull'altro PC:
   - muschio giallo del terreno troppo acceso;
   - `M_GroundProps` con riflesso al massimo (Specular 1) e rugosità minima 0 nei master Megascans;
   - punto D: case che condividono le mesh (kit istanziato comune + guscio unico leggero) per caricamenti più leggeri;
-  - cache PSO contro l'attesa degli shader all'avvio;
+  - cache PSO: fatta il 23/10 da un giro di 12 minuti (311 PSO registrati, 2592 nella cache); resta l'attesa di 2,3 s al primo fotogramma (caricamento del codice degli shader, non i PSO);
+  - `M80Folla` blocca 245 ms quando entra la sua cella (BeginPlay: crea tutta la folla insieme);
   - import rotto del CameraDirector di GASP (oggi il cook usa `-IgnoreCookErrors`).
 - **Licenze delle auto scaricate**: i nomi delle texture fanno pensare a modelli presi da giochi commerciali; prima di pubblicare vanno sostituite o verificate.
 

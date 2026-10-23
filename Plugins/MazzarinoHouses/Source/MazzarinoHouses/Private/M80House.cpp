@@ -1448,29 +1448,38 @@ void AM80House::RifaiMarciapiedi()
 		return;
 	}
 	Modify();
-	for (const TSoftObjectPtr<AM80Sidewalk>& Old : MarciapiediCreati)
+	TArray<AM80Sidewalk*> Old;
+	for (const TSoftObjectPtr<AM80Sidewalk>& Made : MarciapiediCreati)
 	{
-		if (AM80Sidewalk* Sidewalk = Old.Get())
+		if (AM80Sidewalk* Sidewalk = Made.Get())
+		{
+			Old.Add(Sidewalk);
+		}
+	}
+	auto DestroyOld = [this, World, &Old]()
+	{
+		for (AM80Sidewalk* Sidewalk : Old)
 		{
 			World->EditorDestroyActor(Sidewalk, true);
 		}
-	}
-	MarciapiediCreati.Reset();
-	if (!bMarciapiedi)
-	{
-		return;
-	}
-	SyncLatiMarciapiede();
+		Old.Reset();
+		MarciapiediCreati.Reset();
+	};
 	TArray<FVector2D> Local = LocalFootprint();
 	M80Poly::Clean(Local);
 	const int32 N = Local.Num();
 	int32 Ticked = 0;
-	for (const bool bSide : LatiMarciapiede)
+	if (bMarciapiedi)
 	{
-		Ticked += bSide ? 1 : 0;
+		SyncLatiMarciapiede();
+		for (const bool bSide : LatiMarciapiede)
+		{
+			Ticked += bSide ? 1 : 0;
+		}
 	}
 	if (N < 3 || Ticked == 0)
 	{
+		DestroyOld();
 		return;
 	}
 
@@ -1508,16 +1517,25 @@ void AM80House::RifaiMarciapiedi()
 		}
 	}
 
+	// As many as before: the same actors take the new lines (their files stay, settings changed by hand too).
+	const bool bReuse = Old.Num() == Lines.Num();
+	if (!bReuse)
+	{
+		DestroyOld();
+	}
+	MarciapiediCreati.Reset();
 	FActorSpawnParameters Params;
 	Params.OverrideLevel = GetLevel();
 	Params.ObjectFlags = RF_Transactional;
 	for (int32 l = 0; l < Lines.Num(); ++l)
 	{
-		AM80Sidewalk* Sidewalk = World->SpawnActor<AM80Sidewalk>(AM80Sidewalk::StaticClass(), FTransform(Lines[l][0]), Params);
+		AM80Sidewalk* Sidewalk = bReuse ? Old[l] : World->SpawnActor<AM80Sidewalk>(AM80Sidewalk::StaticClass(), FTransform(Lines[l][0]), Params);
 		if (!Sidewalk)
 		{
 			continue;
 		}
+		Sidewalk->Modify();
+		Sidewalk->SetActorLocation(Lines[l][0]);
 		USplineComponent* Path = Sidewalk->Path;
 		Path->ClearSplinePoints(false);
 		for (const FVector& P : Lines[l])

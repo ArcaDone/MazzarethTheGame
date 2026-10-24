@@ -2,7 +2,7 @@
 
 Run: blender -b <file.blend> --python m80_prepare_vehicle.py -- <key> <out_dir>
 key: Fiat500 | Mini | Maggiolino | Golf | M3 | Poste | Comune | ChiesaComune | Matrice | Castello | OspedaleModulare | BancaModulare | Madonna |
-     Bar24Ore | SantaMariaGesu |
+     Bar24Ore | SantaMariaGesu | Cimitero |
      Cassonetto | Tombino (see ASSETS)
 
 What it does (the source .blend is never saved):
@@ -98,6 +98,11 @@ ASSETS = {
     "SantaMariaGesu": {"kind": "building", "budget": 0, "collections": ["SMG_Chiesa", "SMG_Ospedale", "SMG_Ruderi"],
                        "keep": ["SMG_Chiesa_Tetto", "SMG_Ospedale_Tetto"],   # few big triangles: roofs, no sky
                        "split_collections": {"SMG_Ospedale": "Ospedale", "SMG_Ruderi": "Ruderi"}},
+    # CimiteroPezzi.blend (m80_cimitero_pezzi.py): the cemetery's site pieces where they stand (the entrance is the main
+    # mesh), the wall module and the tomb library; the wear variants of the new tombs only differed by a per-object
+    # random in their procedural marble, gone once baked: left out.
+    "Cimitero": {"kind": "building", "budget": 0, "split": "*", "main": "Ingresso", "keep": ["Viali"],
+                 "exclude": ["Tomba_N%02d_U" % i for i in range(1, 11)]},
     # Street furniture modelled ~4.4x and 10x too big: a 1100 l bin (137 cm wide) and a 60 cm manhole cover.
     "Cassonetto": {"kind": "building", "scale": 0.225},
     "Tombino": {"kind": "building", "scale": 0.1},

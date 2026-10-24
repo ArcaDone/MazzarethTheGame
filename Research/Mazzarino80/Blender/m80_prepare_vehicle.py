@@ -2,6 +2,7 @@
 
 Run: blender -b <file.blend> --python m80_prepare_vehicle.py -- <key> <out_dir>
 key: Fiat500 | Mini | Maggiolino | Golf | M3 | Poste | Comune | ChiesaComune | Matrice | Castello | OspedaleModulare | BancaModulare | Madonna |
+     Bar24Ore | SantaMariaGesu |
      Cassonetto | Tombino (see ASSETS)
 
 What it does (the source .blend is never saved):
@@ -91,6 +92,12 @@ ASSETS = {
                 "names": {"VIllaPvimento": "VillaPavimento", "ErbaGscatter_001": "Prato", "Villa_006": "VillaAnnesso",
                           "MurettoMadonna_001": "MurettoMadonnaPilastro", "gateway": "Cancello1", "gateway_001": "Cancello2",
                           "gateway_002": "Cancello3", "Bells": "Campane"}},
+    # 24ore_anni80.blend (m80_24ore_vecchio.py): the 24 Ore bar at its real size with 1980s textures, one mesh.
+    "Bar24Ore": {"kind": "building", "budget": 0},
+    # SantaMariaGesu.blend (m80_santa_maria_gesu.py): the church, the old hospital and the convent ruins, one mesh each.
+    "SantaMariaGesu": {"kind": "building", "budget": 0, "collections": ["SMG_Chiesa", "SMG_Ospedale", "SMG_Ruderi"],
+                       "keep": ["SMG_Chiesa_Tetto", "SMG_Ospedale_Tetto"],   # few big triangles: roofs, no sky
+                       "split_collections": {"SMG_Ospedale": "Ospedale", "SMG_Ruderi": "Ruderi"}},
     # Street furniture modelled ~4.4x and 10x too big: a 1100 l bin (137 cm wide) and a 60 cm manhole cover.
     "Cassonetto": {"kind": "building", "scale": 0.225},
     "Tombino": {"kind": "building", "scale": 0.1},

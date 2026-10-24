@@ -41,7 +41,8 @@ MASTERS = "/Game/Mazzarino80/Vehicles/Materials"
 CARS = ["Fiat500", "Mini", "Maggiolino", "Golf", "M3", "Alfa155C"]   # drivable
 DEST = {k: "/Game/Mazzarino80/Vehicles/" + k for k in CARS}
 DEST["Poste"] = "/Game/Mazzarino80/Buildings/Poste"
-BUILDINGS = ["Comune", "ChiesaComune", "Matrice", "Castello", "OspedaleModulare", "BancaModulare", "Madonna"]
+BUILDINGS = ["Comune", "ChiesaComune", "Matrice", "Castello", "OspedaleModulare", "BancaModulare", "Madonna", "Bar24Ore",
+             "SantaMariaGesu"]
 PROPS = ["Cassonetto", "Tombino"]
 for k in BUILDINGS:
     DEST[k] = "/Game/Mazzarino80/Buildings/" + k

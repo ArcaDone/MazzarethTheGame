@@ -141,8 +141,6 @@ Content/FPWeapon/
 Content/FirstPerson/
 Content/FirstPersonArms/
 
-# Ape skeletal mesh (324 MB): too big for the LFS quota, kept only locally and in the MTGBackup copies
-Content/Drive/ApeCar/ApeDrivable.uasset
 
 # Archive of the previous repository history (kept locally only)
 .git_old/

@@ -42,7 +42,7 @@ CARS = ["Fiat500", "Mini", "Maggiolino", "Golf", "M3", "Alfa155C"]   # drivable
 DEST = {k: "/Game/Mazzarino80/Vehicles/" + k for k in CARS}
 DEST["Poste"] = "/Game/Mazzarino80/Buildings/Poste"
 BUILDINGS = ["Comune", "ChiesaComune", "Matrice", "Castello", "OspedaleModulare", "BancaModulare", "Madonna", "Bar24Ore",
-             "SantaMariaGesu"]
+             "SantaMariaGesu", "Cimitero"]
 PROPS = ["Cassonetto", "Tombino"]
 for k in BUILDINGS:
     DEST[k] = "/Game/Mazzarino80/Buildings/" + k
@@ -73,7 +73,8 @@ KEEP_MATERIALS = {"ChiesaComune": {
 KEEP_FROM_MESH = {"OspedaleModulare": "/Game/Mazzarino80/Buildings/Ospedale/SM_M80_Ospedale.SM_M80_Ospedale",
                   "BancaModulare": "/Game/Mazzarino80/Buildings/Banca/SM_M80_Banca.SM_M80_Banca"}
 HOUSE_GLASS = "/Game/Mazzarino80/Houses/Materials/M_M80_HouseGlass.M_M80_HouseGlass"
-NO_NANITE = ["Poste"]   # thin slats and lattices that Nanite's simplification bends
+NO_NANITE = ["Poste",     # thin slats and lattices that Nanite's simplification bends
+             "Bar24Ore", "SantaMariaGesu"]   # a few thousand triangles: arches and the oval window became points in its fallback
 ONLY = [k for k in os.environ.get("M80_IMPORT_ONLY", "").split(",") if k]
 PHYSICS_ONLY = os.environ.get("M80_PHYSICS_ONLY", "") == "1"
 # Downloaded game-ready cars: LOD0 is the full mesh (the user does not want them decimated) and Unreal makes no LODs (its

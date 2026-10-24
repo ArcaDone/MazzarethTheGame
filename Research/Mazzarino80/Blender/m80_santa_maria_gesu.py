@@ -179,8 +179,10 @@ def materials():
     M["conci"] = tex_material("SMG_Conci", TEX + "conci_diff.jpg", (0.95, 0.95, 0.92, 1), 0.9,
                               normal=TEX + "sandstone_blocks_05_nor_gl_4k.jpg")
     # plain carved stone (cornices, frames): the same sandstone with the joints washed out
-    M["pietra"] = tex_material("SMG_Pietra", TEX + "conci_diff.jpg", (0.86, 0.72, 0.48, 1), 0.9, flat=0.75)
-    M["intonaco"] = tex_material("SMG_Intonaco", TEX + "intonaco_vecchio_diff.jpg", (0.93, 0.92, 0.88, 1), 0.92, flat=0.82)
+    # the flat stone and the lime plaster have their own textures (the sandstone and the old render washed towards a
+    # plain colour): Unreal's import takes texture x colour and nothing in between
+    M["pietra"] = tex_material("SMG_Pietra", TEX + "pietra_liscia_diff.jpg", rough=0.9)
+    M["intonaco"] = tex_material("SMG_Intonaco", TEX + "intonaco_bianco_diff.jpg", rough=0.92)
     M["intonaco_vecchio"] = tex_material("SMG_IntonacoVecchio", TEX + "intonaco_vecchio_diff.jpg", (1.0, 0.94, 0.84, 1), 0.95,
                                          normal=TEX + "rough_plaster_03_nor_dx_4k.jpg")
     M["tegole"] = tex_material("SMG_Tegole", BB + "texture2/roof_3_4k/roof_tiles_14_4k/textures/roof_tiles_14_diff_4k.jpg",

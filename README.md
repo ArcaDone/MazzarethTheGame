@@ -99,6 +99,8 @@ L'arrampicata funziona su qualsiasi geometria, perché cerca i bordi sulla colli
 | **Negozi di una casa** | Nella casa, sezione *Negozi*: per ogni negozio il lato (premi *Mostra numeri dei lati*; -1 = facciata principale), il prototipo (`/Game/Mazzarino/Prototipi`: Alimentari, Bar Sport, Tabaccheria, Frutta, Ferramenta, Farmacia, Abbigliamento, Edicola, Officina, Negozio chiuso) e la posizione lungo il lato. Quel tratto del piano terra diventa una stanza vera aperta sulla strada, arredata con le regole del pacchetto, con una luce debole e calda. |
 | **Strade per la navigazione** | Una per mappa col traffico: la parte centrale delle strade costa ai pedoni, che restano lungo le case e attraversano dove serve. |
 | **Parcheggio (Mazzarino)** | Stallo: le auto degli NPC a fine giro ci parcheggiano e il guidatore scende. |
+| **Recinzione modulare (Mazzarino)** | Spline di angoli: un pilastro e N pannelli per campata (stirati per riempirla), muretto a gradini sul pendio, tutto istanziato. Di base i pezzi dell'ospedale; il cimitero usa il suo muro (`SM_M80_Cimitero_RecintoPilastro` / `_RecintoPannello`, *Muretto* spento). |
+| **Campo di tombe (Mazzarino)** | Spline chiusa (un settore del cimitero) che si riempie di tombe in file: tipi a caso col loro *Peso*, *Seme*, *Densità*, direzione e spazi delle file, *Vialetto ogni N file*, file alterne, rotazione e spostamento casuali, *Girate*, affondamento min/max, inclinazione. Ogni tomba poggia sul terreno; un componente istanziato per tipo. Pulsante *Rifai*. Prova: `L_M80_ProvaCimitero` (`Scripts/m80_cimitero_prova.py`). |
 
 ### La bouganvillea (spline)
 
@@ -278,7 +280,6 @@ I circa 220 script `mazzarino80_*.py` sono della prima versione basata su PCG (s
   - le mesh cotte delle case e delle bouganvillee;
   - gli HLOD;
   - i pacchetti del marketplace;
-  - l'Ape (324 MB);
   - `Saved`, `Intermediate`, `DerivedDataCache`, `Binaries`.
 - La vecchia storia (95 commit, fino al 4 ottobre 2026) è in `.git_old`: 38 GB, solo in locale.
 
@@ -354,6 +355,7 @@ Sull'altro PC:
 | 13-14 ott | **Passaggio a Unreal 5.8.3** (per MetaHuman Creator nell'editor e le prestazioni): copia di prova, stessi test e misure di 5.5 e 5.8. Griglia di World Partition del paese a celle di 64 m caricate fino a 192 m: Play pronto in 136 s invece di 229, 58-76 fps invece di 49-68, 10 GB di RAM in meno. Gli edifici recuperati (Madonna, Scuola, Salesiane, Liardo, Castello, San Domenico, Matrice) resi *Static* per vederli negli HLOD. |
 | 16-17 ott | **Folla** in `L_M80_ProvaFolla`: 21 MetaHuman vestiti anni '80 che camminano (anziani curvi col bastone, anziane, borse), chiacchierano, si siedono sulle sedie, inciampano e si rialzano, vengono investiti, si difendono o scappano, scappano dagli spari, si scansano dalle auto, prendono le auto parcheggiate e le guidano. Il giocatore si siede e sale/scende dalle auto con l'animazione. Sedie e tavoli fisici. Quattro auto nuove non decimate (Mini, Maggiolino, Golf GTI, BMW M3) e la 500 rifatta. Marciapiedi che seguono il terreno. Sorgenti riuniti in `D:\Mazzarino80_Sorgenti`. Pacchetti dei negozi importati (`L_M80_ProvaNegozi`). |
 | 18 ott | **Piaggio Si** al posto della Vespa: motorino guidabile da Blender con le sue texture, piega in curva secondo velocità e raggio, sterzo sull'asse della forcella; salita e discesa da sinistra con le clip fatte in Blender, piede a terra da fermo, retro coi piedi, impennata a fisica, urti che fanno volare il pilota; mani e piedi di Vito sul corpo MetaHuman dopo il retarget (niente più sfarfallio dei gomiti). Strada **Pietra bianca e lavica**: riquadri di lastre bianche tra fasce di cubetti lavici, come i viali nuovi del paese. |
+| 23-24 ott | Edifici da Blender: **Chiesa del Comune** dalle foto; **Ospedale** e **Banca** a misura vera in pezzi con la *Recinzione modulare*; **Castello** senza Nanite con LOD fatti a mano; **Sant'Ignazio** chiuso e arricchito; layer HLOD per gli edifici fatti a mano; **24 Ore** com'era negli anni '80 (texture invecchiate, misura vera); **Santa Maria di Gesù** fatta da zero sui lotti OSM con il vecchio ospedale e i ruderi del convento; **Ape** leggera (185 mila vertici invece di 1,74 milioni, stesse ossa); **Cimitero** in pezzi con il *Campo di tombe* (`L_M80_ProvaCimitero`). |
 
 ---
 
@@ -363,7 +365,7 @@ Sull'altro PC:
 1. **Paese**:
    - bug: dei marciapiedi si cuociono solo i bordi;
    - marciapiedi automatici dalla casa procedurale: interruttore (spento di base), altezza e distanza dal perimetro fisse, scelta del lato per ogni segmento del perimetro; poi si ritoccano i punti della spline.
-2. **Blender** (l'utente spiega cosa e come, con le foto): Acquedotto; Castello (LOD, da vicino non deve sembrare bruciato); chiesa al Castello e statua; chiesa del Comune; Santa Maria di Gesù con i ruderi; 24 Ore; Salesiane (capire come reimportarle); Ospedale in proporzione; Banca separata (le mura le fa l'utente); scuola Madonnuzza; Cimitero; Calvario; Cappuccini; campo sportivo (da capire); sistemare Sant'Ignazio.
+2. **Blender** (l'utente spiega cosa e come, con le foto): Acquedotto; chiesa al Castello e statua; Salesiane (capire come reimportarle); scuola Madonnuzza; Calvario; Cappuccini; campo sportivo (da capire). Fatti il 23-24/10: Castello, chiesa del Comune, Santa Maria di Gesù con i ruderi, 24 Ore, Ospedale, Banca, Cimitero (in mappa di prova), Sant'Ignazio. Da fare dall'utente: livellare il terreno sotto Sant'Ignazio e Santa Maria di Gesù, controllare l'orientamento del 24 Ore, sostituire ospedale e banca vecchi nel paese, mettere il cimitero nel paese.
 3. **Vegetazione**: piante, alberi e terreno come nella foto di riferimento, ottimizzati con Nanite o altro; Nanite anche sulle auto (in 5.8 si dovrebbe poter fare).
 4. **Animazioni**: seduto bene in auto; salire bene in moto; armi dal pacchetto; in moto retromarcia e partenza troppo lente, guida ancora troppo "a pendolo".
 
@@ -375,7 +377,6 @@ Sull'altro PC:
 - `.git_old` (38 GB) va spostato o cancellato quando non serve più.
 - **Paese buio di notte da lontano** con la griglia nuova: i lampioni lontani non sono caricati. Tenerli sempre caricati costa troppo (3 fps): da rivedere.
 - **DynamicMesh in Play: 2,5 GB di RAM** (691 oggetti, 5.8 con la griglia nuova; erano 6,7 GB in 5.5). Le producono case non cotte, strade, marciapiedi, scalinate, fili, orizzonte e bouganvillea. Prima misurarle per tipo, poi cuocere in static mesh chi pesa di più. Da fare prima di portare la folla nel paese.
-- **Ape: 974 mila triangoli**: va alleggerita prima di avere traffico. La 500 non decimata ne ha 242 mila (richiesta dell'utente: niente decimazione sulle auto scaricate).
 - **Traffico** (mini-paese della Matrice, 17/10): corsie ricavate dalle strade OSM (a destra; incroci e stradine strette un'auto alla volta), adattate allo spazio libero tra cordoli e muri; le auto si fermano per pedoni e auto davanti e sorpassano quelle parcheggiate; i pedoni restano lungo le case e aspettano sul bordo. Da migliorare: alcune auto si incastrano ancora nelle curve strette o contro gli spigoli; parcheggi solo dove la strada è abbastanza larga (nel mini-paese nessuno). Da portare nel paese vero quando si sceglierà il senso di marcia.
 - **Motorino senza pilota** (18/10): sbalzato via in movimento dovrebbe cadere per gravità, ma le ruote di Chaos lo tengono su (resta inclinato di 15-20°): provati attrito ridotto, ruote a sfera, spinta laterale crescente, aiuto alla stabilità spento. Finché non cade non si vede la raccolta da terra (fatta: clip, moto che si rialza, mani sulle manopole). Da verificare anche: piedi sul marciapiede nella salita, scatti di auto e moto in paese.
 - **Negozi**: mancano le stanze secondarie dei prototipi (bagno, magazzino, saletta), i tavolini fuori e le insegne dei pacchetti; un negozio a cavallo di due case attaccate lascia un po' di terreno a vista.

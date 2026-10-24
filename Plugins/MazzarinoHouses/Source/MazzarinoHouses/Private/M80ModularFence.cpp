@@ -126,14 +126,14 @@ void AM80ModularFence::Rebuild()
 	{
 		C->AddInstance(World * ToLocal, false);
 	};
-	const FVector Up(0, 0, 1);
+	const FVector ZUp(0, 0, 1);
 	for (const FBayTop& Bay2 : Bays)
 	{
 		FVector Dir = Bay2.End - Bay2.Start;
 		Dir.Z = 0;
 		const double Len = Dir.Size();
 		Dir /= Len;
-		const FQuat Rot = FRotationMatrix::MakeFromXZ(Dir, Up).ToQuat();
+		const FQuat Rot = FRotationMatrix::MakeFromXZ(Dir, ZUp).ToQuat();
 		const FVector Mid = (Bay2.Start + Bay2.End) / 2;
 		const double Ground = Bay2.Top - WallH;
 		if (bWall && WallH > 0)
@@ -158,7 +158,7 @@ void AM80ModularFence::Rebuild()
 	{
 		const double Top = FMath::Max(TopA, TopB);
 		const double Ground = FMath::Min(TopA, TopB) - WallH;
-		const FQuat Rot = FRotationMatrix::MakeFromXZ(Dir, Up).ToQuat();
+		const FQuat Rot = FRotationMatrix::MakeFromXZ(Dir, ZUp).ToQuat();
 		if (bWall && WallH > 0)
 		{
 			const double Bottom = Ground - WallBuriedCm;
